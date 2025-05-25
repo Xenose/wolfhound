@@ -12,18 +12,18 @@ See full [Manual Build Guide](docs/markdown/build.md) for details.
 
 ### Linux [ POSIX SHELL, BASH, ZSH ]
 ```bash
-	. ./tools/cmake/activate.sh
+. ./tools/cmake/activate.sh
 ```
 
 ### Windows [ CMD ]
 ```cmd
-	call tools\cmake\activate.bat
+call tools\cmake\activate.bat
 ```
 ### Build
 ```sh
-	wh-ninja	# set build system.
-	wh-clang	# set compiler.
-	wh-build	# compiles code.
+wh-ninja	# set build system.
+wh-clang	# set compiler.
+wh-build	# compiles code.
 ```
 
 ### Commands
