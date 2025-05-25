@@ -33,6 +33,9 @@ rules.ninja
 *.bin
 *.msi
 
+# Obsidan
+**.obsidian/
+
 # Ignore by-product directories
 **/CMakeFiles/
 **/CMakeScratch/
