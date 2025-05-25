@@ -1,0 +1,76 @@
+# Ignore all build directories recursively
+build/
+**/build/
+**/CMakeFiles/
+
+# CMake generated files
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+compile_commands.json
+CTestTestfile.cmake
+CPackConfig.cmake
+CPackSourceConfig.cmake
+
+# Ninja
+*.ninja
+rules.ninja
+
+# Compiled object files and libraries
+*.o
+*.obj
+*.lib
+*.a
+*.lo
+*.la
+*.so
+*.so.*
+*.dll
+*.exe
+*.out
+*.pdb
+*.idb
+*.bin
+*.msi
+
+# Ignore by-product directories
+**/CMakeFiles/
+**/CMakeScratch/
+**/CompilerId*/
+
+# Visual Studio files
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.user
+*.suo
+*.ncb
+*.opensdf
+*.sdf
+*.ipch
+*.cache
+*.log
+
+# Qt/Visual Studio Code IDE
+.vscode/
+.idea/
+*.pro.user
+*.qmake.stash
+
+# Backup & temporary files
+*~
+*.swp
+*.bak
+*.tmp
+*.temp
+*.log
+*.orig
+
+# Generated binaries or external DLLs
+**/*.dll
+
+# System
+.DS_Store
+*.swp
+*.tmp

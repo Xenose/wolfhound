@@ -1,0 +1,47 @@
+#ifndef _wh_header_convert_
+#define _wh_header_convert_
+
+#include<wh/common.h>
+
+typedef struct {
+	uint64_t value;
+	char* buffer;
+	int64_t buffer_length;
+	int64_t base;
+} _wh_uint2str_params;
+
+typedef struct {
+	int64_t value;
+	char* buffer;
+	int64_t buffer_length;
+	int64_t base;
+} _wh_int2str_params;
+
+typedef struct {
+	char* buffer;
+	int64_t buffer_length;
+	int64_t base;
+} _wh_str2int_params;
+
+typedef struct {
+	char* buffer;
+	int64_t buffer_length;
+} _wh_strint_pull_params;
+
+typedef struct {
+	char* buffer;
+	u64 length;
+} _wh_str_invert_params;
+
+
+extern char* _wh_uint2str(_wh_uint2str_params params);
+extern char* _wh_int2str(_wh_int2str_params params);
+extern i64 _wh_str2int(_wh_str2int_params params);
+extern void _wh_str_invert(_wh_str_invert_params params);
+
+#define wh_uint2str(...) _wh_uint2str((_wh_uint2str_params) { __VA_ARGS__ })
+#define wh_int2str(...) _wh_int2str((_wh_int2str_params) { __VA_ARGS__ })
+#define wh_str2int(...) _wh_str2int((_wh_str2int_params) { __VA_ARGS__ })
+#define wh_str_invert(...) _wh_str_invert((_wh_str_invert_params) { __VA_ARGS__ })
+
+#endif /* _wh_header_convert_ */

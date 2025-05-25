@@ -1,0 +1,211 @@
+{
+  "main": {
+    "id": "8b38d5e805696c60",
+    "type": "split",
+    "children": [
+      {
+        "id": "f066427f5a459605",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "455d9ef7b72516df",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "include/wh/lua/config.h.md",
+                "mode": "preview",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "config.h"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "7c178db705dafd53",
+    "type": "split",
+    "children": [
+      {
+        "id": "4d9d7dac4029b55f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "108ffc359206e8bc",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "3f106a870cfe0a66",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "f8f2b76efadfca78",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "ae7d31f1032bf4de",
+    "type": "split",
+    "children": [
+      {
+        "id": "697ac21c4a9f7a13",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "bfb30df9ae8808b4",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "include/wh/lua/config.h.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for config.h"
+            }
+          },
+          {
+            "id": "50fc3c16f4bf87d8",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "include/wh/memory.h.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from memory.h"
+            }
+          },
+          {
+            "id": "98de9cde83ea0e93",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "66447b86203e75a5",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "include/wh/memory.h.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of memory.h"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "455d9ef7b72516df",
+  "lastOpenFiles": [
+    "include/wh/print.h.md",
+    "include/wh/lua/config.h.md",
+    "include/wh/lua.h.md",
+    "todo.md",
+    "markdown/build.md",
+    "markdown",
+    "commands",
+    "packages",
+    "tools/readme_stat/source",
+    "tools/readme_stat",
+    "tools",
+    "example/chess/src/source.c.md",
+    "example/basic/src/source.c.md",
+    "example/chess/src",
+    "example/basic/src",
+    "example/chess",
+    "example/basic",
+    "include/wh/types/wolfhound.h.md",
+    "include/wh/types/memory.h.md",
+    "include/wh/types/library.h.md",
+    "include/wh/types/config.h.md",
+    "include/wh/sys/memory.h.md",
+    "include/wh/sys/library.h.md",
+    "include/wh/raylib/raylib.h.md",
+    "include/wh/memory/stack.h.md",
+    "include/wh/memory/slab.h.md",
+    "include/wh/memory/freelist.h.md",
+    "include/wh/memory/buddy.h.md",
+    "include/wh/memory/bucket.h.md",
+    "include/wh/memory/arena.h.md",
+    "include/wh/params/wolfhound.h.md",
+    "include/wh/params/memory.h.md",
+    "include/wh/params/math.h.md",
+    "include/wh/params/library.h.md",
+    "include/wh/params/config.h.md",
+    "include/wh/lua/functions.h.md",
+    "Untitled.canvas"
+  ]
+}

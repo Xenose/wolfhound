@@ -1,0 +1,16 @@
+
+
+FIND_LIBRARY(LIB_VULKAN
+	NAMES vulkan Vulkan vulkan-1
+)
+
+
+IF (NOT LIB_VULKAN)
+	# TODO download
+
+	FIND_LIBRARY(LIB_VULKAN 
+		NAMES vulkan Vulkan vulkan-1
+	)
+ENDIF ()
+
+TARGET_LINK_LIBRARIES(${APP_NAME} INTERFACE ${LIB_VULKAN})

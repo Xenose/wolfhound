@@ -1,0 +1,102 @@
+#include<wh/memory/freelist.h>
+#include<wh/debug.h>
+
+void* _wh_mem_alloc_freelist(_wh_mem_alloc_params* params)  {
+	i64 error = 0;
+	wh_heap_node_s* node = params->heap->freelist.nodes;
+
+	if (nullptr == node) {
+		error = WH_ERROR_NO_MEMORY;
+		goto go_error_exit;
+	}
+
+	while (node->flags & WH_MEM_IN_USE || node->bytes < params->bytes) {
+		wh_log_debug(("Scanning for node..."));
+
+		if (nullptr == node->next) {
+			error = WH_ERROR_HEAP_TOO_SMALL;
+			wh_log_critical(("No node found!"));
+			goto go_error_exit;
+		}
+		node = node->next;
+	}
+
+	node->flags = params->flags | WH_MEM_IN_USE;
+
+	// check if the nodes is big enough for a split
+	if ((node->bytes - 64) > (params->bytes + sizeof(wh_heap_node_s))) {
+		u64 size = params->bytes + sizeof(wh_heap_node_s);
+		wh_heap_node_s* next = wh_ptr_add(node, size);
+
+		next->next = node->next;
+		next->previous = node;
+		next->bytes = node->bytes - size; 
+		next->data = wh_ptr_add(next, sizeof(wh_heap_node_s));
+
+		node->bytes = size;
+		node->next = next;
+
+		wh_log_debug(("Allocated [ %dB ] new node created [ %dB ]"), node->bytes, next->bytes);
+	}
+
+	return node->data;
+go_error_exit:
+	wh_ptr_assign(params->error, error);
+	return nullptr;
+}
+
+wh_heap_node_s* _wh_mem_freelist_previous(_wh_mem_free_params* params, wh_heap_node_s* pn, wh_heap_node_s* cn) {
+	if (nullptr != pn) {
+		if (wh_not(WH_MEM_IN_USE & pn->flags)) {
+			pn->next = cn->next;
+			pn->bytes += cn->bytes;
+			cn = _wh_mem_freelist_previous(params, pn->previous, pn);
+		}
+	}
+
+	return cn;
+}
+
+void _wh_mem_freelist_next(_wh_mem_free_params* params, wh_heap_node_s* nn, wh_heap_node_s* cn) {
+	if (nullptr != nn) {
+		if (wh_not(WH_MEM_IN_USE & nn->flags)) {
+			cn->bytes += nn->bytes;
+			cn->next = nn->next;
+			_wh_mem_freelist_next(params, nn->next, cn);
+		}
+	}
+}
+
+void _wh_mem_free_freelist(_wh_mem_free_params* params) {
+	i64 error = 0;
+	wh_heap_node_s* node = params->heap->freelist.nodes;
+
+	if (nullptr == node) {
+		error = WH_ERROR_NO_MEMORY;
+		goto go_error_exit;
+	}
+
+	while (node->data != params->ptr) {
+		if (nullptr == node->next) {
+			wh_log_error(("Failed to find pointer next pointer is NULL"));
+			goto go_error_exit;
+		}
+
+		node = node->next;
+	}
+
+	if (node->data == params->ptr) {
+		wh_heap_node_s* pn = node->previous;
+		wh_heap_node_s* nn = node->next;
+		
+		node->flags &= ~WH_MEM_IN_USE;
+		node = _wh_mem_freelist_previous(params, pn, node);
+		_wh_mem_freelist_next(params, nn, node);
+
+		wh_log_info(("Found pointer! Freeing: heap size now is [ %d ]"), node->bytes);
+	}
+
+go_error_exit:
+		return;
+}
+
