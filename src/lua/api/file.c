@@ -2,8 +2,9 @@
 #include<lauxlib.h>
 
 #include<wh/file.h>
+#include<wh/lua/api/file.h>
 
-int wh_lua_file_load(lua_State* ls) {
+int wh_lua_file_read(lua_State* ls) {
 	int argc = 0;
 	const char* path = nullptr;
 	wh_file_s file = { 0 };

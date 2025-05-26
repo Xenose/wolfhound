@@ -28,7 +28,8 @@ _STATS = []
 
 def ParseJson():
     d = subprocess.run(f"""cd  {_LIBRARY_PATH}; cloc . --exclude-dir='build' \
-    --force-lang='C',h --force-lang='C++,hpp,cpp' --json""",
+    --force-lang='C',h --force-lang='C++,hpp,cpp' --json \
+    --not-match-f='compile_commands.json'""",
                        stdout=subprocess.PIPE,
                        stderr=subprocess.PIPE,
                        shell=True)

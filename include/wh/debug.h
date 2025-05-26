@@ -15,10 +15,22 @@ typedef struct {
 	u64 mode;
 } _wh_log_init_params;
 
+enum { 
+	WH_LOG_LEVEL_EMERGENCY,
+	WH_LOG_LEVEL_ALERT,
+	WH_LOG_LEVEL_CRITICAL,
+	WH_LOG_LEVEL_ERROR,
+	WH_LOG_LEVEL_WARNING,
+	WH_LOG_LEVEL_NOTICE,
+	WH_LOG_LEVEL_INFO,
+	WH_LOG_LEVEL_DEBUG
+};
+
 extern i64 (*_wh_log_va[])(_wh_print_params print_params, _wh_log_params params, va_list args);
 extern i64 (*_wh_log[])(_wh_print_params print_params, _wh_log_params params, ...);
 
 extern void _wh_log_init(_wh_log_init_params params);
+extern void wh_log_set_level(i64 level, u8 state);
 
 /* [MD_DOC]
  * # wh_log_* and wh_log_va_*

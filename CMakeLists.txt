@@ -40,8 +40,11 @@ set(C_SOURCES
 
 	"src/sdl3/render.c"
 
+	"src/lua/api/file.c"
+	"src/lua/api/maths.c"
+
+	"src/lua/api.c"
 	"src/lua/config.c"
-	"src/lua/file.c"
 	"src/lua/helpers.c"
 
 	"src/arg_parser.c"

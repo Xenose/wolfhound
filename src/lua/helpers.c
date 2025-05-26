@@ -2,6 +2,7 @@
 #include<lauxlib.h>
 #include<stdarg.h>
 
+#include<wh/debug.h>
 #include<wh/print.h>
 #include<wh/lua/helpers.h>
 
@@ -15,9 +16,11 @@ i8 _wh_lua_add_values(lua_State* ls, ...) {
 
 	while (nullptr != (keys = va_arg(args, const char**))) {
 		i64 i = 1;
+		i64 type = 0;
 
 		if (nullptr == keys[0]) {
-			continue;
+			wh_log_error(("Failed to add table, nullptr given"));
+			goto go_error_exit;
 		} else if (nullptr == keys[1]) {
 			goto go_switch;
 		}
@@ -35,27 +38,31 @@ i8 _wh_lua_add_values(lua_State* ls, ...) {
 			lua_getfield(ls, -1, keys[i]);
 
 			if (lua_isnil(ls, -1)) {
+				wh_log_debug(("New Table [ %s ]"), keys[i]);
 				lua_pop(ls, 1);
 				lua_newtable(ls);
 				lua_pushvalue(ls, -1);
 				lua_setfield(ls, -3, keys[i]);
-			}
+			} else  wh_log_debug(("Table [ %s ]"), keys[i]);
 
 			lua_remove(ls, -2);
 		}
 
 	go_switch:
-		switch (va_arg(args, i64)) {
+		type = va_arg(args, int);
+
+		switch (type) {
 			case WH_TYPE_I64:
 				lua_pushinteger(ls, va_arg(args, i64));
 				break;
 			case WH_TYPE_BOOL:
-				lua_pushboolean(ls, va_arg(args, i64));
+				lua_pushboolean(ls, va_arg(args, int));
 				break;
 			case WH_TYPE_FUNCTION_PTR:
 				lua_pushcfunction(ls, va_arg(args, int(*)(lua_State*)));
 				break;
 			default:
+				wh_log_error(("Value of [ %d ] given to key [ %s ]"), type, keys[i]);
 				goto go_error_exit;
 		}
 

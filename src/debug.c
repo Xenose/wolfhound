@@ -39,6 +39,10 @@ static i64 _wh_log_dummy(_wh_print_params print_params, _wh_log_params params, .
 	return 0;
 }
 
+static i64 _wh_log_dummy_va(_wh_print_params print_params, _wh_log_params params, va_list args) {
+	return 0;
+}
+
 static i64 _wh_log_real_va(_wh_print_params print_params, _wh_log_params params, va_list args) {
 	u64 used = wh_print((
 		"[ %s ] \033[90m%s::%d in %s -->\033[0m "
@@ -76,5 +80,15 @@ void _wh_log_init(_wh_log_init_params params) {
 		case WH_GRAPHICS_MODE_RAYLIB:
 			_wh_log_init_raylib(&params);
 			break;
+	}
+}
+
+void wh_log_set_level(i64 level, u8 state) {
+	if (0 == state) {
+		_wh_log[level] = &_wh_log_dummy;
+		_wh_log_va[level] = &_wh_log_dummy_va;
+	} else {
+		_wh_log[level] = &_wh_log_real;
+		_wh_log_va[level] = &_wh_log_real_va;
 	}
 }

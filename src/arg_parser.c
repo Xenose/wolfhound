@@ -23,6 +23,7 @@ i64 _wh_args_parse(_wh_args_parse_params params) {
 
 		if ('-' == params.arv[i][0]) {
 			if ('-' == params.arv[i][1]) {
+				memset(command, 0, 256);
 				memcpy(command, "commands/", 9);
 				strcat(command, &in[2]);
 				strcat(command, ".lua");
@@ -30,12 +31,11 @@ i64 _wh_args_parse(_wh_args_parse_params params) {
 				wh_log_debug(("calling command [ %s ]"), command);
 
 				wh_file_s file = wh_file_load(command);
-				memset(command, 0, 256);
 
 				if (nullptr != file.ptr) {
 					if (LUA_OK != luaL_dostring(params.ls, file.str)) {
 						const char *error_msg = lua_tostring(params.ls, -1);
-						wh_log_debug(("Lua error: %s"), error_msg);
+						wh_log_warning(("Lua error: %s"), error_msg);
 						lua_pop(params.ls, 1); // remove error message from stack
 					}
 

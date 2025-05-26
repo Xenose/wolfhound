@@ -1,4 +1,5 @@
 # The Wolfhound Game Engine [ C23 ]
+*This code is IN the Rapid DEVelopment branch or 'INRDEV' for short, meaning that the code will change a lot and that after first release the commit history will be squashed.*
 
 | Platform     | Tested | Supported | Description                             |
 | ------------ | ------ | --------- | --------------------------------------- |
@@ -64,17 +65,16 @@ wh-build	# compiles code.
 
 |  Language       | File Count | Lines of Code | Percentage |
 | --------------- | ---------- | ------------- | ---------- |
-| C               | 72         | 2927          | 72.99%     |
-| Markdown        | 57         | 439           | 10.95%     |
-| JSON            | 1          | 182           | 4.54%      |
-| Python          | 2          | 155           | 3.87%      |
-| CMake           | 10         | 150           | 3.74%      |
-| Bourne Shell    | 10         | 76            | 1.90%      |
-| Fortran 95      | 1          | 30            | 0.75%      |
-| Lua             | 5          | 19            | 0.47%      |
-| C++             | 2          | 15            | 0.37%      |
-| DOS Batch       | 3          | 15            | 0.37%      |
+| C               | 73         | 2982          | 76.66%     |
+| Markdown        | 56         | 439           | 11.29%     |
+| Python          | 2          | 155           | 3.98%      |
+| CMake           | 10         | 150           | 3.86%      |
+| Bourne Shell    | 10         | 76            | 1.95%      |
+| Fortran 95      | 1          | 30            | 0.77%      |
+| Lua             | 5          | 26            | 0.67%      |
+| C++             | 2          | 15            | 0.39%      |
+| DOS Batch       | 3          | 15            | 0.39%      |
 | Text            | 1          | 2             | 0.05%      |
-| Summary         | 164        | 4010          | 100.00%    |
+| Summary         | 163        | 3890          | 100.00%    |
 
 <!--python-stats-end-->

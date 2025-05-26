@@ -5,6 +5,7 @@
 
 typedef struct {
 	u8 dryrun			: 1;
+	u8 run_tests		: 1;
 	u8 log_debug		: 1; 
 	u8 log_info			: 1; 
 	u8 log_notice		: 1;

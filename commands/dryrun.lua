@@ -9,6 +9,5 @@ if (HELP) then
 
 	return COMMAND_INFO
 else
-	print("hello from dryrun!")
 	WH.config.flags.dryrun = true
 end

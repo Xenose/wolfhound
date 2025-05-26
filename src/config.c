@@ -10,6 +10,7 @@
 #include<wh/arg_parser.h>
 #include<wh/lua/config.h>
 #include<wh/lua/helpers.h>
+#include<wh/lua/api.h>
 
 i8 _wh_conf_defaults(_wh_init_params* params, wh_config_s* conf) {
 	conf->heap.size = 4096 < params->heap_size ? params->heap_size : WH_64MB;
@@ -47,6 +48,7 @@ wh_config_s _wh_config_load(_wh_init_params* params, wh_config_s* conf) {
 	wh_log_debug(("Starting new lua_State"));
 	ls = luaL_newstate();
 	luaL_openlibs(ls);
+	_wh_lua_expose_api(ls);
 
 	// Variable loading
 	//wh_config_lua_expose(ls, conf);
@@ -55,6 +57,7 @@ wh_config_s _wh_config_load(_wh_init_params* params, wh_config_s* conf) {
 		(const char*[]) { "WH", "config", "heap", "size", nullptr }, WH_TYPE_I64, conf->heap.size,
 
 		(const char*[]) { "WH", "config", "flags", "dryrun", nullptr },			WH_TYPE_BOOL, conf->flags.dryrun,
+		(const char*[]) { "WH", "config", "flags", "run_tests", nullptr },		WH_TYPE_BOOL, conf->flags.run_tests,
 		(const char*[]) { "WH", "config", "flags", "log_debug", nullptr},			WH_TYPE_BOOL, conf->flags.log_debug,
 		(const char*[]) { "WH", "config", "flags", "log_info", nullptr},			WH_TYPE_BOOL, conf->flags.log_info,
 		(const char*[]) { "WH", "config", "flags", "log_notice", nullptr},		WH_TYPE_BOOL, conf->flags.log_notice,
@@ -75,8 +78,38 @@ wh_config_s _wh_config_load(_wh_init_params* params, wh_config_s* conf) {
 		(const char*[]) { "WH", "config", "heap", "size", nullptr }, WH_TYPE_I64, &conf->heap.size
 	);
 
+	// Testing
 	conf->flags.dryrun = wh_lua_get_flag(
 		ls, conf->flags.dryrun, (const char*[]) { "WH", "config", "flags", "dryrun", nullptr });
+	conf->flags.run_tests = wh_lua_get_flag(
+		ls, conf->flags.run_tests, (const char*[]) { "WH", "config", "flags", "run_tests", nullptr });
+
+	// Logging flags
+	conf->flags.log_debug = wh_lua_get_flag(
+		ls, conf->flags.log_debug, (const char*[]) { "WH", "config", "flags", "log_debug", nullptr });
+	conf->flags.log_info = wh_lua_get_flag(
+		ls, conf->flags.log_info, (const char*[]) { "WH", "config", "flags", "log_info", nullptr });
+	conf->flags.log_notice = wh_lua_get_flag(
+		ls, conf->flags.log_notice, (const char*[]) { "WH", "config", "flags", "log_notice", nullptr });
+	conf->flags.log_warning = wh_lua_get_flag(
+		ls, conf->flags.log_warning, (const char*[]) { "WH", "config", "flags", "log_warning", nullptr });
+	conf->flags.log_error = wh_lua_get_flag(
+		ls, conf->flags.log_error, (const char*[]) { "WH", "config", "flags", "log_error", nullptr });
+	conf->flags.log_critical = wh_lua_get_flag(
+		ls, conf->flags.log_critical, (const char*[]) { "WH", "config", "flags", "log_critical", nullptr });
+	conf->flags.log_alert = wh_lua_get_flag(
+		ls, conf->flags.log_alert, (const char*[]) { "WH", "config", "flags", "log_alert", nullptr });
+	conf->flags.log_emergency = wh_lua_get_flag(
+		ls, conf->flags.log_emergency, (const char*[]) { "WH", "config", "flags", "log_emergency", nullptr });
+
+	wh_log_set_level(WH_LOG_LEVEL_DEBUG,		conf->flags.log_debug);
+	wh_log_set_level(WH_LOG_LEVEL_INFO,			conf->flags.log_info);
+	wh_log_set_level(WH_LOG_LEVEL_NOTICE,		conf->flags.log_notice);
+	wh_log_set_level(WH_LOG_LEVEL_WARNING,		conf->flags.log_warning);
+	wh_log_set_level(WH_LOG_LEVEL_ERROR,		conf->flags.log_error);
+	wh_log_set_level(WH_LOG_LEVEL_CRITICAL,	conf->flags.log_critical);
+	wh_log_set_level(WH_LOG_LEVEL_ALERT,		conf->flags.log_alert);
+	wh_log_set_level(WH_LOG_LEVEL_EMERGENCY,	conf->flags.log_emergency);
 
 	lua_close(ls);
 	return *conf;
