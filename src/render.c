@@ -7,7 +7,10 @@ extern void _wh_render_clear_raylib(_wh_render_clear_params params);
 extern void _wh_render_show_raylib(_wh_render_show_params params);
 extern void _wh_render_line_raylib(_wh_render_line_params params);
 
+
+extern i8 _wh_window_create_sdl3(_wh_window_create_params params);
 extern void _wh_render_clear_sdl3(_wh_render_clear_params params);
+extern void _wh_event_pull_sdl3(_wh_event_pull_params params);
 extern void _wh_render_show_sdl3(_wh_render_show_params params);
 extern void _wh_render_line_sdl3(_wh_render_line_params params);
 
@@ -18,6 +21,10 @@ i8 _wh_window_create(_wh_window_create_params params) {
 		case WH_GRAPHICS_MODE_RAYLIB:
 			wh_log_debug(("Selected [ RAYLIB ] rendering"));
 			_wh_window_create_raylib(params);
+			break;
+		case WH_GRAPHICS_MODE_SDL3:
+			wh_log_debug(("Selected [ SDL3 ] rendering"));
+			_wh_window_create_sdl3(params);
 			break;
 	}
 	return 0;
@@ -36,6 +43,7 @@ void _wh_event_pull(_wh_event_pull_params params) {
 			_wh_event_pull_raylib(params);
 			break;
 		case WH_GRAPHICS_MODE_SDL3:
+			_wh_event_pull_sdl3(params);
 			break;
 	}
 }

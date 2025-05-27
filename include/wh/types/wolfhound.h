@@ -51,7 +51,7 @@ typedef struct {
 
 typedef struct {
 	struct_type stype;
-} wh_assets_s;
+} wh_asset_handler_s;
 
 typedef struct {
 	struct_type stype;
@@ -62,7 +62,7 @@ typedef struct {
 
 	wh_app_info_s app_info;
 	wh_graphics_s graphics;
-	wh_assets_s assets;
+	wh_asset_handler_s assets_handler;
 } wh_instance_s;
 
 #endif /* _wh_header_types_wolfhound_ */
