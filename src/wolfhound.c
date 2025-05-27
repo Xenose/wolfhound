@@ -13,7 +13,14 @@ static i8 _wh_init_critical(_wh_init_params* params) {
 	_wh_config_load(params, &params->ins->config);
 
 	// Now we have somewhere to store our data
-	params->heap = wh_heap_init(params->ins->config.heap.size);
+	params->ins->heap =
+		wh_heap_init(params->ins->config.heap.size);
+	
+	params->ins->scratch = wh_heap_init(
+		WH_1MB,
+		params->heap, 
+		WH_STRUCT_TYPE_HEAP_ARENA
+	);
 	// no longer needed
 	//params->ins = wh_mem_alloc(&params->ins, sizeof(wh_instance_s));
 
@@ -83,11 +90,13 @@ void _wh_loop(_wh_loop_params params) {
 	wh_event_s event;
 
 	if (ins->config.flags.dryrun) {
-		return;
+		event.code = WH_EVENT_WINDOW_CLOSE;
+		goto go_skip_event_pull;
 	}
 
 go_loop:
 	wh_event_pull(ins, &event);
+go_skip_event_pull:
 
 	if (nullptr != params.update) {
 		params.update(ins);

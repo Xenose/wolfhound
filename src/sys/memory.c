@@ -17,8 +17,6 @@ void* _wh_sys_memreq(_wh_sys_memreq_params params) {
 
 	for(size_t i = 0; i < params.bytes; i += 4096) {
 		u8* ptr = wh_ptr_add(mem, i);
-
-		wh_log_debug(("At bytes [ %d ] of [ %d ]"), i, params.bytes);
 		*ptr = 0;
 	}
 

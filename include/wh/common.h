@@ -113,6 +113,11 @@ typedef struct {
 	u64 a : 8;
 } wh_rgba_s;
 
+typedef struct {
+	u64 bytes;
+	void* ptr;
+} wh_buffer_s;
+
 #define wh_not(_x_) !(_x_)
 #define wh_ptr_add(_ptr_, _x_) ((void*)(((char*)_ptr_) + _x_))
 #define wh_ptr_sub(_ptr_, _x_) ((void*)(((char*)_ptr_) - _x_))
@@ -150,6 +155,9 @@ enum {
 	WH_STRUCT_TYPE_HEAP_FREELIST,
 	WH_STRUCT_TYPE_HEAP_STACK,
 	WH_STRUCT_TYPE_HEAP_NODE,
+
+	WH_STRUCT_TYPE_IMG_PNG,
+	WH_STRUCT_TYPE_IMG_JPEG,
 
 	WH_STRUCT_TYPE_ENUM_END
 };

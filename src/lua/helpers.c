@@ -38,12 +38,11 @@ i8 _wh_lua_add_values(lua_State* ls, ...) {
 			lua_getfield(ls, -1, keys[i]);
 
 			if (lua_isnil(ls, -1)) {
-				wh_log_debug(("New Table [ %s ]"), keys[i]);
 				lua_pop(ls, 1);
 				lua_newtable(ls);
 				lua_pushvalue(ls, -1);
 				lua_setfield(ls, -3, keys[i]);
-			} else  wh_log_debug(("Table [ %s ]"), keys[i]);
+			}
 
 			lua_remove(ls, -2);
 		}

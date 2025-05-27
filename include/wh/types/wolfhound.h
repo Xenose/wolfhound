@@ -51,11 +51,18 @@ typedef struct {
 
 typedef struct {
 	struct_type stype;
+} wh_assets_s;
+
+typedef struct {
+	struct_type stype;
 	wh_heap_header_s* heap;
+	wh_heap_header_s* scratch;
+
 	wh_config_s config;
 
 	wh_app_info_s app_info;
 	wh_graphics_s graphics;
+	wh_assets_s assets;
 } wh_instance_s;
 
 #endif /* _wh_header_types_wolfhound_ */

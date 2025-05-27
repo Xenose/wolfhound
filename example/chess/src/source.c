@@ -49,7 +49,7 @@ int main(int arc, char* const* arv) {
 		(wh_args_s){ arc, arv },					// command line arguments
 		wh_string_create("chess"),					// application name
 		wh_string_create("./config.lua"),		// application config
-		.mode = WH_GRAPHICS_MODE_RAYLIB
+		.mode = WH_GRAPHICS_MODE_SDL3
 	);
 
 	wh_loop(&ins, &update);
