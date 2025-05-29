@@ -17,7 +17,7 @@ alias wh-stats="PRP='${WP}' ${WP}/tools/cmake/stats.sh"
 alias wh-check="PRP='${WP}' ${WP}/tools/cmake/check.sh"
 
 # code
-alias wh-build="PRP='${WP}' ${WP}/tools/cmake/compile.sh"
+alias wh-build="PRP='${WP}' ${WP}/tools/cmake/build.sh"
 alias wh-clean="PRP='${WP}' ${WP}/tools/cmake/clean.sh"
 
 # compilers
