@@ -15,8 +15,7 @@ extern void* _wh_mem_alloc(_wh_mem_alloc_params params);
 extern void* _wh_mem_realloc(_wh_mem_realloc_params params);
 
 // General functions
-extern void _wh_mem_print(void);
-extern void _wh_mem_print2(void);
+extern void _wh_heap_print(_wh_heap_print_params params);
 
 extern void* _wh_mem(_wh_mem_params params);
 extern i32 wh_mem_leak_count(void);
@@ -48,6 +47,12 @@ extern i32 wh_mem_leak_count(void);
 
 /* [MD_DOC]
  *
+ * @d_param(wh_heap_s*)		heap : The heap that will be printed.
+ */
+#define wh_heap_print(...) _wh_heap_print((_wh_heap_print_params) { __VA_ARGS__ })
+
+/* [MD_DOC]
+ *
  * ## wh_mem_free(void* owner, void* ptr, wh_heap_header_s* heap : optional, u64* error : optional)
  */
 #define wh_mem_free(...)	_wh_mem_free((_wh_mem_free_params) { __VA_ARGS__ })
@@ -58,8 +63,13 @@ extern i32 wh_mem_leak_count(void);
  * ## wh_mem_alloc()
  */
 #define wh_mem_alloc(...)	_wh_mem_alloc((_wh_mem_alloc_params) { __VA_ARGS__ })
+
+/* [MD_DOC]
+ */
 #define wh_mem_realloc(...) _wh_mem_realloc((_wh_mem_realloc_params) { __VA_ARGS__ })
 
+/* [MD_DOC]
+ */
 #define wh_mem(...)			_wh_mem((_wh_mem_params){ __VA_ARGS__ })
 
 #endif /* _wh_memory_ */

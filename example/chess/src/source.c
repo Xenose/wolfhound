@@ -75,11 +75,11 @@ int main(int arc, char* const* arv) {
 	wh_action_subscribe(ins, wolf, cid);
 	wh_action_subscribe(ins, wolf, hgid);
 
-	_wh_mem_print();
+	wh_heap_print();
 
 	void* pt1 = wh_mem_alloc(nullptr, 900);
 	void* pt2 = wh_mem_realloc(nullptr, pt1, 1800);
-	_wh_mem_print();
+	wh_heap_print();
 
 	wh_loop(ins, &update, &fixed_update);
 	wh_end(ins);

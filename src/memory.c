@@ -96,51 +96,28 @@ go_exit:
 	return heap;
 }
 
-void _wh_mem_print(void) {
-	wh_heap_header_s* heap = _heap_main;
-	wh_heap_node_s* node = heap->freelist.nodes;
+void _wh_heap_print(_wh_heap_print_params params) {
+	wh_heap_header_s* heap = params.heap;
+	wh_heap_node_s* node = nullptr;
 
+	if (nullptr == heap) {
+		heap = _heap_main;
+	}
+
+	node = heap->freelist.nodes;
 	wh_print(("\n"));
 
 	while (nullptr != node) {
 		if (node->flags & WH_MEM_IN_USE) {
-			wh_print(("[ \033[31mUSED\033[0m %iB ] "), node->bytes);
-			//printf("\t\t\033[31m█████\033[0m [ %p ] bytes :: %ld\n", node->data, node->bytes);
+			wh_print(("[\033[31mUSED \033[0m%iB] "), node->bytes);
 		} else {
-			wh_print(("[ \033[32mFREE\033[0m %iB ] "), node->bytes);
-			//printf("\t\t\033[32m█████\033[0m [ %p ] bytes :: %ld\n", node->data, node->bytes);
+			wh_print(("[\033[32mFREE \033[0m%iB] "), node->bytes);
 		}
 
 		node = node->next;
 	}
 	
 	wh_print(("\n\n"));
-}
-
-void _wh_mem_print2(void) {
-	wh_heap_header_s* heap = _heap_main;
-	wh_heap_node_s* node = heap->freelist.nodes;
-
-	int  i = 0;
-
-	printf("\n\t\t");
-
-	while (nullptr != node) {
-		if (80 == i++) {
-			i = 0;
-			printf("\n\t\t");
-		}
-
-		if (node->flags & WH_MEM_IN_USE) {
-			printf("\033[31m█\033[0m");
-		} else {
-			printf("\033[32m█\033[0m");
-		}
-
-		node = node->next;
-	}
-
-	printf("\n");
 }
 
 

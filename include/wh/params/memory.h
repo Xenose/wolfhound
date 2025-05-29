@@ -13,6 +13,10 @@ typedef struct {
 
 typedef struct {
 	wh_heap_header_s* heap;
+} _wh_heap_print_params;
+
+typedef struct {
+	wh_heap_header_s* heap;
 	u64 bytes;
 	void* owner;
 	u64 flags;
