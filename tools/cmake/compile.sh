@@ -2,8 +2,8 @@
 
 set -e
 
-cd "${PRP}/build"
 mkdir -pv "${PRP}/build"
+cd "${PRP}/build"
 
 TOOL="$(grep "^CMAKE_GENERATOR:INTERNAL=" ./CMakeCache.txt | cut -d= -f2 | tr '[:upper:]' '[:lower:]')"
 
