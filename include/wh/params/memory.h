@@ -22,6 +22,14 @@ typedef struct {
 typedef struct {
 	wh_heap_header_s* heap;
 	void* ptr;
+	u64 bytes;
+	u64 flags;
+	u64* error;
+} _wh_mem_realloc_params;
+
+typedef struct {
+	wh_heap_header_s* heap;
+	void* ptr;
 	void* owner;
 	u64* error;
 } _wh_mem_free_params;

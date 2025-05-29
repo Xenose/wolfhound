@@ -29,14 +29,15 @@ wh-build	# compiles code.
 
 ### Commands
 
-| Command  | Platform       | Description                     |
-| -------- | -------------- | ------------------------------- |
-| wh-build | Linux, Windows | Compiles the code.              |
-| wh-clang | Linux, Windows | Sets the compiler to Clang.     |
-| wh-gcc   | Linux          | Sets the compiler to gcc        |
-| wh-mingw | Linux          | Sets the compiler to gcc-mingw. |
-| wh-ninja | Linux, Windows | Sets the build system to Ninja. |
-| wh-make  | Linux          | Sets the build system to Make.  |
+| Command  | Platform       | Description                                |
+| -------- | -------------- | ------------------------------------------ |
+| wh-check | Linux          | Checks for missing software and libraries. |
+| wh-build | Linux, Windows | Compiles the code.                         |
+| wh-clang | Linux, Windows | Sets the compiler to Clang.                |
+| wh-gcc   | Linux          | Sets the compiler to gcc                   |
+| wh-mingw | Linux          | Sets the compiler to gcc-mingw.            |
+| wh-ninja | Linux, Windows | Sets the build system to Ninja.            |
+| wh-make  | Linux          | Sets the build system to Make.             |
 
 ## Languages
 | Name      | Version | Use                                |
@@ -53,28 +54,34 @@ wh-build	# compiles code.
 
 | Name    | Current Supported | Required       | Notes                                                                     |
 | ------- | ----------------- | -------------- | ------------------------------------------------------------------------- |
-| raylib  | YES               | NO             | At least one graphics library is required.                                |
 | vulkan  | NO                | NO             | At least one graphics library is required, vulkan needs sdl3 also.        |
 | sdl3    | NO                | NO             | At least one graphics library is required,                                |
+| glfw    | NO                | NO             | At least one graphics library is required,                                |
 | lua     |                   | YES            | Used for data, arguments and configurations.                              |
 | unwind  |                   | NO(but useful) | Used to backtrace Segfaults from the signal handler.                      |
 
+## Editors / IDE
+| Name                | Status    | Platform       | Description                                                |
+| ------------------- | --------- | -------------- | ---------------------------------------------------------- |
+| NeoVim              | Working   | Linux, Windows | Main editor for the project.                               |
+| Visual Studio Code  | Working   | Linux, Windows |                                                            |
+| Visual Studio       | Broken    | Windows        | Will not compile with MSCV and headers are not showing up. |
 
 ## Stats
 <!--python-stats-start-->
 
 |  Language       | File Count | Lines of Code | Percentage |
 | --------------- | ---------- | ------------- | ---------- |
-| C               | 81         | 3114          | 76.95%     |
-| Markdown        | 56         | 438           | 10.82%     |
-| Python          | 2          | 155           | 3.83%      |
-| CMake           | 10         | 152           | 3.76%      |
-| Bourne Shell    | 10         | 76            | 1.88%      |
-| Lua             | 7          | 50            | 1.24%      |
-| Fortran 95      | 1          | 30            | 0.74%      |
-| C++             | 2          | 15            | 0.37%      |
-| DOS Batch       | 3          | 15            | 0.37%      |
+| C               | 87         | 3337          | 76.96%     |
+| Markdown        | 56         | 438           | 10.10%     |
+| CMake           | 10         | 155           | 3.57%      |
+| Python          | 2          | 155           | 3.57%      |
+| Bourne Shell    | 12         | 139           | 3.21%      |
+| Lua             | 7          | 50            | 1.15%      |
+| Fortran 95      | 1          | 30            | 0.69%      |
+| C++             | 2          | 15            | 0.35%      |
+| DOS Batch       | 3          | 15            | 0.35%      |
 | Text            | 1          | 2             | 0.05%      |
-| Summary         | 173        | 4047          | 100.00%    |
+| Summary         | 181        | 4336          | 100.00%    |
 
 <!--python-stats-end-->

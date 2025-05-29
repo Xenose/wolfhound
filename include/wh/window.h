@@ -6,8 +6,8 @@
 
 typedef struct {
 	wh_instance_s* ins;
-	i64* x;
-	i64* y;
+	int* x;
+	int* y;
 } _wh_window_size_params;
 
 extern void _wh_window_get_size(_wh_window_size_params params);

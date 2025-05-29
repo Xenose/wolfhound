@@ -18,7 +18,7 @@
 // Struct declerations 
 // =======================================================================================================
 typedef struct {
-	char key[256];
+	char key[32];
 	i64 (*func)(wh_print_data_s* data, void* ptr);
 } _hw_print_func;
 

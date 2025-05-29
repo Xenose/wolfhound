@@ -1,11 +1,11 @@
 
 
-WH.config.heap.size = 9000000
+WH.config.heap.size = 1999999
 
 -- logging flags
-WH.config.flags.log_debug		= false
-WH.config.flags.log_info		= false
-WH.config.flags.log_notice		= false
+WH.config.flags.log_debug		= true
+WH.config.flags.log_info		= true
+WH.config.flags.log_notice		= true
 WH.config.flags.log_warning	= true
 WH.config.flags.log_error		= true
 WH.config.flags.log_critical 	= true

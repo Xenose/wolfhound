@@ -171,7 +171,7 @@ i8 _wh_lua_get_flag(lua_State* ls, i8 flag, ...) {
 	va_list args;
 	const char** keys = nullptr;
 
-	va_start(args, ls);
+	va_start(args, flag);
 
 	if (nullptr != (keys = va_arg(args, const char**))) {
 		i64 i = 1;

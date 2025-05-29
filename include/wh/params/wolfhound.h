@@ -5,7 +5,7 @@
 #include<wh/types/wolfhound.h>
 
 typedef struct {
-	wh_instance_s* ins;
+	wh_instance_s** ins;
 	wh_args_s args;
 	wh_string_s app_name;
 	wh_string_s config_path;
@@ -20,6 +20,7 @@ typedef struct {
 typedef struct {
 	wh_instance_s* instance;
 	void (*update)(wh_instance_s* ins);
+	void (*fixed_update)(wh_instance_s* ins);
 } _wh_loop_params;
 
 typedef struct {

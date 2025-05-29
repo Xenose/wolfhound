@@ -7,31 +7,40 @@
 #include<wh/signalar.h>
 #include<wh/config.h>
 #include<wh/raylib/raylib.h>
+#include<wh/wrap/unistd.h>
+#include<wh/maths/memory.h>
 
 static i8 _wh_init_critical(_wh_init_params* params) {
+	wh_instance_s tmp;
+
 	wh_signalar_init(params->args.ptr[0]);
-	_wh_config_load(params, &params->ins->config);
+	params->config = _wh_config_load(params, &params->config);
 
 	// Now we have somewhere to store our data
-	params->ins->heap =
-		wh_heap_init(params->ins->config.heap.size);
+	tmp.heap = wh_heap_init(params->config.heap.size);
 	
-	params->ins->scratch = wh_heap_init(
+	params->ins[0] = wh_mem_alloc(nullptr, sizeof(wh_instance_s));
+
+	if (nullptr == params->ins[0]) {
+		wh_log_error(("Failed to allocated instance!"));
+		goto go_error_exit;
+	}
+
+	// we need to copy the instance from the stack to the
+	// heap.
+	memcpy(params->ins[0], &tmp, sizeof(wh_instance_s));
+	memcpy(&params->ins[0]->config, &params->config, sizeof(wh_config_s));
+
+	params->ins[0]->scratch = wh_heap_init(
 		WH_1MB,
 		params->heap, 
 		WH_STRUCT_TYPE_HEAP_ARENA
 	);
-	// no longer needed
-	//params->ins = wh_mem_alloc(&params->ins, sizeof(wh_instance_s));
-
-	//if (nullptr == params->ins) {
-	//	wh_log_error(("Failed to allocated instance!"));
-	//	goto go_error_exit;
-	//}
 
 	// making a shortcut
-	params->grap = &params->ins->graphics;
+	params->grap = &params->ins[0]->graphics;
 	params->grap->mode = params->mode;
+
 
 	// loading libraries
 	switch(params->mode) {
@@ -63,19 +72,19 @@ wh_instance_s* _wh_init(_wh_init_params params) {
 	}
 	
 	// basic data init
-	params.ins->stype = WH_STRUCT_TYPE_INSTANCE;
-	params.ins->app_info.name = params.app_name;
-	params.ins->app_info.engine = wh_string_create("wolfhound");
+	params.ins[0]->stype = WH_STRUCT_TYPE_INSTANCE;
+	params.ins[0]->app_info.name = params.app_name;
+	params.ins[0]->app_info.engine = wh_string_create("wolfhound");
 
 	wh_log_info(("Creating window!"));
 	// Creating window in either SDL3 or Raylib
-	if (-1 == wh_window_create(params.ins, 1920, 1080, (wh_string_s){ .str = "hello" })) {
+	if (-1 == wh_window_create(params.ins[0], 1920, 1080, (wh_string_s){ .str = "hello" })) {
 		goto go_error_exit;
 	}
 
-	return params.ins;
+	return params.ins[0];
 go_error_exit:
-	wh_end(params.ins);
+	wh_end(params.ins[0]);
 	return  nullptr;
 }
 
@@ -97,10 +106,25 @@ void _wh_loop(_wh_loop_params params) {
 go_loop:
 	wh_event_pull(ins, &event);
 go_skip_event_pull:
+	wh_render_clear(ins);
 
 	if (nullptr != params.update) {
 		params.update(ins);
 	}
+	
+	wh_action_s* c = ins->game.actions;
+
+	wh_for (u64, i, ins->game.action_count) {
+		if (nullptr != c[i].act) {
+			c[i].act(ins, &c[i]);
+		}
+	}
+
+	if (nullptr != params.fixed_update) {
+		params.fixed_update(ins);
+	}
+	
+	wh_render_show(ins);
 
 	switch (event.code) {
 		case WH_EVENT_WINDOW_CLOSE:

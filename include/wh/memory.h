@@ -12,6 +12,7 @@ extern wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params);
 
 // Dedicated memory functions
 extern void* _wh_mem_alloc(_wh_mem_alloc_params params);
+extern void* _wh_mem_realloc(_wh_mem_realloc_params params);
 
 // General functions
 extern void _wh_mem_print(void);
@@ -57,6 +58,7 @@ extern i32 wh_mem_leak_count(void);
  * ## wh_mem_alloc()
  */
 #define wh_mem_alloc(...)	_wh_mem_alloc((_wh_mem_alloc_params) { __VA_ARGS__ })
+#define wh_mem_realloc(...) _wh_mem_realloc((_wh_mem_realloc_params) { __VA_ARGS__ })
 
 #define wh_mem(...)			_wh_mem((_wh_mem_params){ __VA_ARGS__ })
 

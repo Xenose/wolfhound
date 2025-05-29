@@ -8,6 +8,8 @@
 	#include<windows.h>
 
 	#define write _write
+
+	extern int getpagesize(void);
 #endif
 
 

@@ -22,31 +22,24 @@ set(F95_SOURCES
 
 set(C_SOURCES
 	"src/wolfhound.c"
-
 	"src/debug/signalar.c"
-
+	"src/game/actions.c"
+	"src/game/entity.c"
 	"src/sys/library.c"
 	"src/sys/memory.c"
-
 	"src/maths/memory.c"
-
 	"src/memory/arena.c"
 	"src/memory/freelist.c"
-
 	"src/raylib/debug.c"
 	"src/raylib/raylib.c"
 	"src/raylib/render.c"
 	"src/raylib/window.c"
-
 	"src/sdl3/render.c"
-
 	"src/lua/api/file.c"
 	"src/lua/api/maths.c"
-
 	"src/lua/api.c"
 	"src/lua/config.c"
 	"src/lua/helpers.c"
-
 	"src/arg_parser.c"
 	"src/config.c"
 	"src/convert.c"
@@ -60,6 +53,7 @@ set(C_SOURCES
 	"src/vulkan.c"
 	"src/print.c"
 	"src/window.c"
+	"src/wrap/unistd.c"
 )
 
 ADD_LIBRARY(${APP_NAME} INTERFACE)

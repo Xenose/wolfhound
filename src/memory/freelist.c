@@ -1,6 +1,8 @@
 #include<wh/memory/freelist.h>
 #include<wh/debug.h>
 
+#include<string.h>
+
 void* _wh_mem_alloc_freelist(_wh_mem_alloc_params* params)  {
 	i64 error = 0;
 	wh_heap_node_s* node = params->heap->freelist.nodes;
@@ -11,8 +13,6 @@ void* _wh_mem_alloc_freelist(_wh_mem_alloc_params* params)  {
 	}
 
 	while (node->flags & WH_MEM_IN_USE || node->bytes < params->bytes) {
-		wh_log_debug(("Scanning for node..."));
-
 		if (nullptr == node->next) {
 			error = WH_ERROR_HEAP_TOO_SMALL;
 			wh_log_critical(("No node found!"));
@@ -27,6 +27,8 @@ void* _wh_mem_alloc_freelist(_wh_mem_alloc_params* params)  {
 	if ((node->bytes - 64) > (params->bytes + sizeof(wh_heap_node_s))) {
 		u64 size = params->bytes + sizeof(wh_heap_node_s);
 		wh_heap_node_s* next = wh_ptr_add(node, size);
+
+		wh_log_debug(("Node is size [ %dB ] currently and allocated size is [ %dB ]"), node->bytes, size);
 
 		next->next = node->next;
 		next->previous = node;
@@ -100,3 +102,39 @@ go_error_exit:
 		return;
 }
 
+void* _wh_mem_realloc_freelist(_wh_mem_realloc_params* params) {
+	i64 bytes = 0;
+	void* ptr = nullptr;
+	wh_heap_node_s* node = nullptr;
+
+	_wh_mem_alloc_params p = {
+		params->heap, 
+		params->bytes,
+		nullptr,
+		params->flags, 
+		params->error,
+	};
+
+	_wh_mem_free_params f = {
+		params->heap,
+		params->ptr,
+		nullptr,
+		params->error,
+	};
+
+	ptr = _wh_mem_alloc_freelist(&p);
+
+	if (nullptr == ptr) {
+		wh_log_error(("Failed to realloc block"));
+		goto go_error_exit;
+	}
+
+	node = wh_ptr_add(params->ptr, -sizeof(wh_heap_node_s*));
+	bytes = params->bytes > node->bytes ? node->bytes : params->bytes;
+
+	memcpy(ptr, params->ptr, bytes);
+	wh_log_debug(("Freeing memory"));
+	_wh_mem_free_freelist(&f);
+go_error_exit:
+	return ptr;
+}

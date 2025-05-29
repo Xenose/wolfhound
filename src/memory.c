@@ -14,13 +14,15 @@
 #include<wh/memory/arena.h>
 #include<wh/memory/freelist.h>
 
+#include<wh/wrap/unistd.h>
+
 static wh_heap_header_s* _heap_main;
 
 wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
 	wh_heap_header_s* heap = nullptr;
 	i64 old_bytes = params.bytes + sizeof(wh_heap_header_s);
 
-	params.bytes = wh_align(params.bytes + sizeof(wh_heap_header_s), 16);
+	params.bytes = wh_align(params.bytes + sizeof(wh_heap_header_s), getpagesize());
 
 	wh_log_info(("requested [ %d ] giving [ %d ]"), old_bytes, params.bytes);
 
@@ -98,15 +100,21 @@ void _wh_mem_print(void) {
 	wh_heap_header_s* heap = _heap_main;
 	wh_heap_node_s* node = heap->freelist.nodes;
 
+	wh_print(("\n"));
+
 	while (nullptr != node) {
 		if (node->flags & WH_MEM_IN_USE) {
-			printf("\t\t\033[31m█████\033[0m [ %p ] bytes :: %ld\n", node->data, node->bytes);
+			wh_print(("[ \033[31mUSED\033[0m %iB ] "), node->bytes);
+			//printf("\t\t\033[31m█████\033[0m [ %p ] bytes :: %ld\n", node->data, node->bytes);
 		} else {
-			printf("\t\t\033[32m█████\033[0m [ %p ] bytes :: %ld\n", node->data, node->bytes);
+			wh_print(("[ \033[32mFREE\033[0m %iB ] "), node->bytes);
+			//printf("\t\t\033[32m█████\033[0m [ %p ] bytes :: %ld\n", node->data, node->bytes);
 		}
 
 		node = node->next;
 	}
+	
+	wh_print(("\n\n"));
 }
 
 void _wh_mem_print2(void) {
@@ -181,6 +189,29 @@ void _wh_mem_free(_wh_mem_free_params params) {
 			}
 		break;
 	}
+}
+
+void* _wh_mem_realloc(_wh_mem_realloc_params params) {
+	void* mem = nullptr;
+
+	if (nullptr == params.heap) {
+		params.heap = _heap_main;
+	}
+
+	switch (params.heap->stype) {
+		case WH_STRUCT_TYPE_HEAP_ARENA:
+			wh_log_error(("Arena allocator don't support realloc"));
+			break;
+
+		default:
+		case WH_STRUCT_TYPE_HEAP_FREELIST:
+			wh_spin_lock(&params.heap->locked) {
+				mem = _wh_mem_realloc_freelist(&params);
+			}
+		break;
+	}
+
+	return mem;
 }
 
 void _wh_mem_insert(void* owner, void* ptr, wh_heap_header_s* heap) {
