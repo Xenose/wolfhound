@@ -19,7 +19,8 @@ typedef struct {
 		u8 space_pad		: 1;	// ' '
 		u8 force_sign		: 1;	// +
 		u8 thousnad_group : 1;	// '
-
+		u8 long_value		: 1;  // l
+		u8 llong_value		: 1;  // l
 	} flags;
 } wh_print_format_s;
 
@@ -79,6 +80,8 @@ extern void _wh_print_add_func(_wh_print_add_func_params params);
  * | $[...]  | Wolfhound     | User Provided    | YES                   | Allows the user to call their own functions with there data.          |
  * | $b      | Wolfhound     | Memory, Length   | NO                    | Takes a pointer to memory and prints it out with the length provided. |
  * | $f      | Wolfhound     | Formatted String | YES                   | Allows recursive calling of formatted string.                         |
+ * | $k      | Wolfhound     | Int to Bytes     | YES                   | Prints the integer into [ B, KB. MD. GB, TB, ...].                    |
+ * | $n      | Wolfhound     | Errno            | YES                   |                                                                       |
  * | $m      | Wolfhound     | Memory, Length   | NO                    | Takes a pointer to memory and its length printing it in hex.          |
  * | $s      | Wolfhound     | String, Length   | NO                    | Prints a string using the provided length.                            |
  * | $t      | Wolfhound     | Format String    | NO                    | Reads the inputted string and print the formatted time.               |
@@ -99,7 +102,7 @@ extern void _wh_print_add_func(_wh_print_add_func_params params);
  * | %s      | C ANSI        | string           | YES                   | Takes a null terminated string and copies it to the output.           |
  * | %S      | POSIX         | const wchar_t*   | NO                    |                                                                       |
  * | %n      | C ANSI        |                  | NO                    |                                                                       |
- * | %m      | GNU           | errno            | YES                   | Prints the errno string in place.                                     |
+ * | %m      | GNU           | NONE             | YES                   | Prints the errno string in place.                                     |
  * 
  * ## Examples
  * ```c

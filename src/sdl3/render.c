@@ -5,7 +5,7 @@
 
 i8 _wh_window_create_sdl3(_wh_window_create_params params) {
 	wh_graphics_s* grap = &params.ins->graphics;
-	wh_log_debug(("Starting RAYLIB!"));
+	wh_log_debug(("Starting SDL3!"));
 
 	grap->window.sdl = SDL_CreateWindow(params.title.str, params.size_x, params.size_y, 0);
 	grap->sdl3.renderer = SDL_CreateRenderer(grap->window.sdl, NULL);

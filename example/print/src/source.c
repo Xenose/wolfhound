@@ -13,7 +13,7 @@ int main(int arc, char* const* arv) {
 	wh_print(("Test string length %%s -> %#s\n"), "hello");
 	wh_print(("Test string length %%s -> | %.6s |\n"), "hello");
 
-	wh_print(("Errnor test [ %m ]\n"), 2);
+	wh_print(("Errnor test [ $n ]\n"), 2);
 
 	return 0;
 }

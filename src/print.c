@@ -1,12 +1,13 @@
 #include<stdarg.h>
-#include<string.h>
 #include<stdatomic.h>
 #include<ctype.h>
 
 // tmp for debug
 #include<stdio.h>
+#include<errno.h>
 
 #include<wh/wrap/unistd.h>
+#include<wh/wrap/string.h>
 
 #include<wh/convert.h>
 #include<wh/memory.h>
@@ -145,6 +146,35 @@ static void _wh_print_uint(wh_print_data_s* d, i64 value, i64 base) {
 	++d->format;
 }
 
+static void _wh_print_int_bytes(wh_print_data_s* d, i64 value, i64 base) {
+	const char* end = "B";
+	i64 written = 0;
+	i64 length = 0;
+
+	if (value >= WH_1GB) {
+		end = "GB";
+		value /= WH_1GB;
+	} else if (value >= WH_1MB) {
+		end = "MB";
+		value /= WH_1MB;
+	} else if (value >= WH_1KB) {
+		end = "KB";
+		value /= WH_1KB;
+	}
+
+	length = wh_intlog(value, base) + (0 > value ? 2 : 1);
+	written = wh_print_buffer_check(d, length + 2);
+
+	if (-1 == written) {
+		return;
+	}
+
+	wh_int2str(value, d->buffer, length, base);
+	d->buffer += length;
+	d->buffer += stpcpy(d->buffer, end) - d->buffer;
+	++d->format;
+}
+
 static void _wh_print_int(wh_print_data_s* d, i64 value, i64 base) {
 	i64 written = 0;
 	i64 length = wh_intlog(value, base) + (0 > value ? 2 : 1);
@@ -218,8 +248,13 @@ go_loop:
 					_wh_print_format_sub(data, list);
 					break;
 				case 'n':
-					// TODO :: no longer used for errno, clean up
-					va_arg(list, i64);
+					_wh_print_cpystr(data, (char*)wh_errno_str(va_arg(list, i64)), 0);
+					break;
+				case 'k':
+					_wh_print_int_bytes(data, va_arg(list, i64), 10);
+					break;
+				case 'l':
+					data->print_format.flags.space_pad = true;
 					break;
 				case 'm': // memory
 					break;
@@ -282,9 +317,20 @@ go_loop:
 				case 'G':
 go_print_int:
 				case 'i':
-					_wh_print_int(data, va_arg(list, i64), 10);
+					if (data->print_format.flags.llong_value) {
+						_wh_print_int(data, va_arg(list, i128), 10);
+					} else if (data->print_format.flags.long_value) {
+						_wh_print_int(data, va_arg(list, i64), 10);
+					} else {
+						_wh_print_int(data, va_arg(list, int), 10);
+					}
 					break;
 				case 'l':
+					if (data->print_format.flags.long_value) {
+						data->print_format.flags.llong_value = true;
+					} else {
+						data->print_format.flags.long_value = true;
+					}
 					++data->format;
 					goto go_standard_switch;
 				case 'u':
@@ -294,7 +340,7 @@ go_print_int:
 					_wh_print_cpystr(data, va_arg(list, char*), 0);
 					break;
 				case 'm':
-					_wh_print_cpystr(data, (char*)wh_errno_str(va_arg(list, i64)), 0);
+					_wh_print_cpystr(data, (char*)wh_errno_str(errno), 0);
 					break;
 				case 'o':
 					_wh_print_int(data, va_arg(list, i64), 8);

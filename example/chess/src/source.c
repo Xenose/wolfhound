@@ -13,6 +13,7 @@
 #include<wh/game/entity.h>
 #include<wh/types/gameinfo.h>
 #include<wh/game/actions.h>
+#include<wh/sys/info.h>
 
 void update(wh_instance_s* ins) {
 	float square[] = {
@@ -55,12 +56,16 @@ i8 action_health_gen(wh_instance_s* ins, wh_action_s* action) {
 }
 
 int main(int arc, char* const* arv) {
+	char buf[256] = { 0 };
+	wh_sys_program_path(buf, 255);
+	strcat(buf, "config.lua");
+
 	//_wh_libfind("libraylib.so", (char*[]){ "/usr/lib", "/lib" }, 2);
 	wh_instance_s* ins = wh_init(
 		&ins,
 		(wh_args_s){ 0,  arc, arv },					// command line arguments
-		wh_string_create("chess"),					// application name
-		wh_string_create("./config.lua"),		// application config
+		wh_string_create("chess"),						// application name
+		buf,													// application config
 		.mode = WH_GRAPHICS_MODE_SDL3
 	);
 
@@ -80,6 +85,10 @@ int main(int arc, char* const* arv) {
 	void* pt1 = wh_mem_alloc(nullptr, 900);
 	void* pt2 = wh_mem_realloc(nullptr, pt1, 1800);
 	wh_heap_print();
+
+	i128 i = 64 + 128;
+
+	wh_print(("Test %lli\n"), i);
 
 	wh_loop(ins, &update, &fixed_update);
 	wh_end(ins);

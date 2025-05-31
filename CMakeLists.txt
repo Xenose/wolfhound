@@ -27,6 +27,7 @@ set(C_SOURCES
 	"src/game/entity.c"
 	"src/sys/library.c"
 	"src/sys/memory.c"
+	"src/sys/info.c"
 	"src/maths/memory.c"
 	"src/memory/arena.c"
 	"src/memory/freelist.c"
@@ -54,6 +55,7 @@ set(C_SOURCES
 	"src/print.c"
 	"src/window.c"
 	"src/wrap/unistd.c"
+	"src/wrap/string.c"
 )
 
 ADD_LIBRARY(${APP_NAME} INTERFACE)

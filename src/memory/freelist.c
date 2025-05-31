@@ -28,7 +28,7 @@ void* _wh_mem_alloc_freelist(_wh_mem_alloc_params* params)  {
 		u64 size = params->bytes + sizeof(wh_heap_node_s);
 		wh_heap_node_s* next = wh_ptr_add(node, size);
 
-		wh_log_debug(("Node is size [ %dB ] currently and allocated size is [ %dB ]"), node->bytes, size);
+		wh_log_debug(("Node is size [ $k ] currently and allocated size is [ $k ]"), node->bytes, size);
 
 		next->next = node->next;
 		next->previous = node;
@@ -38,7 +38,7 @@ void* _wh_mem_alloc_freelist(_wh_mem_alloc_params* params)  {
 		node->bytes = size;
 		node->next = next;
 
-		wh_log_debug(("Allocated [ %dB ] new node created [ %dB ]"), node->bytes, next->bytes);
+		wh_log_debug(("Allocated [ $k ] new node created [ $k ]"), node->bytes, next->bytes);
 	}
 
 	return node->data;
@@ -95,7 +95,7 @@ void _wh_mem_free_freelist(_wh_mem_free_params* params) {
 		node = _wh_mem_freelist_previous(params, pn, node);
 		_wh_mem_freelist_next(params, nn, node);
 
-		wh_log_info(("Found pointer! Freeing: heap size now is [ %d ]"), node->bytes);
+		wh_log_info(("Found pointer! Freeing: heap size now is [ $k ]"), node->bytes);
 	}
 
 go_error_exit:

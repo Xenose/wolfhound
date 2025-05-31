@@ -4,6 +4,7 @@
 #include<ctype.h>
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 
 char* _wh_uint2str(_wh_uint2str_params params) {
 	const char table[] = "0123456789abcdefghijklmnopqrstuvwxyz";
@@ -78,6 +79,20 @@ i64 _wh_str2int(_wh_str2int_params params) {
 	}
 
 	return out * sign;
+}
+
+char* float2str(float value, char* buffer, u64 buffer_length) {
+	struct {
+		u64 s : 1;
+		u64 r : 8;
+		u64 d : 23;
+	}* f = ((void*)&value);
+
+	if (0 == f->d && 255 == f->r) {
+		strncpy(buffer, "NaN", buffer_length);
+	}
+
+	return nullptr;
 }
 
 void _wh_str_invert(_wh_str_invert_params params) {

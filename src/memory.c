@@ -24,7 +24,7 @@ wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
 
 	params.bytes = wh_align(params.bytes + sizeof(wh_heap_header_s), getpagesize());
 
-	wh_log_info(("requested [ %d ] giving [ %d ]"), old_bytes, params.bytes);
+	wh_log_info(("requested [ $k ] giving [ $k ]"), old_bytes, params.bytes);
 
 	if (nullptr != _heap_main) {
 		if (nullptr == params.heap) {
@@ -33,7 +33,6 @@ wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
 		}
 
 		heap = wh_mem_alloc(params.heap, params.bytes, nullptr, WH_MEM_IS_HEAP, params.error);
-		printf("new address at [ %p ]\n", heap);
 
 		if (nullptr == heap) {
 			wh_log_critical(("Failed to allocate system memory [ $n ]"), errno);
@@ -109,9 +108,9 @@ void _wh_heap_print(_wh_heap_print_params params) {
 
 	while (nullptr != node) {
 		if (node->flags & WH_MEM_IN_USE) {
-			wh_print(("[\033[31mUSED \033[0m%iB] "), node->bytes);
+			wh_print(("[\033[31mUSED \033[0m$k]"), node->bytes);
 		} else {
-			wh_print(("[\033[32mFREE \033[0m%iB] "), node->bytes);
+			wh_print(("[\033[32mFREE \033[0m$k]"), node->bytes);
 		}
 
 		node = node->next;
