@@ -23,7 +23,7 @@ typedef struct {
 } _wh_heap_entry_s;
 
 typedef struct {
-	atomic_flag lock;
+	atomic_flag locked;
 	u64 count;
 	u64 used;
 	_wh_heap_entry_s* entries;
@@ -31,85 +31,52 @@ typedef struct {
 
 static _wh_heap_table_s _table = { 0 };
 
-static wh_heap_header_s* _heap_main;
+//static wh_heap_header_s* _heap_main;
 
-wh_heap_header_s* wh_heap_insert(const char* name, wh_heap_header_s* header) {
+wh_heap_header_s* wh_heap_insert(const char* name) {
 	u64 hash = 0;
-	u64 page_size = 0;
 	_wh_heap_entry_s* entry = nullptr;
 
-	wh_log_debug(("Inserting new entry named [ %s ]"), name);
+	if (_table.used == _table.count) {
+		_wh_heap_entry_s* new_entries = nullptr;
+		u64 page_size = getpagesize();
 
-	wh_spin_lock(&_table.lock) {
-		if (_table.used >= _table.count) {
-		go_realloc:
-			_wh_heap_entry_s* new_entries = nullptr;
-			page_size += getpagesize();
+		// reallocating memory
+		wh_spin_lock(_table.lock) {
+			if (_table.used == _table.count) {
+				wh_spin_lock_break;
+			}
 
-			u64 new_size = (_table.count * sizeof(_wh_heap_entry_s)) + page_size;
-			u64 new_count = new_size / sizeof(_wh_heap_entry_s);
-
-			new_entries = wh_sys_memreq(new_size);
+			u64 new_size = (_table.count * sizeof(_wh_heap_table_s)) + page_size;
+			u64 new_count = new_size / sizeof(_wh_heap_table_s);
+		
+			new_heap = wh_sys_memreq(new_size);
 
 			wh_for (u64, i, _table.count) {
-				u64 old_hash = wh_hash_simple(_table.entries[i].name, _table.count);
-				u64 new_hash = wh_hash_simple(_table.entries[i].name, new_count);
-					
-				if (nullptr != new_entries[new_hash].header) {
-					goto go_realloc;
-				}
+				u64 old_hash = wh_hash_simple(_table.entires[i].name, _table.count);
+				u64 new_hash = wh_hash_simple(_table.entires[i].name, nc);
 
-				if (nullptr != _table.entries[old_hash].header) {
-					new_entries[new_hash] = _table.entries[old_hash];
-				} else {
-					new_entries[new_hash] = (_wh_heap_entry_s){ 0 };
+				if (nullptr != _table.entires[old_hash]) {
+					new_entires[new_hash] = _table[old_hash].table;
 				}
 			}
 
 			// TODO free memory
-			_table.entries = new_entries;
+			_table.entires = new_entries;
 			_table.count = new_count;
 		}
-
-		hash = wh_hash_simple(name, _table.count);
-		entry = &_table.entries[hash];
-
-		if (nullptr != entry->header) {
-			goto go_realloc;
-		}
-
-		strncpy(entry->name, name, 31);
-		entry->header = header;
-		++_table.used;
 	}
 
-	return header;
+	wh_spinlock(_table.lock) {
+		hash = wh_hash_simple(name, _table.count);
+		entry = &_table.entries[hash];
+	}
 }
 
 wh_heap_header_s* wh_heap_get(const char* name) {
-	wh_heap_header_s* header = nullptr;
-	_wh_heap_entry_s* entry = nullptr;
-	u64 hash = 0;
+	u64 hash = wh_hash_simple(name, 1096);
 
-	wh_spin_lock(&_table.lock) {
-		hash = wh_hash_simple(name, _table.count);
-		entry = &_table.entries[hash];
-
-		if (nullptr == entry->header) {
-			goto go_error_exit;
-		}
-
-		header = entry->header;
-	}
-
-go_error_exit:
-	return header;
-}
-
-void wh_heap_print_table() {
-	wh_for (u64, i, _table.count) {
-		wh_print(("Table entry [ index : %i ] [ name : %s ] [ pointer : %u ]\n"), i, _table.entries[i].name ,_table.entries[i].header);
-	}
+	_table 
 }
 
 wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
@@ -140,8 +107,6 @@ wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
 			goto go_error_exit;
 		}
 
-		wh_heap_insert("main", heap);
-		wh_heap_print_table();
 		wh_log_notice(("Setting main heap"));
 		_heap_main = heap;
 	}

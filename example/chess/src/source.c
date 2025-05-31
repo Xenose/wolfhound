@@ -65,7 +65,7 @@ int main(int arc, char* const* arv) {
 		&ins,
 		(wh_args_s){ 0,  arc, arv },					// command line arguments
 		wh_string_create("chess"),						// application name
-		buf,													// application config
+		(u8*)buf,													// application config
 		.mode = WH_GRAPHICS_MODE_SDL3
 	);
 

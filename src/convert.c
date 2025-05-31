@@ -4,7 +4,7 @@
 #include<ctype.h>
 #include<stdio.h>
 #include<stdlib.h>
-#include<string.h>
+#include<wh/wrap/string.h>
 
 char* _wh_uint2str(_wh_uint2str_params params) {
 	const char table[] = "0123456789abcdefghijklmnopqrstuvwxyz";
@@ -89,7 +89,7 @@ char* float2str(float value, char* buffer, u64 buffer_length) {
 	}* f = ((void*)&value);
 
 	if (0 == f->d && 255 == f->r) {
-		strncpy(buffer, "NaN", buffer_length);
+		strncpy_s(buffer, buffer_length, "NaN", 3);
 	}
 
 	return nullptr;

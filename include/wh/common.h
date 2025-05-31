@@ -9,6 +9,12 @@
 
 #define WH_VA_ARGS(...) __VA_ARGS__
 
+#ifndef _WIN32
+enum {
+	STRUNCATE = 10'000
+};
+#endif
+
 #define WH_64B		64
 #define WH_128B	128
 #define WH_256B	256
@@ -138,6 +144,7 @@ typedef struct {
 
 #define wh_spin_lock(_x_) do {} while (atomic_flag_test_and_set(_x_)); for (i8 _lock_##__LINE__ = 0; 1 != _lock_##__LINE__; _lock_##__LINE__++, atomic_flag_clear(_x_))
 
+#define wh_spin_lock_break(_x_)					atomic_flag_clear(_x_); break
 #define wh_spin_lock_return(_x_, _return_)	atomic_flag_clear(_x_);	return _return_
 #define wh_spin_lock_goto(_x_, _goto_)			atomic_flag_clear(_x_);	goto _goto_
 
