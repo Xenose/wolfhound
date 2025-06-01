@@ -5,6 +5,7 @@
 #include<wh/types/memory.h>
 
 typedef struct {
+	const char* name;
 	u64 bytes;
 	wh_heap_header_s* heap;
 	u64 type;

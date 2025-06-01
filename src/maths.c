@@ -37,7 +37,7 @@ i64 _wh_hash_simple(_wh_hash_simple_params params) {
 	}
 
 	for (u64 i = 0; i < params.length; i++) {
-		key = (key + (params.str[i] * (1 + i))) % params.limit;
+		key = (key + ((params.str[i] * 7) * (1 + i))) % params.limit;
 	}
 
 go_error_exit:

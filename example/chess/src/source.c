@@ -82,8 +82,17 @@ int main(int arc, char* const* arv) {
 
 	wh_heap_print();
 
-	void* pt1 = wh_mem_alloc(nullptr, 900);
-	void* pt2 = wh_mem_realloc(nullptr, pt1, 1800);
+	wh_heap_header_s* scratch = wh_heap_get("scratch");
+
+	wh_heap_init("test1", 100, wh_heap_get("main"));
+	wh_heap_init("test2", 100, wh_heap_get("main"));
+	wh_heap_init("test3", 100, wh_heap_get("main"));
+	wh_heap_init("test4", 100, wh_heap_get("main"));
+	wh_heap_init("test5", 100, wh_heap_get("main"));
+
+	void* pt1 = wh_mem_alloc(scratch, 900);
+	void* pt2 = wh_mem_realloc(scratch, pt1, 1800);
+	wh_heap_print_table();
 	wh_heap_print();
 
 	i128 i = 64 + 128;

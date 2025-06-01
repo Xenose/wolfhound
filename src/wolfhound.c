@@ -17,7 +17,7 @@ static i8 _wh_init_critical(_wh_init_params* params) {
 	params->config = _wh_config_load(params, &params->config);
 
 	// Now we have somewhere to store our data
-	tmp.heap = wh_heap_init(params->config.heap.size);
+	tmp.heap = wh_heap_init("main", params->config.heap.size);
 	
 	params->ins[0] = wh_mem_alloc(nullptr, sizeof(wh_instance_s));
 
@@ -32,6 +32,7 @@ static i8 _wh_init_critical(_wh_init_params* params) {
 	memcpy(&params->ins[0]->config, &params->config, sizeof(wh_config_s));
 
 	params->ins[0]->scratch = wh_heap_init(
+		"scratch",
 		WH_1MB,
 		params->heap, 
 		WH_STRUCT_TYPE_HEAP_ARENA

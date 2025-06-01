@@ -10,6 +10,9 @@
 extern void _wh_mem_free(_wh_mem_free_params params);
 extern wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params);
 
+extern wh_heap_header_s* wh_heap_get(const char* name);
+extern void wh_heap_print_table();
+
 // Dedicated memory functions
 extern void* _wh_mem_alloc(_wh_mem_alloc_params params);
 extern void* _wh_mem_realloc(_wh_mem_realloc_params params);
