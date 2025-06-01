@@ -4,8 +4,11 @@
 #include<stdint.h>
 #include<stddef.h>
 #include<stdbool.h>
-#include<sys/types.h>
 #include<stdatomic.h>
+
+#ifndef _WIN32
+#include<sys/types.h>
+#endif
 
 #define WH_VA_ARGS(...) __VA_ARGS__
 
