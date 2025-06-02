@@ -48,9 +48,19 @@ go_error_exit:
 }
 
 #else
+#include<windows.h>
 
 wh_file_s _wh_file_load(_wh_file_load_params params) {
-	return (wh_file_s){ 0 };
+	wh_file_s file = { 0 };
+
+	HANDLE fd = CreateFile(
+		params.path, READ_CONTROL, 0, nullptr,
+		OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, nullptr);
+
+	file.length = GetFileSize(fd, nullptr);
+
+	file.ptr = CreateFileMappingA(fd, nullptr, PAGE_READONLY, 0, 0, nullptr);
+	return file;
 }
 
 i8 _wh_file_unload(_wh_file_unload_params params) {
