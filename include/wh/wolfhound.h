@@ -7,7 +7,6 @@
 
 #include<stdint.h>
 #include<SDL3/SDL.h>
-#include<vulkan/vulkan.h>
 
 extern wh_instance_s* _wh_init(_wh_init_params params);
 extern void _wh_loop(_wh_loop_params params);

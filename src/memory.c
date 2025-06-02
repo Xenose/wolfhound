@@ -10,7 +10,7 @@
 #include<wh/memory.h>
 #include<wh/sys/memory.h>
 #include<wh/maths/memory.h>
-#include<wh/maths.h>
+#include<wh/maths/core.h>
 
 #include<wh/memory/arena.h>
 #include<wh/memory/freelist.h>

@@ -13,7 +13,7 @@
 #include<wh/memory.h>
 #include<wh/error.h>
 #include<wh/print.h>
-#include<wh/maths.h>
+#include<wh/maths/core.h>
 
 // =======================================================================================================
 // Struct declerations 

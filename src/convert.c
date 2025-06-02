@@ -1,5 +1,5 @@
 #include<wh/convert.h>
-#include<wh/maths.h>
+#include<wh/maths/core.h>
 
 #include<ctype.h>
 #include<stdio.h>

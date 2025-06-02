@@ -1,5 +1,5 @@
-#ifndef _wh_header_maths_
-#define _wh_header_maths_
+#ifndef _wh_header_maths_core_
+#define _wh_header_maths_core_
 
 #include<wh/common.h>
 #include<wh/params/math.h>
@@ -28,4 +28,4 @@ extern i64 _wh_hash_simple(_wh_hash_simple_params params);
  */
 #define wh_hash_simple(...) _wh_hash_simple((_wh_hash_simple_params){ __VA_ARGS__ })
 
-#endif /* _wh_header_maths_ */
+#endif /* _wh_header_maths_core_ */

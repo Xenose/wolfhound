@@ -1,7 +1,7 @@
 #include<wh/memory.h>
 #include<wh/wolfhound.h>
 #include<wh/print.h>
-#include<wh/maths.h>
+#include<wh/maths/core.h>
 #include<wh/convert.h>
 #include<wh/debug.h>
 #include<wh/string.h>

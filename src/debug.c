@@ -4,8 +4,6 @@
 #include<wh/debug.h>
 #include<wh/wolfhound.h>
 
-extern void _wh_log_init_raylib(_wh_log_init_params* params);
-
 static i64 _wh_log_real_va(_wh_print_params print_params, _wh_log_params params, va_list args);
 
 static i64 _wh_log_dummy(_wh_print_params print_params, _wh_log_params params, ...);
@@ -76,11 +74,6 @@ static i64 _wh_log_real(_wh_print_params print_params, _wh_log_params params, ..
 }
 
 void _wh_log_init(_wh_log_init_params params) {
-	switch (params.mode) {
-		case WH_GRAPHICS_MODE_RAYLIB:
-			_wh_log_init_raylib(&params);
-			break;
-	}
 }
 
 void wh_log_set_level(i64 level, u8 state) {

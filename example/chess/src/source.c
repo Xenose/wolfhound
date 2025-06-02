@@ -1,7 +1,7 @@
 #include<wh/memory.h>
 #include<wh/wolfhound.h>
 #include<wh/print.h>
-#include<wh/maths.h>
+#include<wh/maths/core.h>
 #include<wh/convert.h>
 #include<wh/debug.h>
 #include<wh/string.h>
@@ -14,6 +14,9 @@
 #include<wh/types/gameinfo.h>
 #include<wh/game/actions.h>
 #include<wh/sys/info.h>
+#include<wh/maths/core.h>
+
+#include<stdio.h>
 
 void update(wh_instance_s* ins) {
 	float square[] = {
@@ -91,13 +94,9 @@ int main(int arc, char* const* arv) {
 	wh_heap_init("test5", 100, wh_heap_get("main"));
 
 	void* pt1 = wh_mem_alloc(scratch, 900);
-	void* pt2 = wh_mem_realloc(scratch, pt1, 1800);
-	wh_heap_print_table();
+	//void* pt2 = wh_mem_realloc(scratch, pt1, 1800);
+	//wh_heap_print_table();
 	wh_heap_print();
-
-	i128 i = 64 + 128;
-
-	wh_print(("Test %lli\n"), i);
 
 	wh_loop(ins, &update, &fixed_update);
 	wh_end(ins);

@@ -12,6 +12,7 @@ typedef struct {
 typedef struct {
 	wh_instance_s* ins;
 	i8 (*act) (struct _wh_instance_s* ins, struct _wh_action_s* action);
+	void* ptr; // user provided
 } _wh_action_register_params;
 
 typedef struct {

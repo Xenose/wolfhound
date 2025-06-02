@@ -74,7 +74,7 @@ printf "\n| Library Name | Found   | Optional  | Alternative              |\n"
 printf "| ------------ | ------- | --------- | ------------------------ |\n"
 
 check_lib SDL3		"$MAYBE" "glfw"
-check_lib glew		"$MAYBE" "vulkan, SDL3"
+check_lib GLEW		"$MAYBE" "vulkan, SDL3"
 check_lib vulkan	"$MAYBE" "glew, SDL3"
 check_lib glfw		"$MAYBE" "SDL3"
 check_lib lua
@@ -87,7 +87,7 @@ printf "| --------------- | ------- | --------- | ------------------------ |\n"
 check_header vulkan/vulkan.h	"$MAYBE"
 check_header GLFW/glfw3.h		"$MAYBE"
 check_header SDL3/SDL.h			"$MAYBE" 
-check_header gl/glew.h			"$MAYBE"
+check_header GL/glew.h			"$MAYBE"
 check_header lua.h				"$NO"
 check_header libunwind.h		"$YES"
 

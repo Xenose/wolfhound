@@ -6,7 +6,7 @@
 
 #include<wh/print.h>
 #include<wh/arg_parser.h>
-#include<wh/maths.h>
+#include<wh/maths/core.h>
 #include<wh/debug.h>
 #include<wh/file.h>
 #include<wh/lua/config.h>

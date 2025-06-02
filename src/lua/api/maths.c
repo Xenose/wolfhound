@@ -1,7 +1,7 @@
 #include<lualib.h>
 #include<lauxlib.h>
 
-#include<wh/maths.h>
+#include<wh/maths/core.h>
 #include<wh/lua/api/maths.h>
 
 

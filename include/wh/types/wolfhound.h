@@ -7,9 +7,11 @@
 #include<wh/types/config.h>
 
 #include<wh/types/gameinfo.h>
-#include<vulkan/vulkan.h>
 #include<SDL3/SDL.h>
 
+#ifndef WH_VULKAN_NOT_FOUND
+	#include<vulkan/vulkan.h>
+#endif
 
 enum {
 	WH_GRAPHICS_MODE_VULKAN,
@@ -30,12 +32,15 @@ typedef struct {
 	wh_string_s engine;
 } wh_app_info_s;
 
+
 typedef struct {
+#ifndef WH_VULKAN_NOT_FOUND
 	struct_type			stype;
 	VkInstance			instance;
 	VkSurfaceKHR		surface;
 	VkPhysicalDevice	physical;
 	VkDevice				device;
+#endif
 } wh_vulkan_s;
 
 typedef struct {
@@ -80,7 +85,6 @@ typedef struct {
 typedef struct _wh_instance_s {
 	struct_type stype;
 	wh_heap_header_s* heap;
-	wh_heap_header_s* scratch;
 
 	wh_config_s config;
 

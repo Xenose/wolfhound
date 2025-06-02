@@ -1,7 +1,6 @@
 #include<wh/debug.h>
 #include<wh/memory.h>
 #include<wh/wolfhound.h>
-#include<wh/vulkan.h>
 #include<wh/string.h>
 #include<wh/render.h>
 #include<wh/signalar.h>
@@ -10,13 +9,15 @@
 #include<wh/wrap/unistd.h>
 #include<wh/maths/memory.h>
 
+#ifndef WH_VULKAN_NOT_FOUND
+	#include<wh/vulkan.h>
+#endif
+
 static i8 _wh_init_critical(_wh_init_params* params) {
 	wh_instance_s tmp;
 
 	wh_signalar_init(params->args.ptr[0]);
 	params->config = _wh_config_load(params, &params->config);
-
-	// Now we have somewhere to store our data
 	tmp.heap = wh_heap_init("main", params->config.heap.size);
 	
 	params->ins[0] = wh_mem_alloc(nullptr, sizeof(wh_instance_s));
@@ -31,7 +32,7 @@ static i8 _wh_init_critical(_wh_init_params* params) {
 	memcpy(params->ins[0], &tmp, sizeof(wh_instance_s));
 	memcpy(&params->ins[0]->config, &params->config, sizeof(wh_config_s));
 
-	params->ins[0]->scratch = wh_heap_init(
+	wh_heap_init(
 		"scratch",
 		WH_1MB,
 		params->heap, 
@@ -42,15 +43,6 @@ static i8 _wh_init_critical(_wh_init_params* params) {
 	params->grap = &params->ins[0]->graphics;
 	params->grap->mode = params->mode;
 
-
-	// loading libraries
-	switch(params->mode) {
-		case WH_GRAPHICS_MODE_RAYLIB: 
-			wh_log_info(("Graphics mode sat to Raylib!"));
-			_wh_raylib_init(); 
-			break;
-	}
-	
 	wh_log_init(params->mode);
 	wh_log_info(("Done loading critical section!"));
 

@@ -1,6 +1,9 @@
 #include<errno.h>
-#include<vulkan/vulkan.h>
 #include<wh/error.h>
+
+#ifndef WH_VULKAN_NOT_FOUND
+	#include<vulkan/vulkan.h>
+#endif
 
 const char* _wh_errno_str(_wh_errno_str_params params) {
 	switch (params.number) {
@@ -45,6 +48,7 @@ const char* _wh_errno_str(_wh_errno_str_params params) {
 }
 
 const char* _wh_vk_status_str(_wh_vk_status_params params) {
+#ifndef WH_VULKAN_NOT_FOUND
 	switch (params.number) {
 		case VK_SUCCESS:																return "VK_SUCCESS";
 		case VK_NOT_READY:															return "VK_NOT_READY";
@@ -95,6 +99,8 @@ const char* _wh_vk_status_str(_wh_vk_status_params params) {
 		case VK_INCOMPATIBLE_SHADER_BINARY_EXT:								return "VK_INCOMPATIBLE_SHADER_BINARY_EXT";
 		case VK_PIPELINE_BINARY_MISSING_KHR:									return "VK_PIPELINE_BINARY_MISSING_KHR";
 		case VK_ERROR_NOT_ENOUGH_SPACE_KHR:										return "VK_ERROR_NOT_ENOUGH_SPACE_KHR";
-		default:																			return "NKNOWN";
+		default:																			return "UNKNOWN";
 	}
+#endif
+	return "UNKNOWN";
 }
