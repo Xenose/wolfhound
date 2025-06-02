@@ -4,7 +4,8 @@
 #include<stdio.h>
 
 #ifdef WH_USE_FORTRAN
-extern int64_t _wh_fortran_intlog64(int64_t value, int64_t base);
+extern int64_t _wh_fortran_intlog64(int64_t base, int64_t value);
+extern int64_t _wh_fortran_intpow64(int64_t power, int64_t times);
 #endif
 
 i64 _wh_intlog(_wh_intlog_params params) {

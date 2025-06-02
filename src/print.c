@@ -234,6 +234,7 @@ go_loop:
 					vp = &data->print_format.right;
 					data->print_format.flags.length_set = true;
 					++data->format;
+					goto go_dollar_switch;
 				case '1': case '2': case '3': case '4': case '5': 
 				case '6': case '7': case '8': case '9':
 					*vp = wh_str2int(data->format, strlen(data->format), 10); 
