@@ -15,6 +15,8 @@
 #include<wh/game/actions.h>
 #include<wh/sys/info.h>
 #include<wh/maths/core.h>
+#include<wh/file.h>
+#include<wh/images/loader.h>
 
 #include<stdio.h>
 
@@ -59,9 +61,19 @@ i8 action_health_gen(wh_instance_s* ins, wh_action_s* action) {
 }
 
 int main(int arc, char* const* arv) {
+	wh_print(("Testing floats -> %f\n"), 1.25f);
+
 	char buf[256] = { 0 };
+	char img[256] = { 0 }; 
 	wh_sys_program_path(buf, 255);
+	wh_sys_program_path(img, 255);
+
 	strcat(buf, "config.lua");
+	strcat(img, "test.png");
+
+	wh_file_s imgf = wh_file_load(img);
+	wh_image_decode(imgf);
+	wh_file_unload(imgf);
 
 	//_wh_libfind("libraylib.so", (char*[]){ "/usr/lib", "/lib" }, 2);
 	wh_instance_s* ins = wh_init(

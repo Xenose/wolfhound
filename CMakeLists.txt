@@ -14,16 +14,16 @@ SET(CMAKE_Fortran_STANDARD 95)
 # We will use a new version of C do
 SET(CMAKE_C_STANDARD 23)
 SET(CMAKE_C_STANDARD_REQUIRED ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 INCLUDE_DIRECTORIES(SYSTEM "include/")
 
 IF (WIN32)
 	MESSAGE("\n\tWE ARE ON WINDOWS!")
 
-	MAKE_DIRECTORY("C:/usr/include/")
-	MAKE_DIRECTORY("C:/usr/lib/")
-	MAKE_DIRECTORY("C:/tmp/")
+	#MAKE_DIRECTORY("C:/usr/include/")
+	#MAKE_DIRECTORY("C:/usr/lib/")
+	#MAKE_DIRECTORY("C:/tmp/")
 
 	# having the include same as Unix / Linux make more sense
 	INCLUDE_DIRECTORIES(SYSTEM "C:/usr/include/")
@@ -56,6 +56,7 @@ set(C_SOURCES
 	"src/debug/signalar.c"
 	"src/game/actions.c"
 	"src/game/entity.c"
+	"src/game/loader.c"
 	"src/sys/library.c"
 	"src/sys/memory.c"
 	"src/sys/info.c"
@@ -72,6 +73,7 @@ set(C_SOURCES
 	"src/lua/api.c"
 	"src/lua/config.c"
 	"src/lua/helpers.c"
+	"src/images/loader.c"
 	"src/arg_parser.c"
 	"src/config.c"
 	"src/convert.c"

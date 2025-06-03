@@ -82,6 +82,35 @@ static void _wh_print_cpychar(wh_print_data_s* d, char c) {
 	++d->format;
 }
 
+// TODO replace with something faster.
+static void _wh_print_fstr_slow(wh_print_data_s* d, char type, double value) {
+	char out[64];
+	int precision = d->print_format.flags.length_set ? (int)d->print_format.right : 6;
+	int length = 0;
+
+	if (type == 'e' || type == 'E' || type == 'g' || type == 'G') {
+		length = snprintf(out, sizeof(out), "%.*c", precision, type);
+		length = snprintf(out, sizeof(out), type == 'e' ? "%.*e" : 
+						  type == 'E' ? "%.*E" : 
+						  type == 'g' ? "%.*g" : 
+						  "%.*G", precision, value);
+	} else {
+		length = snprintf(out, sizeof(out), "%.*f", precision, value);
+	}
+
+	if (length < 0 || length >= (int)sizeof(out)) {
+		return;
+	}
+
+	if (-1 == wh_print_buffer_check(d, length)) {
+		return;
+	}
+
+	memcpy(d->buffer, out, length);
+	d->buffer += length;
+	++d->format;
+}
+
 static void _wh_print_cpystr(wh_print_data_s* d, char* tmp, i64 length) {
 	i64 written = 0;
 	i64 padding = 0;
@@ -201,6 +230,7 @@ static void _wh_print_format_sub(wh_print_data_s* data, va_list list) {
 }
 
 static void _wh_print_format(wh_print_data_s* data, va_list list) {
+	void* tmp = nullptr;
 	u64* vp = &data->print_format.left;
 
 go_loop:
@@ -303,19 +333,34 @@ go_loop:
 					vp = &data->print_format.left;
 					goto go_standard_switch;
 				case 'a':
+					_wh_print_fstr_slow(data, 'a', va_arg(list, double));
+					break;
 				case 'A':
+					_wh_print_fstr_slow(data, 'A', va_arg(list, double));
+					break;
 				case 'c':
 					_wh_print_cpychar(data, va_arg(list, int));
 					break;
 				case 'd':
 					goto go_print_int;
 				case 'e':
+					_wh_print_fstr_slow(data, 'e', va_arg(list, double));
+					break;
 				case 'E':
+					_wh_print_fstr_slow(data, 'E', va_arg(list, double));
+					break;
 				case 'f':
-					va_arg(list, double);
+					_wh_print_fstr_slow(data, 'f', va_arg(list, double));
+					break;
+				case 'F':
+					_wh_print_fstr_slow(data, 'F', va_arg(list, double));
 					break;
 				case 'g':
+					_wh_print_fstr_slow(data, 'g', va_arg(list, double));
+					break;
 				case 'G':
+					_wh_print_fstr_slow(data, 'G', va_arg(list, double));
+					break;
 go_print_int:
 				case 'i':
 					if (data->print_format.flags.llong_value) {
@@ -342,6 +387,14 @@ go_print_int:
 					break;
 				case 'm':
 					_wh_print_cpystr(data, (char*)wh_errno_str(errno), 0);
+					break;
+				case 'n':
+					tmp = ((void*)va_arg(list, int*)); 
+
+					if (nullptr != tmp) {
+						*((int*)tmp) = data->written + (data->buffer - data->start);
+					}
+
 					break;
 				case 'o':
 					_wh_print_int(data, va_arg(list, i64), 8);
