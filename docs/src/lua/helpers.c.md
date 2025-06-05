@@ -1,0 +1,6 @@
+[lualib.h](lualib.h)
+[lauxlib.h](lauxlib.h)
+[stdarg.h](stdarg.h)
+[debug.h](wh/debug.h)
+[print.h](wh/print.h)
+[helpers.h](wh/lua/helpers.h)

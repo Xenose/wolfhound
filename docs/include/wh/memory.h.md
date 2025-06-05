@@ -24,6 +24,14 @@ Upon success a heap pointer is returned and on error a nullptr is returned.
 ### See also
 [common.h](include/wh/common.h)
 
+| Parameter | Type | Designation | Optional | Description |
+| --------- | ---- | ----------- | -------- | ----------- |
+| heap | wh_heap_s* | .heap | NO | The heap that will be printed. |
+
 ## wh_mem_free(void* owner, void* ptr, wh_heap_header_s* heap : optional, u64* error : optional)
 
 ## wh_mem_alloc()
+
+
+
+

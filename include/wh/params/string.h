@@ -1,0 +1,18 @@
+#ifndef _wh_header_params_string_
+#define _wh_header_params_string_
+
+#include<wh/common.h>
+
+typedef struct {
+	wh_string_s* str;
+} _wh_string_append_params;
+
+typedef struct {
+	const char* key;
+	const char* str;
+	u64 str_length;
+	u64 key_length;
+	u64* error;
+} _wh_strstr_params;
+
+#endif /* _wh_header_params_string_ */

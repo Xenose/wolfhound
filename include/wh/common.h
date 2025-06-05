@@ -1,10 +1,40 @@
 #ifndef _wh_header_common_
 #define _wh_header_common_
 
+#ifndef __cplusplus
+#include<stdatomic.h>
+
+#define WH_C
+#define WH_C_END
+
+#else
+#include<atomic>
+
+#define WH_C extern "C" {
+#define WH_C_END }
+
+typedef std::atomic_int_least8_t atomic_int_least8_t;
+typedef std::atomic_int_least16_t atomic_int_least16_t;
+typedef std::atomic_int_least32_t atomic_int_least32_t;
+typedef std::atomic_int_least64_t atomic_int_least64_t;
+
+typedef std::atomic_uint_least8_t atomic_uint_least8_t;
+typedef std::atomic_uint_least16_t atomic_uint_least16_t;
+typedef std::atomic_uint_least32_t atomic_uint_least32_t;
+typedef std::atomic_uint_least64_t atomic_uint_least64_t;
+
+typedef std::atomic_flag atomic_flag;
+typedef std::atomic_bool atomic_bool;
+
+
+#endif
+
+WH_C
+
 #include<stdint.h>
 #include<stddef.h>
 #include<stdbool.h>
-#include<stdatomic.h>
+
 
 #ifndef _WIN32
 #include<sys/types.h>
@@ -94,7 +124,7 @@ typedef atomic_uint_least64_t	au64;
 typedef atomic_flag aflag;
 typedef atomic_bool abool;
 
-typedef _Atomic(void*) atomic_void_ptr;
+//typedef _Atomic(void*) atomic_void_ptr;
 
 typedef i64 struct_type;
 
@@ -194,5 +224,7 @@ enum {
 typedef struct {
 	struct_type stype;
 } wh_struct;
+
+WH_C_END
 
 #endif /* _wh_header_common_ */

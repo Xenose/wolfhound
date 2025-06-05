@@ -1,8 +1,8 @@
 [stdint.h](stdint.h)
 [stddef.h](stddef.h)
 [stdbool.h](stdbool.h)
-[types.h](sys/types.h)
 [stdatomic.h](stdatomic.h)
+[types.h](sys/types.h)
 
 # Integer Types
 

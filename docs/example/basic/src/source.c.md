@@ -1,7 +1,7 @@
 [memory.h](wh/memory.h)
 [wolfhound.h](wh/wolfhound.h)
 [print.h](wh/print.h)
-[maths.h](wh/maths.h)
+[core.h](wh/maths/core.h)
 [convert.h](wh/convert.h)
 [debug.h](wh/debug.h)
 [string.h](wh/string.h)

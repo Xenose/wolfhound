@@ -6,6 +6,8 @@
 #include<wh/types/memory.h>
 #include<wh/params/memory.h>
 
+WH_C
+
 // Heap functions
 extern void _wh_mem_free(_wh_mem_free_params params);
 extern wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params);
@@ -75,4 +77,5 @@ extern i32 wh_mem_leak_count(void);
  */
 #define wh_mem(...)			_wh_mem((_wh_mem_params){ __VA_ARGS__ })
 
+WH_C_END
 #endif /* _wh_memory_ */

@@ -17,6 +17,7 @@
 #include<wh/maths/core.h>
 #include<wh/file.h>
 #include<wh/images/loader.h>
+#include<wh/sys/filesystem.h>
 
 #include<stdio.h>
 
@@ -83,6 +84,9 @@ int main(int arc, char* const* arv) {
 		(u8*)buf,													// application config
 		.mode = WH_GRAPHICS_MODE_SDL3
 	);
+
+	wh_dir_s dir = wh_read_dir(nullptr, ".");
+	wh_dir_destroy(nullptr, &dir);
 
 	wh_action_init(ins, 100);
 	u64 gid = wh_action_register(ins, &action_gravity);

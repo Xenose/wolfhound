@@ -1,2 +1,0 @@
--std=c23
--I./engine/include

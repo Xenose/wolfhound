@@ -1,7 +1,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.28)
 
 SET(APP_NAME wolfhound)
-PROJECT(${APP_NAME} LANGUAGES C)
+PROJECT(${APP_NAME} LANGUAGES C CXX)
 
 INCLUDE(CheckLanguage)
 
@@ -14,6 +14,11 @@ SET(CMAKE_Fortran_STANDARD 95)
 # We will use a new version of C do
 SET(CMAKE_C_STANDARD 23)
 SET(CMAKE_C_STANDARD_REQUIRED ON)
+
+# Lets use the new C++ as well
+SET(CMAKE_CXX_STANDARD 23)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 INCLUDE_DIRECTORIES(SYSTEM "include/")
@@ -60,6 +65,7 @@ set(C_SOURCES
 	"src/sys/library.c"
 	"src/sys/memory.c"
 	"src/sys/info.c"
+	"src/sys/filesystem.c"
 	"src/maths/core.c"
 	"src/maths/memory.c"
 	"src/memory/arena.c"
@@ -80,7 +86,6 @@ set(C_SOURCES
 	"src/debug.c"
 	"src/error.c"
 	"src/file.c"
-	#"src/maths.c"
 	"src/memory.c"
 	"src/string.c"
 	"src/render.c"
@@ -90,15 +95,20 @@ set(C_SOURCES
 	"src/wrap/string.c"
 )
 
+set(CXX_SOURCES
+	"src/cpp/wolfhound.cpp"
+)
+
 SET(VULKAN_SOURCES
 	"src/vulkan.c"
 )
 
+
 IF(USE_FORTRAN)
-	ADD_LIBRARY(${APP_NAME} STATIC ${C_SOURCES} ${F95_SOURCES})
+	ADD_LIBRARY(${APP_NAME} STATIC ${C_SOURCES} ${CXX_SOURCES} ${F95_SOURCES})
 	TARGET_COMPILE_DEFINITIONS(${APP_NAME} PRIVATE WH_USE_FORTRAN=1)
 ELSE()
-	ADD_LIBRARY(${APP_NAME} STATIC ${C_SOURCES})
+	ADD_LIBRARY(${APP_NAME} STATIC ${C_SOURCES} ${CXX_SOURCES})
 ENDIF()
 
 # Library search
@@ -123,3 +133,4 @@ ENDIF()
 # -----------------------------------------------------------------------------
 ADD_SUBDIRECTORY(example/chess)
 ADD_SUBDIRECTORY(example/print)
+ADD_SUBDIRECTORY(example/cpp)

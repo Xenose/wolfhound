@@ -6,3 +6,6 @@
 [debug.h](wh/debug.h)
 [config.h](wh/config.h)
 [arg_parser.h](wh/arg_parser.h)
+[config.h](wh/lua/config.h)
+[helpers.h](wh/lua/helpers.h)
+[api.h](wh/lua/api.h)

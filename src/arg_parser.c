@@ -16,7 +16,6 @@ i64 _wh_args_parse(_wh_args_parse_params params) {
 	char command[256] = { 0 };
 	wh_config_s* config = params.config;
 
-
 	for (i64 i = 1; i < params.arc; i++) {
 		char* in = params.arv[i];
 		u64 length = strlen(in);

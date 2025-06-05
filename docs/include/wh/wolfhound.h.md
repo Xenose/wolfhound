@@ -3,7 +3,6 @@
 [wolfhound.h](wh/params/wolfhound.h)
 [stdint.h](stdint.h)
 [SDL.h](SDL3/SDL.h)
-[vulkan.h](vulkan/vulkan.h)
 
 # wh_init
 ```c

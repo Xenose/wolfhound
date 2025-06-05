@@ -6,4 +6,8 @@
 [debug.h](wh/debug.h)
 [memory.h](wh/memory.h)
 [memory.h](wh/sys/memory.h)
+[memory.h](wh/maths/memory.h)
+[core.h](wh/maths/core.h)
+[arena.h](wh/memory/arena.h)
 [freelist.h](wh/memory/freelist.h)
+[unistd.h](wh/wrap/unistd.h)

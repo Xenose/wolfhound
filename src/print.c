@@ -43,12 +43,11 @@ static void _wh_print_format(wh_print_data_s* data, va_list list);
 // =======================================================================================================
 // private function start
 // =======================================================================================================
-
 static void _wh_print_call_func(wh_print_data_s* data, void* ptr, char* key_start, char* key_end) {
-	i64 (*func)(wh_print_data_s* data, void* ptr) = NULL;
+	i64 (*func)(wh_print_data_s* data, void* ptr) = nullptr;
 	i64 key = 0;
 
-	if (NULL == key_end) {
+	if (nullptr == key_end) {
 		goto go_error_exit_no_end_key;
 	}
 
@@ -60,7 +59,7 @@ static void _wh_print_call_func(wh_print_data_s* data, void* ptr, char* key_star
 	
 	//func = atomic_load(&atomic_load(&_wh_func_table.table)[key]).func;
 
-	if (NULL != func) {
+	if (nullptr != func) {
 		func(data, ptr);
 	}
 
@@ -115,7 +114,7 @@ static void _wh_print_cpystr(wh_print_data_s* d, char* tmp, i64 length) {
 	i64 written = 0;
 	i64 padding = 0;
 
-	if (NULL == tmp) {
+	if (nullptr == tmp) {
 		tmp = (char*)"%NULL%";
 		length = 6;
 	} else if (0 == length) {
@@ -222,7 +221,7 @@ static void _wh_print_int(wh_print_data_s* d, i64 value, i64 base) {
 static void _wh_print_format_sub(wh_print_data_s* data, va_list list) {
 	char* f = data->format;
 
-	if (NULL != (data->format = va_arg(list, char*))) {
+	if (nullptr != (data->format = va_arg(list, char*))) {
 		_wh_print_format(data, list);
 	}
 
@@ -451,7 +450,7 @@ i64 _wh_print_va(_wh_print_params params, va_list list) {
 	i64 ret = 0;
 	char* buffer = params.buffer;
 
-	if (NULL == params.buffer) {
+	if (nullptr == params.buffer) {
 		buffer = _buffer;
 		params.buffer_length = 8096;
 	}
@@ -505,15 +504,15 @@ void _wh_print_add_func(_wh_print_add_func_params params) {
 		//atomic_store(&_wh_func_table.table, wh_mem(sizeof(void*) * 16, .flags = WH_MEM_ZERO));
 		//atomic_store(&_wh_func_table.slots, 16);
 
-		if (NULL == atomic_load(&_wh_func_table.table)) {
+		if (nullptr == atomic_load(&_wh_func_table.table)) {
 			// TODO handle error
 		}
 	}
 
 	key = wh_hash_simple(params.key, atomic_load(&_wh_func_table.slots));
 
-	if (NULL != params.func) {
-		if (NULL != &atomic_load(&_wh_func_table.table)[key]) {
+	if (nullptr != params.func) {
+		if (nullptr != &atomic_load(&_wh_func_table.table)[key]) {
 			// TODO resize array and handle moving of pointer
 			key = wh_hash_simple(params.key, atomic_load(&_wh_func_table.slots));
 		}

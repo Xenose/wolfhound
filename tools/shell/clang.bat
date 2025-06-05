@@ -1,5 +1,7 @@
 @ECHO OFF
 
-cd "%PRP%\build"
+pushd "%PRP%\build"
+
 cmake .. -DCMAKE_C_COMPILER=clang
-cd "%PRP%"
+
+popd

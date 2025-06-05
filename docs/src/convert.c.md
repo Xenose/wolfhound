@@ -1,2 +1,6 @@
 [convert.h](wh/convert.h)
-[maths.h](wh/maths.h)
+[core.h](wh/maths/core.h)
+[ctype.h](ctype.h)
+[stdio.h](stdio.h)
+[stdlib.h](stdlib.h)
+[string.h](wh/wrap/string.h)

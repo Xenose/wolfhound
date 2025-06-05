@@ -4,3 +4,6 @@
 [dirent.h](dirent.h)
 [dlfcn.h](dlfcn.h)
 [stdlib.h](stdlib.h)
+[windows.h](windows.h)
+[libloaderapi.h](libloaderapi.h)
+[wingdi.h](wingdi.h)
