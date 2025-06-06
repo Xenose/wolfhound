@@ -1,6 +1,7 @@
 #ifndef _wh_header_common_
 #define _wh_header_common_
 
+#include<limits.h>
 #include<wh/common/prefix.h>
 
 #ifndef __cplusplus
@@ -178,6 +179,10 @@ typedef struct {
 #define wh_spin_lock_break(_x_)					atomic_flag_clear(_x_); break
 #define wh_spin_lock_return(_x_, _return_)	atomic_flag_clear(_x_);	return _return_
 #define wh_spin_lock_goto(_x_, _goto_)			atomic_flag_clear(_x_);	goto _goto_
+
+#ifndef NAME_MAX
+#define NAME_MAX 256
+#endif
 
 enum {
 	WH_STRUCT_TYPE_UNKOWN = 0,
