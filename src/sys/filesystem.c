@@ -103,7 +103,7 @@ void wh_dir_destroy(wh_heap_header_s* heap, wh_dir_s* dir) {
 #else
 
 wh_dir_s _wh_read_dir(_wh_dir_read_params params) {
-	reutrn (wh_dir_s) { 0 };
+	return (wh_dir_s) { 0 };
 }
 
 void wh_dir_destroy(wh_heap_header_s* heap, wh_dir_s* dir) {
