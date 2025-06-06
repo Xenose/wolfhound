@@ -1,4 +1,3 @@
-#include<dirent.h>
 #include<errno.h>
 #include<string.h>
 #include<wh/sys/filesystem.h>
@@ -6,6 +5,10 @@
 
 #include<wh/print.h>
 #include<wh/debug.h>
+
+#ifndef _WIN32
+
+#include<dirent.h>
 
 wh_dir_s _wh_read_dir(_wh_dir_read_params params) {
 	u64 error = 0;
@@ -96,3 +99,14 @@ go_error_exit:
 void wh_dir_destroy(wh_heap_header_s* heap, wh_dir_s* dir) {
 	wh_free(heap, dir->entries, &dir->entries);
 }
+
+#else
+
+wh_dir_s _wh_read_dir(_wh_dir_read_params params) {
+	reutrn (wh_dir_s) { 0 };
+}
+
+void wh_dir_destroy(wh_heap_header_s* heap, wh_dir_s* dir) {
+}
+
+#endif
