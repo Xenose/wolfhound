@@ -14,25 +14,27 @@ else
 	WP=$(dirname "$WP")
 fi
 
+TP="/tools/shell/"
+
 echo "Setting active directory to [ $WP ]"
 
 # Fun
-alias wh-count="PRP='${WP}' ${WP}/tools/shell/stats.sh"
+alias wh-count="PRP='${WP}' ${WP}${TP}stats.sh"
 
 # Helpers
-alias wh-refresh=". ${WP}/tools/shell/activate.sh"
-alias wh-bootstrap="PRP='${WP}' ${WP}/tools/shell/bootstrap.sh"
-alias wh-check="PRP='${WP}' ${WP}/tools/shell/check.sh"
-alias wh-docker="PRP='${WP}' ${WP}/tools/shell/docker.sh"
+alias wh-refresh=". ${WP}${TP}activate.sh"
+alias wh-bootstrap="PRP='${WP}' ${WP}${TP}bootstrap.sh"
+alias wh-check="PRP='${WP}' ${WP}${TP}check.sh"
+alias wh-docker="PRP='${WP}' ${WP}${TP}docker.sh"
 
 # code
-alias wh-build="PRP='${WP}' ${WP}/tools/shell/build.sh"
-alias wh-clean="PRP='${WP}' ${WP}/tools/shell/clean.sh"
+alias wh-build="PRP='${WP}' ${WP}${TP}build.sh"
+alias wh-clean="PRP='${WP}' ${WP}${TP}clean.sh"
 
 # compilers
-alias wh-clang="PRP='${WP}' ${WP}/tools/shell/clang.sh"
-alias wh-mingw="PRP='${WP}' ${WP}/tools/shell/mingw.sh"
+alias wh-clang="PRP='${WP}' ${WP}${TP}clang.sh"
+alias wh-mingw="PRP='${WP}' ${WP}${TP}mingw.sh"
 
 # build systems
-alias wh-ninja="PRP='${WP}' ${WP}/tools/shell/ninja.sh"
-alias wh-make="PRP='${WP}' ${WP}/tools/shell/make.sh"
+alias wh-ninja="PRP='${WP}' ${WP}${TP}ninja.sh"
+alias wh-make="PRP='${WP}' ${WP}${TP}make.sh"
