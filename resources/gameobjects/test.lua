@@ -1,4 +1,6 @@
 
+print("Hello from test asset!")
+
 NAME = "test"
 TEXTURE = "test.png"
 RENDERER = "line"

@@ -1,6 +1,7 @@
 #include<fcntl.h>
 #include<wh/file.h>
 #include<wh/debug.h>
+#include<wh/memory/core.h>
 
 #include<errno.h>
 
@@ -76,42 +77,6 @@ _wh_file_type_s formats[] = {
 	{ WH_FILE_TYPE_COM,					1,  (u8[]){ 0x09 },																																																																								(char*[]){ ".com",																							nullptr }},
 };
 
-i64 _wh_memcmp_mask(const void* c0, const void* c1, const void* mask, size_t length) {
-	i64 out = 0;
-	u8* cc0 = (u8*)c0;
-	u8* cc1 = (u8*)c1;
-	u8* m = (u8*)mask;
-
-	if (nullptr == m) {
-		wh_for(i64, i, length) {
-			out += *cc0 - *cc1;
-
-			// moving the pointer
-			cc0 += 1;
-			cc1 += 1;
-
-			if (0 != out) {
-				break;
-			}
-		}
-	} else {
-		wh_for(i64, i, length) {
-			out += (*cc0 & *m) - (*cc1 & *m);
-
-			// moving the pointer
-			cc0 += 1;
-			cc1 += 1;
-			m += 1;
-
-			if (0 != out) {
-				break;
-			}
-		}
-	}
-
-	return out;
-}
-
 i64 _wh_file_type(const char* restrict filename, u8* restrict buffer, u64 length) {
 	_wh_file_type_s* ft = nullptr;
 	u64 type = WH_FILE_TYPE_UNKNOWN;
@@ -126,7 +91,7 @@ i64 _wh_file_type(const char* restrict filename, u8* restrict buffer, u64 length
 			continue;
 		}
 
-		if (!_wh_memcmp_mask(buffer, formats[i].signature, formats[i].mask, formats[i].length)) {
+		if (!wh_memcmp_mask(buffer, formats[i].signature, formats[i].length, formats[i].mask)) {
 			wh_log_debug(("Found format!"));
 			ft = &formats[i];
 			type = formats[i].type;
