@@ -5,7 +5,7 @@ i8 _wh_action_init(_wh_action_init_params params) {
 	u64 bytes = sizeof(wh_action_s) * params.count;
 
 	params.ins->game.action_count = 0;
-	params.ins->game.actions = wh_mem_alloc(
+	params.ins->game.actions = wh_alloc(
 		params.ins->heap, bytes, &params.ins->game.actions);
 
 	if (nullptr == params.ins->game.actions) {

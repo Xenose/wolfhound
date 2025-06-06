@@ -81,7 +81,7 @@ int main(int arc, char* const* arv) {
 		&ins,
 		(wh_args_s){ 0,  arc, arv },					// command line arguments
 		wh_string_create("chess"),						// application name
-		(u8*)buf,													// application config
+		(u8*)buf,											// application config
 		.mode = WH_GRAPHICS_MODE_SDL3
 	);
 
@@ -109,7 +109,7 @@ int main(int arc, char* const* arv) {
 	wh_heap_init("test4", 100, wh_heap_get("main"));
 	wh_heap_init("test5", 100, wh_heap_get("main"));
 
-	void* pt1 = wh_mem_alloc(scratch, 900);
+	void* pt1 = wh_alloc(scratch, 900);
 	//void* pt2 = wh_mem_realloc(scratch, pt1, 1800);
 	//wh_heap_print_table();
 	wh_heap_print();

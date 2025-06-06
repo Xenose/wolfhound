@@ -146,7 +146,7 @@ wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
 			params.heap = _heap_main;
 		}
 
-		heap = wh_mem_alloc(params.heap, params.bytes, nullptr, WH_MEM_IS_HEAP, params.error);
+		heap = wh_alloc(params.heap, params.bytes, nullptr, WH_MEM_IS_HEAP, params.error);
 
 		if (nullptr == heap) {
 			wh_log_critical(("Failed to allocate system memory [ $n ]"), errno);
@@ -236,7 +236,7 @@ void _wh_heap_print(_wh_heap_print_params params) {
 }
 
 
-void* _wh_mem_alloc(_wh_mem_alloc_params params) {
+void* _wh_alloc(_wh_mem_alloc_params params) {
 	void* mem = nullptr;
 	params.bytes = wh_align(params.bytes, 16);
 
@@ -262,7 +262,7 @@ void* _wh_mem_alloc(_wh_mem_alloc_params params) {
 	return mem;
 }
 
-void _wh_mem_free(_wh_mem_free_params params) {
+void _wh_free(_wh_mem_free_params params) {
 	if (nullptr == params.heap) {
 		params.heap = _heap_main;
 	}
@@ -283,7 +283,7 @@ void _wh_mem_free(_wh_mem_free_params params) {
 	}
 }
 
-void* _wh_mem_realloc(_wh_mem_realloc_params params) {
+void* _wh_realloc(_wh_mem_realloc_params params) {
 	void* mem = nullptr;
 
 	if (nullptr == params.heap) {

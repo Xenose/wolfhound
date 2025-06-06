@@ -37,7 +37,7 @@ wh_dir_s _wh_read_dir(_wh_dir_read_params params) {
 		++out.count;
 	}
 
-	out.entries = wh_mem_alloc(params.heap, out.count * sizeof(wh_dir_entry_s), &out.entries, .error = &error);
+	out.entries = wh_alloc(params.heap, out.count * sizeof(wh_dir_entry_s), &out.entries, .error = &error);
 
 	if (nullptr == out.entries) {
 		goto go_error_exit_close;
@@ -97,5 +97,5 @@ go_error_exit:
 
 
 void wh_dir_destroy(wh_heap_header_s* heap, wh_dir_s* dir) {
-	wh_mem_free(heap, dir->entries, &dir->entries);
+	wh_free(heap, dir->entries, &dir->entries);
 }

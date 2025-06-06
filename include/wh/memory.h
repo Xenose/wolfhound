@@ -9,15 +9,15 @@
 WH_C()
 
 // Heap functions
-extern void _wh_mem_free(_wh_mem_free_params params);
 extern wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params);
 
 extern wh_heap_header_s* wh_heap_get(const char* name);
 extern void wh_heap_print_table();
 
 // Dedicated memory functions
-extern void* _wh_mem_alloc(_wh_mem_alloc_params params);
-extern void* _wh_mem_realloc(_wh_mem_realloc_params params);
+extern void _wh_free(_wh_mem_free_params params);
+extern void* _wh_alloc(_wh_mem_alloc_params params);
+extern void* _wh_realloc(_wh_mem_realloc_params params);
 
 // General functions
 extern void _wh_heap_print(_wh_heap_print_params params);
@@ -60,22 +60,22 @@ extern i32 wh_mem_leak_count(void);
  *
  * ## wh_mem_free(void* owner, void* ptr, wh_heap_header_s* heap : optional, u64* error : optional)
  */
-#define wh_mem_free(...)	_wh_mem_free((_wh_mem_free_params) { __VA_ARGS__ })
+#define wh_free(...)	_wh_free((_wh_mem_free_params) { __VA_ARGS__ })
 
 
 /* [MD_DOC]
  *
  * ## wh_mem_alloc()
  */
-#define wh_mem_alloc(...)	_wh_mem_alloc((_wh_mem_alloc_params) { __VA_ARGS__ })
+#define wh_alloc(...) _wh_alloc((_wh_mem_alloc_params) { __VA_ARGS__ })
 
 /* [MD_DOC]
  */
-#define wh_mem_realloc(...) _wh_mem_realloc((_wh_mem_realloc_params) { __VA_ARGS__ })
+#define wh_mem_realloc(...) _wh_realloc((_wh_mem_realloc_params) { __VA_ARGS__ })
 
 /* [MD_DOC]
  */
-#define wh_mem(...)			_wh_mem((_wh_mem_params){ __VA_ARGS__ })
+#define wh_mem(...) _wh_mem((_wh_mem_params){ __VA_ARGS__ })
 
 WH_C_END()
 #endif /* _wh_memory_ */
