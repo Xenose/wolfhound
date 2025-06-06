@@ -30,13 +30,13 @@ wh_dir_s _wh_read_dir(_wh_dir_read_params params) {
 
 	for (current = readdir(dir); nullptr != current; current = readdir(dir)) {
 		if (!strncmp(current->d_name, ".", NAME_MAX) || !strncmp(current->d_name, "..", NAME_MAX) ) {
-			wh_log_debug(("skipping [ . ] and [ .. ]"));
 			continue;
 		}
 
 		++out.count;
 	}
 
+	wh_log_debug(("Allocating [ %i ]"), out.count * sizeof(wh_dir_entry_s));
 	out.entries = wh_alloc(params.heap, out.count * sizeof(wh_dir_entry_s), &out.entries, .error = &error);
 
 	if (nullptr == out.entries) {
@@ -55,15 +55,12 @@ wh_dir_s _wh_read_dir(_wh_dir_read_params params) {
 		}
 		
 		if (!strncmp(current->d_name, ".", NAME_MAX) || !strncmp(current->d_name, "..", NAME_MAX) ) {
-			wh_log_debug(("skipping [ . ] and [ .. ]"));
 			continue;
 		}
 
 		length = strnlen(current->d_name, NAME_MAX - 1);
 		memcpy(out.entries[i].name, current->d_name, length);
 		out.entries[i].name[length] = '\0';
-
-		wh_print(("File is named [ %s ]\n"), out.entries[i].name);
 
 		switch(current->d_type) {
 			case DT_BLK:	out.entries[i].type = WH_FSYS_BLOCK;	break;

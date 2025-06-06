@@ -57,6 +57,7 @@ set(F95_SOURCES
 )
 
 set(C_SOURCES
+	"src/loader/asset.c"
 	"src/wolfhound.c"
 	"src/debug/signalar.c"
 	"src/game/actions.c"

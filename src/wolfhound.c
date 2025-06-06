@@ -8,6 +8,7 @@
 #include<wh/raylib/raylib.h>
 #include<wh/wrap/unistd.h>
 #include<wh/maths/memory.h>
+#include<wh/loader/asset.h>
 
 #ifndef WH_VULKAN_NOT_FOUND
 	#include<wh/vulkan.h>
@@ -68,6 +69,9 @@ wh_instance_s* _wh_init(_wh_init_params params) {
 	params.ins[0]->stype = WH_STRUCT_TYPE_INSTANCE;
 	params.ins[0]->app_info.name = params.app_name;
 	params.ins[0]->app_info.engine = wh_string_create("wolfhound");
+
+	// loading assets
+	_wh_assets_load("./resources");
 
 	wh_log_info(("Creating window!"));
 	// Creating window in either SDL3 or Raylib

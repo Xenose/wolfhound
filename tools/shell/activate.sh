@@ -14,8 +14,8 @@ else
 	WP=$(dirname "$WP")
 fi
 
+# The tools foolder
 TP="/tools/shell/"
-
 echo "Setting active directory to [ $WP ]"
 
 # Fun

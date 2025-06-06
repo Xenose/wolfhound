@@ -85,9 +85,6 @@ int main(int arc, char* const* arv) {
 		.mode = WH_GRAPHICS_MODE_SDL3
 	);
 
-	wh_dir_s dir = wh_read_dir(nullptr, ".");
-	wh_dir_destroy(nullptr, &dir);
-
 	wh_action_init(ins, 100);
 	u64 gid = wh_action_register(ins, &action_gravity);
 	u64 cid = wh_action_register(ins, &action_collision);
@@ -100,20 +97,6 @@ int main(int arc, char* const* arv) {
 	wh_action_subscribe(ins, wolf, hgid);
 
 	wh_heap_print();
-
-	wh_heap_header_s* scratch = wh_heap_get("scratch");
-
-	wh_heap_init("test1", 100, wh_heap_get("main"));
-	wh_heap_init("test2", 100, wh_heap_get("main"));
-	wh_heap_init("test3", 100, wh_heap_get("main"));
-	wh_heap_init("test4", 100, wh_heap_get("main"));
-	wh_heap_init("test5", 100, wh_heap_get("main"));
-
-	void* pt1 = wh_alloc(scratch, 900);
-	//void* pt2 = wh_mem_realloc(scratch, pt1, 1800);
-	//wh_heap_print_table();
-	wh_heap_print();
-
 	wh_loop(ins, &update, &fixed_update);
 	wh_end(ins);
 go_error_exit:
