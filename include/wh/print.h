@@ -4,6 +4,8 @@
 #include<stdarg.h>
 #include<wh/common.h>
 
+WH_C()
+
 #define WH_PRINT_NO_FLUSH			0x0001
 #define WH_PRINT_ADD_NEW_LINE		0x0002
 
@@ -120,4 +122,5 @@ extern void _wh_print_add_func(_wh_print_add_func_params params);
 #define wh_print_buffer_check(...) _wh_print_buffer_check((_wh_print_buffer_check_params){ __VA_ARGS__ })
 #define wh_print_add_func(...) _wh_print_add_func((_wh_print_add_func_params){ __VA_ARGS__ })
 
+WH_C_END()
 #endif /* _wh_header_print_ */

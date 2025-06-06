@@ -8,7 +8,7 @@
 #include<stdint.h>
 #include<SDL3/SDL.h>
 
-WH_C
+WH_C()
 
 extern wh_instance_s* _wh_init(_wh_init_params params);
 extern void _wh_loop(_wh_loop_params params);
@@ -24,6 +24,6 @@ extern int64_t _wh_end(_wh_end_params params);
 #define wh_loop(...) _wh_loop((_wh_loop_params) { __VA_ARGS__ })
 #define wh_end(...) _wh_end((_wh_end_params) { __VA_ARGS__ })
 
-WH_C_END
+WH_C_END()
 
 #endif /* _header_wolfhound_ */

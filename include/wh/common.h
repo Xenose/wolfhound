@@ -1,17 +1,12 @@
 #ifndef _wh_header_common_
 #define _wh_header_common_
 
+#include<wh/common/prefix.h>
+
 #ifndef __cplusplus
 #include<stdatomic.h>
-
-#define WH_C
-#define WH_C_END
-
 #else
 #include<atomic>
-
-#define WH_C extern "C" {
-#define WH_C_END }
 
 typedef std::atomic_int_least8_t atomic_int_least8_t;
 typedef std::atomic_int_least16_t atomic_int_least16_t;
@@ -26,10 +21,9 @@ typedef std::atomic_uint_least64_t atomic_uint_least64_t;
 typedef std::atomic_flag atomic_flag;
 typedef std::atomic_bool atomic_bool;
 
+#endif /* __cplusplus */
 
-#endif
-
-WH_C
+WH_C()
 
 #include<stdint.h>
 #include<stddef.h>
@@ -91,7 +85,7 @@ enum {
  * | i128     | int128_t   |                                      |
  */
 
-#ifdef _WIN32
+#ifdef _MSVC
 	typedef int64_t	int128_t;
 	typedef uint64_t	uint128_t;
 #else
@@ -165,7 +159,11 @@ typedef struct {
 #define wh_ptr_add(_ptr_, _x_) ((void*)(((char*)_ptr_) + _x_))
 #define wh_ptr_sub(_ptr_, _x_) ((void*)(((char*)_ptr_) - _x_))
 
-#define wh_thread __thread
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+	#define wh_thread _Thread_local
+#else
+	#define wh_thread __thread
+#endif
 
 /* [MD_DOC]
  * wh_for is a macro for a for loop, it will go from 0
@@ -225,6 +223,5 @@ typedef struct {
 	struct_type stype;
 } wh_struct;
 
-WH_C_END
-
+WH_C_END()
 #endif /* _wh_header_common_ */

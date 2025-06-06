@@ -1,4 +1,5 @@
 #include<dirent.h>
+#include<errno.h>
 #include<string.h>
 #include<wh/sys/filesystem.h>
 #include<wh/memory.h>
@@ -6,7 +7,8 @@
 #include<wh/print.h>
 #include<wh/debug.h>
 
-wh_dir_s wh_read_dir(wh_heap_header_s* heap, const char* path) {
+wh_dir_s _wh_read_dir(_wh_dir_read_params params) {
+	u64 error = 0;
 	wh_dir_s out = {
 		.count = 0,
 		.entries = nullptr,
@@ -15,18 +17,27 @@ wh_dir_s wh_read_dir(wh_heap_header_s* heap, const char* path) {
 	struct dirent* current = nullptr;
 	DIR* dir = nullptr;
 
-	if (nullptr == (dir = opendir(path))) {
+	if (nullptr == params.path) {
+		error = EINVAL;
 		goto go_error_exit;
 	}
 
+	if (nullptr == (dir = opendir(params.path))) {
+		error = errno;
+		goto go_error_exit;
+	}
+
+
 	for (current = readdir(dir); nullptr != current; current = readdir(dir)) {
-		if (strcmp(current->d_name, ".") == 0 || strcmp(current->d_name, "..") == 0) {
+		if (!strncmp(current->d_name, ".", NAME_MAX) || !strncmp(current->d_name, "..", NAME_MAX) ) {
+			wh_log_debug(("skipping [ . ] and [ .. ]"));
 			continue;
 		}
+
 		++out.count;
 	}
 
-	out.entries = wh_mem_alloc(heap, out.count * sizeof(wh_dir_entry_s), &out.entries);
+	out.entries = wh_mem_alloc(params.heap, out.count * sizeof(wh_dir_entry_s), &out.entries, .error = &error);
 
 	if (nullptr == out.entries) {
 		goto go_error_exit_close;
@@ -43,7 +54,8 @@ wh_dir_s wh_read_dir(wh_heap_header_s* heap, const char* path) {
 			break;
 		}
 		
-		if (strcmp(current->d_name, ".") == 0 || strcmp(current->d_name, "..") == 0) {
+		if (!strncmp(current->d_name, ".", NAME_MAX) || !strncmp(current->d_name, "..", NAME_MAX) ) {
+			wh_log_debug(("skipping [ . ] and [ .. ]"));
 			continue;
 		}
 
@@ -54,15 +66,16 @@ wh_dir_s wh_read_dir(wh_heap_header_s* heap, const char* path) {
 		wh_print(("File is named [ %s ]\n"), out.entries[i].name);
 
 		switch(current->d_type) {
-			case DT_BLK:
-			case DT_CHR:
-			case DT_DIR:
-			case DT_FIFO:
-			case DT_LNK:
-			case DT_REG:
-			case DT_SOCK:
+			case DT_BLK:	out.entries[i].type = WH_FSYS_BLOCK;	break;
+			case DT_CHR:	out.entries[i].type = WH_FSYS_CHAR;		break;
+			case DT_DIR:	out.entries[i].type = WH_FSYS_DIR;		break;
+			case DT_FIFO:	out.entries[i].type = WH_FSYS_FIFO;		break;
+			case DT_LNK:	out.entries[i].type = WH_FSYS_LINK;		break;
+			case DT_REG:	out.entries[i].type = WH_FSYS_FILE;		break;
+			case DT_SOCK:	out.entries[i].type = WH_FSYS_SOCKET;	break;
+
 			default:
-				out.entries[i].type = 0;
+				out.entries[i].type = WH_FSYS_UNKNOWN;
 		}
 
 		++i;
@@ -70,11 +83,15 @@ wh_dir_s wh_read_dir(wh_heap_header_s* heap, const char* path) {
 		
 	if (nullptr != (current = readdir(dir))) {
 		wh_log_warning(("Directory resized mid read!"));
+		error = ERANGE;
 	}
 
 go_error_exit_close:
 	closedir(dir);
 go_error_exit:
+	if (nullptr != params.error) {
+		*params.error = error;
+	}
 	return out;
 }
 

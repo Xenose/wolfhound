@@ -5,7 +5,18 @@
 #include<wh/common.h>
 #include<wh/types/memory.h>
 
-WH_C
+WH_C()
+
+enum {
+	WH_FSYS_UNKNOWN,
+	WH_FSYS_BLOCK,		// block device
+	WH_FSYS_CHAR,		// Charter device
+	WH_FSYS_DIR,		// directory
+	WH_FSYS_FIFO,		// named pipe
+	WH_FSYS_LINK,		// symbolic link
+	WH_FSYS_FILE,		// normal file
+	WH_FSYS_SOCKET,	// socket
+};
 
 typedef struct {
 	char name[NAME_MAX];
@@ -18,11 +29,16 @@ typedef struct {
 } wh_dir_s;
 
 typedef struct {
+	wh_heap_header_s* heap;
+	const char* path;
+	u64* error;
 } _wh_dir_read_params;
 
 
-wh_dir_s wh_read_dir(wh_heap_header_s* heap, const char* path);
+wh_dir_s _wh_read_dir(_wh_dir_read_params params);
 void wh_dir_destroy(wh_heap_header_s* heap, wh_dir_s* dir);
 
-WH_C_END
+#define wh_read_dir(...) _wh_read_dir((_wh_dir_read_params) { __VA_ARGS__ })
+
+WH_C_END()
 #endif /* _wh_header_sys_filesystem_ */

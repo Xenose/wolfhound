@@ -3,7 +3,7 @@
 
 #include<wh/common.h>
 
-WH_C
+WH_C()
 
 // =====================================================================================
 // Parameter structs
@@ -18,6 +18,6 @@ extern void* _wh_sys_memreq(_wh_sys_memreq_params params);
 
 #define wh_sys_memreq(...)	_wh_sys_memreq((_wh_sys_memreq_params) { __VA_ARGS__ })
 
-WH_C_END
+WH_C_END()
 #endif /* _wh_header_sys_memory_ */
 
