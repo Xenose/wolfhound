@@ -80,6 +80,7 @@ set(C_SOURCES
 	"src/lua/api.c"
 	"src/lua/config.c"
 	"src/lua/helpers.c"
+	"src/lua/api/filesystem.c"
 	"src/images/loader.c"
 	"src/arg_parser.c"
 	"src/config.c"
