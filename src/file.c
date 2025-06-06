@@ -239,14 +239,14 @@ wh_file_s _wh_file_load(_wh_file_load_params params) {
 	windows->h_map = CreateFileMappingA(windows->h_fd, nullptr, PAGE_READONLY, 0, 0, nullptr);
 
 	if (nullptr == windows->h_map) {
-		wh_log_error("Failed to create file mapping [ %s ]", params.path);
+		wh_log_error(("Failed to create file mapping [ %s ]"), params.path);
 		goto go_error_exit_close_fd;
 	}
 
 	file.ptr = MapViewOfFile(windows->h_map, FILE_MAP_READ, 0, 0, 0);
 
 	if (nullptr == file.ptr) {
-		wh_log_error("Failed to map view of file [ %s ]", params.path);
+		wh_log_error(("Failed to map view of file [ %s ]"), params.path);
 		goto go_error_exit_close_mapping;
 	}
 
