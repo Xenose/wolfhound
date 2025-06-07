@@ -4,6 +4,12 @@
 #include<wh/common.h>
 
 typedef struct {
+	char* buffer;
+	u64 buffer_length;
+	u64 offset;
+} _wh_strcat_params;
+
+typedef struct {
 	wh_string_s* str;
 } _wh_string_append_params;
 

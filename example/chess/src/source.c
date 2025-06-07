@@ -69,8 +69,8 @@ int main(int arc, char* const* arv) {
 	wh_sys_program_path(buf, 255);
 	wh_sys_program_path(img, 255);
 
-	strcat(buf, "config.lua");
-	strcat(img, "test.png");
+	wh_strcat((buf, 256, strlen(buf)), "config.lua");
+	wh_strcat((img, 256, strlen(img)), "test.lua");
 
 	wh_file_s imgf = wh_file_load(img);
 	wh_image_decode(imgf);

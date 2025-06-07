@@ -5,6 +5,40 @@
 #include<wh/memory.h>
 #include<wh/debug.h>
 
+char* _wh_strcat(_wh_strcat_params params, ...) {
+	const char* s = nullptr;
+	u64 sl = 0; // string length
+	u64 len = params.buffer_length;
+	va_list list;
+
+	if (0 == params.buffer_length || nullptr == params.buffer) {
+		goto go_exit;
+	}
+
+	params.buffer += params.offset;
+	len -= params.offset;
+
+	va_start(list, params);
+
+	while(nullptr != (s = va_arg(list, const char*))) {
+		sl = strlen(s);
+
+		if (len < sl) {
+			memcpy(params.buffer, s, len);
+			params.buffer += len;
+			break;
+		}
+
+		memcpy(params.buffer, s, sl);
+		params.buffer += sl;
+		len -= sl;
+	}
+
+	va_end(list);
+go_exit:
+	return params.buffer;
+}
+
 wh_string_s _wh_string_append(_wh_string_append_params, ...) {
 	return (wh_string_s) {};
 }
