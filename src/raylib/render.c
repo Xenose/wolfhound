@@ -1,7 +1,7 @@
 //#include<raylib.h>
 #include<wh/raylib/raylib.h>
 
-#include<wh/debug.h>
+#include<wh/debug/logger.h>
 #include<wh/render.h>
 
 i8 _wh_window_create_raylib(_wh_window_create_params params) {

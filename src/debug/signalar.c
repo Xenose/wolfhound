@@ -6,7 +6,7 @@
 
 
 // my code
-#include<wh/debug.h>
+#include<wh/debug/logger.h>
 #include<wh/signalar.h>
 
 #define _pointer_count 20

@@ -2,7 +2,7 @@
 #include<wh/file.h>
 #include<wh/loader/asset.h>
 #include<wh/print.h>
-#include<wh/debug.h>
+#include<wh/debug/logger.h>
 
 #include<lua.h>
 #include<lualib.h>

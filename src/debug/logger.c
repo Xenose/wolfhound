@@ -1,7 +1,7 @@
 #include<stdarg.h>
 
 #include<wh/print.h>
-#include<wh/debug.h>
+#include<wh/debug/logger.h>
 #include<wh/wolfhound.h>
 
 static i64 _wh_log_real_va(_wh_print_params print_params, _wh_log_params params, va_list args);

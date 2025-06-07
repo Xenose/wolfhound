@@ -3,7 +3,7 @@
 [print.h](wh/print.h)
 [core.h](wh/maths/core.h)
 [convert.h](wh/convert.h)
-[debug.h](wh/debug.h)
+[logger.h](wh/debug/logger.h)
 [string.h](wh/string.h)
 [string.h](string.h)
 [stdio.h](stdio.h)

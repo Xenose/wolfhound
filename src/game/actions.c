@@ -1,4 +1,4 @@
-#include<wh/debug.h>
+#include<wh/debug/logger.h>
 #include<wh/game/actions.h>
 
 i8 _wh_action_init(_wh_action_init_params params) {

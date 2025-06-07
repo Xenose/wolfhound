@@ -1,3 +1,3 @@
 [library.h](wh/sys/library.h)
 [raylib.h](wh/raylib/raylib.h)
-[debug.h](wh/debug.h)
+[logger.h](wh/debug/logger.h)

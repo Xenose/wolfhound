@@ -4,7 +4,7 @@
 #include<wh/memory.h>
 
 #include<wh/print.h>
-#include<wh/debug.h>
+#include<wh/debug/logger.h>
 
 #ifndef _WIN32
 

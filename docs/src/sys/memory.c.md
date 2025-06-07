@@ -1,4 +1,4 @@
-[debug.h](wh/debug.h)
+[logger.h](wh/debug/logger.h)
 [memory.h](wh/sys/memory.h)
 [errno.h](errno.h)
 [mman.h](sys/mman.h)

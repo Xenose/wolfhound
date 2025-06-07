@@ -1,5 +1,5 @@
 #include<wh/memory/freelist.h>
-#include<wh/debug.h>
+#include<wh/debug/logger.h>
 
 #include<string.h>
 

@@ -61,27 +61,27 @@ wh-build	# compiles code.
 | unwind  |                   | NO(but useful) | Used to backtrace Segfaults from the signal handler.                      |
 
 ## Editors / IDE
-| Name                | Status    | Platform       | Description                                                |
-| ------------------- | --------- | -------------- | ---------------------------------------------------------- |
-| NeoVim              | Working   | Linux, Windows | Main editor for the project.                               |
-| Visual Studio Code  | Working   | Linux, Windows |                                                            |
-| Visual Studio       | Broken    | Windows        | Will not compile with MSCV and headers are not showing up. |
+| Name                | Status    | Platform       | Description                                                        |
+| ------------------- | --------- | -------------- | ------------------------------------------------------------------ |
+| NeoVim              | Working   | Linux, Windows | Main editor for the project.                                       |
+| Visual Studio Code  | Working   | Linux, Windows |                                                                    |
+| Visual Studio       | Broken    | Windows        | Will not compile with MSCV(no C32) and headers are not showing up. |
 
 ## Stats
 <!--python-stats-start-->
 
 |  Language       | File Count | Lines of Code | Percentage |
 | --------------- | ---------- | ------------- | ---------- |
-| C               | 97         | 3994          | 77.34%     |
-| Markdown        | 57         | 499           | 9.66%      |
-| CMake           | 10         | 204           | 3.95%      |
-| Bourne Shell    | 12         | 165           | 3.20%      |
-| Python          | 2          | 155           | 3.00%      |
-| Lua             | 7          | 56            | 1.08%      |
-| Fortran 95      | 1          | 32            | 0.62%      |
-| Dockerfile      | 1          | 25            | 0.48%      |
-| DOS Batch       | 4          | 19            | 0.37%      |
-| C++             | 2          | 15            | 0.29%      |
-| Summary         | 193        | 5164          | 100.00%    |
+| C               | 107        | 4271          | 74.93%     |
+| Markdown        | 82         | 661           | 11.60%     |
+| CMake           | 11         | 218           | 3.82%      |
+| Bourne Shell    | 13         | 208           | 3.65%      |
+| Python          | 2          | 155           | 2.72%      |
+| Lua             | 7          | 57            | 1.00%      |
+| C++             | 5          | 53            | 0.93%      |
+| Fortran 95      | 1          | 32            | 0.56%      |
+| Dockerfile      | 1          | 25            | 0.44%      |
+| DOS Batch       | 4          | 20            | 0.35%      |
+| Summary         | 233        | 5700          | 100.00%    |
 
 <!--python-stats-end-->

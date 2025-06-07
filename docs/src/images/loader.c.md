@@ -1,3 +1,3 @@
-[debug.h](wh/debug.h)
+[logger.h](wh/debug/logger.h)
 [loader.h](wh/images/loader.h)
 [file.h](wh/file.h)

@@ -1,2 +1,2 @@
-[debug.h](wh/debug.h)
+[logger.h](wh/debug/logger.h)
 [raylib.h](wh/raylib/raylib.h)

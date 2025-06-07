@@ -2,7 +2,7 @@
 #include<lauxlib.h>
 #include<stdarg.h>
 
-#include<wh/debug.h>
+#include<wh/debug/logger.h>
 #include<wh/print.h>
 #include<wh/lua/helpers.h>
 

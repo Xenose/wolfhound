@@ -1,4 +1,4 @@
-#include<wh/debug.h>
+#include<wh/debug/logger.h>
 #include<wh/raylib/raylib.h>
 
 void _wh_log_raylib(int msgType, const char *text, va_list args) {

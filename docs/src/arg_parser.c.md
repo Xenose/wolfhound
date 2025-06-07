@@ -5,6 +5,6 @@
 [print.h](wh/print.h)
 [arg_parser.h](wh/arg_parser.h)
 [core.h](wh/maths/core.h)
-[debug.h](wh/debug.h)
+[logger.h](wh/debug/logger.h)
 [file.h](wh/file.h)
 [config.h](wh/lua/config.h)

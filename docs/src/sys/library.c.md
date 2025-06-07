@@ -1,4 +1,4 @@
-[debug.h](wh/debug.h)
+[logger.h](wh/debug/logger.h)
 [library.h](wh/sys/library.h)
 [string.h](string.h)
 [dirent.h](dirent.h)

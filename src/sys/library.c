@@ -1,6 +1,6 @@
 
 #include "wh/types/library.h"
-#include<wh/debug.h>
+#include<wh/debug/logger.h>
 #include<wh/sys/library.h>
 
 #ifdef __linux__

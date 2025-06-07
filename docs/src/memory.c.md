@@ -3,7 +3,7 @@
 [stdatomic.h](stdatomic.h)
 [errno.h](errno.h)
 [stdio.h](stdio.h)
-[debug.h](wh/debug.h)
+[logger.h](wh/debug/logger.h)
 [memory.h](wh/memory.h)
 [memory.h](wh/sys/memory.h)
 [memory.h](wh/maths/memory.h)

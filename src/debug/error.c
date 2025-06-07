@@ -1,5 +1,5 @@
 #include<errno.h>
-#include<wh/error.h>
+#include<wh/debug/error.h>
 
 #ifndef WH_VULKAN_NOT_FOUND
 	#include<vulkan/vulkan.h>

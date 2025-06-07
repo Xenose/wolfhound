@@ -1,7 +1,12 @@
+[limits.h](limits.h)
+[prefix.h](wh/common/prefix.h)
+[bytes.h](wh/common/bytes.h)
+[enum.h](wh/common/enum.h)
+[macros.h](wh/common/macros.h)
+[atomic.h](wh/wrap/atomic.h)
 [stdint.h](stdint.h)
 [stddef.h](stddef.h)
 [stdbool.h](stdbool.h)
-[stdatomic.h](stdatomic.h)
 [types.h](sys/types.h)
 
 # Integer Types
@@ -25,6 +30,3 @@ and instead uses length to keep track of its length.
 | str      | char*    | This variable is for accessing the string directly, it shares memory with data and ptr.      |
 | ptr      | void*    | This variable is for accessing the pointer directly, it shares memory with str and data.     |
 | length   | uint64_t | The length of the stored data.                                                               |
-
-wh_for is a macro for a for loop, it will go from 0
-to the given end point.

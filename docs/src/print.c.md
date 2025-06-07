@@ -7,6 +7,6 @@
 [string.h](wh/wrap/string.h)
 [convert.h](wh/convert.h)
 [memory.h](wh/memory.h)
-[error.h](wh/error.h)
+[error.h](wh/debug/error.h)
 [print.h](wh/print.h)
 [core.h](wh/maths/core.h)

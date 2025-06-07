@@ -1,4 +1,4 @@
-#include<wh/debug.h>
+#include<wh/debug/logger.h>
 #include<wh/sys/memory.h>
 
 #ifdef __unix__

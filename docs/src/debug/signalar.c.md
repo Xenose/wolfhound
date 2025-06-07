@@ -2,7 +2,7 @@
 [string.h](string.h)
 [errno.h](errno.h)
 [stdio.h](stdio.h)
-[debug.h](wh/debug.h)
+[logger.h](wh/debug/logger.h)
 [signalar.h](wh/signalar.h)
 [ucontext.h](ucontext.h)
 [execinfo.h](execinfo.h)

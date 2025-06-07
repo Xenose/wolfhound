@@ -1,4 +1,4 @@
-[debug.h](wh/debug.h)
+[logger.h](wh/debug/logger.h)
 [memory.h](wh/memory.h)
 [wolfhound.h](wh/wolfhound.h)
 [string.h](wh/string.h)
@@ -8,6 +8,7 @@
 [raylib.h](wh/raylib/raylib.h)
 [unistd.h](wh/wrap/unistd.h)
 [memory.h](wh/maths/memory.h)
+[asset.h](wh/loader/asset.h)
 [vulkan.h](wh/vulkan.h)
 
 The internal game engine loop.

@@ -11,7 +11,7 @@
 
 #include<wh/convert.h>
 #include<wh/memory.h>
-#include<wh/error.h>
+#include<wh/debug/error.h>
 #include<wh/print.h>
 #include<wh/maths/core.h>
 

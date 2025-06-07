@@ -1,4 +1,4 @@
-#include<wh/debug.h>
+#include<wh/debug/logger.h>
 #include<wh/memory/arena.h>
 
 void* _wh_mem_alloc_arena(_wh_mem_alloc_params* params)  {

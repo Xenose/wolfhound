@@ -6,7 +6,7 @@
 #include<stdio.h>
 
 // my stuff
-#include<wh/debug.h>
+#include<wh/debug/logger.h>
 #include<wh/memory.h>
 #include<wh/sys/memory.h>
 #include<wh/maths/memory.h>

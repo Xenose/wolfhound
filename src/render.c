@@ -1,4 +1,4 @@
-#include<wh/debug.h>
+#include<wh/debug/logger.h>
 #include<wh/render.h>
 
 extern i8 _wh_window_create_sdl3(_wh_window_create_params params);

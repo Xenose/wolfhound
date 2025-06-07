@@ -1,4 +1,4 @@
-#include<wh/debug.h>
+#include<wh/debug/logger.h>
 #include<wh/memory.h>
 #include<wh/wolfhound.h>
 #include<wh/string.h>

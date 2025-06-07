@@ -3,7 +3,7 @@
 #include<wh/print.h>
 #include<wh/maths/core.h>
 #include<wh/convert.h>
-#include<wh/debug.h>
+#include<wh/debug/logger.h>
 #include<wh/string.h>
 
 // temp

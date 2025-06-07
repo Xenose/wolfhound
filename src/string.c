@@ -3,7 +3,7 @@
 
 #include<wh/string.h>
 #include<wh/memory.h>
-#include<wh/debug.h>
+#include<wh/debug/logger.h>
 
 char* _wh_strcat(_wh_strcat_params params, ...) {
 	const char* s = nullptr;

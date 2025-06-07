@@ -1,6 +1,7 @@
 [fcntl.h](fcntl.h)
 [file.h](wh/file.h)
-[debug.h](wh/debug.h)
+[logger.h](wh/debug/logger.h)
+[core.h](wh/memory/core.h)
 [errno.h](errno.h)
 [string.h](string.h)
 [unistd.h](unistd.h)

@@ -1,6 +1,6 @@
 #include<fcntl.h>
 #include<wh/file.h>
-#include<wh/debug.h>
+#include<wh/debug/logger.h>
 #include<wh/memory/core.h>
 
 #include<errno.h>

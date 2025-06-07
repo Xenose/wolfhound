@@ -1,6 +1,6 @@
 #include<wh/sys/library.h>
 #include<wh/raylib/raylib.h>
-#include<wh/debug.h>
+#include<wh/debug/logger.h>
 
 raylib_l raylib = { 0 };
 
