@@ -71,7 +71,7 @@ extern i32 wh_mem_leak_count(void);
 
 /* [MD_DOC]
  */
-#define wh_mem_realloc(...) _wh_realloc((_wh_mem_realloc_params) { __VA_ARGS__ })
+#define wh_realloc(...) _wh_realloc((_wh_mem_realloc_params) { __VA_ARGS__ })
 
 /* [MD_DOC]
  */

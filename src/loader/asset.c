@@ -4,13 +4,12 @@
 #include<wh/print.h>
 #include<wh/debug/logger.h>
 #include<wh/lua/helpers.h>
+#include<wh/lua/api.h>
 #include<wh/string.h>
 
 #include<lua.h>
 #include<lualib.h>
 #include<lauxlib.h>
-
-#include<string.h>
 
 typedef struct {
 	struct_type stype;
@@ -61,6 +60,8 @@ i64 _wh_assets_load_inner(lua_State* ls, const char* path) {
 					(const char*[]) { "WH", "asset", "type", nullptr }, WH_TYPE_I64, &asset.stype
 				);
 
+				wh_log_debug(("Asset type set to %d"), asset.stype);
+
 				wh_file_unload(file);
 				break;
 		}
@@ -73,7 +74,8 @@ go_error_exit:
 i64 _wh_assets_load(const char* path) {
 	lua_State* ls = luaL_newstate();
 	luaL_openlibs(ls);
-
+	
+	_wh_lua_expose_api(ls);
 	_wh_assets_load_inner(ls, path);
 
 	lua_close(ls);

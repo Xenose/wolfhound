@@ -24,9 +24,10 @@ typedef struct {
 } _hw_print_func;
 
 typedef struct {
-	atomic_int_least64_t count;
-	atomic_int_least64_t slots;
-	_Atomic(_Atomic(_hw_print_func)*) table;
+	atomic_flag lock;
+	u64 count;
+	u64 slots;
+	_hw_print_func* table;
 } _hw_print_func_table;
 
 // =======================================================================================================
@@ -51,13 +52,15 @@ static void _wh_print_call_func(wh_print_data_s* data, void* ptr, char* key_star
 		goto go_error_exit_no_end_key;
 	}
 
-	key = wh_hash_simple(key_start, atomic_load(&_wh_func_table.slots), key_end - key_start);
+	wh_spin_lock(&_wh_func_table.lock) {
+		key = wh_hash_simple(key_start, _wh_func_table.slots, key_end - key_start);
 
-	if (-1 == key) {
-		goto go_error_exit;
+		if (-1 == key) {
+			wh_spin_lock_goto(&_wh_func_table.lock, go_error_exit);
+		}
+
+		func = _wh_func_table.table[key].func;
 	}
-	
-	//func = atomic_load(&atomic_load(&_wh_func_table.table)[key]).func;
 
 	if (nullptr != func) {
 		func(data, ptr);
@@ -500,24 +503,26 @@ i64 _wh_print(_wh_print_params params, ...) {
 void _wh_print_add_func(_wh_print_add_func_params params) {
 	i64 key = 0;
 
-	if (0 == atomic_load(&_wh_func_table.slots)) {
-		//atomic_store(&_wh_func_table.table, wh_mem(sizeof(void*) * 16, .flags = WH_MEM_ZERO));
-		//atomic_store(&_wh_func_table.slots, 16);
+	wh_spin_lock(&_wh_func_table.lock){
+		if (0 == _wh_func_table.slots) {
+			_wh_func_table.table = wh_mem(sizeof(void*) * 16, .flags = WH_MEM_ZERO);
+			_wh_func_table.slots = 16;
+		}
 
-		if (nullptr == atomic_load(&_wh_func_table.table)) {
+		if (nullptr == _wh_func_table.table) {
 			// TODO handle error
 		}
-	}
+		
+		key = wh_hash_simple(params.key, _wh_func_table.slots);
 
-	key = wh_hash_simple(params.key, atomic_load(&_wh_func_table.slots));
+		if (nullptr != params.func) {
+			if (nullptr != _wh_func_table.table[key].func) {
+				// TODO resize array and handle moving of pointer
+				key = wh_hash_simple(params.key, _wh_func_table.slots);
+			}
 
-	if (nullptr != params.func) {
-		if (nullptr != &atomic_load(&_wh_func_table.table)[key]) {
-			// TODO resize array and handle moving of pointer
-			key = wh_hash_simple(params.key, atomic_load(&_wh_func_table.slots));
+			_wh_func_table.table[key] = (_hw_print_func) { .func = params.func };
+			_wh_func_table.count += 1;
 		}
-	
-		//atomic_store(&(_wh_func_table.table[key]), (_hw_print_func) { .func = params.func } );
-		//atomic_fetch_add(&_wh_func_table.count, 1);
 	}
 }

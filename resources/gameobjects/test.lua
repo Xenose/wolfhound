@@ -2,17 +2,18 @@
 print("Hello from test asset!")
 
 NAME = "test"
-TEXTURE = "test.png"
-RENDERER = "line"
+WH.asset.type = WH_STRUCT_TYPE_IMG_PNG
+-- TEXTURE = "test.png"
+-- RENDERER = "line"
 
-ACTIONS = {
-	"gravity"
-}
+--ACTIONS = {
+--	"gravity"
+--}
 
-MODEL = {
-	0, 0, 1, 0, 1, 1, 0, 1
-}
+--MODEL = {
+--	0, 0, 1, 0, 1, 1, 0, 1
+--}
 
-POS_V4 = {
-	0, 0, 0, 0
-}
+--POSITIONS_V4 = {
+--	0, 0, 0, 0
+--}
