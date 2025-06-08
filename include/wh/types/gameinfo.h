@@ -28,6 +28,7 @@ typedef struct {
 typedef struct {
 	wh_struct stype;
 	u64 type;
+	atomic_flag lock;
 	void* start;
 	void* end;
 } wh_data_header_s;
@@ -36,7 +37,7 @@ typedef struct {
 	wh_struct stype;
 	u64 id;
 	wh_string_s name;
-	wh_data_header_s* data;
+	void* data;
 } wh_entity_s;
 
 typedef struct _wh_action_s {

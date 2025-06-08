@@ -3,6 +3,8 @@
 #include<wh/loader/asset.h>
 #include<wh/print.h>
 #include<wh/debug/logger.h>
+#include<wh/lua/helpers.h>
+#include<wh/string.h>
 
 #include<lua.h>
 #include<lualib.h>
@@ -11,6 +13,7 @@
 #include<string.h>
 
 typedef struct {
+	struct_type stype;
 	wh_string_s name;
 } wh_asset_s;
 
@@ -20,22 +23,17 @@ i64 _wh_assets_load_inner(lua_State* ls, const char* path) {
 	wh_dir_s dir = wh_read_dir(nullptr, path);
 
 	wh_for(i64, i, dir.count) {
+		wh_asset_s asset = { 0 };
 		wh_print(("%s\n"), dir.entries[i].name);
 
 		switch(dir.entries[i].type) {
 			case WH_FSYS_DIR:
-				memcpy(p, path, strlen(path));
-				strcat(p, "/");
-				strcat(p, dir.entries[i].name);
-
+				wh_strcat((p, 1023), path, "/", dir.entries[i].name);
 				_wh_assets_load(p);
 				break;
 			case WH_FSYS_FILE:
+				wh_strcat((p, 1024), path, "/", dir.entries[i].name);
 
-				memcpy(p, path, strlen(path));
-				strcat(p, "/");
-				strcat(p, dir.entries[i].name);
-				
 				wh_log_debug(("Loading asset [ %s ]"), p);
 				file = wh_file_load(p);
 
@@ -43,6 +41,11 @@ i64 _wh_assets_load_inner(lua_State* ls, const char* path) {
 					wh_log_warning(("No file fund at [ %s ]"), path);
 					continue;
 				}
+
+				wh_lua_add_values(
+					ls,
+					(const char*[]) { "WH", "asset", "type", nullptr }, WH_TYPE_I64, asset.stype
+				);
 
 				// Here we load the string and use lua_pcall for run the code
 				if (LUA_OK == luaL_loadstring(ls, file.str)) {
@@ -52,6 +55,11 @@ i64 _wh_assets_load_inner(lua_State* ls, const char* path) {
 						lua_pop(ls, lua_gettop(ls));
 					}
 				}
+
+				wh_lua_get_values(
+					ls,
+					(const char*[]) { "WH", "asset", "type", nullptr }, WH_TYPE_I64, &asset.stype
+				);
 
 				wh_file_unload(file);
 				break;
