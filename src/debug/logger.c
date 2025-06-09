@@ -43,13 +43,13 @@ static i64 _wh_log_dummy_va(_wh_print_params print_params, _wh_log_params params
 
 static i64 _wh_log_real_va(_wh_print_params print_params, _wh_log_params params, va_list args) {
 	u64 used = wh_print((
-		"[ %s ] \033[90m%s::%d in %s -->\033[0m "
+		"[ %s ] \033[90m%s::%d::%s -->\033[0m "
 		, 2, _buffer, 8096, 0, WH_PRINT_NO_FLUSH),
 
 		params.level,
-		params.func,
+		params.file,
 		params.line,
-		params.file
+		params.func
 	);
 
 	print_params.fd = 2;

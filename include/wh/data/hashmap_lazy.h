@@ -6,9 +6,7 @@
 
 typedef struct {
 	struct_type stype;
-	
 	const char* key;
-	void* data;
 } wh_hashmap_lazy_entry_s;
 
 typedef struct {
@@ -22,6 +20,7 @@ typedef struct {
 typedef struct {
 	wh_hashmap_lazy_s* map;
 	const char* key;
+	void* data;
 } _wh_hashmap_lazy_insert_params;
 
 
