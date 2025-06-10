@@ -23,9 +23,16 @@ typedef struct {
 	void* data;
 } _wh_hashmap_lazy_insert_params;
 
+typedef struct {
+	wh_hashmap_lazy_s* map;
+	const char* key;
+} _wh_hashmap_lazy_get_params;
 
-extern void _wh_hashmap_lazy_insert(_wh_hashmap_lazy_insert_params params, ...);
+extern wh_hashmap_lazy_s _wh_hashmap_lazy_create(wh_heap_header_s* heap, u64 count, u64 data_size);
+extern void _wh_hashmap_lazy_insert(_wh_hashmap_lazy_insert_params params);
+extern void* _wh_hashmap_lazy_get(_wh_hashmap_lazy_get_params params);
 
-#define wh_hashmap_lazy_insert(x, ...) _wh__hashmap_lazy_insert((_wh_hashmap_lazy_insert_params) { WH_VA_ARGS x }, __VA_ARGS__)
+#define wh_hashmap_lazy_insert(...) _wh_hashmap_lazy_insert((_wh_hashmap_lazy_insert_params) { __VA_ARGS__ })
+#define wh_hashmap_lazy_get(_type_, ...) (_type_)_wh_hashmap_lazy_get((_wh_hashmap_lazy_get_params) { __VA_ARGS__ })
 
 #endif /* _wh_header_data_hashmap_lazy_ */

@@ -18,6 +18,7 @@
 #include<wh/file.h>
 #include<wh/images/loader.h>
 #include<wh/sys/filesystem.h>
+#include<wh/data/hashmap_lazy.h>
 
 #include<stdio.h>
 
@@ -84,6 +85,11 @@ int main(int arc, char* const* arv) {
 		(u8*)buf,											// application config
 		.mode = WH_GRAPHICS_MODE_SDL3
 	);
+
+	wh_hashmap_lazy_s hml = _wh_hashmap_lazy_create(nullptr, 10, sizeof(int));
+
+	wh_hashmap_lazy_insert(&hml, "test", (int[]){ 9 });
+	printf("Value is [ %i ]\n", *wh_hashmap_lazy_get(int*, &hml, "test"));
 
 	wh_action_init(ins, 100);
 	u64 gid = wh_action_register(ins, &action_gravity);
