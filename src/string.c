@@ -20,7 +20,7 @@ char* _wh_strcat(_wh_strcat_params params, ...) {
 
 	va_start(list, params);
 
-	while(nullptr != (s = va_arg(list, const char*))) {
+	while(WH_PTR_MAX != (s = va_arg(list, const char*))) {
 		sl = strlen(s);
 
 		if (len < sl) {

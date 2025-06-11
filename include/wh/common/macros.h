@@ -5,6 +5,7 @@
 
 WH_C()
 
+#define WH_PTR_MAX ((void*)-1)
 #define WH_VA_ARGS(...) __VA_ARGS__
 
 #define wh_ptr_assign(_ptr_, _value_) if (nullptr != _ptr_) *_ptr_ = _value_
