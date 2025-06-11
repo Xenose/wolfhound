@@ -259,6 +259,11 @@ void* _wh_alloc(_wh_mem_alloc_params params) {
 			break;
 	}
 
+	if (0 != params.flags) {
+		if (WH_MEM_ZERO == params.flags) {
+			memset(mem, 0, params.bytes);
+		}
+	}
 	return mem;
 }
 

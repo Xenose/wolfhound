@@ -1,12 +1,9 @@
-#ifndef _header_wh_
-#define _header_wh_
+#ifndef _wh_header_wh_
+#define _wh_header_wh_
 
 #include<wh/common.h>
 #include<wh/memory.h>
 #include<wh/params/wolfhound.h>
-
-#include<stdint.h>
-#include<SDL3/SDL.h>
 
 WH_C()
 
@@ -22,12 +19,13 @@ extern int64_t _wh_end(_wh_end_params params);
  */
 #define wh_init(...) _wh_init((_wh_init_params) { __VA_ARGS__ })
 
-
+#ifndef __cplusplus
 /* [MD_DOC]
  */
 #define wh_loop(...) _wh_loop((_wh_loop_params) { __VA_ARGS__ })
 #define wh_end(...) _wh_end((_wh_end_params) { __VA_ARGS__ })
+#endif /* __cplusplus */
 
 WH_C_END()
 
-#endif /* _header_wolfhound_ */
+#endif /* _wh_header_wh_ */

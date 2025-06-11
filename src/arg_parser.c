@@ -10,6 +10,7 @@
 #include<wh/debug/logger.h>
 #include<wh/file.h>
 #include<wh/lua/config.h>
+#include<wh/string.h>
 
 
 i64 _wh_args_parse(_wh_args_parse_params params) {
@@ -22,11 +23,7 @@ i64 _wh_args_parse(_wh_args_parse_params params) {
 
 		if ('-' == params.arv[i][0]) {
 			if ('-' == params.arv[i][1]) {
-				memset(command, 0, 256);
-				memcpy(command, "commands/", 9);
-				strcat(command, &in[2]);
-				strcat(command, ".lua");
-
+				wh_strcat((command, 255), "commands/", &in[2], ".lua");
 				wh_log_debug(("calling command [ %s ]"), command);
 
 				wh_file_s file = wh_file_load(command);

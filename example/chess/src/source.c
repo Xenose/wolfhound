@@ -89,7 +89,16 @@ int main(int arc, char* const* arv) {
 	wh_hashmap_lazy_s hml = _wh_hashmap_lazy_create(nullptr, 10, sizeof(int));
 
 	wh_hashmap_lazy_insert(&hml, "test", (int[]){ 9 });
+	wh_hashmap_lazy_insert(&hml, "test_from_me", (int[]){ 19 });
+	wh_hashmap_lazy_insert(&hml, "test2", (int[]){ 8 });
+	wh_hashmap_lazy_insert(&hml, "test3", (int[]){ 200 });
+	wh_hashmap_lazy_insert(&hml, "test444", (int[]){ 900 });
+	
 	printf("Value is [ %i ]\n", *wh_hashmap_lazy_get(int*, &hml, "test"));
+	printf("Value is [ %i ]\n", *wh_hashmap_lazy_get(int*, &hml, "test_from_me"));
+	printf("Value is [ %i ]\n", *wh_hashmap_lazy_get(int*, &hml, "test2"));
+	printf("Value is [ %i ]\n", *wh_hashmap_lazy_get(int*, &hml, "test3"));
+	printf("Value is [ %i ]\n", *wh_hashmap_lazy_get(int*, &hml, "test444"));
 
 	wh_action_init(ins, 100);
 	u64 gid = wh_action_register(ins, &action_gravity);

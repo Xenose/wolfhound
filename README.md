@@ -72,16 +72,17 @@ wh-build	# compiles code.
 
 |  Language       | File Count | Lines of Code | Percentage |
 | --------------- | ---------- | ------------- | ---------- |
-| C               | 109        | 4367          | 74.75%     |
-| Markdown        | 97         | 713           | 12.20%     |
-| CMake           | 11         | 222           | 3.80%      |
-| Bourne Shell    | 13         | 208           | 3.56%      |
-| Python          | 2          | 155           | 2.65%      |
-| C++             | 5          | 53            | 0.91%      |
-| Lua             | 7          | 47            | 0.80%      |
-| Fortran 95      | 1          | 32            | 0.55%      |
-| Dockerfile      | 1          | 25            | 0.43%      |
+| C               | 109        | 4442          | 75.02%     |
+| Markdown        | 97         | 713           | 12.04%     |
+| CMake           | 11         | 223           | 3.77%      |
+| Bourne Shell    | 13         | 208           | 3.51%      |
+| Python          | 2          | 155           | 2.62%      |
+| C++             | 5          | 53            | 0.90%      |
+| Lua             | 7          | 47            | 0.79%      |
+| Fortran 95      | 1          | 32            | 0.54%      |
+| Dockerfile      | 1          | 25            | 0.42%      |
 | DOS Batch       | 4          | 20            | 0.34%      |
-| Summary         | 250        | 5842          | 100.00%    |
+| INI             | 1          | 3             | 0.05%      |
+| Summary         | 251        | 5921          | 100.00%    |
 
 <!--python-stats-end-->
