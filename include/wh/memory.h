@@ -25,6 +25,8 @@ extern void _wh_heap_print(_wh_heap_print_params params);
 extern void* _wh_mem(_wh_mem_params params);
 extern i32 wh_mem_leak_count(void);
 
+#ifndef __cplusplu
+
 /* [MD_DOC]
  *
  * ## wh_heap_init
@@ -76,6 +78,8 @@ extern i32 wh_mem_leak_count(void);
 /* [MD_DOC]
  */
 #define wh_mem(...) _wh_mem((_wh_mem_params){ __VA_ARGS__ })
+
+#endif /* __cplusplus */
 
 WH_C_END()
 #endif /* _wh_memory_ */

@@ -101,6 +101,7 @@ set(C_SOURCES
 
 set(CXX_SOURCES
 	"src/cpp/wolfhound.cpp"
+	"src/cpp/print.cpp"
 )
 
 SET(VULKAN_SOURCES
