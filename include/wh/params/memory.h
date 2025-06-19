@@ -22,6 +22,10 @@ typedef struct {
 	void* owner;
 	u64 flags;
 	u64* error;
+
+	// debug info
+	u64 line;
+	const char* file;
 } _wh_mem_alloc_params;
 
 typedef struct {

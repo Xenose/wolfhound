@@ -25,6 +25,14 @@ WH_C()
 #define wh_spin_lock_return(_x_, _return_)	atomic_flag_clear(_x_);	return _return_
 #define wh_spin_lock_goto(_x_, _goto_)			atomic_flag_clear(_x_);	goto _goto_
 
+
+#define wh_spinlock(_x_) do {} while (atomic_flag_test_and_set(_x_)); for (i8 _lock_##__LINE__ = 0; 1 != _lock_##__LINE__; _lock_##__LINE__++, atomic_flag_clear(_x_))
+
+#define wh_spinlock_break(_x_)					atomic_flag_clear(_x_); break
+#define wh_spinlock_return(_x_, ...)		atomic_flag_clear(_x_);	return __VA_ARGS__
+#define wh_spinlock_goto(_x_, _goto_)			atomic_flag_clear(_x_);	goto _goto_
+
+
 #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
 	#define wh_thread _Thread_local
 #else
