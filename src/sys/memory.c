@@ -24,7 +24,13 @@ void* _wh_sys_memreq(_wh_sys_memreq_params params) {
 go_error_exit:
 	return nullptr;
 }
-	
+
+void _wh_sys_memrel(_wh_sys_memrel_params params) {
+	if (-1 == munmap(params.ptr, params.len)) {
+		wh_log_critical(("$n value [ ptr : %lu, len : %lu"), 
+						errno, params.ptr, params.len);
+	}
+}
 
 #elif defined(_WIN64)
 #include<windows.h>
@@ -43,6 +49,13 @@ void* _wh_sys_memreq(_wh_sys_memreq_params params) {
 	return mem;
 go_error_exit:
 	return nullptr;
+}
+
+void _wh_sys_memrel(_wh_sys_memrel_params params) {
+	if (0 == VirtualFree(params.ptr, 0, MEM_RELEASE)) {
+		wh_log_critical(("EINVAL value [ ptr : %lu, len : %lu"), 
+						params.ptr, params.len);
+	}
 }
 
 #endif /* system dependent code */

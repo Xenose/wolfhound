@@ -230,7 +230,7 @@ wh_heap_header_s* wh_heap_insert(const char* name, wh_heap_header_s* header) {
 				}
 			}
 
-			// TODO free memory
+			wh_sys_memrel(_table.entries);
 			_table.entries = new_entries;
 			_table.count = new_count;
 		}
