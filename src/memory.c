@@ -83,6 +83,7 @@ void _wh_mem_insert_real(void* owner, void* ptr, wh_heap_header_s* heap, u64 lin
 
 	if (nullptr == owner) {
 		wh_log_critical(("Untracked pointer at [ %s:%u ]!"), file, line);
+		return;
 	}
 
 	wh_spinlock(&_list.lock) {
@@ -97,7 +98,6 @@ void _wh_mem_insert_real(void* owner, void* ptr, wh_heap_header_s* heap, u64 lin
 
 			last = _list.last;
 			last->ptr = ptr;
-
 		} else {
 			last = _list.last;
 			last->next = calloc(1, sizeof(_wh_heap_list_entry_s));
@@ -110,13 +110,16 @@ void _wh_mem_insert_real(void* owner, void* ptr, wh_heap_header_s* heap, u64 lin
 			// shuffling the nodes
 			last->next->previous = last;
 			_list.last = last->next;
+			
 			last = last->next;
 			
 		}
 
 		last->ptr = ptr;
 		last->heap = heap;
-		owners = realloc(last->owners, sizeof(_wh_heap_ptr_pair_s) * (last->owner_count + 1));
+		last->owner_count = 0;
+
+		owners = realloc(last->owners, sizeof(_wh_heap_ptr_pair_s));
 
 		if (nullptr == owners) {
 			wh_log_error(("Failed to allocate memory"));
@@ -128,14 +131,50 @@ void _wh_mem_insert_real(void* owner, void* ptr, wh_heap_header_s* heap, u64 lin
 		owners[last->owner_count].owner = owner;
 		owners[last->owner_count].line = line;
 		owners[last->owner_count].file = file;
-
-		last->owner_count += 1;
+		last->owner_count = 1;
 	}
 
 	wh_log_debug(("inserted new node!"));
 }
 
 void _wh_mem_remove(void* owner, void* ptr) {
+	_wh_heap_list_entry_s* current = _list.nodes;
+
+	wh_spinlock(&_list.lock) {
+		while (ptr != current->ptr) {
+			if (nullptr != current) {
+				wh_spinlock_return(&_list.lock);
+			}
+			current = current->next;
+		}
+
+		switch (current->owner_count) {
+			case 0:
+				wh_log_debug(("Ereasing tracked pointer!"));
+
+				current->previous = current->next;
+				free(current->owners);
+				free(current);
+				break;
+
+			default:
+				--current->owner_count;
+				wh_log_debug(("Clearing owner!"));
+				wh_log_debug(("hello... %u"), current->owner_count);
+
+				wh_for(u64, i, current->owner_count) {
+					if (nullptr == owner) {
+						continue;
+					}
+
+					if (owner == current->owners[i].owner) {
+						current->owners[i].owner = current->owners[current->owner_count].owner;
+						current->owners[i].file = current->owners[current->owner_count].file;
+						current->owners[i].line = current->owners[current->owner_count].line;
+					}
+				}
+		}
+	}
 }
 
 void _wh_mem_scan(void) {
@@ -437,6 +476,8 @@ void _wh_free(_wh_mem_free_params params) {
 			}
 		break;
 	}
+	
+	_wh_mem_remove(params.owner, params.ptr);
 }
 
 void* _wh_realloc(_wh_mem_realloc_params params) {

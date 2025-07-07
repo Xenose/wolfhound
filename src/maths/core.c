@@ -35,22 +35,3 @@ i64 _wh_intpow(_wh_intpow_params params) {
 
 	return power;
 }
-
-i64 _wh_hash_simple(_wh_hash_simple_params params) {
-	i64 key = -1;
-
-	if (NULL == params.str || 0 >= params.limit) {
-		goto go_error_exit;
-	}
-
-	if (0 >= params.length) {
-		params.length = strlen(params.str);
-	}
-
-	for (u64 i = 0; i < params.length; i++) {
-		key = (key + ((params.str[i] * 7) * (1 + i))) % params.limit;
-	}
-
-go_error_exit:
-	return key;
-}

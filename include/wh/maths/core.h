@@ -11,6 +11,17 @@ extern i64 _wh_hash_simple(_wh_hash_simple_params params);
 #define wh_intlog(...) _wh_intlog((_wh_intlog_params){ __VA_ARGS__ })
 #define wh_intpow(...) _wh_intpow((_wh_intpow_params){ __VA_ARGS__ })
 
+
+#define wh_abs(x) \
+_Generic((x), \
+	i8: ((x) ^ ((x) >> 7)) - ((x) >> 7), \
+	i16: ((x) ^ ((x) >> 15)) - ((x) >> 15), \
+	i32: ((x) ^ ((x) >> 31)) - ((x) >> 31), \
+	i64: ((x) ^ ((x) >> 63)) - ((x) >> 63), \
+	i128: ((x) ^ ((x) >> 127)) - ((x) >> 127), \
+	default: abs(x) \
+	)
+
 /* [MD_DOC]
  * # wh_hash_simple
  * ```c
@@ -27,5 +38,16 @@ extern i64 _wh_hash_simple(_wh_hash_simple_params params);
  *
  */
 #define wh_hash_simple(...) _wh_hash_simple((_wh_hash_simple_params){ __VA_ARGS__ })
+
+
+#ifdef USE_NAMESPACE_STD_WOLFHOUND
+#define wh_abs abs
+#endif /* USE_NAMESPACE_STD_WOLFHOUND */
+
+#ifdef USE_NAMESPACE_WOLFHOUND
+#define intlog wh_intlog
+#define intpow wh_intpow
+#define hash_simple wh_hash_simple
+#endif /* USE_NAMESPACE_WOLFHOUND */
 
 #endif /* _wh_header_maths_core_ */

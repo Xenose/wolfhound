@@ -124,6 +124,14 @@ extern void _wh_print_add_func(_wh_print_add_func_params params);
 #define wh_print_buffer_check(...) _wh_print_buffer_check((_wh_print_buffer_check_params){ __VA_ARGS__ })
 #define wh_print_add_func(...) _wh_print_add_func((_wh_print_add_func_params){ __VA_ARGS__ })
 
+
+#ifdef USE_NAMESPACE_WOLFHOUND
+
+#define print wh_print
+#define print_va wh_print
+
+#endif /* USE_NAMESPACE_WOLFHOUND */ 
+
 #endif /* __cplusplus */
 
 WH_C_END()
