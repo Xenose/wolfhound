@@ -27,5 +27,11 @@ extern i64 _wh_args_parser_init(void);
  *
  */
 #define wh_args_parse(...) _wh_args_parse((_wh_args_parse_params) { __VA_ARGS__ })
+#define wh_args_parse_init() _wh_args_parse_init()
+
+#ifdef USE_NAMESPACE_WOLFHOUND
+#define args_parse wh_args_parse
+#define args_parse_init wh_args_parse_init
+#endif
 
 #endif /* _wh_header_arg_parser_ */

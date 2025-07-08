@@ -44,4 +44,11 @@ extern void _wh_str_invert(_wh_str_invert_params params);
 #define wh_str2int(...) _wh_str2int((_wh_str2int_params) { __VA_ARGS__ })
 #define wh_str_invert(...) _wh_str_invert((_wh_str_invert_params) { __VA_ARGS__ })
 
+#ifdef USE_NAMESPACE_WOLFHOUND
+#define uint2str wh_uint2str
+#define int2str wh_int2str
+#define str2int wh_str2int
+#define str_invert wh_str_invert
+#endif
+
 #endif /* _wh_header_convert_ */
