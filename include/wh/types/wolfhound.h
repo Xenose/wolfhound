@@ -78,6 +78,9 @@ typedef struct {
 
 	u64 action_count;
 	wh_action_s* actions;
+
+	u64 entity_count;
+	wh_entity_s* entities;
 	//wh_* entities;
 	wh_heap_header_s* data;
 } wh_game_s;

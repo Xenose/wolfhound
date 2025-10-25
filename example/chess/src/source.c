@@ -101,6 +101,8 @@ int main(int arc, char* const* arv) {
 	printf("Value is [ %i ]\n", *wh_hashmap_lazy_get(int*, &hml, "test444"));
 
 	wh_action_init(ins, 100);
+	wh_entity_init(ins, 100);
+
 	u64 gid = wh_action_register(ins, &action_gravity);
 	u64 cid = wh_action_register(ins, &action_collision);
 	u64 hgid = wh_action_register(ins, &action_health_gen);

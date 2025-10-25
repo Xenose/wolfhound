@@ -10,11 +10,14 @@ u64 _wh_sys_pagesize(void) {
 
 #ifdef __linux__
 
+/* [MD_DOC]
+ * Gets the path to the current executable/binary
+ */
 i64 wh_sys_program_path(char* buffer, u64 buffer_size) {
 	i64 length = readlink("/proc/self/exe", buffer, buffer_size);
 
 	if (-1 == length) {
-		return -1;
+		return length;
 	}
 
 	--length;
