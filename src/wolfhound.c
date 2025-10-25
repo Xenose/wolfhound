@@ -52,6 +52,8 @@ go_error_exit:
 	return -1;
 }
 
+/* [MD_DOC]
+ */
 wh_instance_s* _wh_init(_wh_init_params params) {
 	#ifdef __clang__
 		wh_log_debug(("Compiler used clang"));

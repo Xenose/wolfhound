@@ -56,16 +56,16 @@ wh_config_s _wh_config_load(_wh_init_params* params, wh_config_s* config) {
 		ls,
 		(const char*[]) { "WH", "config", "heap", "size", nullptr }, WH_TYPE_I64, config->heap.size,
 
-		(const char*[]) { "WH", "config", "flags", "dryrun", nullptr },			WH_TYPE_BOOL, config->flags.dryrun,
-		(const char*[]) { "WH", "config", "flags", "run_tests", nullptr },		WH_TYPE_BOOL, config->flags.run_tests,
-		(const char*[]) { "WH", "config", "flags", "log_debug", nullptr},			WH_TYPE_BOOL, config->flags.log_debug,
-		(const char*[]) { "WH", "config", "flags", "log_info", nullptr},			WH_TYPE_BOOL, config->flags.log_info,
-		(const char*[]) { "WH", "config", "flags", "log_notice", nullptr},		WH_TYPE_BOOL, config->flags.log_notice,
-		(const char*[]) { "WH", "config", "flags", "log_warning", nullptr},		WH_TYPE_BOOL, config->flags.log_warning,
-		(const char*[]) { "WH", "config", "flags", "log_error", nullptr},			WH_TYPE_BOOL, config->flags.log_error,
-		(const char*[]) { "WH", "config", "flags", "log_critical", nullptr},		WH_TYPE_BOOL, config->flags.log_critical,
-		(const char*[]) { "WH", "config", "flags", "log_alert", nullptr},			WH_TYPE_BOOL, config->flags.log_alert,
-		(const char*[]) { "WH", "config", "flags", "log_emergency", nullptr},	WH_TYPE_BOOL, config->flags.log_emergency
+		(const char*[]) { "WH", "config", "flags", "dryrun",			nullptr },			WH_TYPE_BOOL, config->flags.dryrun,
+		(const char*[]) { "WH", "config", "flags", "run_tests",		nullptr },			WH_TYPE_BOOL, config->flags.run_tests,
+		(const char*[]) { "WH", "config", "flags", "log_debug",		nullptr },			WH_TYPE_BOOL, config->flags.log_debug,
+		(const char*[]) { "WH", "config", "flags", "log_info",		nullptr },			WH_TYPE_BOOL, config->flags.log_info,
+		(const char*[]) { "WH", "config", "flags", "log_notice",		nullptr },			WH_TYPE_BOOL, config->flags.log_notice,
+		(const char*[]) { "WH", "config", "flags", "log_warning",	nullptr },			WH_TYPE_BOOL, config->flags.log_warning,
+		(const char*[]) { "WH", "config", "flags", "log_error",		nullptr },			WH_TYPE_BOOL, config->flags.log_error,
+		(const char*[]) { "WH", "config", "flags", "log_critical",	nullptr },			WH_TYPE_BOOL, config->flags.log_critical,
+		(const char*[]) { "WH", "config", "flags", "log_alert",		nullptr },			WH_TYPE_BOOL, config->flags.log_alert,
+		(const char*[]) { "WH", "config", "flags", "log_emergency",	nullptr },			WH_TYPE_BOOL, config->flags.log_emergency
 	);
 
 	_wh_args_parser_init();

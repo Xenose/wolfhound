@@ -110,9 +110,7 @@ void _wh_mem_insert_real(void* owner, void* ptr, wh_heap_header_s* heap, u64 lin
 			// shuffling the nodes
 			last->next->previous = last;
 			_list.last = last->next;
-			
 			last = last->next;
-			
 		}
 
 		last->ptr = ptr;
