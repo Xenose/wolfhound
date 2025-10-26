@@ -12,6 +12,15 @@ extern i64 _wh_hash_simple(_wh_hash_simple_params params);
 #define wh_intpow(...) _wh_intpow((_wh_intpow_params){ __VA_ARGS__ })
 
 
+/* [MD_DOC]
+ * # wh_abs
+ * This function is a non branching abs functions for signed and
+ * unsigned integers, for float and doubles the normal abs from
+ * maths.h is called.
+ *
+ * ## Return value
+ * Returns a positive value from the original value.
+ */
 #define wh_abs(x) \
 _Generic((x), \
 	i8: ((x) ^ ((x) >> 7)) - ((x) >> 7), \
