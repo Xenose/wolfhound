@@ -3,3 +3,5 @@
 [string.h](wh/wrap/string.h)
 [print.h](wh/print.h)
 [windows.h](windows.h)
+
+Gets the path to the current executable/binary

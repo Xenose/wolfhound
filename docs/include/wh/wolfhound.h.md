@@ -1,8 +1,6 @@
 [common.h](wh/common.h)
 [memory.h](wh/memory.h)
 [wolfhound.h](wh/params/wolfhound.h)
-[stdint.h](stdint.h)
-[SDL.h](SDL3/SDL.h)
 
 # wh_init
 ```c

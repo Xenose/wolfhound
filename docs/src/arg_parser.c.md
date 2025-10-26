@@ -8,3 +8,4 @@
 [logger.h](wh/debug/logger.h)
 [file.h](wh/file.h)
 [config.h](wh/lua/config.h)
+[string.h](wh/string.h)

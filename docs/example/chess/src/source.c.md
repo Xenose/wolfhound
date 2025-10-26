@@ -18,4 +18,5 @@
 [file.h](wh/file.h)
 [loader.h](wh/images/loader.h)
 [filesystem.h](wh/sys/filesystem.h)
+[hashmap_lazy.h](wh/data/hashmap_lazy.h)
 [stdio.h](stdio.h)
