@@ -5,7 +5,7 @@
 #include<wh/print.h>
 
 u64 _wh_sys_pagesize(void) {
-	return getpagesize();
+	return (u64)getpagesize();
 }
 
 #ifdef __linux__

@@ -135,7 +135,19 @@ ELSE()
 	TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE "m" "dl" "atomic" "bsd")
 ENDIF()
 
-TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE -Wall)#-Wextra -Wpedantic -Wconversion -Wshadow)
+TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE 
+	-Wall
+	-Wextra
+	-Wpedantic
+	-Wconversion
+	-Wshadow
+
+	-Wno-implicit-fallthrough
+	-Wno-unused-label
+	-Wno-unused-variable
+	-Wno-unused-parameter
+	-Wno-missing-field-initializers
+)
 
 # -----------------------------------------------------------------------------
 # Example Subprojects

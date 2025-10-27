@@ -9,7 +9,7 @@ typedef struct {
 	u64 bytes;
 	wh_heap_header_s* heap;
 	u64 type;
-	u64* error;
+	i64* error;
 } _wh_heap_init_params;
 
 typedef struct {
@@ -21,7 +21,7 @@ typedef struct {
 	u64 bytes;
 	void* owner;
 	u64 flags;
-	u64* error;
+	i64* error;
 
 	// debug info
 	u64 line;
@@ -33,14 +33,14 @@ typedef struct {
 	void* ptr;
 	u64 bytes;
 	u64 flags;
-	u64* error;
+	i64* error;
 } _wh_mem_realloc_params;
 
 typedef struct {
 	wh_heap_header_s* heap;
 	void* ptr;
 	void* owner;
-	u64* error;
+	i64* error;
 } _wh_mem_free_params;
 
 typedef struct {

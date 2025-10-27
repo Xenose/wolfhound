@@ -11,7 +11,7 @@
 #include<dirent.h>
 
 wh_dir_s _wh_read_dir(_wh_dir_read_params params) {
-	u64 error = 0;
+	i64 error = 0;
 	wh_dir_s out = {
 		.count = 0,
 		.entries = nullptr,

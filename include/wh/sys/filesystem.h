@@ -31,7 +31,7 @@ typedef struct {
 typedef struct {
 	wh_heap_header_s* heap;
 	const char* path;
-	u64* error;
+	i64* error;
 } _wh_dir_read_params;
 
 

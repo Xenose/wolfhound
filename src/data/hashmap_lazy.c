@@ -6,7 +6,6 @@
 #include<wh/debug/logger.h>
 
 #include<string.h>
-#include<stdio.h>
 
 wh_hashmap_lazy_entry_s* _wh_hashmap_entry(void* entry, u64  data_size, u64 index) {
 	return wh_ptr_add(entry, (sizeof(wh_hashmap_lazy_entry_s) + data_size) * index);
@@ -44,7 +43,7 @@ i8 _wh_hashmap_lazy_resize(wh_hashmap_lazy_s* map) {
 	void* data = nullptr;
 
 go_retry:
-	new_count = (new_count * 1.5);
+	new_count = (u64)(((long double)new_count) * 1.5);
 	wh_log_debug(("New size is [ %u ]"), new_count);
 	ne = wh_alloc(map->heap, (sizeof(wh_hashmap_lazy_entry_s) + map->data_size) * new_count, .flags = WH_MEM_ZERO);
 
