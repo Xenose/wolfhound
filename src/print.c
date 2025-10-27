@@ -440,7 +440,7 @@ i64 _wh_print_buffer_check(_wh_print_buffer_check_params params) {
 			goto go_error_exit;
 		}
 
-		params.data->written += (u64)ret;
+		params.data->written += ret;
 		params.data->buffer = params.data->start;
 	}
 

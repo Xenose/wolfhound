@@ -30,8 +30,8 @@ typedef struct {
 	char* start;
 	char* format;
 	char* buffer;
-	u64 length;		// length of buffer
-	u64 written;	// number of charters written
+	i64 length;		// length of buffer
+	i64 written;	// number of charters written
 	i64 fd;
 
 	wh_print_format_s print_format;
