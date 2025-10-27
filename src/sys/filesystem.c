@@ -35,7 +35,6 @@ wh_dir_s _wh_read_dir(_wh_dir_read_params params) {
 		if (!strncmp(current->d_name, ".", NAME_MAX) || !strncmp(current->d_name, "..", NAME_MAX) ) {
 			continue;
 		}
-
 		++out.count;
 	}
 
@@ -43,6 +42,7 @@ wh_dir_s _wh_read_dir(_wh_dir_read_params params) {
 	out.entries = wh_alloc(params.heap, out.count * sizeof(wh_dir_entry_s), &out.entries, .error = &error);
 
 	if (nullptr == out.entries) {
+		wh_log_error(("Failed to allocated dir entries..."));
 		goto go_error_exit_close;
 	}
 

@@ -93,6 +93,7 @@ set(C_SOURCES
 	"src/sys/info.c"
 	"src/sys/library.c"
 	"src/sys/memory.c"
+	"src/testing/unite.c"
 	"src/window.c"
 	"src/wolfhound.c"
 	"src/wrap/string.c"

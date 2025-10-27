@@ -175,6 +175,7 @@ void _wh_mem_remove(void* owner, void* ptr) {
 	}
 }
 
+// TODO fix bug
 void _wh_mem_scan(void) {
 	_wh_heap_list_entry_s* current = _list.nodes;
 
@@ -209,7 +210,7 @@ void _wh_mem_scan(void) {
 		}
 	}
 
-	usleep(100);
+	//usleep(100);
 }
 
 void _wh_mem_init(void) {

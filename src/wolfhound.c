@@ -9,6 +9,7 @@
 #include<wh/wrap/unistd.h>
 #include<wh/maths/memory.h>
 #include<wh/loader/asset.h>
+#include<wh/testing/unite.h>
 
 #ifndef WH_VULKAN_NOT_FOUND
 	#include<wh/vulkan.h>
@@ -67,6 +68,10 @@ wh_instance_s* _wh_init(_wh_init_params params) {
 		goto go_error_exit;
 	}
 	
+	if (1) {
+		_wh_run_utests("tests");
+	}
+
 	// basic data init
 	params.ins[0]->stype = WH_STRUCT_TYPE_INSTANCE;
 	params.ins[0]->app_info.name = params.app_name;

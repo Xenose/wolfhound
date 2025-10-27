@@ -1,3 +1,7 @@
+#include<lua.h>
+#include<lualib.h>
+#include<lauxlib.h>
+
 #include<wh/lua/api.h>
 #include<wh/lua/helpers.h>
 
@@ -6,6 +10,8 @@
 #include<wh/lua/api/maths.h>
 
 i8 _wh_lua_expose_api(lua_State* ls) {
+	luaL_openlibs(ls);
+
 	wh_lua_add_values(
 		ls,
 

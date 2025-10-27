@@ -47,7 +47,6 @@ wh_config_s _wh_config_load(_wh_init_params* params, wh_config_s* config) {
 
 	wh_log_debug(("Starting new lua_State"));
 	ls = luaL_newstate();
-	luaL_openlibs(ls);
 	_wh_lua_expose_api(ls);
 
 	// Variable loading
