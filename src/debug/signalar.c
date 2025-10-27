@@ -19,9 +19,13 @@
 #include<sys/reg.h>
 #include<sys/ucontext.h>
 #define UNW_LOCAL_ONLY
+
+#ifdef WH_UNWIND_NOT_FOUND
 #include<libunwind.h>
+#endif
 
 static void _wh_signal_handler(int sig, siginfo_t* info, ucontext_t* uc) {
+#ifdef WH_UNWIND_NOT_FOUND
 	i64 count = 0;
 	unw_cursor_t cursor;
 
@@ -55,6 +59,7 @@ static void _wh_signal_handler(int sig, siginfo_t* info, ucontext_t* uc) {
 			raise(sig);
 			break;
 	}
+#endif
 }
 
 i8 _wh_signalar_init(_wh_signalar_init_params params) {
