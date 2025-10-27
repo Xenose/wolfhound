@@ -1,6 +1,5 @@
 #include<stdarg.h>
 #include<stdatomic.h>
-#include<ctype.h>
 
 // tmp for debug
 #include<stdio.h>
@@ -108,7 +107,7 @@ static void _wh_print_fstr_slow(wh_print_data_s* d, char type, double value) {
 		return;
 	}
 
-	memcpy(d->buffer, out, length);
+	memcpy(d->buffer, out, (unsigned)length);
 	d->buffer += length;
 	++d->format;
 }
@@ -135,7 +134,7 @@ static void _wh_print_cpystr(wh_print_data_s* d, char* tmp, i64 length) {
 	}
 
 	if (d->print_format.flags.left_align) {
-		memcpy(d->buffer, tmp, length);
+		memcpy(d->buffer, tmp, (u64)length);
 
 		if (d->print_format.flags.alt_form) {
 			wh_str_invert(d->buffer, length);
@@ -143,13 +142,13 @@ static void _wh_print_cpystr(wh_print_data_s* d, char* tmp, i64 length) {
 
 		d->buffer += length;
 
-		memset(d->buffer, ' ', padding);
+		memset(d->buffer, ' ', (u64)padding);
 		d->buffer += padding;
 	} else {
-		memset(d->buffer, ' ', padding);
+		memset(d->buffer, ' ', (u64)padding);
 		d->buffer += padding;
 
-		memcpy(d->buffer, tmp, length);
+		memcpy(d->buffer, tmp, (u64)length);
 
 		if (d->print_format.flags.alt_form) {
 			wh_str_invert(d->buffer, length);
@@ -394,7 +393,7 @@ go_print_int:
 					tmp = ((void*)va_arg(list, int*)); 
 
 					if (nullptr != tmp) {
-						*((int*)tmp) = data->written + (data->buffer - data->start);
+						*((int*)tmp) = (int)(data->written + (size_t)(data->buffer - data->start));
 					}
 
 					break;
@@ -434,14 +433,14 @@ i64 _wh_print_buffer_check(_wh_print_buffer_check_params params) {
 		- (params.data->buffer + params.needed + 10);
 
 	if (0 >= rem) {
-		ret = write(params.data->fd, params.data->start,
-				  params.data->buffer - params.data->start);
+		ret = write((int)params.data->fd, params.data->start,
+				  (size_t)(params.data->buffer - params.data->start));
 		
 		if (-1 == ret) {
 			goto go_error_exit;
 		}
 
-		params.data->written += ret;
+		params.data->written += (u64)ret;
 		params.data->buffer = params.data->start;
 	}
 
@@ -479,7 +478,7 @@ i64 _wh_print_va(_wh_print_params params, va_list list) {
 		goto go_exit;
 	}
 		
-	ret = write(data.fd, data.start, data.buffer - data.start);
+	ret = write((int)data.fd, data.start, (size_t)(data.buffer - data.start));
 
 	if (-1 != ret) {
 		ret += data.written;

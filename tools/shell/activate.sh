@@ -32,6 +32,7 @@ alias wh-build="PRP='${WP}' ${WP}${TP}build.sh"
 alias wh-clean="PRP='${WP}' ${WP}${TP}clean.sh"
 
 # compilers
+alias wh-gcc="PRP='${WP}' ${WP}${TP}gcc.sh"
 alias wh-clang="PRP='${WP}' ${WP}${TP}clang.sh"
 alias wh-mingw="PRP='${WP}' ${WP}${TP}mingw.sh"
 

@@ -135,6 +135,8 @@ ELSE()
 	TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE "m" "dl" "atomic" "bsd")
 ENDIF()
 
+TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE -Wall)#-Wextra -Wpedantic -Wconversion -Wshadow)
+
 # -----------------------------------------------------------------------------
 # Example Subprojects
 # These subprojects (e.g., example/chess, example/print) demonstrate usage of
