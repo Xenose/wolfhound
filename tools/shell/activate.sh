@@ -21,6 +21,9 @@ echo "Setting active directory to [ $WP ]"
 # Fun
 alias wh-count="PRP='${WP}' ${WP}${TP}stats.sh"
 
+# Reviews
+alias wh-ai-review="PRP='${WP}' ${WP}${TP}ai_review.sh"
+
 # Helpers
 alias wh-refresh=". ${WP}${TP}activate.sh"
 alias wh-bootstrap="PRP='${WP}' ${WP}${TP}bootstrap.sh"
