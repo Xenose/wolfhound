@@ -6,7 +6,7 @@
 
 i8 _wh_window_create_raylib(_wh_window_create_params params) {
 	wh_log_debug(("Starting RAYLIB!"));
-	raylib.init_window(params.size_x, params.size_y, params.title.str);
+	raylib.init_window((int)params.size_x, (int)params.size_y, params.title.str);
 
 	return 0;
 }
@@ -31,6 +31,7 @@ void _wh_render_line_raylib(_wh_render_line_params params) {
 	ray_color_s c = { params.color.r, params.color.g, params.color.b, params.color.a };
 
 	for (u64 i = 0; i < params.count / 4; i++) {
-		raylib.draw_line(p[i], p[i + 1], p[i + 2], p[i + 4], c);
+		// TODO normilze to int's
+		raylib.draw_line((int)p[i], (int)p[i + 1], (int)p[i + 2], (int)p[i + 4], c);
 	}
 }

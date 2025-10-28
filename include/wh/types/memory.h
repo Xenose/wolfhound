@@ -3,9 +3,9 @@
 
 #include<wh/common.h>
 
-#define WH_MEM_ZERO		0x0001
-#define WH_MEM_IN_USE	0x0002
-#define WH_MEM_IS_HEAP	0x0004
+#define WH_MEM_ZERO		((u64)0x0001)
+#define WH_MEM_IN_USE	((u64)0x0002)
+#define WH_MEM_IS_HEAP	((u64)0x0004)
 
 typedef struct _wh_heap_node_s {
 	struct_type stype;

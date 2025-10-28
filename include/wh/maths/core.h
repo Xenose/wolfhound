@@ -1,6 +1,8 @@
 #ifndef _wh_header_maths_core_
 #define _wh_header_maths_core_
 
+#include<stdlib.h>
+
 #include<wh/common.h>
 #include<wh/params/math.h>
 

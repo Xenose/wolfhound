@@ -2,23 +2,22 @@
 #include<wh/maths/core.h>
 
 #include<ctype.h>
-#include<stdio.h>
-#include<stdlib.h>
 #include<wh/wrap/string.h>
+#include<wh/maths/core.h>
 
 char* _wh_uint2str(_wh_uint2str_params params) {
 	const char table[] = "0123456789abcdefghijklmnopqrstuvwxyz";
 
-	i64 vl = params.value;
-	i64 ln = wh_intlog(params.value, params.base);
-	i64 pw = wh_intpow(ln, params.base);
+	u64 vl = params.value;
+	u64 ln = (u64)wh_intlog(params.value, params.base);
+	u64 pw = (u64)wh_intpow(ln, params.base);
 
 	if (ln > params.buffer_length) {
 		goto go_error_exit;
 	}
 
-	for (i64 i = 0; i <= ln; i++) {
-		i64 tmp = vl / pw;
+	for (u64 i = 0; i <= ln; i++) {
+		u64 tmp = vl / pw;
 		vl -= tmp * pw;
 		pw /= params.base;
 
@@ -47,7 +46,7 @@ char* _wh_int2str(_wh_int2str_params params) {
 		--data.buffer_length;
 	}
 	
-	data.value = params.value;
+	data.value = wh_abs(params.value);
 	return _wh_uint2str(data);
 go_error_exit:
 	return params.buffer;
@@ -103,14 +102,14 @@ void _wh_str_invert(_wh_str_invert_params params) {
 			case 'm': case 'n': case 'o': case 'p': case 'q': case 'r':
 			case 's': case 't': case 'u': case 'v': case 'w': case 'x':
 			case 'y': case 'z':
-				params.buffer[i] = toupper(params.buffer[i]);
+				params.buffer[i] = (char)toupper(params.buffer[i]);
 				break;
 			case 'A': case 'B': case 'C': case 'D': case 'E': case 'F':
 			case 'G': case 'H': case 'I': case 'J': case 'K': case 'L':
 			case 'M': case 'N': case 'O': case 'P': case 'Q': case 'R':
 			case 'S': case 'T': case 'U': case 'V': case 'W': case 'X':
 			case 'Y': case 'Z':
-				params.buffer[i] = toupper(params.buffer[i]);
+				params.buffer[i] = (char)toupper(params.buffer[i]);
 				break;
 		}
 	}

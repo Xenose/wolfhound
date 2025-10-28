@@ -52,7 +52,7 @@ static void _wh_print_call_func(wh_print_data_s* data, void* ptr, char* key_star
 	}
 
 	wh_spin_lock(&_wh_func_table.lock) {
-		key = wh_hash_simple(key_start, _wh_func_table.slots, key_end - key_start);
+		key = wh_hash_simple(key_start, _wh_func_table.slots, (i64)key_end - (i64)key_start);
 
 		if (-1 == key) {
 			wh_spin_lock_goto(&_wh_func_table.lock, go_error_exit);
@@ -120,7 +120,7 @@ static void _wh_print_cpystr(wh_print_data_s* d, char* tmp, i64 length) {
 		tmp = (char*)"%NULL%";
 		length = 6;
 	} else if (0 == length) {
-		length = strlen(tmp);
+		length = (i64)strlen(tmp);
 	}
 
 	if (d->print_format.flags.length_set) {
@@ -161,7 +161,7 @@ go_error_exit:
 	++d->format;
 }
 
-static void _wh_print_uint(wh_print_data_s* d, i64 value, i64 base) {
+static void _wh_print_uint(wh_print_data_s* d, u64 value, i64 base) {
 	i64 written = 0;
 	i64 length = wh_intlog(value, base) + (0 > value ? 2 : 1);
 

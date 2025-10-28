@@ -4,23 +4,23 @@
 #include<wh/common.h>
 
 typedef struct {
-	uint64_t value;
+	u64 value;
 	char* buffer;
-	int64_t buffer_length;
-	int64_t base;
+	u64 buffer_length;
+	u64 base;
 } _wh_uint2str_params;
 
 typedef struct {
-	int64_t value;
+	i64 value;
 	char* buffer;
-	int64_t buffer_length;
-	int64_t base;
+	u64 buffer_length;
+	u64 base;
 } _wh_int2str_params;
 
 typedef struct {
 	char* buffer;
-	int64_t buffer_length;
-	int64_t base;
+	i64 buffer_length;
+	i64 base;
 } _wh_str2int_params;
 
 typedef struct {

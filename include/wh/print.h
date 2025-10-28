@@ -46,8 +46,8 @@ typedef struct {
 	const char* format;
 	i64 fd;
 	char* buffer;
-	u64 buffer_length;
-	u64 offset;
+	i64 buffer_length;
+	i64 offset;
 	u64 flags;
 } _wh_print_params;
 
