@@ -3,7 +3,6 @@
 #include<stdatomic.h>
 #include<errno.h>
 
-#include<stdio.h>
 
 // my stuff
 #include<wh/debug/logger.h>
@@ -181,7 +180,7 @@ void _wh_mem_scan(void) {
 
 	wh_spinlock(&_list.lock) {
 		while (nullptr != current) {
-			wh_log_debug(("Node found! [ %u ]"), current->ptr);
+			wh_log_debug(("Node found! [ %u ] next is [ %u ]"), current->ptr, current->next);
 
 			wh_for(u64, i, current->owner_count) {
 				if (nullptr == current->owners[i].owner) {
@@ -219,7 +218,7 @@ void _wh_mem_init(void) {
 // Hashmap functions
 
 wh_heap_header_s* wh_heap_insert(const char* name, wh_heap_header_s* header) {
-	u64 hash = 0;
+	i64 hash = 0;
 	u64 retry = 0;
 	u64 page_size = 0;
 	_wh_heap_entry_s* entry = nullptr;
@@ -237,7 +236,7 @@ wh_heap_header_s* wh_heap_insert(const char* name, wh_heap_header_s* header) {
 				wh_spin_lock_goto(&_table.lock, go_error_exit);
 			}
 
-			page_size += getpagesize();
+			page_size += (u64)getpagesize();
 
 			u64 new_size = (_table.count * sizeof(_wh_heap_entry_s)) + page_size;
 			u64 new_count = new_size / sizeof(_wh_heap_entry_s);
@@ -294,7 +293,7 @@ go_error_exit:
 wh_heap_header_s* wh_heap_get(const char* name) {
 	wh_heap_header_s* header = nullptr;
 	_wh_heap_entry_s* entry = nullptr;
-	u64 hash = 0;
+	i64 hash = 0;
 
 	wh_spin_lock(&_table.lock) {
 		hash = wh_hash_simple(name, _table.count);
@@ -321,9 +320,9 @@ void wh_heap_print_table() {
 
 wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
 	wh_heap_header_s* heap = nullptr;
-	i64 old_bytes = params.bytes + sizeof(wh_heap_header_s);
+	u64 old_bytes = params.bytes + sizeof(wh_heap_header_s);
 
-	params.bytes = wh_align(params.bytes + sizeof(wh_heap_header_s), getpagesize());
+	params.bytes = (u64)wh_align((i64)(params.bytes + sizeof(wh_heap_header_s)), getpagesize());
 
 	wh_log_info(("requested [ $k ] giving [ $k ]"), old_bytes, params.bytes);
 
@@ -425,7 +424,7 @@ void _wh_heap_print(_wh_heap_print_params params) {
 
 void* _wh_alloc(_wh_mem_alloc_params params) {
 	void* mem = nullptr;
-	params.bytes = wh_align(params.bytes, 16);
+	params.bytes = (u64)wh_align((i64)params.bytes, 16);
 
 	if (nullptr == params.heap) {
 		params.heap = _heap_main;

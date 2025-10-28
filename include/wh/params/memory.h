@@ -8,7 +8,7 @@ typedef struct {
 	const char* name;
 	u64 bytes;
 	wh_heap_header_s* heap;
-	u64 type;
+	struct_type type;
 	i64* error;
 } _wh_heap_init_params;
 
