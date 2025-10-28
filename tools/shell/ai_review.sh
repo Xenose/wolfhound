@@ -3,7 +3,7 @@
 set -e
 
 MODEL="qwen2.5-coder:latest"
-PROMT="You are a code reviewer for this code, the input might be more then one file."
+PROMT="You are a code reviewer for this code, don't write the code, don't list key points, give clear feed back and file and line number with the suggestion."
 
 cd "${PRP}"
-cat "README.md" "${@}" | ollama run "${MODEL}" "${PROMT}"
+cat "${@}" | ollama run "${MODEL}" "${PROMT}"
