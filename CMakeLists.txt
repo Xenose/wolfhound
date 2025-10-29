@@ -146,6 +146,8 @@ TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
 	-Wno-unused-label
 	-Wno-unused-variable
 	-Wno-unused-parameter
+
+	# In C +99 structs are zero out
 	-Wno-missing-field-initializers
 )
 

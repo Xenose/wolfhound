@@ -52,7 +52,7 @@ static void _wh_print_call_func(wh_print_data_s* data, void* ptr, char* key_star
 	}
 
 	wh_spin_lock(&_wh_func_table.lock) {
-		key = wh_hash_simple(key_start, _wh_func_table.slots, (i64)key_end - (i64)key_start);
+		key = wh_hash_simple(key_start, _wh_func_table.slots, key_end - key_start);
 
 		if (-1 == key) {
 			wh_spin_lock_goto(&_wh_func_table.lock, go_error_exit);
@@ -124,10 +124,10 @@ static void _wh_print_cpystr(wh_print_data_s* d, char* tmp, i64 length) {
 	}
 
 	if (d->print_format.flags.length_set) {
-		length =  d->print_format.right > length ? length : d->print_format.right;
+		length =  (i64)d->print_format.right > length ? length : (i64)d->print_format.right;
 	}
 
-	padding = d->print_format.left > length ? d->print_format.left - length : 0;
+	padding = (i64)d->print_format.left > length ? (i64)d->print_format.left - length : 0;
 
 	if (-1 == (written = wh_print_buffer_check(d, length + padding))) {
 		goto go_error_exit;
@@ -206,6 +206,21 @@ static void _wh_print_int_bytes(wh_print_data_s* d, i64 value, i64 base) {
 }
 
 static void _wh_print_int(wh_print_data_s* d, i64 value, i64 base) {
+	i64 written = 0;
+	i64 length = wh_intlog(value, base) + (0 > value ? 2 : 1);
+
+	written = wh_print_buffer_check(d, length);
+
+	if (-1 == written) {
+		return;
+	}
+
+	wh_int2str(value, d->buffer, length, base);
+	d->buffer += length;
+	++d->format;
+}
+
+static void _wh_print_int128(wh_print_data_s* d, i128 value, i64 base) {
 	i64 written = 0;
 	i64 length = wh_intlog(value, base) + (0 > value ? 2 : 1);
 
@@ -330,7 +345,7 @@ go_loop:
 					++data->format;
 				case '1': case '2': case '3': case '4': case '5':
 				case '6': case '7': case '8': case '9':
-					*vp = wh_str2int(data->format, strlen(data->format), 10); 
+					*vp = wh_str2int(data->format, (i64)strlen(data->format), 10); 
 					vp = &data->print_format.left;
 					goto go_standard_switch;
 				case 'a':
@@ -340,7 +355,7 @@ go_loop:
 					_wh_print_fstr_slow(data, 'A', va_arg(list, double));
 					break;
 				case 'c':
-					_wh_print_cpychar(data, va_arg(list, int));
+					_wh_print_cpychar(data, (char)va_arg(list, int));
 					break;
 				case 'd':
 					goto go_print_int;
@@ -365,7 +380,7 @@ go_loop:
 go_print_int:
 				case 'i':
 					if (data->print_format.flags.llong_value) {
-						_wh_print_int(data, va_arg(list, i128), 10);
+						_wh_print_int128(data, va_arg(list, i128), 10);
 					} else if (data->print_format.flags.long_value) {
 						_wh_print_int(data, va_arg(list, i64), 10);
 					} else {
@@ -393,7 +408,7 @@ go_print_int:
 					tmp = ((void*)va_arg(list, int*)); 
 
 					if (nullptr != tmp) {
-						*((int*)tmp) = (int)(data->written + (size_t)(data->buffer - data->start));
+						*((int*)tmp) = (int)(data->written + (int)(data->buffer - data->start));
 					}
 
 					break;

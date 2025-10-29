@@ -15,7 +15,7 @@ typedef struct {
 
 typedef struct {
 	const char* str;
-	u64 limit;
+	i64 limit;
 	u64 length;
 } _wh_hash_simple_params;
 
