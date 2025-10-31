@@ -33,7 +33,7 @@ i64 testing_math() {
 	i64 passed = 0;
 	i64 failed = 0;
 
-	for (i64 i = -1'000'000'000, j = 9; i < 10;) {
+	for (i64 i = -1'000'000'000, j = 9; i < 1'000'000'000;) {
 		if (0 == i) {
 			i = 1;
 			j = 0;
@@ -43,6 +43,10 @@ i64 testing_math() {
 		} else {
 			j++;
 			i *= 10;
+		}
+
+		if (-1 == j) {
+			continue;
 		}
 
 		for (i64 k = 1; k < 10; k++) {
