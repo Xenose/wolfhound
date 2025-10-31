@@ -6,7 +6,7 @@
 typedef struct {
 	i64 value;
 	i64 base;
-} _wh_intlog_params;
+} _wh_int_dec_count_params;
 
 typedef struct {
 	i64 times;

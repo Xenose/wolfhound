@@ -3,6 +3,6 @@
 
 #include<wh/common.h>
 
-extern i64 testing_intlog();
+extern i64 testing_math();
 
 #endif

@@ -6,11 +6,11 @@
 #include<wh/common.h>
 #include<wh/params/math.h>
 
-extern i64 _wh_intlog(_wh_intlog_params params);
+extern i64 _wh_int_dec_count(_wh_int_dec_count_params params);
 extern i64 _wh_intpow(_wh_intpow_params params);
 extern i64 _wh_hash_simple(_wh_hash_simple_params params);
 
-#define wh_intlog(...) _wh_intlog((_wh_intlog_params){ __VA_ARGS__ })
+#define wh_int_dec_count(...) _wh_int_dec_count((_wh_int_dec_count_params){ __VA_ARGS__ })
 #define wh_intpow(...) _wh_intpow((_wh_intpow_params){ __VA_ARGS__ })
 
 
@@ -61,7 +61,7 @@ _Generic((x), \
 #endif /* USE_NAMESPACE_STD_WOLFHOUND */
 
 #ifdef USE_NAMESPACE_WOLFHOUND
-#define intlog wh_intlog
+#define int_dec_count wh_int_dec_count
 #define intpow wh_intpow
 #define hash_simple wh_hash_simple
 #endif /* USE_NAMESPACE_WOLFHOUND */

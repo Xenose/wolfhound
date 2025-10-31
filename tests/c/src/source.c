@@ -2,6 +2,6 @@
 
 
 int main(int arc, char** arv) {
-	testing_intlog();
+	testing_math();
 	return 0;
 }

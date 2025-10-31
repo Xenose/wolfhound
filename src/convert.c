@@ -9,7 +9,7 @@ char* _wh_uint2str(_wh_uint2str_params params) {
 	const char table[] = "0123456789abcdefghijklmnopqrstuvwxyz";
 
 	u64 vl = params.value;
-	u64 ln = (u64)wh_intlog(params.value, params.base);
+	u64 ln = (u64)wh_int_dec_count(params.value, params.base);
 	u64 pw = (u64)wh_intpow(ln, params.base);
 
 	if (ln > params.buffer_length) {

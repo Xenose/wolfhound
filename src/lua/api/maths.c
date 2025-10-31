@@ -5,17 +5,17 @@
 #include<wh/lua/api/maths.h>
 
 
-int wh_lua_intlog(lua_State* ls) {
+int wh_lua_int_dec_count(lua_State* ls) {
 	int argc = 0;
 	int out = 0;
-	int value = 0;
-	int base = 0;
+	i64 value = 0;
+	i64 base = 0;
 
 	argc = lua_gettop(ls);
 	value = luaL_checkinteger(ls, 1);
 	base = luaL_checkinteger(ls, 2);
 
-	out = wh_intlog(value, base);
+	out = wh_int_dec_count(value, base);
 
 	lua_pushinteger(ls, out);
 	return 1;
@@ -24,8 +24,8 @@ int wh_lua_intlog(lua_State* ls) {
 int wh_lua_intpow(lua_State* ls) {
 	int argc = 0;
 	int out = 0;
-	int value = 0;
-	int base = 0;
+	i64 value = 0;
+	i64 base = 0;
 
 	argc = lua_gettop(ls);
 	value = luaL_checkinteger(ls, 1);

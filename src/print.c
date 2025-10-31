@@ -163,7 +163,7 @@ go_error_exit:
 
 static void _wh_print_uint(wh_print_data_s* d, u64 value, i64 base) {
 	i64 written = 0;
-	i64 length = wh_intlog(value, base) + (0 > value ? 2 : 1);
+	i64 length = wh_int_dec_count(value, base) + (0 > value ? 2 : 1);
 
 	written = wh_print_buffer_check(d, length);
 
@@ -192,7 +192,7 @@ static void _wh_print_int_bytes(wh_print_data_s* d, i64 value, i64 base) {
 		value /= WH_1KB;
 	}
 
-	length = wh_intlog(value, base) + (0 > value ? 2 : 1);
+	length = wh_int_dec_count(value, base) + (0 > value ? 2 : 1);
 	written = wh_print_buffer_check(d, length + 2);
 
 	if (-1 == written) {
@@ -207,7 +207,7 @@ static void _wh_print_int_bytes(wh_print_data_s* d, i64 value, i64 base) {
 
 static void _wh_print_int(wh_print_data_s* d, i64 value, i64 base) {
 	i64 written = 0;
-	i64 length = wh_intlog(value, base) + (0 > value ? 2 : 1);
+	i64 length = wh_int_dec_count(value, base) + (0 > value ? 2 : 1);
 
 	written = wh_print_buffer_check(d, length);
 
@@ -222,7 +222,7 @@ static void _wh_print_int(wh_print_data_s* d, i64 value, i64 base) {
 
 static void _wh_print_int128(wh_print_data_s* d, i128 value, i64 base) {
 	i64 written = 0;
-	i64 length = wh_intlog(value, base) + (0 > value ? 2 : 1);
+	i64 length = wh_int_dec_count(value, base) + (0 > value ? 2 : 1);
 
 	written = wh_print_buffer_check(d, length);
 

@@ -1,8 +1,8 @@
 
-print("---> " .. WH.maths.intlog(2, 10))
-print("---> " .. WH.maths.intlog(20, 10))
-print("---> " .. WH.maths.intlog(200, 10))
-print("---> " .. WH.maths.intlog(2000, 10))
+print("---> " .. WH.maths.int.dec_count(2, 10))
+print("---> " .. WH.maths.int.dec_count(20, 10))
+print("---> " .. WH.maths.int.dec_count(200, 10))
+print("---> " .. WH.maths.int.dec_count(2000, 10))
 
 print("---> " .. WH.maths.intpow(2, 10))
 print("---> " .. WH.maths.intpow(20, 10))
