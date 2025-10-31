@@ -5,7 +5,7 @@
 #include<wh/lua/api/maths.h>
 
 
-int wh_lua_int_dec_count(lua_State* ls) {
+int wh_lua_intpos(lua_State* ls) {
 	int argc = 0;
 	int out = 0;
 	i64 value = 0;
@@ -15,7 +15,7 @@ int wh_lua_int_dec_count(lua_State* ls) {
 	value = luaL_checkinteger(ls, 1);
 	base = luaL_checkinteger(ls, 2);
 
-	out = wh_int_dec_count(value, base);
+	out = wh_intpos(value, base);
 
 	lua_pushinteger(ls, out);
 	return 1;

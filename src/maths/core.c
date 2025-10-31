@@ -4,19 +4,21 @@
 #include<stdio.h>
 
 #ifdef WH_USE_FORTRAN
-extern int64_t _wh_fortran_dec_count(int64_t base, int64_t value);
+extern int64_t _wh_fortran_intpos64(int64_t base, int64_t value);
 extern int64_t _wh_fortran_intpow64(int64_t power, int64_t times);
 #endif
 
-i64 _wh_int_dec_count(_wh_int_dec_count_params params) {
+i64 _wh_intpos(_wh_intpos_params params) {
 #ifdef WH_USE_FORTRAN
-	return _wh_fortran_dec_count(params.base, params.value);
+	return _wh_fortran_intpos64(params.base, params.value);
 #else
 	i64 out = 0;
 
 	if (0 == params.base) {
 		params.base = 10;
 	}
+
+	params.value = wh_abs(params.value);
 
 	while (params.value /= params.base) {
 		++out;

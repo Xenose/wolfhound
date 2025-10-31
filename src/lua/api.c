@@ -27,7 +27,7 @@ i8 _wh_lua_expose_api(lua_State* ls) {
 		(const char*[]){ "WH", "file", "read",						nullptr },					WH_TYPE_FUNCTION_PTR, &wh_lua_file_read,
 		(const char*[]){ "WH", "file", "dir", "read",			nullptr },					WH_TYPE_FUNCTION_PTR, &wh_lua_dir_read,
 		(const char*[]){ "WH", "file", "dir", "close",			nullptr },					WH_TYPE_FUNCTION_PTR, &wh_lua_dir_close,
-		(const char*[]){ "WH", "maths", "int", "dec_count",	nullptr },					WH_TYPE_FUNCTION_PTR, &wh_lua_int_dec_count,
+		(const char*[]){ "WH", "maths", "int", "pos",			nullptr },					WH_TYPE_FUNCTION_PTR, &wh_lua_intpos,
 		(const char*[]){ "WH", "maths", "int", "pow",			nullptr },					WH_TYPE_FUNCTION_PTR, &wh_lua_intpow,
 		(const char*[]){ "WH", "maths", "hash", "simple",		nullptr },					WH_TYPE_FUNCTION_PTR, &wh_lua_hash_simple
 	);

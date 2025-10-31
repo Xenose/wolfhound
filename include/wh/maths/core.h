@@ -6,11 +6,11 @@
 #include<wh/common.h>
 #include<wh/params/math.h>
 
-extern i64 _wh_int_dec_count(_wh_int_dec_count_params params);
+extern i64 _wh_intpos(_wh_intpos_params params);
 extern i64 _wh_intpow(_wh_intpow_params params);
 extern i64 _wh_hash_simple(_wh_hash_simple_params params);
 
-#define wh_int_dec_count(...) _wh_int_dec_count((_wh_int_dec_count_params){ __VA_ARGS__ })
+#define wh_intpos(...) _wh_intpos((_wh_intpos_params){ __VA_ARGS__ })
 #define wh_intpow(...) _wh_intpow((_wh_intpow_params){ __VA_ARGS__ })
 
 

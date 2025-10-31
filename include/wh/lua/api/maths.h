@@ -4,7 +4,7 @@
 #include<lua.h>
 #include<wh/common.h>
 
-extern int wh_lua_int_dec_count(lua_State* ls);
+extern int wh_lua_intpos(lua_State* ls);
 extern int wh_lua_intpow(lua_State* ls);
 extern int wh_lua_hash_simple(lua_State* ls);
 
