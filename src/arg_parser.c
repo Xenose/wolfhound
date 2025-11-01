@@ -11,7 +11,7 @@
 #include<wh/file.h>
 #include<wh/lua/config.h>
 #include<wh/string.h>
-
+#include<wh/lua/helpers.h>
 
 i64 _wh_args_parse(_wh_args_parse_params params) {
 	char command[256] = { 0 };
@@ -27,6 +27,15 @@ i64 _wh_args_parse(_wh_args_parse_params params) {
 				wh_log_debug(("calling command [ %s ]"), command);
 
 				wh_file_s file = wh_file_load(command);
+
+				for (i++; i < params.arc; i++) {
+					if ('-' == params.arv[i][0]) {
+						i--;
+						break;
+					}
+
+					wh_lua_add_values(params.ls, (const char*[]) { "args", nullptr }, WH_TYPE_STRING, params.arv[i]);
+				}
 
 				if (nullptr != file.ptr) {
 					if (LUA_OK != luaL_dostring(params.ls, file.str)) {
@@ -44,8 +53,6 @@ i64 _wh_args_parse(_wh_args_parse_params params) {
 
 	return 0;
 }
-
-
 
 i64 _wh_args_parser_init(void) {
 	return 0;

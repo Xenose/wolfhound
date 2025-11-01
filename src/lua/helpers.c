@@ -57,6 +57,9 @@ i8 _wh_lua_add_values(lua_State* ls, ...) {
 			case WH_TYPE_BOOL:
 				lua_pushboolean(ls, va_arg(args, int));
 				break;
+			case WH_TYPE_STRING:
+				lua_pushstring(ls, va_arg(args, char*));
+				break;
 			case WH_TYPE_FUNCTION_PTR:
 				lua_pushcfunction(ls, va_arg(args, int(*)(lua_State*)));
 				break;
