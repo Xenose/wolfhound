@@ -1,20 +1,25 @@
 #define USE_NAMESPACE_WOLFHOUND
 #include<wh/print.h>
+#include<wh/debug/benchmark.h>
 
 int main(int arc, char* const* arv) {
-	print(("Test number 1 -> %i\n"), 1);
-	print(("Test number str -> %s\n"), "str");
-	print(("Test number oct 16 -> %o\n"), 16);
-	print(("Test number hex 16 -> %x\n"), 16);
-	print(("Test number nullptr -> %p\n"), nullptr);
+	wh_benchmark_s bench = { 0 };
 
-	print(("Test string length %%s -> %.9s\n"), "hello wolrd! hello world! hello wolrd!");
-	print(("Test string length %%s -> | %9s |\n"), "hello");
-	print(("Test string length %%s -> | %-9s |\n"), "hello");
-	print(("Test string length %%s -> %#s\n"), "hello");
-	print(("Test string length %%s -> | %.6s |\n"), "hello");
+	wh_benchmark(&bench) {
+		print(("Test number 1 -> %i\n"), 1);
+		print(("Test number str -> %s\n"), "str");
+		print(("Test number oct 16 -> %o\n"), 16);
+		print(("Test number hex 16 -> %x\n"), 16);
+		print(("Test number nullptr -> %p\n"), nullptr);
 
-	print(("Errnor test [ $n ]\n"), 2);
+		print(("Test string length %%s -> %.9s\n"), "hello wolrd! hello world! hello wolrd!");
+		print(("Test string length %%s -> | %9s |\n"), "hello");
+		print(("Test string length %%s -> | %-9s |\n"), "hello");
+		print(("Test string length %%s -> %#s\n"), "hello");
+		print(("Test string length %%s -> | %.6s |\n"), "hello");
+
+		print(("Errnor test [ $n ]\n"), 2);
+	}
 
 	return 0;
 }

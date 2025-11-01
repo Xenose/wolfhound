@@ -61,6 +61,7 @@ set(C_SOURCES
 	"src/config.c"
 	"src/convert.c"
 	"src/data/hashmap_lazy.c"
+	"src/debug/benchmark.c"
 	"src/debug/error.c"
 	"src/debug/logger.c"
 	"src/debug/signalar.c"

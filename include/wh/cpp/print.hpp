@@ -22,7 +22,7 @@ public:
 	print& fd(int fd);
 	print& buffer(char* buffer, i64 length);
 	print& flags(u64 flags);
-	print& offset(u64 offset);
+	print& offset(i64 offset);
 
 	template<typename... Args>
 	inline i64 out(Args&&... args) {

@@ -42,7 +42,7 @@ print& print::flags(u64 flags) {
 	return *this;
 }
 
-print& print::offset(u64 offset) {
+print& print::offset(i64 offset) {
 	_params.offset = offset;
 	return *this;
 }

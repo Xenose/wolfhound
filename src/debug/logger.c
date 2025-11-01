@@ -42,7 +42,7 @@ static i64 _wh_log_dummy_va(_wh_print_params print_params, _wh_log_params params
 }
 
 static i64 _wh_log_real_va(_wh_print_params print_params, _wh_log_params params, va_list args) {
-	u64 used = wh_print((
+	i64 used = wh_print((
 		"[ %s ] \033[90m%s::%d::%s -->\033[0m "
 		, 2, _buffer, 8096, 0, WH_PRINT_NO_FLUSH),
 

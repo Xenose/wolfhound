@@ -16,7 +16,7 @@
 #endif
 
 static i8 _wh_init_critical(_wh_init_params* params) {
-	wh_instance_s tmp;
+	wh_instance_s tmp = { 0 };
 
 	wh_signalar_init(params->args.ptr[0]);
 	params->config = _wh_config_load(params, &params->config);
@@ -69,7 +69,7 @@ wh_instance_s* _wh_init(_wh_init_params params) {
 	}
 	
 	if (1) {
-		_wh_run_utests("tests");
+		_wh_run_utests("tests/lua");
 	}
 
 	// basic data init
