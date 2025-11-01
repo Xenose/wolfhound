@@ -17,6 +17,8 @@ void _testing_print(i64* failed, i64* passed, char* result, char* format, ...) {
 void testing_print(i64* failed, i64* passed) {
 	// Simple tests
 	_testing_print(failed, passed, "%NULL%", nullptr);
+
+	_testing_print(failed, passed, "%$", "%%$$");
 	_testing_print(failed, passed, "Hello", "Hello");
 	_testing_print(failed, passed, "Hello World!", "Hello World!");
 

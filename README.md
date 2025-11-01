@@ -65,24 +65,24 @@ wh-build	# compiles code.
 | ------------------- | --------- | -------------- | ------------------------------------------------------------------ |
 | NeoVim              | Working   | Linux, Windows | Main editor for the project.                                       |
 | Visual Studio Code  | Working   | Linux, Windows |                                                                    |
-| Visual Studio       | Broken    | Windows        | Will not compile with MSCV(no C32) and headers are not showing up. |
+| Visual Studio       | Broken    | Windows        | Will not compile with MSCV(no C23) and headers are not showing up. |
 
 ## Stats
 <!--python-stats-start-->
 
 |  Language       | File Count | Lines of Code | Percentage |
 | --------------- | ---------- | ------------- | ---------- |
-| C               | 120        | 4823          | 82.11%     |
-| CMake           | 12         | 250           | 4.26%      |
-| Bourne Shell    | 15         | 230           | 3.92%      |
-| Python          | 2          | 155           | 2.64%      |
-| Markdown        | 3          | 135           | 2.30%      |
-| C++             | 7          | 121           | 2.06%      |
-| Lua             | 9          | 80            | 1.36%      |
+| C               | 122        | 4891          | 82.27%     |
+| CMake           | 12         | 253           | 4.26%      |
+| Bourne Shell    | 15         | 230           | 3.87%      |
+| Python          | 2          | 155           | 2.61%      |
+| Markdown        | 3          | 135           | 2.27%      |
+| C++             | 7          | 121           | 2.04%      |
+| Lua             | 9          | 80            | 1.35%      |
 | Fortran 95      | 1          | 32            | 0.54%      |
-| Dockerfile      | 1          | 25            | 0.43%      |
+| Dockerfile      | 1          | 25            | 0.42%      |
 | DOS Batch       | 4          | 20            | 0.34%      |
 | INI             | 1          | 3             | 0.05%      |
-| Summary         | 175        | 5874          | 100.00%    |
+| Summary         | 177        | 5945          | 100.00%    |
 
 <!--python-stats-end-->
