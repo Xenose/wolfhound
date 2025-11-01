@@ -7,6 +7,7 @@ INCLUDE_DIRECTORIES(SYSTEM "include/")
 
 ADD_EXECUTABLE(compiled_tests
 	"src/maths/core.c"
+	"src/print.c"
 	"src/source.c"
 )
 

@@ -1,6 +1,6 @@
 #include<math.h>
-#include<stdio.h>
 #include<wh/maths/core.h>
+#include<wh/maths/memory.h>
 #include<wh/testing/macros.h>
 
 void testing_intpos(i64* failed, i64* passed) {
@@ -25,7 +25,26 @@ void testing_intpow(i64* failed, i64* passed) {
 	}
 }
 
+void testing_hash_simple(i64* failed, i64* passed) {
+	WH_TEST_IS_EQUAL(*failed, *passed, 18L, wh_hash_simple("hello", 100))
+	WH_TEST_IS_EQUAL(*failed, *passed, 318L, wh_hash_simple("hello", 1000))
+	WH_TEST_IS_EQUAL(*failed, *passed, 1318L, wh_hash_simple("hello", 10000))
+	
+	WH_TEST_IS_EQUAL(*failed, *passed, 27L, wh_hash_simple("h", 100))
+	WH_TEST_IS_EQUAL(*failed, *passed, 727L, wh_hash_simple("h", 1000))
+}
+
+
+void testing_align(i64* failed, i64* passed) {
+	WH_TEST_IS_EQUAL(*failed, *passed, 0L, wh_align(-1, 4096))
+	WH_TEST_IS_EQUAL(*failed, *passed, 32L, wh_align(1, 32))
+	WH_TEST_IS_EQUAL(*failed, *passed, 4096L, wh_align(32, 4096))
+	WH_TEST_IS_EQUAL(*failed, *passed, 8192L, wh_align(8096, 4096))
+}
+
 void testing_math(i64* failed, i64* passed) {
 	testing_intpos(failed, passed);
 	testing_intpow(failed, passed);
+	testing_hash_simple(failed, passed);
+	testing_align(failed, passed);
 }

@@ -103,7 +103,7 @@ go_error_exit:
 }
 
 void* _wh_mem_realloc_freelist(_wh_mem_realloc_params* params) {
-	i64 bytes = 0;
+	u64 bytes = 0;
 	void* ptr = nullptr;
 	wh_heap_node_s* node = nullptr;
 

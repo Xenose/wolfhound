@@ -44,7 +44,7 @@ typedef struct {
 } _wh_mem_free_params;
 
 typedef struct {
-	size_t bytes;
+	u64 bytes;
 	void* ptr;
 	uint32_t flags;
 } _wh_mem_params;
