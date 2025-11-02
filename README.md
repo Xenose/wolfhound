@@ -29,15 +29,16 @@ wh-build	# compiles code.
 
 ### Commands
 
-| Command  | Platform       | Description                                |
-| -------- | -------------- | ------------------------------------------ |
-| wh-check | Linux          | Checks for missing software and libraries. |
-| wh-build | Linux, Windows | Compiles the code.                         |
-| wh-clang | Linux, Windows | Sets the compiler to Clang.                |
-| wh-gcc   | Linux          | Sets the compiler to gcc                   |
-| wh-mingw | Linux          | Sets the compiler to gcc-mingw.            |
-| wh-ninja | Linux, Windows | Sets the build system to Ninja.            |
-| wh-make  | Linux          | Sets the build system to Make.             |
+| Command    | Platform       | Description                                |
+| ---------- | -------------- | ------------------------------------------ |
+| wh-check   | Linux          | Checks for missing software and libraries. |
+| wh-build   | Linux, Windows | Compiles the code.                         |
+| wh-clang   | Linux, Windows | Sets the compiler to Clang.                |
+| wh-covrage | Linux          | Generates a covrage report and opens it.   |
+| wh-gcc     | Linux          | Sets the compiler to gcc                   |
+| wh-mingw   | Linux          | Sets the compiler to gcc-mingw.            |
+| wh-ninja   | Linux, Windows | Sets the build system to Ninja.            |
+| wh-make    | Linux          | Sets the build system to Make.             |
 
 ## Languages
 | Name      | Version | Use                                |
@@ -72,17 +73,17 @@ wh-build	# compiles code.
 
 |  Language       | File Count | Lines of Code | Percentage |
 | --------------- | ---------- | ------------- | ---------- |
-| C               | 122        | 4899          | 82.28%     |
-| CMake           | 12         | 253           | 4.25%      |
-| Bourne Shell    | 15         | 230           | 3.86%      |
-| Python          | 2          | 155           | 2.60%      |
-| Markdown        | 3          | 135           | 2.27%      |
-| C++             | 7          | 121           | 2.03%      |
-| Lua             | 9          | 81            | 1.36%      |
+| C               | 122        | 4900          | 81.94%     |
+| CMake           | 12         | 263           | 4.40%      |
+| Bourne Shell    | 16         | 244           | 4.08%      |
+| Python          | 2          | 155           | 2.59%      |
+| Markdown        | 3          | 136           | 2.27%      |
+| C++             | 7          | 121           | 2.02%      |
+| Lua             | 9          | 81            | 1.35%      |
 | Fortran 95      | 1          | 32            | 0.54%      |
 | Dockerfile      | 1          | 25            | 0.42%      |
-| DOS Batch       | 4          | 20            | 0.34%      |
+| DOS Batch       | 4          | 20            | 0.33%      |
 | INI             | 1          | 3             | 0.05%      |
-| Summary         | 177        | 5954          | 100.00%    |
+| Summary         | 178        | 5980          | 100.00%    |
 
 <!--python-stats-end-->
