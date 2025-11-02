@@ -4,6 +4,7 @@
 | Platform     | Tested | Supported | Description                             |
 | ------------ | ------ | --------- | --------------------------------------- |
 | Arch Linux   | YES    | YES       | Primary development platform.           |
+| Fedora Linux | YES    | YES       | Secondary development platform.         |
 | Debian Linux | NO     | Not yet   | Planned.                                |
 | Windows      | NO     | Not yet   | Planned.                                |
 | MacOS        | NO     | No        | No Plans.                               |
@@ -66,7 +67,7 @@ wh-build	# compiles code.
 | ------------------- | --------- | -------------- | ------------------------------------------------------------------ |
 | NeoVim              | Working   | Linux, Windows | Main editor for the project.                                       |
 | Visual Studio Code  | Working   | Linux, Windows |                                                                    |
-| Visual Studio       | Broken    | Windows        | Will not compile with MSCV(no C23) and headers are not showing up. |
+| Visual Studio       | Broken    | Windows        | Will not compile with MSVC(no C23) and headers are not showing up. |
 
 ## Stats
 <!--python-stats-start-->
