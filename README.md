@@ -29,16 +29,16 @@ wh-build	# compiles code.
 
 ### Commands
 
-| Command    | Platform       | Description                                |
-| ---------- | -------------- | ------------------------------------------ |
-| wh-check   | Linux          | Checks for missing software and libraries. |
-| wh-build   | Linux, Windows | Compiles the code.                         |
-| wh-clang   | Linux, Windows | Sets the compiler to Clang.                |
-| wh-covrage | Linux          | Generates a covrage report and opens it.   |
-| wh-gcc     | Linux          | Sets the compiler to gcc                   |
-| wh-mingw   | Linux          | Sets the compiler to gcc-mingw.            |
-| wh-ninja   | Linux, Windows | Sets the build system to Ninja.            |
-| wh-make    | Linux          | Sets the build system to Make.             |
+| Command     | Platform       | Description                                |
+| ----------- | -------------- | ------------------------------------------ |
+| wh-check    | Linux          | Checks for missing software and libraries. |
+| wh-build    | Linux, Windows | Compiles the code.                         |
+| wh-clang    | Linux, Windows | Sets the compiler to Clang.                |
+| wh-coverage | Linux          | Generates a coverage report and opens it.  |
+| wh-gcc      | Linux          | Sets the compiler to gcc                   |
+| wh-mingw    | Linux          | Sets the compiler to gcc-mingw.            |
+| wh-ninja    | Linux, Windows | Sets the build system to Ninja.            |
+| wh-make     | Linux          | Sets the build system to Make.             |
 
 ## Languages
 | Name      | Version | Use                                |

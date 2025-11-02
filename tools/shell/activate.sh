@@ -23,7 +23,7 @@ alias wh-count="PRP='${WP}' ${WP}${TP}stats.sh"
 
 # Tests / Reviews
 alias wh-ai-review="PRP='${WP}' ${WP}${TP}ai_review.sh"
-alias wh-covrage="PRP='${WP}' ${WP}${TP}covrage.sh"
+alias wh-coverage="PRP='${WP}' ${WP}${TP}coverage.sh"
 
 # Helpers
 alias wh-refresh=". ${WP}${TP}activate.sh"
