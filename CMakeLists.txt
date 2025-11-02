@@ -133,7 +133,7 @@ INCLUDE(cmake/find_unwind.cmake)
 IF(WIN32)
 	TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE)
 ELSE()
-	TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE "m" "dl" "atomic" "bsd")
+	TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE "m" "dl" "atomic" "bsd" "gcov")
 ENDIF()
 
 TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE 
@@ -152,6 +152,13 @@ TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
 	# In C +99 structs are zero out
 	-Wno-missing-field-initializers
 )
+
+IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+	MESSAGE(STATUS "Enabling coverage flags for GCC/Clang")
+	TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE --coverage -g)
+	TARGET_LINK_OPTIONS(${APP_NAME} PRIVATE --coverage)
+ENDIF()
+
 
 # -----------------------------------------------------------------------------
 # Example Subprojects

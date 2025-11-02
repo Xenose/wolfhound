@@ -21,8 +21,8 @@ i64 _wh_args_parse(_wh_args_parse_params params) {
 		char* in = params.arv[i];
 		u64 length = strlen(in);
 
-		if ('-' == params.arv[i][0]) {
-			if ('-' == params.arv[i][1]) {
+		if ('-' == in[0]) {
+			if ('-' == in[1]) {
 				wh_strcat((command, 255), "commands/", &in[2], ".lua");
 				wh_log_debug(("calling command [ %s ]"), command);
 

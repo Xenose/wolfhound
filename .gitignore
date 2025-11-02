@@ -41,6 +41,7 @@ perf.data
 **/CMakeFiles/
 **/CMakeScratch/
 **/CompilerId*/
+**/reports/
 
 # Visual Studio files
 *.sln
