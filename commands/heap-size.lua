@@ -2,7 +2,7 @@ HELP = HELP or false
 
 if (HELP) then
 	COMMAND_INFO = {
-		create = "2025-05-20",
+		create = "2025-11-03",
 		description = "Runs the program once with one loop execution.",
 	}
 
