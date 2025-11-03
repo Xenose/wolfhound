@@ -9,6 +9,9 @@ if (HELP) then
 
 	return COMMAND_INFO
 else
-	print("--> " .. args)
+	if (nil ~= args) then
+		print("--> " .. table.concat(args, ", "))
+	end
+
 	WH.config.flags.dryrun = true
 end

@@ -12,7 +12,7 @@ ADD_EXECUTABLE(compiled_tests
 	"src/source.c"
 )
 
-IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" AND GENERATE_REPORT)
 	MESSAGE(STATUS "Enabling coverage flags for GCC/Clang")
 	TARGET_COMPILE_OPTIONS(compiled_tests PRIVATE --coverage -g)
 	TARGET_LINK_OPTIONS(compiled_tests  PRIVATE --coverage)

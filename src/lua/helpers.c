@@ -35,7 +35,8 @@ i64 _wh_lua_add_keys(lua_State* ls, const char** keys, i64 index) {
 // ( [ "namespace", "table", "table", ..., "var_name", nullptr ], type, value )
 i8 _wh_lua_add_values(lua_State* ls, ...) {
 	va_list args;
-	i64 index = 0;
+	void* array;
+	i64 array_length = 0;
 	const char** keys = nullptr;
 
 	va_start(args, ls);
@@ -68,6 +69,18 @@ i8 _wh_lua_add_values(lua_State* ls, ...) {
 			case WH_TYPE_STRING:
 				lua_pushstring(ls, va_arg(args, char*));
 				break;
+			case WH_TYPE_ARRAY_STRING:
+				array_length = va_arg(args, i64) + 1;
+				array = va_arg(args, char**);
+
+				lua_createtable(ls, (int)array_length, 0);
+
+				for (i64 j = 0; j < array_length; j++) {
+					lua_pushstring(ls, ((char**)array)[j]);
+					lua_rawseti (ls, -2, j+1);
+				}
+
+				break;
 			case WH_TYPE_FUNCTION_PTR:
 				lua_pushcfunction(ls, va_arg(args, int(*)(lua_State*)));
 				break;
@@ -89,9 +102,6 @@ i8 _wh_lua_add_values(lua_State* ls, ...) {
 go_error_exit:
 	va_end(args);
 	return -1;
-}
-
-i8 _wh_lua_add_array_values(lua_State* ls, ...) {
 }
 
 i8 _wh_lua_get_values(lua_State* ls, ...) {
