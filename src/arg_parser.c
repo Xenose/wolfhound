@@ -18,7 +18,7 @@ i64 _wh_args_parse(_wh_args_parse_params params) {
 	wh_config_s* config = params.config;
 
 	for (i64 i = 1; i < params.arc; i++) {
-		char* const* start = params.arv;
+		char* const* start = &params.arv[i];
 		char* in = params.arv[i];
 		u64 length = strlen(in);
 
@@ -38,7 +38,6 @@ i64 _wh_args_parse(_wh_args_parse_params params) {
 						i--;
 						break;
 					}
-
 
 					wh_lua_add_values(params.ls, (const char*[]) { "args", nullptr }, WH_TYPE_ARRAY_STRING, &params.arv[i] - start - 1, &start[1]);
 				}
