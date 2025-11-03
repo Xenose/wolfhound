@@ -153,11 +153,11 @@ TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
 	-Wno-missing-field-initializers
 )
 
-IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
-	MESSAGE(STATUS "Enabling coverage flags for GCC/Clang")
-	TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE --coverage -g)
-	TARGET_LINK_OPTIONS(${APP_NAME} PRIVATE --coverage)
-ENDIF()
+#IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+#	MESSAGE(STATUS "Enabling coverage flags for GCC/Clang")
+#	TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE --coverage -g)
+#	TARGET_LINK_OPTIONS(${APP_NAME} PRIVATE --coverage)
+#ENDIF()
 
 
 # -----------------------------------------------------------------------------

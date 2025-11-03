@@ -6,6 +6,32 @@
 #include<wh/print.h>
 #include<wh/lua/helpers.h>
 
+i64 _wh_lua_add_keys(lua_State* ls, const char** keys, i64 index) {
+	lua_getglobal(ls, keys[0]);
+
+	if (lua_isnil(ls, -1)) {
+		lua_pop(ls, 1);
+		lua_newtable(ls);
+		lua_pushvalue(ls, -1);
+		lua_setglobal(ls, keys[0]);
+	}
+
+	for (;nullptr != keys[index + 1]; index++) {
+		lua_getfield(ls, -1, keys[index]);
+
+		if (lua_isnil(ls, -1)) {
+			lua_pop(ls, 1);
+			lua_newtable(ls);
+			lua_pushvalue(ls, -1);
+			lua_setfield(ls, -3, keys[index]);
+		}
+
+		lua_remove(ls, -2);
+	}
+
+	return index;
+}
+
 // ( [ "namespace", "table", "table", ..., "var_name", nullptr ], type, value )
 i8 _wh_lua_add_values(lua_State* ls, ...) {
 	va_list args;
@@ -22,34 +48,16 @@ i8 _wh_lua_add_values(lua_State* ls, ...) {
 			wh_log_error(("Failed to add table, nullptr given"));
 			goto go_error_exit;
 		} else if (nullptr == keys[1]) {
-			goto go_switch;
+			goto go_get_value;
 		}
 
-		lua_getglobal(ls, keys[0]);
+		i = _wh_lua_add_keys(ls, keys, i);
 
-		if (lua_isnil(ls, -1)) {
-			lua_pop(ls, 1);
-			lua_newtable(ls);
-			lua_pushvalue(ls, -1);
-			lua_setglobal(ls, keys[0]);
-		}
-
-		for (;nullptr != keys[i + 1]; i++) {
-			lua_getfield(ls, -1, keys[i]);
-
-			if (lua_isnil(ls, -1)) {
-				lua_pop(ls, 1);
-				lua_newtable(ls);
-				lua_pushvalue(ls, -1);
-				lua_setfield(ls, -3, keys[i]);
-			}
-
-			lua_remove(ls, -2);
-		}
-
-	go_switch:
+	go_get_value:
+		// We need to know what type we are getting.
 		type = va_arg(args, int);
 
+		// inserting the value
 		switch (type) {
 			case WH_TYPE_I64:
 				lua_pushinteger(ls, va_arg(args, i64));
@@ -81,6 +89,9 @@ i8 _wh_lua_add_values(lua_State* ls, ...) {
 go_error_exit:
 	va_end(args);
 	return -1;
+}
+
+i8 _wh_lua_add_array_values(lua_State* ls, ...) {
 }
 
 i8 _wh_lua_get_values(lua_State* ls, ...) {
@@ -146,7 +157,7 @@ i8 _wh_lua_get_values(lua_State* ls, ...) {
 				break;
 			case WH_TYPE_BOOL:
 				if (lua_isboolean(ls, -1)) {
-					*((i8*)out) = lua_toboolean(ls, -1);
+					*((i8*)out) = (i8)lua_toboolean(ls, -1);
 				}
 				break;
 			default:

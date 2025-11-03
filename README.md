@@ -47,10 +47,10 @@ wh-build	# compiles code.
 | C         | 23      | Engine core.                       |
 | Fortran   | 95      | Optional maths functions.          |
 | C++       | 23      | C++ wrapper for the C code         |
-| Lua       |         | Configuration, Command Line, data. |
-| Shell     |         | Tools.                             |
+| Lua       | N/A     | Configuration, Command Line, data. |
+| Shell     | N/A     | Tools.                             |
 | Python    | 3       | Tools.                             |
-| DOS Batch |         | Build tools.                       |
+| DOS Batch | N/A     | Build tools.                       |
 
 ## Libraries
 
