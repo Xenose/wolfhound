@@ -28,10 +28,14 @@ i64 _wh_args_parse(_wh_args_parse_params params) {
 
 		if ('-' == in[0]) {
 			if ('-' == in[1]) {
+				memset(command, 0, 256);
 				wh_strcat((command, 255), "commands/", &in[2], ".lua");
 				wh_log_debug(("calling command [ %s ]"), command);
 
 				wh_file_s file = wh_file_load(command);
+
+				lua_pushnil(params.ls);
+				lua_setglobal(params.ls, "args");
 
 				for (i++; i < params.arc; i++) {
 					if ('-' == params.arv[i][0]) {
