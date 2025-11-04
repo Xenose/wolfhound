@@ -3,6 +3,6 @@
 
 #include<wh/common.h>
 
-extern void testing_print(i64* failed, i64* passed);
+extern i64 testing_print(i64* failed, i64* passed);
 
 #endif /* _wh_header_testing_print_ */

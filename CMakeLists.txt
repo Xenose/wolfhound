@@ -66,6 +66,7 @@ set(C_SOURCES
 	"src/debug/logger.c"
 	"src/debug/signalar.c"
 	"src/file.c"
+	"src/debug/exceptions.c"
 	"src/game/actions.c"
 	"src/game/entity.c"
 	"src/game/loader.c"

@@ -8,7 +8,7 @@
 
 WH_C()
 
-extern void _wh_mem_scan(void);
+extern i64 _wh_mem_scan(void);
 
 // Heap functions
 extern wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params);

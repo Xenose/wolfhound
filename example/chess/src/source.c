@@ -19,6 +19,7 @@
 #include<wh/images/loader.h>
 #include<wh/sys/filesystem.h>
 #include<wh/data/hashmap_lazy.h>
+#include<wh/debug/exceptions.h>
 
 #include<stdio.h>
 

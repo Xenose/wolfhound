@@ -8,9 +8,15 @@ INCLUDE_DIRECTORIES(SYSTEM "include/")
 
 ADD_EXECUTABLE(compiled_tests
 	"src/maths/core.c"
+	"src/memory.c"
 	"src/print.c"
 	"src/source.c"
 )
+
+FOREACH(src_file IN LISTS C_SOURCES CXX_SOURCES)
+	GET_FILENAME_COMPONENT(basename ${src_file} NAME)
+	SET_SOURCE_FILES_PROPERTIES(${src_file} PROPERTIES COMPILE_DEFINITIONS "__FILENAME__=\"${basename}\"")
+ENDFOREACH()
 
 IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" AND GENERATE_REPORT)
 	MESSAGE(STATUS "Enabling coverage flags for GCC/Clang")

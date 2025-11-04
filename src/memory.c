@@ -157,7 +157,6 @@ void _wh_mem_remove(void* owner, void* ptr) {
 			default:
 				--current->owner_count;
 				wh_log_debug(("Clearing owner!"));
-				wh_log_debug(("hello... %u"), current->owner_count);
 
 				wh_for(u64, i, current->owner_count) {
 					if (nullptr == owner) {
@@ -175,7 +174,8 @@ void _wh_mem_remove(void* owner, void* ptr) {
 }
 
 // TODO fix bug
-void _wh_mem_scan(void) {
+i64 _wh_mem_scan(void) {
+	i64 count = 0;
 	_wh_heap_list_entry_s* current = _list.nodes;
 
 	wh_spinlock(&_list.lock) {
@@ -201,6 +201,7 @@ void _wh_mem_scan(void) {
 			}
 
 			if (0 == current->owner_count) {
+				count++;
 				wh_log_error(("LEAK FOUND! freeing..."));
 				wh_free(current->heap, current->ptr, nullptr);
 			}
@@ -210,6 +211,7 @@ void _wh_mem_scan(void) {
 	}
 
 	//usleep(100);
+	return count;
 }
 
 void _wh_mem_init(void) {
@@ -267,7 +269,10 @@ wh_heap_header_s* wh_heap_insert(const char* name, wh_heap_header_s* header) {
 				}
 			}
 
-			wh_sys_memrel(_table.entries);
+			if (nullptr != _table.entries) {
+				wh_sys_memrel(_table.entries);
+			}
+
 			_table.entries = new_entries;
 			_table.count = new_count;
 		}
