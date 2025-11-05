@@ -30,6 +30,7 @@ i64 testing_memory(i64* failed, i64* passed) {
 	_memory_test(failed, passed, heap, 1024);
 	_memory_test(failed, passed, heap, 32);
 	_memory_test(failed, passed, heap, 72);
+	_memory_test(failed, passed, heap, 72000);
 	
 	_memory_test_leak(failed, passed, heap, 72);
 
