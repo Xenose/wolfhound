@@ -27,12 +27,20 @@ void _memory_test_leak(i64* failed, i64* passed, wh_heap_header_s* heap, u64 byt
 i64 testing_memory(i64* failed, i64* passed) {
 	wh_heap_header_s* heap = wh_heap_init("main_heap", WH_1MB, nullptr, WH_STRUCT_TYPE_HEAP_ARENA);
 
-	_memory_test(failed, passed, heap, 1024);
-	_memory_test(failed, passed, heap, 32);
-	_memory_test(failed, passed, heap, 72);
-	_memory_test(failed, passed, heap, 72000);
+	wh_try {
+		_memory_test(failed, passed, heap, 1024);
+		_memory_test(failed, passed, heap, 32);
+		_memory_test(failed, passed, heap, 72);
+		_memory_test(failed, passed, heap, 72000);
 	
-	_memory_test_leak(failed, passed, heap, 72);
+		_memory_test_leak(failed, passed, heap, 72);
+	} wh_catch(exp) {
+		switch (exp.error) {
+			case WH_EXCEPTION_SIGSEGV:
+				printf("unsafe to continue...\n");
+				return exp.error;
+		}
+	}
 
 	//_wh_mem_scan();
 	return 0;
