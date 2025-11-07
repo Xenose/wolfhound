@@ -3,6 +3,6 @@
 
 #include<wh/common.h>
 
-extern void testing_math(i64* failed, i64* passed);
+extern i64 testing_math(i64* failed, i64* passed);
 
 #endif

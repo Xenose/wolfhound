@@ -42,9 +42,11 @@ void testing_align(i64* failed, i64* passed) {
 	WH_TEST_IS_EQUAL(*failed, *passed, 8192L, wh_align(8096, 4096))
 }
 
-void testing_math(i64* failed, i64* passed) {
+i64 testing_math(i64* failed, i64* passed) {
 	testing_intpos(failed, passed);
 	testing_intpow(failed, passed);
 	testing_hash_simple(failed, passed);
 	testing_align(failed, passed);
+
+	return 0;
 }

@@ -34,6 +34,6 @@ i64 testing_memory(i64* failed, i64* passed) {
 	
 	_memory_test_leak(failed, passed, heap, 72);
 
-	_wh_mem_scan();
+	//_wh_mem_scan();
 	return 0;
 }
