@@ -42,6 +42,6 @@ i64 testing_memory(i64* failed, i64* passed) {
 		}
 	}
 
-	//_wh_mem_scan();
+	_wh_mem_scan();
 	return 0;
 }

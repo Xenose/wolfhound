@@ -11,7 +11,7 @@
 		printf("\t[\033[31mFAILED\033[0m] %li != %li for [ \033[33m%s\033[0m ]\n", _excpected_, _result_, #_result_);\
 	} else {\
 		++(count_passed);\
-		/* printf("[\033[32mPASSED\033[0m] %li == %li for [ \033[33m%s\033[0m ]\n", _excpected_, _result_, #_result_);*/ \
+		printf("[\033[32mPASSED\033[0m] %li == %li for [ \033[33m%s\033[0m ]\n", _excpected_, _result_, #_result_); \
 	}\
 }
 
@@ -22,7 +22,7 @@
 		printf("\t[\033[31mFAILED\033[0m] (%s) != (%s) for [ \033[33m%s\033[0m ] %i\n", _excpected_, _result_, #_result_, strcmp(_excpected_, _result_));\
 	} else {\
 		++(count_passed);\
-		/* printf("[\033[32mPASSED\033[0m] %li == %li for [ \033[33m%s\033[0m ]\n", _excpected_, _result_, #_result_);*/ \
+		printf("[\033[32mPASSED\033[0m] %li == %li for [ \033[33m%s\033[0m ]\n", _excpected_, _result_, #_result_); \
 	}\
 }
 

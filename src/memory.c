@@ -69,6 +69,11 @@ static wh_heap_header_s* _heap_main;
 
 void (*_wh_mem_insert)(void* owner, void* ptr, wh_heap_header_s* heap, u64 line, const char* file) = &_wh_mem_insert_real;
 
+// allocation functions
+void  (*_wh_free)(_wh_mem_free_params params) = nullptr;
+void* (*_wh_alloc)(_wh_mem_alloc_params params) = nullptr;
+void* (*_wh_realloc)(_wh_mem_realloc_params params) = nullptr;
+
 void _wh_mem_insert_dummy(void* owner, void* ptr, wh_heap_header_s* heap, u64 line, const char* file) {
 }
 
@@ -137,7 +142,7 @@ void _wh_mem_insert_real(void* owner, void* ptr, wh_heap_header_s* heap, u64 lin
 void _wh_mem_remove(void* owner, void* ptr) {
 	_wh_heap_list_entry_s* current = _list.nodes;
 
-	wh_spinlock(&_list.lock) {
+	//wh_spinlock(&_list.lock) {
 		while (ptr != current->ptr) {
 			if (nullptr != current) {
 				wh_spinlock_return(&_list.lock);
@@ -170,7 +175,7 @@ void _wh_mem_remove(void* owner, void* ptr) {
 					}
 				}
 		}
-	}
+	//}
 }
 
 // TODO fix bug
@@ -323,11 +328,201 @@ void wh_heap_print_table() {
 
 // Memory allocator functions
 
+
+
+void _wh_heap_print(_wh_heap_print_params params) {
+	wh_heap_header_s* heap = params.heap;
+	wh_heap_node_s* node = nullptr;
+
+	if (nullptr == heap) {
+		heap = _heap_main;
+	}
+
+	node = heap->freelist.nodes;
+	wh_print(("\n"));
+
+	while (nullptr != node) {
+		if (node->flags & WH_MEM_IN_USE) {
+			wh_print(("[\033[31mUSED \033[0m$k]"), node->bytes);
+		} else {
+			wh_print(("[\033[32mFREE \033[0m$k]"), node->bytes);
+		}
+
+		node = node->next;
+	}
+	
+	wh_print(("\n\n"));
+}
+
+
+void* _wh_alloc_no_tracking(_wh_mem_alloc_params params) {
+	void* mem = nullptr;
+	params.bytes = (u64)wh_align((i64)params.bytes, 16);
+
+	if (nullptr == params.heap) {
+		params.heap = _heap_main;
+	}
+
+	switch (params.heap->stype) {
+		case WH_STRUCT_TYPE_HEAP_ARENA:
+			wh_spin_lock(&params.heap->locked) {
+				mem = _wh_mem_alloc_arena(&params);
+			}
+			break;
+
+		default:
+		case WH_STRUCT_TYPE_HEAP_FREELIST:
+			wh_spin_lock(&params.heap->locked) {
+				mem = _wh_mem_alloc_freelist(&params);
+			}
+			break;
+	}
+
+	if (0 != params.flags) {
+		if (WH_MEM_ZERO == params.flags) {
+			memset(mem, 0, params.bytes);
+		}
+	}
+	return mem;
+}
+
+void* _wh_alloc_tracking(_wh_mem_alloc_params params) {
+	void* out = _wh_alloc_no_tracking(params);
+
+	if (nullptr == out) {
+		goto go_error_exit;
+	}
+
+	if (nullptr == params.heap) {
+		params.heap = _heap_main;
+	}
+
+	_wh_mem_insert(params.owner, out, params.heap, params.line, params.file);
+go_error_exit:
+	return out;
+}
+
+void _wh_free_no_tracking(_wh_mem_free_params params) {
+	if (nullptr == params.heap) {
+		params.heap = _heap_main;
+	}
+
+	switch (params.heap->stype) {
+		case WH_STRUCT_TYPE_HEAP_ARENA:
+			wh_spin_lock(&params.heap->locked) {
+				_wh_mem_free_arena(&params);
+			}
+			break;
+
+		default:
+		case WH_STRUCT_TYPE_HEAP_FREELIST:
+			wh_spin_lock(&params.heap->locked) {
+				_wh_mem_free_freelist(&params);
+			}
+		break;
+	}
+	
+}
+
+void _wh_free_tracking(_wh_mem_free_params params) {
+	if (nullptr == params.heap) {
+		params.heap = _heap_main;
+	}
+
+	_wh_mem_remove(params.owner, params.ptr);
+	_wh_free_no_tracking(params);
+}
+
+void* _wh_realloc_no_tracking(_wh_mem_realloc_params params) {
+	void* mem = nullptr;
+
+	if (nullptr == params.heap) {
+		params.heap = _heap_main;
+	}
+
+	switch (params.heap->stype) {
+		case WH_STRUCT_TYPE_HEAP_ARENA:
+			wh_log_error(("Arena allocator don't support realloc"));
+			break;
+
+		default:
+		case WH_STRUCT_TYPE_HEAP_FREELIST:
+			wh_spin_lock(&params.heap->locked) {
+				mem = _wh_mem_realloc_freelist(&params);
+			}
+		break;
+	}
+
+	return mem;
+}
+
+void* _wh_realloc_tracking(_wh_mem_realloc_params params) {
+	void* out = _wh_realloc_no_tracking(params);
+
+	if (nullptr == out) {
+		goto go_error_exit;
+	}
+
+	if (nullptr == params.heap) {
+		params.heap = _heap_main;
+	}
+
+go_error_exit:
+	return out;
+}
+
+void* _wh_mem(_wh_mem_params params) {
+	void* ptr = nullptr;
+
+	if (0 == params.bytes) {
+		if (nullptr != params.ptr) {
+			if (WH_MEM_ZERO == params.flags) {
+				memset(params.ptr, 0, params.bytes);
+			}
+
+			//atomic_fetch_sub(&_heap_main->ptr_count, 1);
+			free(params.ptr);
+		}
+
+		goto go_exit;
+	}
+
+	if (nullptr == params.ptr) {
+		ptr = malloc(params.bytes);
+	} else {
+		ptr = realloc(params.ptr, params.bytes);
+	}
+
+	if (nullptr == ptr) {
+		goto go_failure_exit;
+	}
+
+	if (nullptr == params.ptr) {
+		//atomic_fetch_add(&_heap_main->ptr_count, 1);
+	}
+
+	if (WH_MEM_ZERO == params.flags) {
+		memset(ptr, 0, params.bytes);
+	}
+
+go_failure_exit:
+go_exit:
+	return ptr;
+}
+
+int32_t wh_mem_leak_count(void) {
+	return 0;//atomic_load(&_heap_main->ptr_count);
+}
+
 wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
 	wh_heap_header_s* heap = nullptr;
 	u64 old_bytes = params.bytes + sizeof(wh_heap_header_s);
 
 	params.bytes = (u64)wh_align((i64)(params.bytes + sizeof(wh_heap_header_s)), getpagesize());
+
+	_wh_alloc	= &_wh_alloc_tracking;
+	_wh_realloc	= &_wh_realloc_tracking;
+	_wh_free		= &_wh_free_tracking;
 
 	wh_log_info(("requested [ $k ] giving [ $k ]"), old_bytes, params.bytes);
 
@@ -400,151 +595,4 @@ wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
 go_error_exit:
 go_exit:
 	return heap;
-}
-
-void _wh_heap_print(_wh_heap_print_params params) {
-	wh_heap_header_s* heap = params.heap;
-	wh_heap_node_s* node = nullptr;
-
-	if (nullptr == heap) {
-		heap = _heap_main;
-	}
-
-	node = heap->freelist.nodes;
-	wh_print(("\n"));
-
-	while (nullptr != node) {
-		if (node->flags & WH_MEM_IN_USE) {
-			wh_print(("[\033[31mUSED \033[0m$k]"), node->bytes);
-		} else {
-			wh_print(("[\033[32mFREE \033[0m$k]"), node->bytes);
-		}
-
-		node = node->next;
-	}
-	
-	wh_print(("\n\n"));
-}
-
-
-void* _wh_alloc(_wh_mem_alloc_params params) {
-	void* mem = nullptr;
-	params.bytes = (u64)wh_align((i64)params.bytes, 16);
-
-	if (nullptr == params.heap) {
-		params.heap = _heap_main;
-	}
-
-	switch (params.heap->stype) {
-		case WH_STRUCT_TYPE_HEAP_ARENA:
-			wh_spin_lock(&params.heap->locked) {
-				mem = _wh_mem_alloc_arena(&params);
-			}
-			break;
-
-		default:
-		case WH_STRUCT_TYPE_HEAP_FREELIST:
-			wh_spin_lock(&params.heap->locked) {
-				mem = _wh_mem_alloc_freelist(&params);
-			}
-			break;
-	}
-
-	_wh_mem_insert(params.owner, mem, params.heap, params.line, params.file);
-
-	if (0 != params.flags) {
-		if (WH_MEM_ZERO == params.flags) {
-			memset(mem, 0, params.bytes);
-		}
-	}
-	return mem;
-}
-
-void _wh_free(_wh_mem_free_params params) {
-	if (nullptr == params.heap) {
-		params.heap = _heap_main;
-	}
-
-	switch (params.heap->stype) {
-		case WH_STRUCT_TYPE_HEAP_ARENA:
-			wh_spin_lock(&params.heap->locked) {
-				_wh_mem_free_arena(&params);
-			}
-			break;
-
-		default:
-		case WH_STRUCT_TYPE_HEAP_FREELIST:
-			wh_spin_lock(&params.heap->locked) {
-				_wh_mem_free_freelist(&params);
-			}
-		break;
-	}
-	
-	_wh_mem_remove(params.owner, params.ptr);
-}
-
-void* _wh_realloc(_wh_mem_realloc_params params) {
-	void* mem = nullptr;
-
-	if (nullptr == params.heap) {
-		params.heap = _heap_main;
-	}
-
-	switch (params.heap->stype) {
-		case WH_STRUCT_TYPE_HEAP_ARENA:
-			wh_log_error(("Arena allocator don't support realloc"));
-			break;
-
-		default:
-		case WH_STRUCT_TYPE_HEAP_FREELIST:
-			wh_spin_lock(&params.heap->locked) {
-				mem = _wh_mem_realloc_freelist(&params);
-			}
-		break;
-	}
-
-	return mem;
-}
-
-void* _wh_mem(_wh_mem_params params) {
-	void* ptr = nullptr;
-
-	if (0 == params.bytes) {
-		if (nullptr != params.ptr) {
-			if (WH_MEM_ZERO == params.flags) {
-				memset(params.ptr, 0, params.bytes);
-			}
-
-			//atomic_fetch_sub(&_heap_main->ptr_count, 1);
-			free(params.ptr);
-		}
-
-		goto go_exit;
-	}
-
-	if (nullptr == params.ptr) {
-		ptr = malloc(params.bytes);
-	} else {
-		ptr = realloc(params.ptr, params.bytes);
-	}
-
-	if (nullptr == ptr) {
-		goto go_failure_exit;
-	}
-
-	if (nullptr == params.ptr) {
-		//atomic_fetch_add(&_heap_main->ptr_count, 1);
-	}
-
-	if (WH_MEM_ZERO == params.flags) {
-		memset(ptr, 0, params.bytes);
-	}
-
-go_failure_exit:
-go_exit:
-	return ptr;
-}
-
-int32_t wh_mem_leak_count(void) {
-	return 0;//atomic_load(&_heap_main->ptr_count);
 }

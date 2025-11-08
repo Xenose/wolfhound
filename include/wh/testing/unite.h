@@ -3,6 +3,9 @@
 
 #include<wh/common.h>
 
-extern i8 _wh_run_utests(const char* path);
+typedef struct {
+	i64 passed;
+	i64 falied;
+} wh_test_data_s;
 
 #endif /* _wh_header_testing_unite_ */
