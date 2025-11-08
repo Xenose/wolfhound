@@ -152,6 +152,8 @@ TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
 
 	# In C +99 structs are zero out
 	-Wno-missing-field-initializers
+
+	-Ofast
 )
 
 IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" AND GENERATE_REPORT)
