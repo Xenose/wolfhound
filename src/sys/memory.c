@@ -1,5 +1,6 @@
 #include<wh/debug/logger.h>
 #include<wh/sys/memory.h>
+#include<string.h>
 
 #ifdef __unix__
 #include<errno.h>
@@ -32,6 +33,8 @@ void _wh_sys_memrel(_wh_sys_memrel_params params) {
 	}
 }
 
+
+
 #elif defined(_WIN64)
 #include<windows.h>
 	
@@ -59,5 +62,3 @@ void _wh_sys_memrel(_wh_sys_memrel_params params) {
 }
 
 #endif /* system dependent code */
-
-

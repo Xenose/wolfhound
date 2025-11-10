@@ -94,7 +94,6 @@ static void _wh_tracker_insert(void* owner, void* ptr, wh_heap_header_s* heap, u
 		}
 
 		last = _list.last;
-		last->ptr = ptr;
 	} else {
 		last = _list.last;
 		last->next = calloc(1, sizeof(_wh_heap_list_entry_s));
@@ -114,7 +113,7 @@ static void _wh_tracker_insert(void* owner, void* ptr, wh_heap_header_s* heap, u
 	last->heap = heap;
 	last->owner_count = 0;
 
-	owners = realloc(last->owners, sizeof(_wh_heap_ptr_pair_s));
+	owners = realloc(last->owners, sizeof(_wh_heap_ptr_pair_s) * (last->owner_count + 1));
 
 	if (nullptr == owners) {
 		wh_log_error(("Failed to allocate memory"));
@@ -126,13 +125,17 @@ static void _wh_tracker_insert(void* owner, void* ptr, wh_heap_header_s* heap, u
 	owners[last->owner_count].owner = owner;
 	owners[last->owner_count].line = line;
 	owners[last->owner_count].file = file;
-	last->owner_count = 1;
+	last->owner_count += 1;
 
 	wh_log_debug(("inserted new node!"));
 }
 
 static void _wh_tracker_remove(void* owner, void* ptr) {
 	_wh_heap_list_entry_s* current = _list.nodes;
+
+	if (nullptr == current) {
+		return;
+	}
 
 	while (ptr != current->ptr) {
 		current = current->next;
@@ -147,29 +150,33 @@ static void _wh_tracker_remove(void* owner, void* ptr) {
 			wh_log_debug(("Ereasing tracked pointer!"));
 
 			if (nullptr != current->previous) { 
-				current->previous->previous = current->next;
+				wh_log_debug(("Previous node is not null assigning next"));
+				current->previous->next = current->next;
 			} else {
+				wh_log_debug(("Previous node is null assigning to first object"));
 				_list.nodes = current->next;
 			}
 
+			if (current->next) {
+				current->next->previous = current->previous;
+			} else {
+				_list.last = current->previous;
+			}
 
 			free(current->owners);
 			free(current);
 			break;
 
 		default:
-			--current->owner_count;
 			wh_log_debug(("Clearing owner!"));
-
 			wh_for(u64, i, current->owner_count) {
-				if (nullptr == owner) {
-					continue;
-				}
-
 				if (owner == current->owners[i].owner) {
+					current->owner_count--;
 					current->owners[i].owner = current->owners[current->owner_count].owner;
 					current->owners[i].file = current->owners[current->owner_count].file;
 					current->owners[i].line = current->owners[current->owner_count].line;
+					current->owners = realloc(current->owners, sizeof(_wh_heap_ptr_pair_s) * current->owner_count);
+					break;
 				}
 			}
 	}
@@ -187,7 +194,7 @@ wh_heap_header_s* wh_heap_insert(const char* name, wh_heap_header_s* header) {
 
 	wh_log_debug(("Inserting new entry named [ %s ]"), name);
 
-	wh_spin_lock(&_table.lock) {
+	//wh_spin_lock(&_table.lock) {
 		if (_table.used >= _table.count) {
 		go_realloc:
 			wh_log_debug(("Expanding table"));
@@ -248,7 +255,7 @@ wh_heap_header_s* wh_heap_insert(const char* name, wh_heap_header_s* header) {
 		entry->name = name;
 		entry->header = header;
 		++_table.used;
-	}
+	//}
 
 	return header;
 go_error_exit:
@@ -260,17 +267,19 @@ wh_heap_header_s* wh_heap_get(const char* name) {
 	_wh_heap_entry_s* entry = nullptr;
 	i64 hash = 0;
 
-	wh_spin_lock(&_table.lock) {
-		hash = wh_hash_simple(name, _table.count);
-		entry = &_table.entries[hash];
+go_redo:
+	hash = wh_hash_simple(name, _table.count);
+	entry = &_table.entries[hash];
 
-		if (nullptr == entry->header) {
-			goto go_error_exit;
-		}
-
-		header = entry->header;
+	if (nullptr == entry->header) {
+		goto go_error_exit;
 	}
 
+	if (hash != wh_hash_simple(name, _table.count)) {
+		goto go_redo;
+	}
+
+	header = entry->header;
 go_error_exit:
 	return header;
 }
@@ -289,16 +298,16 @@ void* _wh_alloc_no_tracking(_wh_mem_alloc_params params) {
 
 	switch (params.heap->stype) {
 		case WH_STRUCT_TYPE_HEAP_ARENA:
-			wh_spin_lock(&params.heap->locked) {
+			//wh_spin_lock(&params.heap->locked) {
 				mem = _wh_mem_alloc_arena(&params);
-			}
+			//}
 			break;
 
 		default:
 		case WH_STRUCT_TYPE_HEAP_FREELIST:
-			wh_spin_lock(&params.heap->locked) {
+			//wh_spin_lock(&params.heap->locked) {
 				mem = _wh_mem_alloc_freelist(&params);
-			}
+			//}
 			break;
 	}
 
@@ -317,16 +326,16 @@ void _wh_free_no_tracking(_wh_mem_free_params params) {
 
 	switch (params.heap->stype) {
 		case WH_STRUCT_TYPE_HEAP_ARENA:
-			wh_spin_lock(&params.heap->locked) {
+			//wh_spin_lock(&params.heap->locked) {
 				_wh_mem_free_arena(&params);
-			}
+			//}
 			break;
 
 		default:
 		case WH_STRUCT_TYPE_HEAP_FREELIST:
-			wh_spin_lock(&params.heap->locked) {
+			//wh_spin_lock(&params.heap->locked) {
 				_wh_mem_free_freelist(&params);
-			}
+			//}
 		break;
 	}
 	
@@ -346,9 +355,9 @@ void* _wh_realloc_no_tracking(_wh_mem_realloc_params params) {
 
 		default:
 		case WH_STRUCT_TYPE_HEAP_FREELIST:
-			wh_spin_lock(&params.heap->locked) {
+			//wh_spin_lock(&params.heap->locked) {
 				mem = _wh_mem_realloc_freelist(&params);
-			}
+			//}
 		break;
 	}
 
@@ -481,7 +490,7 @@ i64 _wh_mem_scan(void) {
 	i64 count = 0;
 	_wh_heap_list_entry_s* current = _list.nodes;
 
-	wh_spinlock(&_list.lock) {
+	//wh_spinlock(&_list.lock) {
 		while (nullptr != current) {
 			wh_log_debug(("Node found! [ %u ] next is [ %u ]"), current->ptr, current->next);
 
@@ -493,25 +502,25 @@ i64 _wh_mem_scan(void) {
 				if (*current->owners[i].owner != current->ptr) {
 					wh_log_info(("Owner change! ptr [ %u ] != owner [ %u ] in file:line [ %s:%u ]"), current->owners[i].owner, current->ptr, current->owners[i].file, current->owners[i].line);
 					
-					current->owner_count--;
 					current->owners[i].owner = current->owners[current->owner_count].owner;
 					current->owners[i].line = current->owners[current->owner_count].line;
 					current->owners[i].file = current->owners[current->owner_count].file;
+					current->owner_count--;
 
-					current->owners = realloc(current->owners, sizeof(_wh_heap_list_entry_s) * current->owner_count);
+					current->owners = realloc(current->owners, sizeof(_wh_heap_ptr_pair_s) * current->owner_count);
 				}
 			
 			}
 
 			if (0 == current->owner_count) {
 				count++;
-				wh_log_error(("LEAK FOUND! freeing..."));
+				wh_log_error(("LEAK FOUND! freeing... ptr : [ %u ]"), current->ptr);
 				wh_free(current->heap, current->ptr, nullptr);
 			}
 
 			current = current->next;
 		}
-	}
+	//}
 
 	//usleep(100);
 	return count;
@@ -559,7 +568,7 @@ wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
 	wh_heap_insert(params.name, heap);
 	//wh_heap_print_table();
 
-	wh_spin_lock(&heap->locked) {
+	//wh_spin_lock(&heap->locked) {
 		wh_heap_node_s* next = nullptr;
 		heap->allocation_count = 0;
 
@@ -597,9 +606,19 @@ wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
 				break;
 		}
 		
-	}
+	//}
 
 go_error_exit:
 go_exit:
 	return heap;
+}
+
+i8 _wh_heap_delete() {
+	if (nullptr == _heap_main) {
+		return -1;
+	}
+
+	wh_sys_memrel(_heap_main, _heap_main->bytes_free + _heap_main->bytes_used);
+
+	return 0;
 }

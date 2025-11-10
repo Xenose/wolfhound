@@ -5,7 +5,7 @@
 int main(int arc, char* const* arv) {
 	wh_benchmark_s bench = { 0 };
 
-	wh_benchmark(&bench) {
+	wh_benchmark(&bench, 100) {
 		print(("Test number 1 -> %i\n"), 1);
 		print(("Test number str -> %s\n"), "str");
 		print(("Test number oct 16 -> %o\n"), 16);
