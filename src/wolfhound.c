@@ -80,6 +80,12 @@ wh_instance_s* _wh_init(_wh_init_params params) {
 	// loading assets
 	_wh_assets_load("./resources");
 
+
+	if (-1 == wh_render_init(params.ins[0])) {
+		wh_log_error(("Failed to load render functions!"));
+		goto go_error_exit;
+	}
+
 	wh_log_info(("Creating window!"));
 	// Creating window in either SDL3 or Raylib
 	if (-1 == wh_window_create(params.ins[0], 1920, 1080, (wh_string_s){ .str = "hello" })) {
@@ -100,7 +106,7 @@ void _wh_loop(_wh_loop_params params) {
 	wh_instance_s* ins = params.instance;
 	wh_graphics_s*	grap = &ins->graphics;
 
-	wh_event_s event;
+	wh_event_s event = { 0 };
 
 	if (ins->config.flags.dryrun) {
 		event.code = WH_EVENT_WINDOW_CLOSE;

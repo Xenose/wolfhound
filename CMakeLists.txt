@@ -90,6 +90,7 @@ set(C_SOURCES
 	"src/raylib/window.c"
 	"src/render.c"
 	"src/sdl3/render.c"
+	"src/sdl3/window.c"
 	"src/string.c"
 	"src/sys/filesystem.c"
 	"src/sys/info.c"

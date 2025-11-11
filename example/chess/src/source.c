@@ -35,7 +35,7 @@ void update(wh_instance_s* ins) {
 	int y = 1080;
 	int count = sizeof(square) / sizeof(float);
 
-	wh_window_get_size(ins, &x, &y);
+	//wh_window_get_size(ins, &x, &y);
 
 	wh_for(int, i, count) {
 		if (i & 1) {
