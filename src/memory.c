@@ -63,9 +63,13 @@ static _wh_heap_table_s _table = { 0 };
 static wh_heap_header_s* _heap_main;
 
 // allocation functions
-void  (*_wh_free)(_wh_mem_free_params params) = nullptr;
-void* (*_wh_alloc)(_wh_mem_alloc_params params) = nullptr;
-void* (*_wh_realloc)(_wh_mem_realloc_params params) = nullptr;
+void* _wh_alloc_tracking(_wh_mem_alloc_params params);
+void* _wh_realloc_tracking(_wh_mem_realloc_params params);
+void _wh_free_tracking(_wh_mem_free_params params);
+
+void* (*_wh_alloc)(_wh_mem_alloc_params params) = &_wh_alloc_tracking;
+void* (*_wh_realloc)(_wh_mem_realloc_params params) = &_wh_realloc_tracking;
+void  (*_wh_free)(_wh_mem_free_params params) = &_wh_free_tracking;
 
 /*
  * Tracking functions
@@ -536,11 +540,7 @@ wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
 
 	params.bytes = (u64)wh_align((i64)(params.bytes + sizeof(wh_heap_header_s)), getpagesize());
 
-	_wh_alloc	= &_wh_alloc_tracking;
-	_wh_realloc	= &_wh_realloc_tracking;
-	_wh_free		= &_wh_free_tracking;
-
-	wh_log_info(("requested [ $k ] giving [ $k ]"), old_bytes, params.bytes);
+		wh_log_info(("requested [ $k ] giving [ $k ]"), old_bytes, params.bytes);
 
 	if (nullptr != _heap_main) {
 		if (nullptr == params.heap) {
@@ -621,4 +621,16 @@ i8 _wh_heap_delete() {
 	wh_sys_memrel(_heap_main, _heap_main->bytes_free + _heap_main->bytes_used);
 
 	return 0;
+}
+
+void _wh_memory_tracking(_wh_memory_tracking_params params) {
+	if (0 == params.tracking_off) {
+		_wh_alloc	= &_wh_alloc_tracking;
+		_wh_realloc	= &_wh_realloc_tracking;
+		_wh_free		= &_wh_free_tracking;
+	} else {
+		_wh_alloc	= &_wh_alloc_no_tracking;
+		_wh_realloc	= &_wh_realloc_no_tracking;
+		_wh_free		= &_wh_free_no_tracking;
+	}
 }

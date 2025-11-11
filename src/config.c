@@ -55,16 +55,17 @@ wh_config_s _wh_config_load(_wh_init_params* params, wh_config_s* config) {
 		ls,
 		(const char*[]) { "WH", "config", "heap", "size", nullptr }, WH_TYPE_I64, config->heap.size,
 
-		(const char*[]) { "WH", "config", "flags", "dryrun",			nullptr },			WH_TYPE_BOOL, config->flags.dryrun,
-		(const char*[]) { "WH", "config", "flags", "run_tests",		nullptr },			WH_TYPE_BOOL, config->flags.run_tests,
-		(const char*[]) { "WH", "config", "flags", "log_debug",		nullptr },			WH_TYPE_BOOL, config->flags.log_debug,
-		(const char*[]) { "WH", "config", "flags", "log_info",		nullptr },			WH_TYPE_BOOL, config->flags.log_info,
-		(const char*[]) { "WH", "config", "flags", "log_notice",		nullptr },			WH_TYPE_BOOL, config->flags.log_notice,
-		(const char*[]) { "WH", "config", "flags", "log_warning",	nullptr },			WH_TYPE_BOOL, config->flags.log_warning,
-		(const char*[]) { "WH", "config", "flags", "log_error",		nullptr },			WH_TYPE_BOOL, config->flags.log_error,
-		(const char*[]) { "WH", "config", "flags", "log_critical",	nullptr },			WH_TYPE_BOOL, config->flags.log_critical,
-		(const char*[]) { "WH", "config", "flags", "log_alert",		nullptr },			WH_TYPE_BOOL, config->flags.log_alert,
-		(const char*[]) { "WH", "config", "flags", "log_emergency",	nullptr },			WH_TYPE_BOOL, config->flags.log_emergency
+		(const char*[]) { "WH", "config", "flags", "dryrun",					nullptr },				WH_TYPE_BOOL, config->flags.dryrun,
+		(const char*[]) { "WH", "config", "flags", "memory", "tracking",	nullptr },				WH_TYPE_BOOL, config->flags.memory_tracking,
+		(const char*[]) { "WH", "config", "flags", "run_tests",				nullptr },				WH_TYPE_BOOL, config->flags.run_tests,
+		(const char*[]) { "WH", "config", "flags", "log_debug",				nullptr },				WH_TYPE_BOOL, config->flags.log_debug,
+		(const char*[]) { "WH", "config", "flags", "log_info",				nullptr },				WH_TYPE_BOOL, config->flags.log_info,
+		(const char*[]) { "WH", "config", "flags", "log_notice",				nullptr },				WH_TYPE_BOOL, config->flags.log_notice,
+		(const char*[]) { "WH", "config", "flags", "log_warning",			nullptr },				WH_TYPE_BOOL, config->flags.log_warning,
+		(const char*[]) { "WH", "config", "flags", "log_error",				nullptr },				WH_TYPE_BOOL, config->flags.log_error,
+		(const char*[]) { "WH", "config", "flags", "log_critical",			nullptr },				WH_TYPE_BOOL, config->flags.log_critical,
+		(const char*[]) { "WH", "config", "flags", "log_alert",				nullptr },				WH_TYPE_BOOL, config->flags.log_alert,
+		(const char*[]) { "WH", "config", "flags", "log_emergency",			nullptr },				WH_TYPE_BOOL, config->flags.log_emergency
 	);
 
 	_wh_args_parser_init();
@@ -80,6 +81,10 @@ wh_config_s _wh_config_load(_wh_init_params* params, wh_config_s* config) {
 	// Testing
 	config->flags.dryrun = wh_lua_get_flag(
 		ls, config->flags.dryrun, (const char*[]) { "WH", "config", "flags", "dryrun", nullptr });
+
+	config->flags.memory_tracking = wh_lua_get_flag(
+		ls, config->flags.memory_tracking, (const char*[]) { "WH", "config", "flags", "memory", "tracking", nullptr });
+
 	config->flags.run_tests = wh_lua_get_flag(
 		ls, config->flags.run_tests, (const char*[]) { "WH", "config", "flags", "run_tests", nullptr });
 
@@ -100,6 +105,8 @@ wh_config_s _wh_config_load(_wh_init_params* params, wh_config_s* config) {
 		ls, config->flags.log_alert, (const char*[]) { "WH", "config", "flags", "log_alert", nullptr });
 	config->flags.log_emergency = wh_lua_get_flag(
 		ls, config->flags.log_emergency, (const char*[]) { "WH", "config", "flags", "log_emergency", nullptr });
+
+	wh_memory_tracking(config->flags.memory_tracking);
 
 	wh_log_set_level(WH_LOG_LEVEL_DEBUG,		config->flags.log_debug);
 	wh_log_set_level(WH_LOG_LEVEL_INFO,			config->flags.log_info);

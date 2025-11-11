@@ -4,16 +4,17 @@
 #include<wh/common.h>
 
 typedef struct {
-	u8 dryrun			: 1;
-	u8 run_tests		: 1;
-	u8 log_debug		: 1; 
-	u8 log_info			: 1; 
-	u8 log_notice		: 1;
-	u8 log_warning		: 1;
-	u8 log_error		: 1;
-	u8 log_critical	: 1;
-	u8 log_alert		: 1;
-	u8 log_emergency	: 1;
+	u8 dryrun				: 1;
+	u8 memory_tracking	: 1;
+	u8 run_tests			: 1;
+	u8 log_debug			: 1; 
+	u8 log_info				: 1; 
+	u8 log_notice			: 1;
+	u8 log_warning			: 1;
+	u8 log_error			: 1;
+	u8 log_critical		: 1;
+	u8 log_alert			: 1;
+	u8 log_emergency		: 1;
 } wh_config_flags_s;
 
 typedef struct {

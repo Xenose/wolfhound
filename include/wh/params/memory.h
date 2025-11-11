@@ -13,6 +13,10 @@ typedef struct {
 } _wh_heap_init_params;
 
 typedef struct {
+	i8 tracking_off;
+} _wh_memory_tracking_params;
+
+typedef struct {
 	wh_heap_header_s* heap;
 } _wh_heap_print_params;
 

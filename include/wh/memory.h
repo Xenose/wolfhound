@@ -12,6 +12,7 @@ extern i64 _wh_mem_scan(void);
 
 // Heap functions
 extern wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params);
+extern void _wh_memory_tracking(_wh_memory_tracking_params params);
 
 extern wh_heap_header_s* wh_heap_get(const char* name);
 extern void wh_heap_print_table();
@@ -40,11 +41,11 @@ extern i32 wh_mem_leak_count(void);
  * wh_heap_init is designed create new heaps from either the
  * global heap or from a sub-heap.
  *
- * | Name  | Type               | Status        | Comment                                                 |
- * | ----- | ------------------ | ------------- | ------------------------------------------------------- |
- * | bytes | uint64_t           | Implemented   | The number of bytes that will be allocated to the heap. |
- * | heap  | wh_heap_header_s*  | Unimplemented | The heap from where the new heap will be created.       |
- * | error | uint64_t           | Implemented   | Upon a error this variable is set if not nullptr.       |
+ * | Name         | Type               | Status        | Comment                                                 |
+ * | ------------ | ------------------ | ------------- | ------------------------------------------------------- |
+ * | bytes        | uint64_t           | Implemented   | The number of bytes that will be allocated to the heap. |
+ * | heap         | wh_heap_header_s*  | Implemented   | The heap from where the new heap will be created.       |
+ * | error        | uint64_t           | Implemented   | Upon a error this variable is set if not nullptr.       |
  *
  * ### Return Value
  * Upon success a heap pointer is returned and on error a nullptr is returned.
@@ -53,6 +54,11 @@ extern i32 wh_mem_leak_count(void);
  * [common.h](include/wh/common.h)
  */
 #define wh_heap_init(...)	_wh_heap_init((_wh_heap_init_params) { __VA_ARGS__ })
+
+/* [MD_DOC
+ *
+ */
+#define wh_memory_tracking(...) _wh_memory_tracking((_wh_memory_tracking_params) { __VA_ARGS__ })
 
 /* [MD_DOC]
  *
