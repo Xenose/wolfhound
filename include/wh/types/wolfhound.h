@@ -14,6 +14,12 @@
 #endif
 
 enum {
+	WH_WINDOW_MODE_SDL3,
+	WH_WINDOW_MODE_GLFW,
+};
+
+enum {
+	WH_GRAPHICS_MODE_CPU,
 	WH_GRAPHICS_MODE_VULKAN,
 	WH_GRAPHICS_MODE_SDL3,
 	WH_GRAPHICS_MODE_OPENGL,
@@ -40,11 +46,14 @@ typedef struct {
 	VkSurfaceKHR		surface;
 	VkPhysicalDevice	physical;
 	VkDevice				device;
+#else
+	void* nothing_here;
 #endif
 } wh_vulkan_s;
 
 typedef struct {
 	SDL_Renderer* renderer;
+	SDL_Surface* surface;
 } wh_sdl3_s;
 
 typedef struct {

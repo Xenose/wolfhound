@@ -31,6 +31,14 @@ void _wh_event_pull_sdl3(_wh_event_pull_params params) {
 	}
 }
 
+void _wh_render_get_surface(_wh_render_get_surface_params params) {
+	params.ins->graphics.sdl3.surface =
+		SDL_GetWindowSurface(params.ins->graphics.window.sdl);
+}
+
+void _wh_render_draw_pixel(_wh_render_draw_pixel_params params) {
+}
+
 void _wh_render_show_sdl3(_wh_render_show_params params) {
 	SDL_RenderPresent(params.ins->graphics.sdl3.renderer);
 }

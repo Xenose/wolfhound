@@ -15,7 +15,7 @@ int wh_lua_intpos(lua_State* ls) {
 	value = luaL_checkinteger(ls, 1);
 	base = luaL_checkinteger(ls, 2);
 
-	out = wh_intpos(value, base);
+	out = (int)wh_intpos(value, base);
 
 	lua_pushinteger(ls, out);
 	return 1;
@@ -31,7 +31,7 @@ int wh_lua_intpow(lua_State* ls) {
 	value = luaL_checkinteger(ls, 1);
 	base = luaL_checkinteger(ls, 2);
 
-	out = wh_intpow(value, base);
+	out = (int)wh_intpow(value, base);
 
 	lua_pushinteger(ls, out);
 	return 1;

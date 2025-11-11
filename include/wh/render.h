@@ -38,6 +38,17 @@ typedef struct {
 
 typedef struct {
 	wh_instance_s* ins;
+} _wh_render_get_surface_params;
+
+typedef struct {
+	wh_instance_s* ins;
+	i64 x;
+	i64 y;
+	wh_rgba_s color;
+} _wh_render_draw_pixel_params;
+
+typedef struct {
+	wh_instance_s* ins;
 } _wh_render_show_params;
 
 typedef struct {
