@@ -2,6 +2,7 @@
 #include<wh/debug/exceptions.h>
 #include<wh_tests/memory.h>
 #include<wh/testing/macros.h>
+#include<wh/debug/logger.h>
 
 void _memory_test(i64* failed, i64* passed, wh_heap_header_s* heap, u64 bytes) {
 	void* p1 = nullptr;
@@ -19,9 +20,15 @@ void _memory_test(i64* failed, i64* passed, wh_heap_header_s* heap, u64 bytes) {
 void _memory_test_leak(i64* failed, i64* passed, wh_heap_header_s* heap, u64 bytes) {
 	void* p1 = nullptr;
 
+	// We don't need error logs when we know there is a leak
+	wh_log_set_level(WH_LOG_LEVEL_ERROR, 0);
+
 	p1 = wh_alloc(heap, bytes, &p1);
 	WH_TEST_IS_EQUAL(*failed, *passed, 1L, _wh_mem_scan());
 	WH_TEST_IS_EQUAL(*failed, *passed, 0L, _wh_mem_scan());
+
+	// But we want logs after this test.
+	wh_log_set_level(WH_LOG_LEVEL_ERROR, 1);
 }
 
 i64 testing_memory(i64* failed, i64* passed) {

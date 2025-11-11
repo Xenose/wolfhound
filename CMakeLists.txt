@@ -174,4 +174,4 @@ ADD_SUBDIRECTORY(example/print)
 ADD_SUBDIRECTORY(example/cpp)
 
 # Tests
-ADD_SUBDIRECTORY(tests/c)
+ADD_SUBDIRECTORY(tests/c/unit_tests/)
