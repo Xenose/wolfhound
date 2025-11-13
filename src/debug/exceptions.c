@@ -1,6 +1,6 @@
 #include<signal.h>
-#include<unistd.h>
 #include<stdio.h>
+#include<wh/wrap/unistd.h>
 #include<wh/debug/exceptions.h>
 
 #define JMP_MAX 256
@@ -9,7 +9,7 @@ wh_thread i64 _jmp_index = 0;
 wh_thread i64 _jmp_error[JMP_MAX] = { 0 };
 wh_thread sigjmp_buf _jmp_buffers[JMP_MAX] = { 0 };
 
-#if 1==WH_SYSTEM&WH_SYS_WINDOWS
+#if WH_SYSTEM&WH_SYS_POSIX
 wh_thread struct sigaction _old_sigaction[JMP_MAX] = { 0 };
 
 static void _wh_handler(int sig, siginfo_t* action, void* data) {
@@ -32,7 +32,7 @@ static void _wh_handler(int sig, siginfo_t* action, void* data) {
 #endif
 
 i8 _jmp_init() {
-#if WH_SYSTEM&WH_SYS_WINDOWS
+#if WH_SYSTEM&WH_SYS_POSIX
 	struct sigaction new_action = {
 		.sa_sigaction = &_wh_handler,
 		.sa_flags = SA_SIGINFO,
@@ -45,7 +45,7 @@ i8 _jmp_init() {
 		goto ERROR_EXIT;
 	}
 
-#if WH_SYSTEM&WH_SYS_WINDOWS
+#if WH_SYSTEM&WH_SYS_POSIX
 	if (-1 == sigaction(SIGSEGV, &new_action, &_old_sigaction[_jmp_index])) {
 		goto ERROR_EXIT;
 	}

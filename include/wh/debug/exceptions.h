@@ -13,7 +13,7 @@ typedef struct {
 	i64 error;
 } wh_exception_s;
 
-#if WH_SYSTEM&WH_SYS_WINDOWS
+#if 0 == (WH_SYSTEM&WH_SYS_POSIX)
 	#define sigsetjmp setjmp
 	#define siglongjmp longjmp
 #endif
