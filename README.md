@@ -6,7 +6,7 @@
 | Arch Linux   | YES    | YES       | Primary development platform.           |
 | Fedora Linux | YES    | YES       | Secondary development platform.         |
 | Debian Linux | NO     | Not yet   | Planned.                                |
-| Windows      | NO     | Not yet   | Planned.                                |
+| Windows      | NO     | Not yet   | Unstable might break at any second      |
 | MacOS        | NO     | No        | No Plans.                               |
 
 ## Building instructions
@@ -74,18 +74,18 @@ wh-build	# compiles code.
 
 |  Language       | File Count | Lines of Code | Percentage |
 | --------------- | ---------- | ------------- | ---------- |
-| C               | 128        | 5255          | 81.61%     |
-| CMake           | 12         | 271           | 4.21%      |
-| Bourne Shell    | 16         | 244           | 3.79%      |
-| Lua             | 13         | 175           | 2.72%      |
-| Python          | 2          | 155           | 2.41%      |
-| Markdown        | 3          | 138           | 2.14%      |
-| C++             | 7          | 121           | 1.88%      |
-| Fortran 95      | 1          | 32            | 0.50%      |
+| C               | 130        | 5305          | 81.74%     |
+| CMake           | 12         | 272           | 4.19%      |
+| Bourne Shell    | 16         | 244           | 3.76%      |
+| Lua             | 13         | 175           | 2.70%      |
+| Python          | 2          | 155           | 2.39%      |
+| Markdown        | 3          | 138           | 2.13%      |
+| C++             | 7          | 121           | 1.86%      |
+| Fortran 95      | 1          | 32            | 0.49%      |
 | Dockerfile      | 1          | 25            | 0.39%      |
 | DOS Batch       | 4          | 20            | 0.31%      |
 | INI             | 1          | 3             | 0.05%      |
 | Assembly        | 1          | 0             | 0.00%      |
-| Summary         | 189        | 6439          | 100.00%    |
+| Summary         | 191        | 6490          | 100.00%    |
 
 <!--python-stats-end-->
