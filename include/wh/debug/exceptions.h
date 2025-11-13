@@ -13,9 +13,9 @@ typedef struct {
 	i64 error;
 } wh_exception_s;
 
-#if 0 == (WH_SYSTEM&WH_SYS_POSIX)
-	#define sigsetjmp setjmp
-	#define siglongjmp longjmp
+#if !(WH_SYSTEM&WH_SYS_POSIX)
+	#define sigsetjmp(__env__, __val__) setjmp(__env__)
+	#define siglongjmp(__env__, __val__) longjmp(__env__, __val__)
 #endif
 
 extern wh_thread i64 _jmp_index;
@@ -25,7 +25,7 @@ extern wh_thread sigjmp_buf _jmp_buffers[];
 
 extern i8 _jmp_init();
 
-#define wh_try if (0 == _jmp_init()) if (0 == (_jmp_error[_jmp_index] = sigsetjmp(_jmp_buffers[_jmp_index], _jmp_index++)))
+#define wh_try if (0 == _jmp_init()) if (0 == (_jmp_error[_jmp_index] = sigsetjmp(_jmp_buffers[_jmp_index++], 1)))
 
 #define wh_catch(_ex_) else for (wh_exception_s _ex_ = (wh_exception_s){ .error = _jmp_error[_jmp_index] }; 0 != _ex_.error; _ex_.error = 0)
 
