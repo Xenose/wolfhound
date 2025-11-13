@@ -33,16 +33,21 @@ typedef struct {
 	u64 length;
 } _wh_str_invert_params;
 
+typedef struct {
+	i64 type_id;
+} _wh_filetype2str_params;
 
 extern char* _wh_uint2str(_wh_uint2str_params params);
 extern char* _wh_int2str(_wh_int2str_params params);
 extern i64 _wh_str2int(_wh_str2int_params params);
 extern void _wh_str_invert(_wh_str_invert_params params);
+extern const char* _wh_filetype2str(_wh_filetype2str_params params);
 
 #define wh_uint2str(...) _wh_uint2str((_wh_uint2str_params) { __VA_ARGS__ })
 #define wh_int2str(...) _wh_int2str((_wh_int2str_params) { __VA_ARGS__ })
 #define wh_str2int(...) _wh_str2int((_wh_str2int_params) { __VA_ARGS__ })
 #define wh_str_invert(...) _wh_str_invert((_wh_str_invert_params) { __VA_ARGS__ })
+#define wh_filetype2str(...) _wh_filetype2str((_wh_filetype2str_params) { __VA_ARGS__ })
 
 #ifdef USE_NAMESPACE_WOLFHOUND
 #define uint2str wh_uint2str

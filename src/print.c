@@ -294,6 +294,9 @@ go_loop:
 				case 'f':
 					_wh_print_format_sub(data, list);
 					break;
+				case 'F': // converts file type to string
+					_wh_print_cpystr(data, (char*)wh_filetype2str(va_arg(list, i64)), 0);
+					break;
 				case 'n':
 					_wh_print_cpystr(data, (char*)wh_errno_str(va_arg(list, i64)), 0);
 					break;

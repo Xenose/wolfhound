@@ -60,7 +60,7 @@ i64 _wh_assets_load_inner(lua_State* ls, const char* path) {
 					(const char*[]) { "WH", "asset", "type", nullptr }, WH_TYPE_I64, &asset.stype
 				);
 
-				wh_log_debug(("Asset type set to %d"), asset.stype);
+				wh_log_debug(("Asset type set to $F"), asset.stype);
 
 				wh_file_unload(file);
 				break;

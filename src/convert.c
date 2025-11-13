@@ -4,6 +4,7 @@
 #include<ctype.h>
 #include<wh/wrap/string.h>
 #include<wh/maths/core.h>
+#include<wh/file.h>
 
 char* _wh_uint2str(_wh_uint2str_params params) {
 	const char table[] = "0123456789abcdefghijklmnopqrstuvwxyz";
@@ -113,4 +114,14 @@ void _wh_str_invert(_wh_str_invert_params params) {
 				break;
 		}
 	}
+}
+
+const char* _wh_filetype2str(_wh_filetype2str_params params) {
+	switch (params.type_id) {
+		case WH_STRUCT_TYPE_IMG_PNG:
+		case WH_FILE_TYPE_PNG:
+			return "WH_FILE_TYPE_PNG";
+	}
+
+	return "WH_FILE_TYPE_UNKNOWN";
 }
