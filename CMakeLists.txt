@@ -101,6 +101,7 @@ set(C_SOURCES
 	"src/wolfhound.c"
 	"src/wrap/string.c"
 	"src/wrap/unistd.c"
+	"src/wrap/time.c"
 )
 
 set(CXX_SOURCES

@@ -1,7 +1,6 @@
 #include<wh/wrap/time.h>
 
 #if (WH_SYSTEM&WH_SYS_WINDOWS)
-#include<windows.h>
 
 static wh_thread struct timespec _last_time = {0, 0};
 

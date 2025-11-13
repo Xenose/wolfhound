@@ -16,8 +16,6 @@ WH_C()
 
 #if !(WH_SYSTEM&WH_SYS_WINDOWS)
 #include<sys/types.h>
-#else
-	typedef int clock_t
 #endif
 
 /* [MD_DOC]

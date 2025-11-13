@@ -14,6 +14,7 @@ typedef struct {
 } wh_exception_s;
 
 #if !(WH_SYSTEM&WH_SYS_POSIX)
+	#define sigjmp_buf jmp_buf
 	#define sigsetjmp(__env__, __val__) setjmp(__env__)
 	#define siglongjmp(__env__, __val__) longjmp(__env__, __val__)
 #endif

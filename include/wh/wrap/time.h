@@ -9,17 +9,20 @@
 
 #else
 
-enum {
+#include<windows.h>
+
+typedef enum {
 	CLOCK_REALTIME,
-	CLOCK_MONOTONIC
-};
+	CLOCK_MONOTONIC,
+	CLOCK_MONOTONIC_COARSE,
+} clockid_t;
 
 struct timespec {
 	time_t tv_sec;
 	time_t tv_nsec;
 };
 
-extern int clock_gettime(clockid_t* clockid, struct timespec* tn);
+extern int clock_gettime(clockid_t clockid, struct timespec* tn);
 
 #endif
 
