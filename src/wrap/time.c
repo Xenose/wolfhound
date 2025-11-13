@@ -4,6 +4,7 @@
 
 static wh_thread struct timespec _last_time = {0, 0};
 
+// TODO fix this so it works like the POSIX version.
 int clock_gettime(clockid_t clockid, struct timespec* tn) {
 	FILETIME ft = { 0 };
 	ULARGE_INTEGER uli = { 0 };
