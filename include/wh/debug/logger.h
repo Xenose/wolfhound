@@ -26,6 +26,10 @@ enum {
 	WH_LOG_LEVEL_DEBUG
 };
 
+#ifndef __FILENAME__
+	#define __FILENAME__ "FILENAME_NOT_DEFINED"
+#endif
+
 extern i64 (*_wh_log_va[])(_wh_print_params print_params, _wh_log_params params, va_list args);
 extern i64 (*_wh_log[])(_wh_print_params print_params, _wh_log_params params, ...);
 
@@ -34,6 +38,15 @@ extern void wh_log_set_level(i64 level, u8 state);
 
 /* [MD_DOC]
  * # wh_log_* and wh_log_va_*
+ * These functions are wolfhounds main logging functions, they
+ * are wrappers around the wh_print and wh_print_va functions
+ * so all formats supported by these functions are supported by
+ * these functions.
+ *
+ * ## example
+ * ```bash
+ * [ LOG_LEVEL  ] FILE.C::LINE::FUNCTION --> MASSAGE
+ * ```
  */
 #define wh_log_va_emergency(x, _args_)		_wh_log_va[0]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[35mEMERGENCY\033[0m",		__LINE__ }, _args_)
 #define wh_log_va_alert(x, _args_)			_wh_log_va[1]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[95mALERT\033[0m    ",		__LINE__ }, _args_)

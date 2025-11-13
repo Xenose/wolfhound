@@ -20,6 +20,7 @@
 #include<wh/sys/filesystem.h>
 #include<wh/data/hashmap_lazy.h>
 #include<wh/debug/exceptions.h>
+#include<wh/debug/logger.h>
 
 #include<stdio.h>
 
@@ -65,6 +66,10 @@ i8 action_health_gen(wh_instance_s* ins, wh_action_s* action) {
 
 int main(int arc, char* const* arv) {
 	wh_print(("Testing floats -> %f\n"), 1.25f);
+
+#if LINUX==WH_SYSTEM
+	wh_log_debug(("The system is Linux!"));
+#endif
 
 	char buf[256] = { 0 };
 	char img[256] = { 0 }; 

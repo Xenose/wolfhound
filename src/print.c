@@ -529,14 +529,15 @@ void _wh_print_add_func(_wh_print_add_func_params params) {
 
 		if (nullptr == _wh_func_table.table) {
 			// TODO handle error
+			return;
 		}
 		
-		key = wh_hash_simple(params.key, _wh_func_table.slots);
+		key = wh_hash_simple(params.key, (u32)_wh_func_table.slots);
 
 		if (nullptr != params.func) {
 			if (nullptr != _wh_func_table.table[key].func) {
 				// TODO resize array and handle moving of pointer
-				key = wh_hash_simple(params.key, _wh_func_table.slots);
+				key = wh_hash_simple(params.key, (u32)_wh_func_table.slots);
 			}
 
 			_wh_func_table.table[key] = (_hw_print_func) { .func = params.func };

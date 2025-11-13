@@ -6,10 +6,11 @@
 #define JMP_MAX 256
 
 wh_thread i64 _jmp_index = 0;
-
 wh_thread i64 _jmp_error[JMP_MAX] = { 0 };
-wh_thread struct sigaction _old_sigaction[JMP_MAX] = { 0 };
 wh_thread sigjmp_buf _jmp_buffers[JMP_MAX] = { 0 };
+
+#if 1==WH_SYSTEM&WH_SYS_WINDOWS
+wh_thread struct sigaction _old_sigaction[JMP_MAX] = { 0 };
 
 static void _wh_handler(int sig, siginfo_t* action, void* data) {
 	signal(sig, SIG_DFL);
@@ -28,22 +29,27 @@ static void _wh_handler(int sig, siginfo_t* action, void* data) {
 			break;
 	}
 }
+#endif
 
 i8 _jmp_init() {
+#if WH_SYSTEM&WH_SYS_WINDOWS
 	struct sigaction new_action = {
 		.sa_sigaction = &_wh_handler,
 		.sa_flags = SA_SIGINFO,
 	};
 
 	sigemptyset(&new_action.sa_mask);
+#endif
 
 	if (JMP_MAX <= _jmp_index + 1) {
 		goto ERROR_EXIT;
 	}
 
+#if WH_SYSTEM&WH_SYS_WINDOWS
 	if (-1 == sigaction(SIGSEGV, &new_action, &_old_sigaction[_jmp_index])) {
 		goto ERROR_EXIT;
 	}
+#endif
 
 	printf("Index is %li\n", _jmp_index);
 	return 0;

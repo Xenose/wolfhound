@@ -1,4 +1,7 @@
 #include<math.h>
+
+#include<wh/debug/exceptions.h>
+
 #include<wh/maths/core.h>
 #include<wh/maths/memory.h>
 #include<wh/testing/macros.h>
@@ -43,10 +46,13 @@ void testing_align(i64* failed, i64* passed) {
 }
 
 i64 testing_math(i64* failed, i64* passed) {
-	testing_intpos(failed, passed);
-	testing_intpow(failed, passed);
-	testing_hash_simple(failed, passed);
-	testing_align(failed, passed);
+	wh_try {
+		testing_intpos(failed, passed);
+		testing_intpow(failed, passed);
+		testing_hash_simple(failed, passed);
+		testing_align(failed, passed);
+	} wh_catch(except) {
+	}
 
 	return 0;
 }

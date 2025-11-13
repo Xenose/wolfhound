@@ -13,6 +13,31 @@ WH_C()
 #define wh_ptr_add(_ptr_, _x_) ((void*)(((char*)_ptr_) + _x_))
 #define wh_ptr_sub(_ptr_, _x_) ((void*)(((char*)_ptr_) - _x_))
 
+#define WH_SYS_UNIX		0x01
+#define WH_SYS_POSIX		0x02
+
+#define WH_SYS_LINUX		(0x100 | WH_SYS_UNIX | WH_SYS_POSIX)
+#define WH_SYS_FREEBSD	(0x200 | WH_SYS_UNIX | WH_SYS_POSIX)
+#define WH_SYS_MACOS		(0x400 | WH_SYS_UNIX | WH_SYS_POSIX)
+
+#define WH_SYS_WINDOWS	(0x800)
+
+#ifdef __linux__
+	#define WH_SYSTEM WH_SYS_LINUX
+#elif _WIN32
+	#define WH_SYSTEM WH_SYS_WINDOWS
+#elif __APPLE__ && __MACH__
+	#define WH_SYSTEM WH_SYS_MACOS
+#elif __FreeBSD__
+	#define WH_SYSTEM WH_SYS_FREEBSD
+#elif __unix__
+	#ifdef _POSIX_C_SOURCE
+		#define WH_SYSTEM (WH_SYS_UNIX | WH_SYS_POSIX)
+	#else
+		#define WH_SYSTEM WH_SYS_UNIX 
+	#endif
+#endif
+
 /* [MD_DOC]
  * wh_for is a macro for a for loop, it will go from 0
  * to the given end point.
@@ -32,7 +57,12 @@ WH_C()
 #define wh_spinlock_return(_x_, ...)		atomic_flag_clear(_x_);	return __VA_ARGS__
 #define wh_spinlock_goto(_x_, _goto_)			atomic_flag_clear(_x_);	goto _goto_
 
-
+/*
+ * After C11 it seems like there is a keyword
+ * wolfhound is built for C23, but this macro
+ * cost me nothing so I would say its worth
+ * the extra macro.
+ */
 #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
 	#define wh_thread _Thread_local
 #else

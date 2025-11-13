@@ -13,6 +13,10 @@ typedef struct {
 	i64 error;
 } wh_exception_s;
 
+#if WH_SYSTEM&WH_SYS_WINDOWS
+	#define sigsetjmp setjmp
+	#define siglongjmp longjmp
+#endif
 
 extern wh_thread i64 _jmp_index;
 
