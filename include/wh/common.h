@@ -31,7 +31,7 @@ WH_C()
  * | i128     | int128_t   |                                      |
  */
 
-#ifdef _MSVC
+#ifdef _MSC_VER
 	typedef int64_t	int128_t;
 	typedef uint64_t	uint128_t;
 #else

@@ -51,7 +51,7 @@ i8 _jmp_init() {
 	}
 #endif
 
-	printf("Index is %li\n", _jmp_index);
+	printf("Index is %lli\n", _jmp_index);
 	return 0;
 ERROR_EXIT:
 	// TODO :: return more errors

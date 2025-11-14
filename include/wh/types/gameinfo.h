@@ -14,12 +14,15 @@ enum {
 struct _wh_instance_s;
 
 typedef struct {
+	void* nil;
 } wh_scene_s;
 
 typedef struct {
+	void* nil;
 } wh_region_s;
 
 typedef struct {
+	void* nil;
 } wh_chunk_s;
 
 // IDEA

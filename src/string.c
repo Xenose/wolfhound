@@ -39,9 +39,9 @@ go_exit:
 	return params.buffer;
 }
 
-wh_string_s _wh_string_append(_wh_string_append_params, ...) {
-	return (wh_string_s) {};
-}
+/*wh_string_s _wh_string_append(_wh_string_append_params, ...) {
+	return (wh_string_s) { 0 };
+}*/
 
 wh_string_s _wh_string_create(int dummy, ...) {
 	va_list args;

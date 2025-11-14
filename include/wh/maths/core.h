@@ -23,6 +23,11 @@ extern i64 _wh_hash_simple(_wh_hash_simple_params params);
  * ## Return value
  * Returns a positive value from the original value.
  */
+
+#ifdef _MSC_VER \
+// MSVC a inferior compiler...
+#define wh_abs(x) fabs(x)
+#else
 #define wh_abs(x) \
 _Generic((x), \
 	i8: ((x) ^ ((x) >> 7)) - ((x) >> 7), \
@@ -34,9 +39,11 @@ _Generic((x), \
 	u16: (x), \
 	u32: (x), \
 	u64: (x), \
+
 	u128: (x), \
 	default: abs(x) \
 	)
+#endif
 
 /* [MD_DOC]
  * # wh_hash_simple

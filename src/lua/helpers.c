@@ -82,7 +82,7 @@ i8 _wh_lua_add_values(lua_State* ls, ...) {
 
 				break;
 			case WH_TYPE_FUNCTION_PTR:
-				lua_pushcfunction(ls, va_arg(args, int(*)(lua_State*)));
+				lua_pushcfunction(ls, (int(*)(lua_State*))va_arg(args, void*));
 				break;
 			default:
 				wh_log_error(("Value of [ %d ] given to key [ %s ]"), type, keys[i]);

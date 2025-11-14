@@ -7,5 +7,6 @@ IF EXIST CMakeFiles rmdir /S /Q CMakeFiles
 IF EXIST build.ninja DEL /F /Q build.ninja
 
 cmake .. -G "Ninja"
+ninja
 
 popd

@@ -150,24 +150,27 @@ ELSE()
 	TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE "m" "dl" "atomic" "bsd" "gcov")
 ENDIF()
 
-TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE 
-	-Wall
-	-Wextra
-	-Wpedantic
-	-Wconversion
-	-Wshadow
+IF (MSVC)
+ELSE()
+	TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE 
+		-Wall
+		-Wextra
+		-Wpedantic
+		-Wconversion
+		-Wshadow
 
-	-Wno-implicit-fallthrough
-	-Wno-unused-label
-	-Wno-unused-variable
-	-Wno-unused-parameter
-	-Wno-unused-but-set-variable
+		-Wno-implicit-fallthrough
+		-Wno-unused-label
+		-Wno-unused-variable
+		-Wno-unused-parameter
+		-Wno-unused-but-set-variable
 
-	# In C +99 structs are zero out
-	-Wno-missing-field-initializers
+		# In C +99 structs are zero out
+		-Wno-missing-field-initializers
 
-	-O0
-)
+		-O0
+	)
+ENDIF()
 
 IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" AND GENERATE_REPORT)
 	MESSAGE(STATUS "Enabling coverage flags for GCC/Clang")
