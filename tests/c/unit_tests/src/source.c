@@ -8,8 +8,8 @@
 
 i64 (*test_funcs[])(i64* failed, i64* passed) = {
 	&testing_math,
-	&testing_print,
 	&testing_memory,
+	&testing_print,
 	nullptr
 };
 

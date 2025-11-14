@@ -10,11 +10,16 @@ OPTION(NO_CXX_COMPILER "Disbles the C++ compiler" False)
 # Telling CMake that we use C and Fortran
 # Adding Fortran Support
 CHECK_LANGUAGE(Fortran)
-
 # We want to use Fortran 95 so we select it
 SET(CMAKE_Fortran_STANDARD 95)
-# We will use a new version of C do
-SET(CMAKE_C_STANDARD 23)
+
+IF (MSVC)
+	SET(CMAKE_C_STANDARD 17)
+ELSE()
+	# We will use a new version of C do
+	SET(CMAKE_C_STANDARD 23)
+ENDIF()
+
 SET(CMAKE_C_STANDARD_REQUIRED ON)
 
 # Lets use the new C++ as well

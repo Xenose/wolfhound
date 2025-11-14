@@ -1,6 +1,7 @@
 #ifndef _wh_header_common_macros_
 #define _wh_header_common_macros_
 
+#include <stddef.h>
 #include<wh/common/prefix.h>
 
 WH_C()
@@ -35,6 +36,12 @@ WH_C()
 		#define WH_SYSTEM (WH_SYS_UNIX | WH_SYS_POSIX)
 	#else
 		#define WH_SYSTEM WH_SYS_UNIX 
+	#endif
+#endif
+
+#if !defined(__cplusplus)
+	#if !defined(nullptr)
+		#define nullptr NULL
 	#endif
 #endif
 
