@@ -3,14 +3,10 @@
 set -e
 
 mkdir -pv "${PRP}/build"
-cd "${PRP}/build"
 
-TOOL="$(grep "^CMAKE_GENERATOR:INTERNAL=" ./CMakeCache.txt | cut -d= -f2 | tr '[:upper:]' '[:lower:]')"
-
-if [ "unix makefiles" = "$TOOL" ]; then
-	make
-elif [ "ninja" = "$TOOL" ]; then
-	ninja
+if command -v cmake > /dev/null; then
+	cmake --build "${PRP}/build"
 else
-	echo "[ compile.sh ] Please select Ninja or Make for building."
+	echo "CMake not installed exiting..."
+	exit 1
 fi

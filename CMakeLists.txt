@@ -16,8 +16,10 @@ SET(CMAKE_C_STANDARD 23)
 SET(CMAKE_C_STANDARD_REQUIRED ON)
 
 # Lets use the new C++ as well
-SET(CMAKE_CXX_STANDARD 23)
-SET(CMAKE_CXX_STANDARD_REQUIRED ON)
+IF (!NO_CXX_COMPILER)
+	SET(CMAKE_CXX_STANDARD 23)
+	SET(CMAKE_CXX_STANDARD_REQUIRED ON)
+ENDIF()
 
 SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -104,10 +106,12 @@ set(C_SOURCES
 	"src/wrap/time.c"
 )
 
-set(CXX_SOURCES
-	"src/cpp/wolfhound.cpp"
-	"src/cpp/print.cpp"
-)
+IF (!NO_CXX_COMPILER)
+	set(CXX_SOURCES
+		"src/cpp/wolfhound.cpp"
+		"src/cpp/print.cpp"
+	)
+ENDIF()
 
 SET(VULKAN_SOURCES
 	"src/vulkan.c"
@@ -173,7 +177,11 @@ ENDIF()
 # -----------------------------------------------------------------------------
 ADD_SUBDIRECTORY(example/chess)
 ADD_SUBDIRECTORY(example/print)
-ADD_SUBDIRECTORY(example/cpp)
+
+# C++ examples
+IF (!NO_CXX_COMPILER)
+	ADD_SUBDIRECTORY(example/cpp)
+ENDIF()
 
 # Tests
 ADD_SUBDIRECTORY(tests/c/unit_tests/)
