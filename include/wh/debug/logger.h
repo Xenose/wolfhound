@@ -27,7 +27,7 @@ enum {
 };
 
 #ifndef __FILENAME__
-	#define __FILENAME__ "FILENAME_NOT_DEFINED"
+	#define __FILENAME__ __FILE__
 #endif
 
 extern i64 (*_wh_log_va[])(_wh_print_params print_params, _wh_log_params params, va_list args);

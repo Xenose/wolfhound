@@ -119,8 +119,7 @@ void _wh_str_invert(_wh_str_invert_params params) {
 const char* _wh_filetype2str(_wh_filetype2str_params params) {
 	switch (params.type_id) {
 		case WH_STRUCT_TYPE_IMG_PNG:
-		case WH_FILE_TYPE_PNG:
-			return "WH_FILE_TYPE_PNG";
+			return "WH_STRUCT_FILE_TYPE_PNG";
 	}
 
 	return "WH_FILE_TYPE_UNKNOWN";
