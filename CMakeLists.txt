@@ -5,6 +5,8 @@ PROJECT(${APP_NAME} LANGUAGES C CXX)
 
 INCLUDE(CheckLanguage)
 
+OPTION(NO_CXX_COMPIER "Disbles the C++ compiler" False)
+
 # Telling CMake that we use C and Fortran
 # Adding Fortran Support
 CHECK_LANGUAGE(Fortran)
@@ -16,7 +18,7 @@ SET(CMAKE_C_STANDARD 23)
 SET(CMAKE_C_STANDARD_REQUIRED ON)
 
 # Lets use the new C++ as well
-IF (!NO_CXX_COMPILER)
+IF (NOT NO_CXX_COMPILER)
 	SET(CMAKE_CXX_STANDARD 23)
 	SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 ENDIF()
@@ -106,7 +108,7 @@ set(C_SOURCES
 	"src/wrap/time.c"
 )
 
-IF (!NO_CXX_COMPILER)
+IF (NOT NO_CXX_COMPILER)
 	set(CXX_SOURCES
 		"src/cpp/wolfhound.cpp"
 		"src/cpp/print.cpp"
@@ -179,7 +181,7 @@ ADD_SUBDIRECTORY(example/chess)
 ADD_SUBDIRECTORY(example/print)
 
 # C++ examples
-IF (!NO_CXX_COMPILER)
+IF (NOT NO_CXX_COMPILER)
 	ADD_SUBDIRECTORY(example/cpp)
 ENDIF()
 
