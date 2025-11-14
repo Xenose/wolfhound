@@ -39,7 +39,6 @@ _Generic((x), \
 	u16: (x), \
 	u32: (x), \
 	u64: (x), \
-
 	u128: (x), \
 	default: abs(x) \
 	)
