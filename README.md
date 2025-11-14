@@ -52,6 +52,13 @@ wh-build	# compiles code.
 | Python    | 3       | Tools.                             |
 | DOS Batch | N/A     | Build tools.                       |
 
+## Compilers
+| Name  | Version | Notes                                         |
+| ----- | ------- | --------------------------------------------- |
+| clang | 21      |                                               |
+| gcc   | 15      |                                               |
+| msvc  | 2020    | Compiles for now, but could break any second. |
+
 ## Libraries
 
 | Name    | Current Supported | Required       | Notes                                                                     |
@@ -74,18 +81,18 @@ wh-build	# compiles code.
 
 |  Language       | File Count | Lines of Code | Percentage |
 | --------------- | ---------- | ------------- | ---------- |
-| C               | 130        | 5327          | 81.42%     |
-| CMake           | 12         | 283           | 4.33%      |
-| Bourne Shell    | 16         | 253           | 3.87%      |
+| C               | 130        | 5333          | 81.31%     |
+| CMake           | 12         | 286           | 4.36%      |
+| Bourne Shell    | 16         | 253           | 3.86%      |
 | Lua             | 13         | 175           | 2.67%      |
-| Python          | 2          | 155           | 2.37%      |
-| Markdown        | 3          | 138           | 2.11%      |
-| C++             | 7          | 121           | 1.85%      |
+| Python          | 2          | 155           | 2.36%      |
+| Markdown        | 3          | 144           | 2.20%      |
+| C++             | 7          | 121           | 1.84%      |
+| DOS Batch       | 5          | 32            | 0.49%      |
 | Fortran 95      | 1          | 32            | 0.49%      |
-| DOS Batch       | 5          | 31            | 0.47%      |
 | Dockerfile      | 1          | 25            | 0.38%      |
 | INI             | 1          | 3             | 0.05%      |
 | Assembly        | 1          | 0             | 0.00%      |
-| Summary         | 192        | 6543          | 100.00%    |
+| Summary         | 192        | 6559          | 100.00%    |
 
 <!--python-stats-end-->
