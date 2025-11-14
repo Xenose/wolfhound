@@ -5,7 +5,7 @@ PROJECT(${APP_NAME} LANGUAGES C CXX)
 
 INCLUDE(CheckLanguage)
 
-OPTION(NO_CXX_COMPIER "Disbles the C++ compiler" False)
+OPTION(NO_CXX_COMPILER "Disbles the C++ compiler" False)
 
 # Telling CMake that we use C and Fortran
 # Adding Fortran Support
