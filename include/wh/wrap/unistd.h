@@ -1,9 +1,11 @@
 #ifndef _wh_header_wrap_unistd_
 #define _wh_header_wrap_unistd_
 
-#if defined(__linux__) || defined(__APPLE__) || defined(__unix__)
+#include<wh/common.h>
+
+#if (WH_SYSTEM&WH_SYS_POSIX)
 	#include<unistd.h>
-#elif _WIN32
+#elif (WH_SYSTEM&WH_SYS_WINDOWS)
 	#include<io.h>
 	#include<windows.h>
 
