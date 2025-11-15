@@ -1,6 +1,7 @@
 #ifndef _wh_header_maths_core_
 #define _wh_header_maths_core_
 
+#include<math.h>
 #include<stdlib.h>
 
 #include<wh/common.h>
@@ -28,7 +29,7 @@ extern i64 _wh_hash_simple(_wh_hash_simple_params params);
  * Returns a positive value from the original value.
  */
 
-#ifdef _MSC_VER \
+#if (WH_SYSTEM&WH_SYS_MSVC) \
 	// MSVC a inferior compiler...
 	#define wh_abs(x) fabs(x)
 #else

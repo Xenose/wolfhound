@@ -28,7 +28,7 @@ WH_C()
 
 #if defined(__linux__)
 	#define WH_SYSTEM_OS WH_SYS_LINUX
-#elif _WIN32
+#elif defined(_WIN32)
 	#define WH_SYSTEM_OS WH_SYS_WINDOWS
 #elif defined(__APPLE__) && defined(__MACH__)
 	#define WH_SYSTEM_OS WH_SYS_MACOS
