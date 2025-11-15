@@ -4,14 +4,11 @@
 #include<stdio.h>
 
 #ifdef WH_USE_FORTRAN
-extern int64_t _wh_fortran_intpos64(int64_t base, int64_t value);
-extern int64_t _wh_fortran_intpow64(int64_t power, int64_t times);
+	extern int64_t _wh_fortran_intpos64(int64_t base, int64_t value);
+	extern int64_t _wh_fortran_intpow64(int64_t power, int64_t times);
 #endif
 
-i64 _wh_intpos(_wh_intpos_params params) {
-#ifdef WH_USE_FORTRAN
-	return _wh_fortran_intpos64(params.base, params.value);
-#else
+i64 _wh_c_intpos(_wh_intpos_params params) {
 	// TODO improve the C code
 	i64 out = 0;
 
@@ -26,6 +23,14 @@ i64 _wh_intpos(_wh_intpos_params params) {
 	}
 
 	return out;
+}
+
+
+i64 _wh_intpos(_wh_intpos_params params) {
+#ifdef WH_USE_FORTRAN
+	return _wh_fortran_intpos64(params.base, params.value);
+#else
+	return _wh_c_intpos(params);
 #endif
 }
 

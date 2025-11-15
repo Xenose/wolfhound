@@ -45,12 +45,21 @@ void testing_align(i64* failed, i64* passed) {
 	WH_TEST_IS_EQUAL(*failed, *passed, 8192L, wh_align(8096, 4096))
 }
 
+void testing_c_fortran_intpos(i64* failed, i64* passed) {
+	for (i64 i = 1; i < 1'000'000; i *= 10) {
+		for (i64 k = 1; k < 10; k++) {
+			WH_TEST_IS_EQUAL(*failed, *passed, wh_c_intpos(i * k, 10), wh_intpos(i * k, 10));
+		}
+	}
+}
+
 i64 testing_math(i64* failed, i64* passed) {
 	wh_try {
 		testing_intpos(failed, passed);
 		testing_intpow(failed, passed);
 		testing_hash_simple(failed, passed);
 		testing_align(failed, passed);
+		testing_c_fortran_intpos(failed, passed);
 	} wh_catch(except) {
 	}
 

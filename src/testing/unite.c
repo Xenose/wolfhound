@@ -11,6 +11,9 @@
 #include<wh/file.h>
 #include<wh/string.h>
 
+ai64 count_failed;
+ai64 count_passed;
+
 i8 _wh_run_utests(const char* path) {
 	wh_file_s file = { 0 };
 	lua_State* ls = nullptr;
@@ -45,4 +48,14 @@ i8 _wh_run_utests(const char* path) {
 	wh_dir_destroy(nullptr, &dir);
 	lua_close(ls);
 	return 0;
+}
+
+void _wh_test(int result, const char* result_str) {
+	if (result) {
+		++(count_failed);
+		printf("\t[\033[31mFAILED\033[0m] %s for [ \033[33m%s\033[0m ]\n", result_str, result_str);\
+	} else {
+		++(count_passed);
+		printf("[\033[32mPASSED\033[0m] %s for [ \033[33m%s\033[0m ]\n", result_str, result_str); \
+	}
 }
