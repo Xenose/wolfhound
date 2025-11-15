@@ -29,23 +29,23 @@ extern i64 _wh_hash_simple(_wh_hash_simple_params params);
  */
 
 #ifdef _MSC_VER \
-// MSVC a inferior compiler...
-#define wh_abs(x) fabs(x)
+	// MSVC a inferior compiler...
+	#define wh_abs(x) fabs(x)
 #else
-#define wh_abs(x) \
-_Generic((x), \
-	i8: ((x) ^ ((x) >> 7)) - ((x) >> 7), \
-	i16: ((x) ^ ((x) >> 15)) - ((x) >> 15), \
-	i32: ((x) ^ ((x) >> 31)) - ((x) >> 31), \
-	i64: ((x) ^ ((x) >> 63)) - ((x) >> 63), \
-	i128: ((x) ^ ((x) >> 127)) - ((x) >> 127), \
-	u8: (x), \
-	u16: (x), \
-	u32: (x), \
-	u64: (x), \
-	u128: (x), \
-	default: abs(x) \
-	)
+	#define wh_abs(x) \
+		_Generic((x), \
+			i8: ((x) ^ ((x) >> 7)) - ((x) >> 7), \
+			i16: ((x) ^ ((x) >> 15)) - ((x) >> 15), \
+			i32: ((x) ^ ((x) >> 31)) - ((x) >> 31), \
+			i64: ((x) ^ ((x) >> 63)) - ((x) >> 63), \
+			i128: ((x) ^ ((x) >> 127)) - ((x) >> 127), \
+			u8: (x), \
+			u16: (x), \
+			u32: (x), \
+			u64: (x), \
+			u128: (x), \
+			default: abs(x) \
+			)
 #endif
 
 /* [MD_DOC]

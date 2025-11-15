@@ -2,6 +2,6 @@
 
 pushd "%PRP%\build"
 
-ninja
+cmake --build "%PRP%\build"
 
 popd

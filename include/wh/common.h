@@ -2,6 +2,7 @@
 #define _wh_header_common_
 
 #include<limits.h>
+
 #include<wh/common/prefix.h>
 #include<wh/common/bytes.h>
 #include<wh/common/enum.h>
@@ -15,7 +16,7 @@ WH_C()
 #include<stdbool.h>
 
 #if !(WH_SYSTEM&WH_SYS_WINDOWS)
-#include<sys/types.h>
+	#include<sys/types.h>
 #endif
 
 /* [MD_DOC]

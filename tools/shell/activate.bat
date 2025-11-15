@@ -13,3 +13,4 @@ REM build systems
 DOSKEY wh-msvc=%PRP%\%TP%\msvc.bat %PRP%
 DOSKEY wh-clang=%PRP%\%TP%\clang.bat %PRP%
 DOSKEY wh-ninja=%PRP%\%TP%\ninja.bat %PRP%
+DOSKEY wh-make=%PRP%\%TP%\make.bat %PRP%
