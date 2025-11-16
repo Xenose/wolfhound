@@ -10,8 +10,8 @@ typedef struct {
 	int* y;
 } _wh_window_size_params;
 
-extern void _wh_window_get_size(_wh_window_size_params params);
+//extern void _wh_window_get_size(_wh_window_size_params params);
 
-#define wh_window_get_size(...) _wh_window_get_size((_wh_window_size_params) { __VA_ARGS__ })
+//#define wh_window_get_size(...) _wh_window_get_size((_wh_window_size_params) { __VA_ARGS__ })
 
 #endif /* _wh_header_window_ */

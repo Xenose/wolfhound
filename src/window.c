@@ -1,7 +1,7 @@
 #include<wh/window.h>
 #include<wh/raylib/window.h>
 
-extern void _wh_window_get_size_sdl3(_wh_window_size_params* params);
+/*extern void _wh_window_get_size_sdl3(_wh_window_size_params* params);
 
 void _wh_window_get_size(_wh_window_size_params params) {
 	switch(params.ins->graphics.mode) {
@@ -12,4 +12,4 @@ void _wh_window_get_size(_wh_window_size_params params) {
 			_wh_window_get_size_sdl3(&params);
 			break;
 	}
-}
+}*/

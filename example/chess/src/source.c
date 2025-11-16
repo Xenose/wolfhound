@@ -32,11 +32,11 @@ void update(wh_instance_s* ins) {
 		0.10,		0.20,		0.10,		0.15,
 	};
 
-	int x = 1920;
-	int y = 1080;
+	i64 x = 1920;
+	i64 y = 1080;
 	int count = sizeof(square) / sizeof(float);
 
-	//wh_window_get_size(ins, &x, &y);
+	wh_window_get_size(ins, &x, &y);
 
 	wh_for(int, i, count) {
 		if (i & 1) {
