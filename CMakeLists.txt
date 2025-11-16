@@ -13,12 +13,7 @@ CHECK_LANGUAGE(Fortran)
 # We want to use Fortran 95 so we select it
 SET(CMAKE_Fortran_STANDARD 95)
 
-IF (MSVC)
-	SET(CMAKE_C_STANDARD 17)
-ELSE()
-	# We will use a new version of C do
-	SET(CMAKE_C_STANDARD 23)
-ENDIF()
+
 
 SET(CMAKE_C_STANDARD_REQUIRED ON)
 
@@ -153,6 +148,9 @@ IF(WIN32)
 	IF (MSVC)
 		TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
 			-Wall
+			
+			-wd4100
+			-wd5110
 		)
 	ELSE()
 		TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
