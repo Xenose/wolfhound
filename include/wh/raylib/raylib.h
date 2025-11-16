@@ -2,6 +2,7 @@
 #define _wh_header_raylib_raylib_
 
 #include<stdarg.h>
+
 #include<wh/common.h>
 
 typedef enum {

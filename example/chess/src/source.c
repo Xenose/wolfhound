@@ -46,7 +46,7 @@ void update(wh_instance_s* ins) {
 		}
 	}
 
-	wh_render_line(ins, square, count, { 255, 255, 255, 255 });
+	wh_render_line(ins, square, count, { 100, 255, 255, 255 });
 }
 
 void fixed_update(wh_instance_s* ins) {

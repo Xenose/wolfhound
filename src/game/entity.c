@@ -6,7 +6,10 @@ i8 _wh_entity_init(_wh_entities_init_params params) {
 
 	params.ins->game.entity_count = 0;
 	params.ins->game.entities = wh_alloc(
-		params.ins->heap, bytes, &params.ins->game.entities);
+		params.ins->heap, 
+		bytes, 
+		&params.ins->game.entities
+	);
 
 	if (nullptr == params.ins->game.entities) {
 		wh_log_error(("Failed to allocate entities..."));
