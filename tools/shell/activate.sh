@@ -14,6 +14,8 @@ else
 	WP=$(dirname "$WP")
 fi
 
+. "${WP}${TP}docker.sh"
+
 # The tools foolder
 TP="/tools/shell/"
 echo "Setting active directory to [ $WP ]"
@@ -29,7 +31,7 @@ alias wh-coverage="PRP='${WP}' ${WP}${TP}coverage.sh"
 alias wh-refresh=". ${WP}${TP}activate.sh"
 alias wh-bootstrap="PRP='${WP}' ${WP}${TP}bootstrap.sh"
 alias wh-check="PRP='${WP}' ${WP}${TP}check.sh"
-alias wh-docker="PRP='${WP}' ${WP}${TP}docker.sh"
+alias wh-docker="PRP='${WP}' __wh_docker"
 
 # code
 alias wh-build="PRP='${WP}' ${WP}${TP}build.sh"

@@ -230,7 +230,7 @@ static void _wh_print_int128(wh_print_data_s* d, i128 value, i64 base) {
 		return;
 	}
 
-	wh_int2str(value, d->buffer, length, base);
+	wh_int2str(value, d->buffer, (u64)length, (u64)base);
 	d->buffer += length;
 	++d->format;
 }
@@ -283,7 +283,7 @@ go_loop:
 					goto go_dollar_switch;
 				case '1': case '2': case '3': case '4': case '5': 
 				case '6': case '7': case '8': case '9':
-					*vp = wh_str2int(data->format, strlen(data->format), 10); 
+					*vp = (u64)wh_str2int(data->format, (i64)strlen(data->format), 10); 
 					vp = &data->print_format.left;
 					goto go_dollar_switch;
 				case '[': // custom function from user using hash maps
@@ -309,7 +309,7 @@ go_loop:
 				case 'm': // memory
 					break;
 				case 's': // string with length
-					_wh_print_cpystr(data, va_arg(list, char*), va_arg(list, u64));
+					_wh_print_cpystr(data, va_arg(list, char*), va_arg(list, i64));
 					break;
 				case 't': // time with format $t[]
 					break;
@@ -348,7 +348,7 @@ go_loop:
 					++data->format;
 				case '1': case '2': case '3': case '4': case '5':
 				case '6': case '7': case '8': case '9':
-					*vp = wh_str2int(data->format, (i64)strlen(data->format), 10); 
+					*vp = (u64)wh_str2int(data->format, (i64)strlen(data->format), 10); 
 					vp = &data->print_format.left;
 					goto go_standard_switch;
 				case 'a':

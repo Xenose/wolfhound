@@ -3,7 +3,8 @@ FROM archlinux:latest
 ENV TERM xterm-256color
 ENV LANG C.UTF-8
 
-RUN pacman -Syu --noconfirm && pacman -S --noconfirm \
+RUN pacman -Syu --noconfirm
+RUN pacman -S --noconfirm \
 	base-devel \
 	cmake \
 	clang \
