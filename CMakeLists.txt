@@ -12,9 +12,6 @@ OPTION(NO_CXX_COMPILER "Disbles the C++ compiler" False)
 CHECK_LANGUAGE(Fortran)
 # We want to use Fortran 95 so we select it
 SET(CMAKE_Fortran_STANDARD 95)
-
-
-
 SET(CMAKE_C_STANDARD_REQUIRED ON)
 
 # Lets use the new C++ as well
@@ -24,8 +21,6 @@ IF (NOT NO_CXX_COMPILER)
 ENDIF()
 
 SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-
 
 IF (WIN32)
 	MESSAGE("\n\tWE ARE ON WINDOWS!")
@@ -46,6 +41,7 @@ IF (WIN32)
 
 ELSE()
 	INCLUDE_DIRECTORIES(SYSTEM "include/")
+	SET(CMAKE_C_STANDARD 23)
 ENDIF()
 
 # checking if we have Fortran on the system

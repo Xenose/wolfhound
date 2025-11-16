@@ -28,7 +28,31 @@ typedef struct {
 // IDEA
 // action -> gameobject -> data
 
+/* The Action Entity system idea
+ * [ header render info ]
+ * [ header positions ]
+ * [ header velocity  ]
+ * ....
+ * [ data render info ]
+ * [ data position ]
+ * [ data velocity ]
+ */
 typedef struct {
+	struct_type stype;
+	atomic_flag locked;
+	u64 data_type;
+	i64 row_count;
+	void* data_start;
+} wh_entity_data_header_s;
+
+typedef struct {
+	struct_type stype;
+	atomic_flag locked;
+	u64 count;
+	wh_entity_data_header_s* headers;
+} wh_entity_s;
+
+/*typedef struct {
 	wh_struct stype;
 	u64 type;
 	atomic_flag lock;
@@ -41,7 +65,7 @@ typedef struct {
 	u64 id;
 	wh_string_s name;
 	void* data;
-} wh_entity_s;
+} wh_entity_s;*/
 
 typedef struct _wh_action_s {
 	wh_struct stype;

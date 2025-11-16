@@ -14,7 +14,12 @@ else
 	WP=$(dirname "$WP")
 fi
 
-. "${WP}${TP}docker.sh"
+#. "${WP}${TP}docker.sh"
+__wh_docker() {
+	docker build -t "test_image_wolfhound" -f "${PRP}/tools/docker/${1}.dockerfile" "${PRP}"
+	docker run --rm -it -v "$PWD":/wolfhound "test_image_wolfhound"
+	docker rmi "test_image_wolfhound"
+}
 
 # The tools foolder
 TP="/tools/shell/"
