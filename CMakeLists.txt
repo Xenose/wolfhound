@@ -30,7 +30,7 @@ ENDIF()
 
 SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-INCLUDE_DIRECTORIES(SYSTEM "include/")
+
 
 IF (WIN32)
 	MESSAGE("\n\tWE ARE ON WINDOWS!")
@@ -40,7 +40,7 @@ IF (WIN32)
 	#MAKE_DIRECTORY("C:/tmp/")
 
 	# having the include same as Unix / Linux make more sense
-	INCLUDE_DIRECTORIES(SYSTEM "C:/usr/include/")
+	INCLUDE_DIRECTORIES(SYSTEM "C:/usr/include/" "include/" "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.44.35207/include")
 	SET(CMAKE_LIBRARY_PATH "${CMAKE_LIBRARY_PATH};C:/usr/lib")
 	#LINK_DIRECTORIES(AFTER "C:/usr/lib/")
 
@@ -48,6 +48,9 @@ IF (WIN32)
 	IF (MSVC)
 		SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /experimental:c11atomics")
 	ENDIF()
+
+ELSE()
+	INCLUDE_DIRECTORIES(SYSTEM "include/")
 ENDIF()
 
 # checking if we have Fortran on the system
@@ -146,12 +149,35 @@ INCLUDE(cmake/find_unwind.cmake)
 # Link the C library with the Fortran library
 IF(WIN32)
 	TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE)
+
+	IF (MSVC)
+		TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
+			-Wall
+		)
+	ELSE()
+		TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
+			--target=x86_64-pc-windows-gnu
+
+			-Wall
+			-Wextra
+			-Wpedantic
+			-Wconversion
+			-Wshadow
+
+			-Wno-implicit-fallthrough
+			-Wno-unused-label
+			-Wno-unused-variable
+			-Wno-unused-parameter
+			-Wno-unused-but-set-variable
+
+			# In C +99 structs are zero out
+			-Wno-missing-field-initializers
+
+			-O0
+		)
+	ENDIF()
 ELSE()
 	TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE "m" "dl" "atomic" "bsd" "gcov")
-ENDIF()
-
-IF (MSVC)
-ELSE()
 	TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
 		-Wall
 		-Wextra
@@ -171,6 +197,8 @@ ELSE()
 		-O0
 	)
 ENDIF()
+
+
 
 IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" AND GENERATE_REPORT)
 	MESSAGE(STATUS "Enabling coverage flags for GCC/Clang")
