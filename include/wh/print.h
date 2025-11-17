@@ -61,7 +61,7 @@ extern i64 _wh_print_va(_wh_print_params params, va_list list);
 extern i64 _wh_print(_wh_print_params params, ...);
 extern void _wh_print_add_func(_wh_print_add_func_params params);
 
-#ifndef __cplusplus
+#if !defined(__cplusplus) || !defined(WH_USE_C_MACRO_FUNC)
 
 /* [MD_DOC]
  * # wh_print [ Thread Safe ] and wh_print_va [ Thread Safe ]
