@@ -62,3 +62,33 @@ i64 _wh_hash_simple(_wh_hash_simple_params params) {
 go_error_exit:
 	return key;
 }
+
+u64 _wh_random_alphanum(char* buffer, u64 buffer_length, u64 char_count) {
+	u64 count = (char_count % 10) + 1; // the number of chars to add
+	u64 rng = 0; // TODO random number
+
+	char table[] = 
+		"abcdefghijklmnopqrstuvwxyz"
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		"1234567890";
+
+	for (u64 i = 0; i < count; i++) {
+		switch (char_count - i * 8) {
+			default:
+			case 10:
+				buffer[i] = table[rng & 0x3F];
+			case 9:
+				buffer[i] = table[rng >> 58 & 0x3F];
+			case 8:
+				buffer[i] = table[rng >> 52 & 0x3F];
+
+			case 0:
+		}
+	}
+
+	return 0;
+}
+
+
+
+
