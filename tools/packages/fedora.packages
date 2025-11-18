@@ -1,4 +1,12 @@
-cmake
-ninja
-gcc
+SDL3
+SDL3-devel
 clang
+cmake
+gcc
+gtest
+gtest-devel
+libbsd-devel
+lua
+lua-devel
+make
+ninja
