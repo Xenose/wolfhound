@@ -111,6 +111,7 @@ IF (NOT NO_CXX_COMPILER)
 	set(CXX_SOURCES
 		"src/cpp/wolfhound.cpp"
 		"src/cpp/print.cpp"
+		"src/cpp/memory.cpp"
 	)
 ENDIF()
 

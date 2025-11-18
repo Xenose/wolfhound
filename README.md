@@ -50,15 +50,16 @@ wh-build	# compiles code.
 | wh-make     | Linux, Windows(CMD)             | Sets the build system to Make, NMake for windows and UNIX for the others. |
 
 ## Languages
-| Name      | Version | Use                                |
-| --------- | ------- | ---------------------------------- |
-| C         | 23      | Engine core.                       |
-| Fortran   | 95      | Optional maths functions.          |
-| C++       | 23      | C++ wrapper for the C code         |
-| Lua       | N/A     | Configuration, Command Line, data. |
-| Shell     | N/A     | Tools.                             |
-| Python    | 3       | Tools.                             |
-| DOS Batch | N/A     | Build tools.                       |
+| Name        | Version | Use                                              |
+| ----------- | ------- | ------------------------------------------------ |
+| C           | 23      | Engine core.                                     |
+| Fortran     | 95      | Optional maths functions.                        |
+| C++         | 23      | C++ wrapper for the C code and gtesting.         |
+| Lua         | N/A     | Configuration, Command Line, data.               |
+| Shell       | N/A     | Tools.                                           |
+| Python      | 3       | Tools.                                           |
+| DOS Batch   | N/A     | Build tools.                                     |
+| Dockerfiles | N/A     | Temporary testing enviroments.                   |
 
 ## Compilers
 | Name  | Version | Notes                                         |
@@ -76,6 +77,7 @@ wh-build	# compiles code.
 | glfw    | NO                | NO             | At least one graphics library is required,                                |
 | lua     |                   | YES            | Used for data, arguments and configurations.                              |
 | unwind  |                   | NO(but useful) | Used to backtrace Segfaults from the signal handler.                      |
+| gtest   |                   | NO             | Used for unit testing of the engine.                                      |
 
 ## Editors / IDE
 | Name                | Status    | Platform       | Description                                                        |
@@ -89,19 +91,19 @@ wh-build	# compiles code.
 
 |  Language       | File Count | Lines of Code | Percentage |
 | --------------- | ---------- | ------------- | ---------- |
-| C               | 130        | 5357          | 79.52%     |
-| CMake           | 13         | 321           | 4.76%      |
-| Bourne Shell    | 16         | 255           | 3.79%      |
-| C++             | 10         | 212           | 3.15%      |
-| Lua             | 13         | 175           | 2.60%      |
-| Python          | 2          | 155           | 2.30%      |
-| Markdown        | 3          | 151           | 2.24%      |
+| C               | 130        | 5357          | 78.78%     |
+| CMake           | 13         | 322           | 4.74%      |
+| C++             | 12         | 272           | 4.00%      |
+| Bourne Shell    | 16         | 255           | 3.75%      |
+| Lua             | 13         | 175           | 2.57%      |
+| Python          | 2          | 155           | 2.28%      |
+| Markdown        | 3          | 153           | 2.25%      |
 | DOS Batch       | 6          | 36            | 0.53%      |
 | Dockerfile      | 2          | 33            | 0.49%      |
 | Fortran 95      | 1          | 32            | 0.47%      |
 | PowerShell      | 2          | 7             | 0.10%      |
 | INI             | 1          | 3             | 0.04%      |
 | Assembly        | 1          | 0             | 0.00%      |
-| Summary         | 200        | 6737          | 100.00%    |
+| Summary         | 202        | 6800          | 100.00%    |
 
 <!--python-stats-end-->
