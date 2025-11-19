@@ -34,13 +34,6 @@ static i8 _wh_init_critical(_wh_init_params* params) {
 	memcpy(params->ins[0], &tmp, sizeof(wh_instance_s));
 	memcpy(&params->ins[0]->config, &params->config, sizeof(wh_config_s));
 
-	wh_heap_init(
-		"scratch",
-		WH_1MB,
-		params->heap, 
-		WH_STRUCT_TYPE_HEAP_ARENA
-	);
-
 	// making a shortcut
 	params->grap = &params->ins[0]->graphics;
 	params->grap->mode = params->mode;
