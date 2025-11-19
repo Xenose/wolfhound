@@ -22,7 +22,7 @@ static i8 _wh_init_critical(_wh_init_params* params) {
 	params->config = _wh_config_load(params, &params->config);
 	tmp.heap = wh_heap_init("main", params->config.heap.size);
 	
-	params->ins[0] = wh_alloc(nullptr, sizeof(wh_instance_s));
+	params->ins[0] = wh_alloc(nullptr, sizeof(wh_instance_s), nullptr, WH_ALLOC_TAIL);
 
 	if (nullptr == params->ins[0]) {
 		wh_log_error(("Failed to allocated instance!"));

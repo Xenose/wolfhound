@@ -75,9 +75,9 @@ void* _wh_mem_alloc_freelist(_wh_mem_alloc_params* params)  {
 			header->bytes = size; 
 			header->data = wh_ptr_add(header, sizeof(wh_heap_node_s));
 			header->flags = params->flags | WH_MEM_IN_USE;
+			header->next = node->next;
 			
 			out = header->data;
-			params->heap->freelist.tail = node;
 		} else {
 			header = wh_ptr_add(node, size);
 			header->bytes = node->bytes - size; 
@@ -85,14 +85,17 @@ void* _wh_mem_alloc_freelist(_wh_mem_alloc_params* params)  {
 			node->bytes = size;
 			node->data = wh_ptr_add(header, sizeof(wh_heap_node_s));
 			node->flags = params->flags | WH_MEM_IN_USE;
+			header->next = node->next;
 
 			out = node->data;
-			params->heap->freelist.tail = header;
 		}
 
-		node->next = header;
+		params->heap->freelist.tail = header;
 		header->previous = node;
-		wh_log_debug(("Allocated [ $k ] new node created [ $k ]"), node->bytes, header->bytes);
+		node->next = header;
+
+		wh_log_debug(("Allocated [ $k ] new node created [ $k ] or [ %i : %i ]"), 
+					node->bytes, header->bytes, node->bytes, header->bytes);
 	}
 
 
@@ -185,7 +188,7 @@ void* _wh_mem_realloc_freelist(_wh_mem_realloc_params* params) {
 		goto go_error_exit;
 	}
 
-	node = wh_ptr_add(params->ptr, -sizeof(wh_heap_node_s*));
+	node = wh_ptr_add(params->ptr, -sizeof(wh_heap_node_s));
 	bytes = params->bytes > node->bytes ? node->bytes : params->bytes;
 
 	memcpy(ptr, params->ptr, bytes);
