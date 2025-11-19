@@ -83,7 +83,7 @@ void* _wh_mem_alloc_freelist(_wh_mem_alloc_params* params)  {
 			header->bytes = node->bytes - size; 
 
 			node->bytes = size;
-			node->data = wh_ptr_add(header, sizeof(wh_heap_node_s));
+			node->data = wh_ptr_add(node, sizeof(wh_heap_node_s));
 			node->flags = params->flags | WH_MEM_IN_USE;
 			header->next = node->next;
 
