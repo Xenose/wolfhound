@@ -4,6 +4,8 @@
 #include<wh/common.h>
 #include<wh/types/memory.h>
 
+#define WH_ALLOC_TAIL	0x0001
+
 typedef struct {
 	const char* name;
 	u64 bytes;

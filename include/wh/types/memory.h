@@ -23,6 +23,7 @@ typedef struct _wh_heap_node_s {
 
 typedef struct {
 	wh_heap_node_s* nodes;
+	wh_heap_node_s* tail;
 } _wh_heap_header_freelist_s;
 
 typedef struct {

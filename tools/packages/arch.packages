@@ -1,0 +1,5 @@
+make
+ninja
+gcc
+clang
+lcov

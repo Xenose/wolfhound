@@ -5,15 +5,20 @@ set -e
 cd "${PRP}"
 
 "${PRP}/tools/shell/clean.sh"
-"${PRP}/tools/shell/build.sh"
-"${PRP}/build/tests/c/compiled_tests"
 
-mkdir -pv reports
-rm -rf reports/coverage.info reports/coverage
+cd "${PRP}/build"
+cmake .. -DGENERATE_REPORT=on
+cd "${PRP}"
 
-lcov --capture --directory build --output-file reports/coverage.info
-lcov --remove reports/coverage.info "*tests/*" --output-file reports/coverage.info  # optional filter
-genhtml reports/coverage.info --output-directory reports/coverage
+"${PRP}/tools/shell/build.sh" 
+"${PRP}/build/tests/cpp/gtests/gtests"
 
-find build -name "*.gcda" -o -name "*.gcno" -delete
-xdg-open reports/coverage/index.html 2>/dev/null || open reports/coverage/index.html 2>/dev/null || true
+mkdir -pv "${PRP}/reports"
+rm -rf "${PRP}/reports/coverage.info" reports/coverage
+
+lcov --ignore-errors source --ignore-errors inconsistent --capture --directory "${PRP}/build" --output-file "${PRP}/reports/coverage.info"
+lcov --ignore-errors source --ignore-errors inconsistent --remove "${PRP}/reports/coverage.info" "*tests/*" --output-file "${PRP}/reports/coverage.info"  # optional filter
+genhtml "${PRP}/reports/coverage.info" --output-directory "${PRP}/reports/coverage"
+
+find build -name "${PRP}/*.gcda" -o -name "${PRP}/*.gcno" -delete
+xdg-open "${PRP}/reports/coverage/index.html" 2>/dev/null || open "${PRP}/reports/coverage/index.html" 2>/dev/null || true

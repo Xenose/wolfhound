@@ -40,7 +40,7 @@ typedef struct {
 typedef struct {
 	struct_type stype;
 	atomic_flag locked;
-	u64 data_type;
+	u64 var_type;
 	i64 row_count;
 	void* data_start;
 } wh_entity_data_header_s;

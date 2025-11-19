@@ -566,7 +566,6 @@ wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
 	}
 	
 	wh_heap_insert(params.name, heap);
-	//wh_heap_print_table();
 
 	//wh_spin_lock(&heap->locked) {
 		wh_heap_node_s* next = nullptr;
@@ -597,6 +596,7 @@ wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
 				heap->bytes_used = sizeof(wh_heap_header_s) + sizeof(wh_heap_node_s);
 				heap->bytes_free = params.bytes - heap->bytes_used;
 				heap->freelist.nodes = next;
+				heap->freelist.tail = next;
 
 				// next node
 				next->stype = WH_STRUCT_TYPE_HEAP_NODE;

@@ -3,43 +3,85 @@
 
 #include<string.h>
 
-void* _wh_mem_alloc_freelist(_wh_mem_alloc_params* params)  {
-	i64 error = 0;
+wh_heap_node_s* _wh_mem_alloc_freelist_head(_wh_mem_alloc_params* params, i64* error) {
 	wh_heap_node_s* node = params->heap->freelist.nodes;
-
-	if (nullptr == node) {
-		error = WH_ERROR_NO_MEMORY;
-		goto go_error_exit;
-	}
 
 	while (node->flags & WH_MEM_IN_USE || node->bytes < params->bytes) {
 		if (nullptr == node->next) {
-			error = WH_ERROR_HEAP_TOO_SMALL;
-			wh_log_critical(("No node found!"));
+			*error = WH_ERROR_HEAP_TOO_SMALL;
+			wh_log_critical(("no node found!"));
 			goto go_error_exit;
 		}
 		node = node->next;
 	}
 
-	node->flags = params->flags | WH_MEM_IN_USE;
+	return node;
+go_error_exit:
+	wh_ptr_assign(params->error, error);
+	return nullptr;
+}
+
+wh_heap_node_s* _wh_mem_alloc_freelist_tail(_wh_mem_alloc_params* params, i64* error) {
+	wh_heap_node_s* node = params->heap->freelist.tail;
+
+	while (node->flags & WH_MEM_IN_USE || node->bytes < params->bytes) {
+		if (nullptr == node->previous) {
+			*error = WH_ERROR_HEAP_TOO_SMALL;
+			wh_log_critical(("no node found!"));
+			goto go_error_exit;
+		}
+		node = node->previous;
+	}
+
+	return node;
+go_error_exit:
+	wh_ptr_assign(params->error, error);
+	return nullptr;
+}
+
+void* _wh_mem_alloc_freelist(_wh_mem_alloc_params* params)  {
+	i64 error = 0;
+	void* out = nullptr;
+	wh_heap_node_s* node = nullptr;
+
+	if (nullptr == params->heap->freelist.nodes || nullptr == params->heap->freelist.tail) {
+		error = WH_ERROR_NO_MEMORY;
+		goto go_error_exit;
+	}
+
+	if (WH_ALLOC_TAIL & params->flags) {
+		node = params->heap->freelist.tail;
+		out = _wh_mem_alloc_freelist_tail(params, &error);
+	} else {
+		node = params->heap->freelist.nodes;
+		out = _wh_mem_alloc_freelist_head(params, &error);
+	}
 
 	// check if the nodes is big enough for a split
 	if ((node->bytes - 64) > (params->bytes + sizeof(wh_heap_node_s))) {
 		u64 size = params->bytes + sizeof(wh_heap_node_s);
-		wh_heap_node_s* next = wh_ptr_add(node, size);
+		wh_heap_node_s* header;
+	
+		wh_log_debug(("node is size [ $k ] currently and allocated size is [ $k ]"), node->bytes, size);
 
-		wh_log_debug(("Node is size [ $k ] currently and allocated size is [ $k ]"), node->bytes, size);
+		if (WH_ALLOC_TAIL & params->flags) {
+			header = wh_ptr_add(node, node->size - size);
+			header->next = node;
+			header->previous = node;
+		} else {
+			header = wh_ptr_add(node, size);
+			header->next = node->next;
+			header->previous = node;
+		}
 
-		next->next = node->next;
-		next->previous = node;
-		next->bytes = node->bytes - size; 
-		next->data = wh_ptr_add(next, sizeof(wh_heap_node_s));
-
-		node->bytes = size;
-		node->next = next;
+		header->bytes = node->bytes - size; 
+		header->data = wh_ptr_add(header, sizeof(wh_heap_node_s));
+		header->bytes = size;
 
 		wh_log_debug(("Allocated [ $k ] new node created [ $k ]"), node->bytes, next->bytes);
 	}
+
+	node->flags = params->flags | WH_MEM_IN_USE;
 
 	return node->data;
 go_error_exit:
