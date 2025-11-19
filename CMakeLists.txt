@@ -209,6 +209,7 @@ ENDIF()
 # or examples and link against the core libraries defined above.
 # -----------------------------------------------------------------------------
 ADD_SUBDIRECTORY(example/chess)
+ADD_SUBDIRECTORY(example/memory)
 ADD_SUBDIRECTORY(example/print)
 
 # C++ examples

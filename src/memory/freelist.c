@@ -16,6 +16,7 @@ wh_heap_node_s* _wh_mem_alloc_freelist_head(_wh_mem_alloc_params* params, i64* e
 		node = node->next;
 	}
 
+	wh_log_debug(("Node found!"));
 	return node;
 go_error_exit:
 	wh_ptr_assign(params->error, *error);
@@ -56,35 +57,49 @@ void* _wh_mem_alloc_freelist(_wh_mem_alloc_params* params)  {
 		node = _wh_mem_alloc_freelist_head(params, &error);
 	}
 
+	if (nullptr == node) {
+		goto go_error_exit;
+	}
+
 	// check if the nodes is big enough for a split
 	if ((node->bytes - 64) > (params->bytes + sizeof(wh_heap_node_s))) {
-		u64 size = wh_align(params->bytes + sizeof(wh_heap_node_s), 64);
-		wh_heap_node_s* header;
+		wh_heap_node_s* header = nullptr;
+		u64 size = (u64)wh_align(params->bytes + sizeof(wh_heap_node_s), 64);
 	
 		wh_log_debug(("node is size [ $k ] currently and allocated size is [ $k ]"), node->bytes, size);
 
 		if (WH_ALLOC_TAIL & params->flags) {
 			header = wh_ptr_add(node, node->bytes - size);
-			header->next = node;
-			header->previous = node;
+			node->bytes = node->bytes - size;
+
+			header->bytes = size; 
+			header->data = wh_ptr_add(header, sizeof(wh_heap_node_s));
+			header->flags = params->flags | WH_MEM_IN_USE;
+			
+			out = header->data;
+			params->heap->freelist.tail = node;
 		} else {
 			header = wh_ptr_add(node, size);
-			header->next = node->next;
-			header->previous = node;
+			header->bytes = node->bytes - size; 
+
+			node->bytes = size;
+			node->data = wh_ptr_add(header, sizeof(wh_heap_node_s));
+			node->flags = params->flags | WH_MEM_IN_USE;
+
+			out = node->data;
+			params->heap->freelist.tail = header;
 		}
 
-		header->bytes = node->bytes - size; 
-		header->data = wh_ptr_add(header, sizeof(wh_heap_node_s));
-		header->bytes = size;
-		header->flags = params->flags | WH_MEM_IN_USE;
-
+		node->next = header;
+		header->previous = node;
 		wh_log_debug(("Allocated [ $k ] new node created [ $k ]"), node->bytes, header->bytes);
 	}
 
 
-	return node->data;
+	return out;
 go_error_exit:
 	wh_ptr_assign(params->error, error);
+	wh_log_error(("Failed to allocate node!"));
 	return nullptr;
 }
 

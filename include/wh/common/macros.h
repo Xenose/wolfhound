@@ -52,6 +52,9 @@ WH_C()
     #error "Unknown OS: Please add support for your platform to WH_SYSTEM_OS"
 #endif
 
+#ifndef __FILENAME__
+	#define __FILENAME__ __FILE__
+#endif
 
 #if !defined(__cplusplus)
 	#if !defined(nullptr) && (__STDC_VERSION__ < 202000L)

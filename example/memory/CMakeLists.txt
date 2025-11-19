@@ -1,0 +1,5 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.28)
+PROJECT(memory LANGUAGES C) #Fortran)
+
+ADD_EXECUTABLE(memory "src/source.c")
+TARGET_LINK_LIBRARIES(memory PRIVATE wolfhound)
