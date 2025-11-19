@@ -1,5 +1,6 @@
 #include<wh/memory/freelist.h>
 #include<wh/debug/logger.h>
+#include<wh/maths/memory.h>
 
 #include<string.h>
 
@@ -17,7 +18,7 @@ wh_heap_node_s* _wh_mem_alloc_freelist_head(_wh_mem_alloc_params* params, i64* e
 
 	return node;
 go_error_exit:
-	wh_ptr_assign(params->error, error);
+	wh_ptr_assign(params->error, *error);
 	return nullptr;
 }
 
@@ -35,7 +36,7 @@ wh_heap_node_s* _wh_mem_alloc_freelist_tail(_wh_mem_alloc_params* params, i64* e
 
 	return node;
 go_error_exit:
-	wh_ptr_assign(params->error, error);
+	wh_ptr_assign(params->error, *error);
 	return nullptr;
 }
 
@@ -50,22 +51,20 @@ void* _wh_mem_alloc_freelist(_wh_mem_alloc_params* params)  {
 	}
 
 	if (WH_ALLOC_TAIL & params->flags) {
-		node = params->heap->freelist.tail;
-		out = _wh_mem_alloc_freelist_tail(params, &error);
+		node = _wh_mem_alloc_freelist_tail(params, &error);
 	} else {
-		node = params->heap->freelist.nodes;
-		out = _wh_mem_alloc_freelist_head(params, &error);
+		node = _wh_mem_alloc_freelist_head(params, &error);
 	}
 
 	// check if the nodes is big enough for a split
 	if ((node->bytes - 64) > (params->bytes + sizeof(wh_heap_node_s))) {
-		u64 size = params->bytes + sizeof(wh_heap_node_s);
+		u64 size = wh_align(params->bytes + sizeof(wh_heap_node_s), 64);
 		wh_heap_node_s* header;
 	
 		wh_log_debug(("node is size [ $k ] currently and allocated size is [ $k ]"), node->bytes, size);
 
 		if (WH_ALLOC_TAIL & params->flags) {
-			header = wh_ptr_add(node, node->size - size);
+			header = wh_ptr_add(node, node->bytes - size);
 			header->next = node;
 			header->previous = node;
 		} else {
@@ -77,11 +76,11 @@ void* _wh_mem_alloc_freelist(_wh_mem_alloc_params* params)  {
 		header->bytes = node->bytes - size; 
 		header->data = wh_ptr_add(header, sizeof(wh_heap_node_s));
 		header->bytes = size;
+		header->flags = params->flags | WH_MEM_IN_USE;
 
-		wh_log_debug(("Allocated [ $k ] new node created [ $k ]"), node->bytes, next->bytes);
+		wh_log_debug(("Allocated [ $k ] new node created [ $k ]"), node->bytes, header->bytes);
 	}
 
-	node->flags = params->flags | WH_MEM_IN_USE;
 
 	return node->data;
 go_error_exit:
