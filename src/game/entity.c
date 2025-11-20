@@ -1,13 +1,12 @@
+#include<stdarg.h>
 #include<wh/debug/logger.h>
 #include<wh/game/entity.h>
 
-i8 _wh_entity_add_data_header(int type, int count) {
-	wh_entity_data_header_s* data;
+ wh_entity_s _wh_entity(u64 count, ...) {
+	wh_entity_s entity = { 0 };
+	wh_entity_data_header_s* data = wh_alloc(nullptr, sizeof(wh_entity_data_header_s*), &data);
 
-	data->var_type = type;
-	data->row_count = count;
-
-	return 0;
+	return entity;
 }
 
 i8 _wh_entity_init(_wh_entities_init_params params) {
