@@ -23,7 +23,7 @@ i8 _wh_run_utests(const char* path) {
 	ls = luaL_newstate();
 	_wh_lua_expose_api(ls);
 
-	wh_for(i64, i, dir.count) {
+	wh_for(u64, i, dir.count) {
 		wh_strcat((p, 1024), path, "/", dir.entries[i].name);
 		wh_print(("RUNNING UNITE TEST [ %s ]\n"), p);
 

@@ -6,7 +6,7 @@
 
 extern i8 _wh_lua_add_values(lua_State* ls, ...);
 extern i8 _wh_lua_get_values(lua_State* ls, ...);
-extern i8 _wh_lua_get_flag(lua_State* ls, i8 flag, ...);
+extern u8 _wh_lua_get_flag(lua_State* ls, unsigned flag, ...);
 
 #define wh_lua_add_values(ls, ...)		_wh_lua_add_values(ls, __VA_ARGS__, nullptr)
 #define wh_lua_get_values(ls, ...)		_wh_lua_get_values(ls, __VA_ARGS__, nullptr)

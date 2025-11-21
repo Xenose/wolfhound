@@ -191,7 +191,7 @@ go_error_exit:
 	return -1;
 }
 
-i8 _wh_lua_get_flag(lua_State* ls, i8 flag, ...) {
+u8 _wh_lua_get_flag(lua_State* ls, unsigned flag, ...) {
 	va_list args;
 	const char** keys = nullptr;
 
@@ -233,7 +233,7 @@ i8 _wh_lua_get_flag(lua_State* ls, i8 flag, ...) {
 
 	go_value:
 		if (lua_isboolean(ls, -1)) {
-			flag = lua_toboolean(ls, -1);
+			flag = (u8)lua_toboolean(ls, -1);
 		}
 
 		if (nullptr != keys[1]) {
@@ -246,5 +246,5 @@ i8 _wh_lua_get_flag(lua_State* ls, i8 flag, ...) {
 go_exit:
 go_error_exit:
 	va_end(args);
-	return flag;
+	return (u8)flag;
 }
