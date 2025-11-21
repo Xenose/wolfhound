@@ -36,9 +36,11 @@ IF (WIN32)
 
 	# More Windows Magic for atomics :: Legacy KEEP
 	IF (MSVC)
+		SET(CMAKE_C_STANDARD 17)
 		SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /experimental:c11atomics")
+	ELSE()
+		SET(CMAKE_C_STANDARD 23)
 	ENDIF()
-
 ELSE()
 	INCLUDE_DIRECTORIES(SYSTEM "include/")
 	SET(CMAKE_C_STANDARD 23)
@@ -194,14 +196,11 @@ ELSE()
 	)
 ENDIF()
 
-
-
 IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" AND GENERATE_REPORT)
 	MESSAGE(STATUS "Enabling coverage flags for GCC/Clang")
 	TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE --coverage -g)
 	TARGET_LINK_OPTIONS(${APP_NAME} PRIVATE --coverage)
 ENDIF()
-
 
 # -----------------------------------------------------------------------------
 # Example Subprojects
@@ -216,7 +215,11 @@ ADD_SUBDIRECTORY(example/print)
 # C++ examples
 IF (NOT NO_CXX_COMPILER)
 	ADD_SUBDIRECTORY(example/cpp)
-	ADD_SUBDIRECTORY(tests/cpp/gtests/)
+
+	# For now GTEST is not supported on windows.
+	IF (NOT WIN32)
+		ADD_SUBDIRECTORY(tests/cpp/gtests/)
+	ENDIF()
 ENDIF()
 
 # Tests

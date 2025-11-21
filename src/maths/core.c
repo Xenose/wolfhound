@@ -63,7 +63,7 @@ go_error_exit:
 	return key;
 }
 
-u64 _wh_random_alphanum(char* buffer, u64 buffer_length, u64 char_count) {
+/*u64 _wh_random_alphanum(char* buffer, u64 buffer_length, u64 char_count) {
 	u64 count = (char_count % 10) + 1; // the number of chars to add
 	u64 rng = 0; // TODO random number
 
@@ -81,14 +81,9 @@ u64 _wh_random_alphanum(char* buffer, u64 buffer_length, u64 char_count) {
 				buffer[i] = table[rng >> 58 & 0x3F];
 			case 8:
 				buffer[i] = table[rng >> 52 & 0x3F];
-
 			case 0:
 		}
 	}
 
 	return 0;
-}
-
-
-
-
+}*/

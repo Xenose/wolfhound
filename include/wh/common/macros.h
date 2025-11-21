@@ -87,7 +87,9 @@ WH_C()
  * cost me nothing so I would say its worth
  * the extra macro.
  */
-#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+#if (WH_SYSTEM&WH_SYS_MSVC)
+    #define wh_thread __declspec(thread)
+#elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
 	#define wh_thread _Thread_local
 #else
 	#define wh_thread __thread
