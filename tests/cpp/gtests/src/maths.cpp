@@ -5,6 +5,12 @@
 #include<wh/cpp/maths/core.hpp>
 
 
+TEST(maths, abs_zero_i8) {
+	i8 i = -128;
+
+	EXPECT_EQ(-128, wh::maths::abs(i));
+}
+
 TEST(maths, abs) {
 	for (i64 i = -1'000'000; i < 1'000'000; i++) {
 		EXPECT_EQ(abs(i), wh::maths::abs(i));

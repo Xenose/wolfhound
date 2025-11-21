@@ -40,8 +40,8 @@ extern i64 _wh_hash_simple(_wh_hash_simple_params params);
  *
  * ## Return value
  * Returns a positive value from the original value, the minimum
- * values will return 0 as 1000 0000 or -128 in int8_t will result
- * in 0000 0000 this is a limitation of how integers are represented.
+ * values will return -128 as 1000 0000 or -128 in int8_t will result
+ * in 1000 0000 this is a limitation of how integers are represented.
  */
 #if (WH_SYSTEM&WH_SYS_MSVC)
 	// MSVC a inferior compiler...
