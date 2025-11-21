@@ -22,3 +22,7 @@ genhtml "${PRP}/reports/coverage.info" --output-directory "${PRP}/reports/covera
 
 find build -name "${PRP}/*.gcda" -o -name "${PRP}/*.gcno" -delete
 xdg-open "${PRP}/reports/coverage/index.html" 2>/dev/null || open "${PRP}/reports/coverage/index.html" 2>/dev/null || true
+
+cd "${PRP}/build"
+cmake .. -DGENERATE_REPORT=off
+cd "${PRP}"

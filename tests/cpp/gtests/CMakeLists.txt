@@ -12,6 +12,7 @@ ADD_EXECUTABLE(${PROJECT_NAME}
 	#"src/maths/core.c"
 	"src/memory.cpp"
 	#"src/print.c"
+	"src/maths.cpp"
 
 	"src/source.cpp"
 )

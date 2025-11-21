@@ -112,6 +112,7 @@ IF (NOT NO_CXX_COMPILER)
 		"src/cpp/wolfhound.cpp"
 		"src/cpp/print.cpp"
 		"src/cpp/memory.cpp"
+		"src/cpp/maths/core.cpp"
 	)
 ENDIF()
 

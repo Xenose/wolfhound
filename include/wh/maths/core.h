@@ -7,6 +7,8 @@
 #include<wh/common.h>
 #include<wh/params/math.h>
 
+WH_C()
+
 extern i64 _wh_c_intpos(_wh_intpos_params params);
 
 extern i64 _wh_intpos(_wh_intpos_params params);
@@ -76,5 +78,7 @@ extern i64 _wh_hash_simple(_wh_hash_simple_params params);
 #define intpow wh_intpow
 #define hash_simple wh_hash_simple
 #endif /* USE_NAMESPACE_WOLFHOUND */
+
+WH_C_END()
 
 #endif /* _wh_header_maths_core_ */
