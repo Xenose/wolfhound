@@ -4,14 +4,13 @@
 
 #include<wh/cpp/maths/core.hpp>
 
-/*
+
 TEST(maths, abs) {
-	// TODO :: work around the _Generic issue with C++
 	for (i64 i = -1'000'000; i < 1'000'000; i++) {
-		//EXPECT_EQ(abs(i), wh_abs(i));
+		EXPECT_EQ(abs(i), wh::maths::abs(i));
 	}
 }
-*/
+
 
 TEST(maths, hash) {
 	EXPECT_EQ(18L, wh::maths::hash_simple("hello", 100));
@@ -24,7 +23,7 @@ TEST(maths, hash) {
 	EXPECT_EQ(-1L, wh::maths::hash_simple(nullptr, 1000, 0));
 }
 
-TEST(math, intpos) {
+TEST(maths, intpos) {
 	for (int i = 1; i < 1'000'000; i += 3) {
 		EXPECT_EQ(std::to_string(i).length() - 1, wh::maths::intpos(i, 10));
 	}

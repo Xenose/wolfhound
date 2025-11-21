@@ -20,6 +20,13 @@ extern i64 _wh_hash_simple(_wh_hash_simple_params params);
 #define wh_intpos(...) _wh_intpos((_wh_intpos_params){ __VA_ARGS__ })
 #define wh_intpow(...) _wh_intpow((_wh_intpow_params){ __VA_ARGS__ })
 
+// wh_abs macros as we need to support C++ as well,
+// this allows us to use them in C++ templates.
+#define WH_ABS_I8(x)   ((x) ^ ((x) >> 7)) - ((x) >> 7)
+#define WH_ABS_I16(x)  ((x) ^ ((x) >> 15)) - ((x) >> 15)
+#define WH_ABS_I32(x)  ((x) ^ ((x) >> 31)) - ((x) >> 31)
+#define WH_ABS_I64(x)  ((x) ^ ((x) >> 63)) - ((x) >> 63)
+#define WH_ABS_I128(x) ((x) ^ ((x) >> 127)) - ((x) >> 127)
 
 /* [MD_DOC]
  * # wh_abs
@@ -27,21 +34,27 @@ extern i64 _wh_hash_simple(_wh_hash_simple_params params);
  * unsigned integers, for float and doubles the normal abs from
  * maths.h is called.
  *
+ * ## MSVC note
+ * MSVC for some reason don't support _Generic meaning we just
+ * brute force it with fabs....
+ *
  * ## Return value
- * Returns a positive value from the original value.
+ * Returns a positive value from the original value, the minimum
+ * values will return 0 as 1000 0000 or -128 in int8_t will result
+ * in 0000 0000 this is a limitation of how integers are represented.
  */
-
-#if (WH_SYSTEM&WH_SYS_MSVC) \
+#if (WH_SYSTEM&WH_SYS_MSVC)
 	// MSVC a inferior compiler...
+	// C++ compiler claiming C11 support...
 	#define wh_abs(x) fabs(x)
 #else
 	#define wh_abs(x) \
 		_Generic((x), \
-			i8: ((x) ^ ((x) >> 7)) - ((x) >> 7), \
-			i16: ((x) ^ ((x) >> 15)) - ((x) >> 15), \
-			i32: ((x) ^ ((x) >> 31)) - ((x) >> 31), \
-			i64: ((x) ^ ((x) >> 63)) - ((x) >> 63), \
-			i128: ((x) ^ ((x) >> 127)) - ((x) >> 127), \
+			i8: WH_ABS_I8(x), \
+			i16: WH_ABS_I16(x), \
+			i32: WH_ABS_I32(x), \
+			i64: WH_ABS_I64(x), \
+			i128: WH_ABS_I64(x), \
 			u8: (x), \
 			u16: (x), \
 			u32: (x), \
