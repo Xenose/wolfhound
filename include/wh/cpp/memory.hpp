@@ -22,7 +22,7 @@ private:
 
 class memory_c {
 private:
-	heap_c heap;
+	heap_c m_heap;
 public:
 	memory_c();
 	memory_c(const char* heap);

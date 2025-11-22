@@ -4,10 +4,15 @@
 wh::heap_c::heap_c() {
 }
 
+wh::heap_c::heap_c(wh_heap_header_s* heap) {
+	m_heap = heap;
+}
+
 wh::memory_c::memory_c() {
 }
 
-wh::memory_c::memory_c(const char* heap) {
+wh::memory_c::memory_c(const char* heap_name) : 
+	m_heap(wh_heap_get(heap_name)) {
 }
 
 wh::memory_c::memory_c(wh_heap_header_s* heap) {
