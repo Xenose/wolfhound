@@ -8,6 +8,8 @@
 #include<wh/debug/benchmark.h>
 #include<wh/testing/macros.h>
 
+#include<wh/cpp/print.hpp>
+
 #include<gtest/gtest.h>
 
 // Wrapper for testing string comparisons
@@ -29,6 +31,12 @@ void _testing_print(const char* result, const char* format, ...) {
 	EXPECT_STREQ(result, buffer);
 
 	va_end(args);
+}
+
+TEST(print, hello_world) {
+	char buffer[256] = { 0 };
+	wh::print().format("Hello %s!").flags(WH_PRINT_NO_FLUSH).buffer(buffer, 255).out("World");
+	EXPECT_STREQ("Hello World!", buffer);
 }
 
 TEST(print, overall_tests) {

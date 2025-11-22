@@ -128,7 +128,7 @@ extern void _wh_print_add_func(_wh_print_add_func_params params);
 #ifdef USE_NAMESPACE_WOLFHOUND
 
 #define print wh_print
-#define print_va wh_print
+#define print_va wh_print_va
 
 #endif /* USE_NAMESPACE_WOLFHOUND */ 
 
