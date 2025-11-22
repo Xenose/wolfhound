@@ -22,3 +22,13 @@ _wh_mem_alloc_params wh::memory::_params_alloc_init(
 void* wh::memory::_alloc_raw(_wh_mem_alloc_params* params) {
 	return _wh_alloc(*params);
 }
+
+
+void wh::memory::free(void* ptr) {
+	_wh_mem_free_params params = {
+		nullptr,
+		ptr
+	};
+
+	_wh_free(params);
+}

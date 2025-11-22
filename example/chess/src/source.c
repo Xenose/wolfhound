@@ -122,7 +122,7 @@ int main(int arc, char* const* arv) {
 	wh_heap_print();
 	wh_loop(ins, &update, &fixed_update);
 
-	//_wh_mem_scan();
+	_wh_mem_scan();
 	//_wh_mem_scan();
 	wh_end(ins);
 go_error_exit:
