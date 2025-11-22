@@ -21,10 +21,10 @@ protected:
 
 
 TEST_F(memory_test_c, general) {
-	float* f = wh::memory("main").alloc<float>(64, &f);
+	float* f = wh::memory_c("main").alloc<float>(64, &f);
 	EXPECT_NE(nullptr, f);
 
-	wh::memory("main").free(f);
+	wh::memory_c("main").free(f);
 
 	EXPECT_EQ(0, _wh_mem_scan());
 }

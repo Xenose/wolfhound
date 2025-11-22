@@ -7,31 +7,31 @@
 
 namespace wh {
 
-class heap {
+class heap_c {
 public:
 private:
 	wh_heap_header_s* m_heap;
 public:
-	heap();
-	heap(std::string name);
-	heap(wh_heap_header_s*);
+	heap_c();
+	heap_c(std::string name);
+	heap_c(wh_heap_header_s*);
 
 	wh_heap_header_s* raw();
 private:
 };
 
-class memory {
+class memory_c {
+private:
+	heap_c heap;
 public:
-	memory();
-	memory(const char* heap);
-	memory(wh_heap_header_s* heap);
-	memory(heap* heap);
+	memory_c();
+	memory_c(const char* heap);
+	memory_c(wh_heap_header_s* heap);
+	memory_c(heap_c* heap);
 
-	heap& heap_get(std::string name);
+	heap_c& heap_get(std::string name);
 
-
-
-	heap heap_create(std::string name, wh_heap_header_s header, i64 bytes);
+	heap_c heap_create(std::string name, wh_heap_header_s header, i64 bytes);
 	void heap_destory(std::string name, i64 bytes);
 
 	void* realloc(void* ptr, u64 bytes);
@@ -75,7 +75,7 @@ public:
 	}
 
 	template<typename T>
-	T* alloc_raw(heap& heap, u64 bytes, void* owner, u64 flags, i64* error, u64 line, const char* file) {
+	T* alloc_raw(heap_c& heap, u64 bytes, void* owner, u64 flags, i64* error, u64 line, const char* file) {
 		auto params = _params_alloc_init(heap.raw(), bytes, owner, flags, error, line, file);
 		return (T*)this->_alloc_raw(&params);
 	}
