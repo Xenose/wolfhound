@@ -1,6 +1,6 @@
 #include<wh/cpp/string.hpp>
 
-extern 'C' {
+extern "C" {
 	#include<wh/string.h>
 }
 

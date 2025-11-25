@@ -107,6 +107,7 @@ set(C_SOURCES
 	"src/wrap/string.c"
 	"src/wrap/unistd.c"
 	"src/wrap/time.c"
+	"src/network/socket.c"
 )
 
 IF (NOT NO_CXX_COMPILER)
@@ -211,6 +212,8 @@ ENDIF()
 ADD_SUBDIRECTORY(example/chess)
 ADD_SUBDIRECTORY(example/memory)
 ADD_SUBDIRECTORY(example/print)
+ADD_SUBDIRECTORY(example/socket_server)
+ADD_SUBDIRECTORY(example/socket_client)
 
 # C++ examples
 IF (NOT NO_CXX_COMPILER)
