@@ -62,6 +62,14 @@ WH_C()
 	#endif
 #endif
 
+// WH_EPF :: Empty Parameter Function
+#define WH_EPF(x) \
+	_Pragma("GCC diagnostic push") \
+	_Pragma("GCC diagnostic ignored \"-Wmissing-field-initializers\"") \
+	x \
+	_Pragma("GCC diagnostic pop")
+
+
 /* [MD_DOC]
  * wh_for is a macro for a for loop, it will go from 0
  * to the given end point.

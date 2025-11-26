@@ -35,7 +35,9 @@ void* wh::memory_c::_alloc_raw(_wh_mem_alloc_params* params) {
 void wh::memory_c::free(void* ptr) {
 	_wh_mem_free_params params = {
 		nullptr,
-		ptr
+		ptr,
+		nullptr,
+		nullptr
 	};
 
 	_wh_free(params);

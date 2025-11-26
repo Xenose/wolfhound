@@ -170,7 +170,7 @@ IF(WIN32)
 			-Wno-unused-but-set-variable
 
 			# In C +99 structs are zero out
-			-Wno-missing-field-initializers
+			# -Wno-missing-field-initializers
 
 			-O0
 		)
@@ -191,7 +191,7 @@ ELSE()
 		-Wno-unused-but-set-variable
 
 		# In C +99 structs are zero out
-		-Wno-missing-field-initializers
+		# -Wno-missing-field-initializers
 
 		-O0
 	)
@@ -210,6 +210,7 @@ ENDIF()
 # or examples and link against the core libraries defined above.
 # -----------------------------------------------------------------------------
 ADD_SUBDIRECTORY(example/chess)
+ADD_SUBDIRECTORY(example/gameobject)
 ADD_SUBDIRECTORY(example/memory)
 ADD_SUBDIRECTORY(example/print)
 ADD_SUBDIRECTORY(example/socket_server)

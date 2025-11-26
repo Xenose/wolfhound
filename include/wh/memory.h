@@ -53,39 +53,39 @@ extern i32 wh_mem_leak_count(void);
  * ### See also
  * [common.h](include/wh/common.h)
  */
-#define wh_heap_init(...)	_wh_heap_init((_wh_heap_init_params) { __VA_ARGS__ })
+#define wh_heap_init(...)	WH_EPF(_wh_heap_init((_wh_heap_init_params) { __VA_ARGS__ }))
 
 /* [MD_DOC
  *
  */
-#define wh_memory_tracking(...) _wh_memory_tracking((_wh_memory_tracking_params) { __VA_ARGS__ })
+#define wh_memory_tracking(...) WH_EPF(_wh_memory_tracking((_wh_memory_tracking_params) { __VA_ARGS__ }))
 
 /* [MD_DOC]
  *
  * @d_param(wh_heap_s*)		heap : The heap that will be printed.
  */
-#define wh_heap_print(...) _wh_heap_print((_wh_heap_print_params) { __VA_ARGS__ })
+#define wh_heap_print(...) WH_EPF(_wh_heap_print((_wh_heap_print_params) { __VA_ARGS__ }))
 
 /* [MD_DOC]
  *
  * ## wh_mem_free(void* owner, void* ptr, wh_heap_header_s* heap : optional, u64* error : optional)
  */
-#define wh_free(...)	_wh_free((_wh_mem_free_params) { __VA_ARGS__ })
+#define wh_free(...)	WH_EPF(_wh_free((_wh_mem_free_params) { __VA_ARGS__ }))
 
 
 /* [MD_DOC]
  *
  * ## wh_mem_alloc()
  */
-#define wh_alloc(...) _wh_alloc((_wh_mem_alloc_params) { __VA_ARGS__, .line = __LINE__, .file = __FILENAME__ })
+#define wh_alloc(...) WH_EPF(_wh_alloc((_wh_mem_alloc_params) { __VA_ARGS__, .line = __LINE__, .file = __FILENAME__ }))
 
 /* [MD_DOC]
  */
-#define wh_realloc(...) _wh_realloc((_wh_mem_realloc_params) { __VA_ARGS__ })
+#define wh_realloc(...) WH_EPF(_wh_realloc((_wh_mem_realloc_params) { __VA_ARGS__ }))
 
 /* [MD_DOC]
  */
-#define wh_mem(...) _wh_mem((_wh_mem_params){ __VA_ARGS__ })
+#define wh_mem(...) WH_EPF(_wh_mem((_wh_mem_params){ __VA_ARGS__ }))
 
 #endif /* __cplusplus */
 
