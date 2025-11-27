@@ -75,14 +75,14 @@ extern i8 _wh_render_init(_wh_render_init_params params);
 /* [MD_DOC]
  * # wh_window_create
  */
-#define wh_window_create(...)		_wh_window_create((_wh_window_create_params) { __VA_ARGS__ })
-#define wh_window_get_size(...)	_wh_window_get_size((_wh_window_get_size_params) { __VA_ARGS__ })
-#define wh_event_pull(...)			_wh_event_pull((_wh_event_pull_params) { __VA_ARGS__ })
+#define wh_window_create(...)		WH_EPF(_wh_window_create((_wh_window_create_params) { __VA_ARGS__ }))
+#define wh_window_get_size(...)	WH_EPF(_wh_window_get_size((_wh_window_get_size_params) { __VA_ARGS__ }))
+#define wh_event_pull(...)			WH_EPF(_wh_event_pull((_wh_event_pull_params) { __VA_ARGS__ }))
 
-#define wh_render_clear(...) _wh_render_clear((_wh_render_clear_params) { __VA_ARGS__ })
-#define wh_render_show(...) _wh_render_show((_wh_render_show_params) { __VA_ARGS__ })
-#define wh_render_line(...) _wh_render_line((_wh_render_line_params) { __VA_ARGS__ })
+#define wh_render_clear(...)	WH_EPF(_wh_render_clear((_wh_render_clear_params) { __VA_ARGS__ }))
+#define wh_render_show(...)	WH_EPF(_wh_render_show((_wh_render_show_params) { __VA_ARGS__ }))
+#define wh_render_line(...)	WH_EPF(_wh_render_line((_wh_render_line_params) { __VA_ARGS__ }))
 
-#define wh_render_init(...) _wh_render_init((_wh_render_init_params) { __VA_ARGS__ })
+#define wh_render_init(...)	WH_EPF(_wh_render_init((_wh_render_init_params) { __VA_ARGS__ }))
 
 #endif /* _wh_header_render_ */

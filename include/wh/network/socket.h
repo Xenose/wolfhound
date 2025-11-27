@@ -23,6 +23,6 @@ typedef struct {
 
 extern wh_socket_s _wh_socket_init(_wh_socket_init_params params);
  
-#define wh_socket_init(...) _wh_socket_init((_wh_socket_init_params) { __VA_ARGS__ });
+#define wh_socket_init(...) WH_EPF(_wh_socket_init((_wh_socket_init_params) { __VA_ARGS__ }))
 
 #endif /* _wh_header_socket_ */

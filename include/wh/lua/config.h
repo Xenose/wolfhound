@@ -46,7 +46,7 @@ extern i8 _wh_config_lua_expose(_wh_config_lua_expose_params params);
  * ## Return values
  *
  */
-#define wh_lua_add_ints(x, ...) _wh_lua_add_ints((_wh_lua_add_ints_params) { WH_VA_ARGS x } __VA_OPT__(, __VA_ARGS__), nullptr)
+#define wh_lua_add_ints(x, ...) WH_EFP(_wh_lua_add_ints((_wh_lua_add_ints_params) { WH_VA_ARGS x } __VA_OPT__(, __VA_ARGS__), nullptr))
 
 /* [MD_DOC]
  * # wh_lua_add_uints
@@ -61,7 +61,7 @@ extern i8 _wh_config_lua_expose(_wh_config_lua_expose_params params);
  * ## Return values
  *
  */
-#define wh_lua_add_uints(x, ...) _wh_lua_add_uints((_wh_lua_add_uints_params) { WH_VA_ARGS x } __VA_OPT__(, __VA_ARGS__), nullptr)
+#define wh_lua_add_uints(x, ...) WH_EPF(_wh_lua_add_uints((_wh_lua_add_uints_params) { WH_VA_ARGS x } __VA_OPT__(, __VA_ARGS__), nullptr))
 
 /* [MD_DOC]
  * # wh_lua_add_bool
@@ -76,9 +76,9 @@ extern i8 _wh_config_lua_expose(_wh_config_lua_expose_params params);
  * ## Return values
  *
  */
-#define wh_lua_add_bools(x, ...) _wh_lua_add_bools((_wh_lua_add_bools_params) { WH_VA_ARGS x } __VA_OPT__(, __VA_ARGS__), nullptr)
+#define wh_lua_add_bools(x, ...) WH_EPF(_wh_lua_add_bools((_wh_lua_add_bools_params) { WH_VA_ARGS x } __VA_OPT__(, __VA_ARGS__), nullptr))
 
-#define wh_config_lua_expose(...) _wh_config_lua_expose((_wh_config_lua_expose_params) { __VA_ARGS__ })
+#define wh_config_lua_expose(...) WH_EPF(_wh_config_lua_expose((_wh_config_lua_expose_params) { __VA_ARGS__ }))
 
 
 #endif /* _wh_header_lua_config_ */

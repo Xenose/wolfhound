@@ -100,7 +100,7 @@ extern i8 _wh_file_unload(_wh_file_unload_params params);
 /* [MD_DOC]
  * # wh_file_load
  */
-#define wh_file_load(...) _wh_file_load((_wh_file_load_params) { __VA_ARGS__ })
-#define wh_file_unload(...) _wh_file_unload((_wh_file_unload_params) { __VA_ARGS__ })
+#define wh_file_load(...) WH_EPF(_wh_file_load((_wh_file_load_params) { __VA_ARGS__ }))
+#define wh_file_unload(...) WH_EPF(_wh_file_unload((_wh_file_unload_params) { __VA_ARGS__ }))
 
 #endif /* _wh_header_file_ */

@@ -38,7 +38,7 @@ typedef struct {
 wh_dir_s _wh_read_dir(_wh_dir_read_params params);
 void wh_dir_destroy(wh_heap_header_s* heap, wh_dir_s* dir);
 
-#define wh_read_dir(...) _wh_read_dir((_wh_dir_read_params) { __VA_ARGS__ })
+#define wh_read_dir(...) WH_EPF(_wh_read_dir((_wh_dir_read_params) { __VA_ARGS__ }))
 
 WH_C_END()
 #endif /* _wh_header_sys_filesystem_ */

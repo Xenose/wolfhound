@@ -26,7 +26,7 @@ extern i64 _wh_args_parser_init(void);
  * @d_param(wh_config_s*)	.config	: The config struct.
  *
  */
-#define wh_args_parse(...) _wh_args_parse((_wh_args_parse_params) { __VA_ARGS__ })
+#define wh_args_parse(...) WH_EPF(_wh_args_parse((_wh_args_parse_params) { __VA_ARGS__ }))
 #define wh_args_parse_init() _wh_args_parse_init()
 
 #ifdef USE_NAMESPACE_WOLFHOUND

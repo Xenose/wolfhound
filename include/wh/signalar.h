@@ -10,6 +10,6 @@ typedef struct {
 
 extern i8 _wh_signalar_init(_wh_signalar_init_params params);
 
-#define wh_signalar_init(...) _wh_signalar_init((_wh_signalar_init_params) { __VA_ARGS__ })
+#define wh_signalar_init(...) WH_EPF(_wh_signalar_init((_wh_signalar_init_params) { __VA_ARGS__ }))
 
 #endif /* _wh_header_signalar_ */

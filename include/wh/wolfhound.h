@@ -17,13 +17,13 @@ extern int64_t _wh_end(_wh_end_params params);
  *	wh_instance_s* wh_init()
  * ```
  */
-#define wh_init(...) _wh_init((_wh_init_params) { __VA_ARGS__ })
+#define wh_init(...) WH_EPF(_wh_init((_wh_init_params) { __VA_ARGS__ }))
 
 #ifndef __cplusplus
 /* [MD_DOC]
  */
-#define wh_loop(...) _wh_loop((_wh_loop_params) { __VA_ARGS__ })
-#define wh_end(...) _wh_end((_wh_end_params) { __VA_ARGS__ })
+#define wh_loop(...) WH_EPF(_wh_loop((_wh_loop_params) { __VA_ARGS__ }))
+#define wh_end(...) WH_EPF(_wh_end((_wh_end_params) { __VA_ARGS__ }))
 #endif /* __cplusplus */
 
 WH_C_END()

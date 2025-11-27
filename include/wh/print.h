@@ -114,15 +114,15 @@ extern void _wh_print_add_func(_wh_print_add_func_params params);
  * ```
  */
 
-#define wh_print_va(x, args) _wh_print_va((_wh_print_params){ WH_VA_ARGS x }, args)
-#define wh_print(x, ...) _wh_print((_wh_print_params){ WH_VA_ARGS x } __VA_OPT__(, __VA_ARGS__))
+#define wh_print_va(x, args) WH_EPF(_wh_print_va((_wh_print_params){ WH_VA_ARGS x }, args))
+#define wh_print(x, ...) WH_EPF(_wh_print((_wh_print_params){ WH_VA_ARGS x } __VA_OPT__(, __VA_ARGS__)))
 
 
 /* [MD_DOC]
  * # wh_print_buffer_check
  */
-#define wh_print_buffer_check(...) _wh_print_buffer_check((_wh_print_buffer_check_params){ __VA_ARGS__ })
-#define wh_print_add_func(...) _wh_print_add_func((_wh_print_add_func_params){ __VA_ARGS__ })
+#define wh_print_buffer_check(...) WH_EPF(_wh_print_buffer_check((_wh_print_buffer_check_params){ __VA_ARGS__ }))
+#define wh_print_add_func(...) WH_EPF(_wh_print_add_func((_wh_print_add_func_params){ __VA_ARGS__ }))
 
 
 #ifdef USE_NAMESPACE_WOLFHOUND

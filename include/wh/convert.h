@@ -43,11 +43,11 @@ extern i64 _wh_str2int(_wh_str2int_params params);
 extern void _wh_str_invert(_wh_str_invert_params params);
 extern const char* _wh_filetype2str(_wh_filetype2str_params params);
 
-#define wh_uint2str(...) _wh_uint2str((_wh_uint2str_params) { __VA_ARGS__ })
-#define wh_int2str(...) _wh_int2str((_wh_int2str_params) { __VA_ARGS__ })
-#define wh_str2int(...) _wh_str2int((_wh_str2int_params) { __VA_ARGS__ })
-#define wh_str_invert(...) _wh_str_invert((_wh_str_invert_params) { __VA_ARGS__ })
-#define wh_filetype2str(...) _wh_filetype2str((_wh_filetype2str_params) { __VA_ARGS__ })
+#define wh_uint2str(...) WH_EPF(_wh_uint2str((_wh_uint2str_params) { __VA_ARGS__ }))
+#define wh_int2str(...) WH_EPF(_wh_int2str((_wh_int2str_params) { __VA_ARGS__ }))
+#define wh_str2int(...) WH_EPF(_wh_str2int((_wh_str2int_params) { __VA_ARGS__ }))
+#define wh_str_invert(...) WH_EPF(_wh_str_invert((_wh_str_invert_params) { __VA_ARGS__ }))
+#define wh_filetype2str(...) WH_EPF(_wh_filetype2str((_wh_filetype2str_params) { __VA_ARGS__ }))
 
 #ifdef USE_NAMESPACE_WOLFHOUND
 #define uint2str wh_uint2str

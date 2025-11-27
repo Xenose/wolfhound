@@ -12,6 +12,6 @@ typedef struct {
 
 extern i64 _wh_memcmp_mask(_wh_memcmp_mask_params params);
 
-#define wh_memcmp_mask(...) _wh_memcmp_mask((_wh_memcmp_mask_params) { __VA_ARGS__ })
+#define wh_memcmp_mask(...) WH_EPF(_wh_memcmp_mask((_wh_memcmp_mask_params) { __VA_ARGS__ }))
 
 #endif /* _wh_header_memory_copy_ */

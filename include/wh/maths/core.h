@@ -86,7 +86,7 @@ extern i64 _wh_hash_simple(_wh_hash_simple_params params);
  * ## Return value
  *
  */
-#define wh_hash_simple(...) _wh_hash_simple((_wh_hash_simple_params){ __VA_ARGS__ })
+#define wh_hash_simple(...) WH_EPF(_wh_hash_simple((_wh_hash_simple_params){ __VA_ARGS__ }))
 
 
 #ifdef USE_NAMESPACE_STD_WOLFHOUND
