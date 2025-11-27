@@ -19,6 +19,7 @@ WH_C()
 #define WH_SYS_GCC		0x04
 #define WH_SYS_CLANG		0x08
 #define WH_SYS_MSVC		0x10
+#define WH_SYS_MINGW		0x20
 
 #define WH_SYS_LINUX		(0x100 | WH_SYS_UNIX | WH_SYS_POSIX)
 #define WH_SYS_FREEBSD	(0x200 | WH_SYS_UNIX | WH_SYS_POSIX)
@@ -44,6 +45,8 @@ WH_C()
 
 #ifdef __clang__
 	#define WH_SYSTEM (WH_SYSTEM_OS | WH_SYS_CLANG)
+#elif defined(__MINGW32__)
+	#define WH_SYSTEM (WH_SYSTEM_OS | WH_SYS_MINGW)
 #elif defined(__GNUC__)
 	#define WH_SYSTEM (WH_SYSTEM_OS | WH_SYS_GCC)
 #elif defined(_MSC_VER)
@@ -63,11 +66,17 @@ WH_C()
 #endif
 
 // WH_EPF :: Empty Parameter Function
-#define WH_EPF(x) \
-	_Pragma("GCC diagnostic push") \
-	_Pragma("GCC diagnostic ignored \"-Wmissing-field-initializers\"") \
-	x \
-	_Pragma("GCC diagnostic pop")
+
+#if !(WH_SYSTEM&WH_SYS_MINGW)&&!(WH_SYSTEM&WH_SYS_MSVC)
+	#define WH_EPF(x) \
+		_Pragma("GCC diagnostic push") \
+		_Pragma("GCC diagnostic ignored \"-Wmissing-field-initializers\"") \
+		x \
+		_Pragma("GCC diagnostic pop")
+#else
+	#define WH_EPF(x) \
+		x
+#endif
 
 
 /* [MD_DOC]
@@ -101,6 +110,10 @@ WH_C()
 	#define wh_thread _Thread_local
 #else
 	#define wh_thread __thread
+#endif
+
+#ifndef CLOCK_MONOTONIC_COARSE
+	#define CLOCK_MONOTONIC_COARSE CLOCK_MONOTONIC
 #endif
 
 WH_C_END()

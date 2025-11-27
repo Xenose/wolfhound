@@ -9,6 +9,9 @@
 | Windows      | NO     | Not yet   | Unstable might break at any second      |
 | MacOS        | NO     | No        | No Plans.                               |
 
+## Core Concepts
+* (Action Entity System)[docs/markdown/aes.md]
+
 ## Building instructions
 See full [Manual Build Guide](docs/markdown/build.md) for details.
 
@@ -91,19 +94,19 @@ wh-build	# compiles code.
 
 |  Language       | File Count | Lines of Code | Percentage |
 | --------------- | ---------- | ------------- | ---------- |
-| C               | 135        | 5538          | 77.44%     |
-| C++             | 16         | 389           | 5.44%      |
-| CMake           | 16         | 343           | 4.80%      |
-| Bourne Shell    | 16         | 261           | 3.65%      |
-| Lua             | 13         | 175           | 2.45%      |
-| Python          | 2          | 155           | 2.17%      |
-| Markdown        | 3          | 153           | 2.14%      |
+| C               | 136        | 5560          | 77.45%     |
+| C++             | 16         | 391           | 5.45%      |
+| CMake           | 17         | 347           | 4.83%      |
+| Bourne Shell    | 16         | 261           | 3.64%      |
+| Lua             | 13         | 175           | 2.44%      |
+| Python          | 2          | 155           | 2.16%      |
+| Markdown        | 3          | 153           | 2.13%      |
 | Dockerfile      | 3          | 56            | 0.78%      |
 | DOS Batch       | 6          | 36            | 0.50%      |
 | Fortran 95      | 1          | 32            | 0.45%      |
 | PowerShell      | 3          | 10            | 0.14%      |
 | INI             | 1          | 3             | 0.04%      |
 | Assembly        | 1          | 0             | 0.00%      |
-| Summary         | 216        | 7151          | 100.00%    |
+| Summary         | 218        | 7179          | 100.00%    |
 
 <!--python-stats-end-->

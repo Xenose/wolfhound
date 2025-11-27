@@ -46,7 +46,14 @@ extern i64 _wh_hash_simple(_wh_hash_simple_params params);
 #if (WH_SYSTEM&WH_SYS_MSVC)
 	// MSVC a inferior compiler...
 	// C++ compiler claiming C11 support...
-	#define wh_abs(x) fabs(x)
+	// Note :: unsigned integers will be matched on size.
+	#define wh_abs(x) ( \
+		sizeof(x) == 1 ? WH_ABS_I8((i8)x) : \
+		sizeof(x) == 2 ? WH_ABS_I16((i16)x) : \
+		sizeof(x) == 4 ? WH_ABS_I32((i32)x) : \
+		sizeof(x) == 8 ? WH_ABS_I64((i64)x) : \
+		fabs((float)x) \
+	)
 #else
 	#define wh_abs(x) \
 		_Generic((x), \
