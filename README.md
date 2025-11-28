@@ -10,7 +10,13 @@
 | MacOS        | NO     | No        | No Plans.                               |
 
 ## Core Concepts
-* (Action Entity System)[docs/markdown/aes.md]
+### Action Entity System
+The Action Entity System is based on DoD model while still some similarity to
+ECS, instead of logic being tided to a entity AES makes data subscribe to action
+so the logic calls the data.
+
+In a ECS system :: Entity -> \[ Data, Logic \]
+In AES system :: action(logic) -> Entity -> Data
 
 ## Building instructions
 See full [Manual Build Guide](docs/markdown/build.md) for details.
