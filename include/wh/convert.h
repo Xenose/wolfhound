@@ -21,6 +21,7 @@ typedef struct {
 	char* buffer;
 	i64 buffer_length;
 	i64 base;
+	i64* value_length;
 } _wh_str2int_params;
 
 typedef struct {

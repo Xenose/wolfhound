@@ -90,22 +90,22 @@ extern void _wh_print_add_func(_wh_print_add_func_params params);
  * | $s      | Wolfhound     | String, Length   | NO                    | Prints a string using the provided length.                            |
  * | $t      | Wolfhound     | Format String    | NO                    | Reads the inputted string and print the formatted time.               |
  * | $v      | Wolfhound     | VK_Result        | YES                   | Takes the status code and prints in human readable format.            |
- * | %a      | C ANSI        | double           | NO                    |                                                                       |
- * | %A      | C ANSI        | double           | NO                    |                                                                       |
+ * | %a      | C ANSI        | double           | YES(tmp sprintf)      |                                                                       |
+ * | %A      | C ANSI        | double           | YES(tmp sprintf)      |                                                                       |
  * | %b      | C ANSI        | unsigned         | NO                    |                                                                       |
  * | %c      | C ANSI        | char             | YES                   | Prints a single char.                                                 |
  * | %C      | POSIX         | wchar_t*         | NO                    |                                                                       |
  * | %d      | C ANSI        | integer          | YES                   | Prints an integer to the output.                                      |
- * | %e      | C ANSI        | double           | NO                    |                                                                       |
- * | %E      | C ANSI        | double           | NO                    |                                                                       |
- * | %f      | C ANSI        | double           | NO                    |                                                                       |
- * | %F      | C ANSI        | double           | NO                    |                                                                       |
+ * | %e      | C ANSI        | double           | YES(tmp sprintf)      |                                                                       |
+ * | %E      | C ANSI        | double           | YES(tmp sprintf)      |                                                                       |
+ * | %f      | C ANSI        | double           | YES(tmp sprintf)      |                                                                       |
+ * | %F      | C ANSI        | double           | YES(tmp sprintf)      |                                                                       |
  * | %g      | C ANSI        | double           | NO                    |                                                                       |
  * | %G      | C ANSI        | double           | NO                    |                                                                       |
  * | %i      | C ANSI        | integer          | YES                   | Prints an integer to the output.                                      |
  * | %s      | C ANSI        | string           | YES                   | Takes a null terminated string and copies it to the output.           |
  * | %S      | POSIX         | const wchar_t*   | NO                    |                                                                       |
- * | %n      | C ANSI        |                  | NO                    |                                                                       |
+ * | %n      | C ANSI        |                  | YES                   |                                                                       |
  * | %m      | GNU           | NONE             | YES                   | Prints the errno string in place.                                     |
  * 
  * ## Examples

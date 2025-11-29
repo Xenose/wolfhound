@@ -285,6 +285,7 @@ go_loop:
 				case '6': case '7': case '8': case '9':
 					*vp = (u64)wh_str2int(data->format, (i64)strlen(data->format), 10); 
 					vp = &data->print_format.left;
+					data->format += wh_intpos(*vp);
 					goto go_dollar_switch;
 				case '[': // custom function from user using hash maps
 					_wh_print_call_func(data, va_arg(list, void*), data->format + 1, strstr(data->format, "]") - 1);
@@ -350,6 +351,7 @@ go_loop:
 				case '6': case '7': case '8': case '9':
 					*vp = (u64)wh_str2int(data->format, (i64)strlen(data->format), 10); 
 					vp = &data->print_format.left;
+					data->format += wh_intpos(*vp);
 					goto go_standard_switch;
 				case 'a':
 					_wh_print_fstr_slow(data, 'a', va_arg(list, double));
