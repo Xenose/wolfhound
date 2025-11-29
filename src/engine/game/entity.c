@@ -2,7 +2,10 @@
 #include<wh/debug/logger.h>
 #include<wh/game/entity.h>
 
- wh_entity_s _wh_entity(u64 count, ...) {
+// The best path probably is to use a linked list and
+// then finalize the header data and delete the linked list.
+
+wh_entity_s _wh_entity(u64 count, ...) {
 	wh_entity_s entity = { 0 };
 	wh_entity_data_header_s* data = wh_alloc(nullptr, sizeof(wh_entity_data_header_s*), &data);
 
