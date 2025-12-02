@@ -4,8 +4,10 @@
 
 #include<wh/print.h>
 
-u64 _wh_sys_pagesize(void) {
-	return (u64)getpagesize();
+static wh_thread i64 _thread_id = -1;
+
+i64 wh_sys_gettid(void) {
+	return -1 == _thread_id ? (_thread_id = (i64)gettid()) : _thread_id;
 }
 
 #ifdef __linux__

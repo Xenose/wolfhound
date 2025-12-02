@@ -3,6 +3,7 @@
 
 #include<wh/common.h>
 
+extern i64 wh_sys_gettid(void);
 extern i64 wh_sys_program_path(char* buffer, u64 buffer_size);
 
 #endif /* _wh_header_sys_info_ */

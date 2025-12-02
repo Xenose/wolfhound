@@ -14,18 +14,19 @@ WH_C()
 #define wh_ptr_add(_ptr_, _x_) ((void*)(((char*)_ptr_) + _x_))
 #define wh_ptr_sub(_ptr_, _x_) ((void*)(((char*)_ptr_) - _x_))
 
-#define WH_SYS_UNIX		0x01
-#define WH_SYS_POSIX		0x02
-#define WH_SYS_GCC		0x04
-#define WH_SYS_CLANG		0x08
-#define WH_SYS_MSVC		0x10
-#define WH_SYS_MINGW		0x20
+#define WH_SYS_UNIX		0x01L
+#define WH_SYS_POSIX		0x02L
+#define WH_SYS_GCC		0x04L
+#define WH_SYS_CLANG		0x08L
+#define WH_SYS_MSVC		0x10L
+#define WH_SYS_MINGW		0x20L
 
-#define WH_SYS_LINUX		(0x100 | WH_SYS_UNIX | WH_SYS_POSIX)
-#define WH_SYS_FREEBSD	(0x200 | WH_SYS_UNIX | WH_SYS_POSIX)
-#define WH_SYS_MACOS		(0x400 | WH_SYS_UNIX | WH_SYS_POSIX)
+#define WH_SYS_LINUX		(0x0100L | WH_SYS_UNIX | WH_SYS_POSIX)
+#define WH_SYS_FREEBSD	(0x0200L | WH_SYS_UNIX | WH_SYS_POSIX)
+#define WH_SYS_MACOS		(0x0400L | WH_SYS_UNIX | WH_SYS_POSIX)
+#define WH_SYS_BSD		(0x0800L | WH_SYS_UNIX | WH_SYS_POSIX)
 
-#define WH_SYS_WINDOWS	(0x800)
+#define WH_SYS_WINDOWS	(0x1000L)
 
 #if defined(__linux__)
 	#define WH_SYSTEM_OS WH_SYS_LINUX

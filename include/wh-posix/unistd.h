@@ -14,5 +14,8 @@
 	extern int getpagesize(void);
 #endif
 
+#ifndef _GNU_SOURCE
+	extern pid_t gettid(void);
+#endif
 
 #endif /* _wh_header_wrap_unistd_ */
