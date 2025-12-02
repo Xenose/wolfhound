@@ -1,5 +1,6 @@
 #include<wh/debug/logger.h>
 #include<wh-sys/memory.h>
+#include<wh-posix/unistd.h>
 #include<string.h>
 
 #ifdef __unix__
@@ -7,6 +8,7 @@
 #include<sys/mman.h>
 
 void* _wh_sys_memreq(_wh_sys_memreq_params params) {
+	size_t page_size = (size_t)getpagesize();
 	void* mem = mmap(
 		nullptr, params.bytes, PROT_READ | PROT_WRITE, 
 		MAP_SHARED | MAP_ANONYMOUS, -1, 0);
@@ -16,7 +18,7 @@ void* _wh_sys_memreq(_wh_sys_memreq_params params) {
 		goto go_error_exit;
 	}
 
-	for(size_t i = 0; i < params.bytes; i += 4096) {
+	for(size_t i = 0; i < params.bytes; i += page_size) {
 		u8* ptr = wh_ptr_add(mem, i);
 		*ptr = 0;
 	}

@@ -208,7 +208,7 @@ wh_file_s _wh_file_load(_wh_file_load_params params) {
 		goto go_error_exit;
 	}
 
-	file.length = GetFileSize(windows->h_fd, nullptr);
+	file.length = GetFileSizeEx(windows->h_fd, nullptr);
 
 	if (INVALID_FILE_SIZE == file.length) {
 		wh_log_error(("Failed to get file size [ %s ]"), params.path);
