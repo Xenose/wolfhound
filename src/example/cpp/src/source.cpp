@@ -1,5 +1,5 @@
-#include<wh/cpp/wolfhound.hpp>
-#include<wh/cpp/print.hpp>
+#include<wh-cpp/wolfhound.hpp>
+#include<wh-cpp/print.hpp>
 
 int main(int arc, char* const* arv) {
 	wh::instance_c engine = wh::instance_c("cpp", arc, arv);

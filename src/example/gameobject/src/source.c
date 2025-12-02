@@ -1,6 +1,6 @@
 #include<wh/wolfhound.h>
 #include<wh/string.h>
-#include<wh/sys/info.h>
+#include<wh-sys/info.h>
 
 int main(int arc, char* const* arv) {
 	char buf[256] = { 0 };
@@ -11,9 +11,9 @@ int main(int arc, char* const* arv) {
 
 	ins = wh_init(
 		&ins,
-		(wh_args_s){ 0, arc, arv },					// command line arguments
-		wh_string_create("gameobject"),				// application name
-		(u8*)buf,											// application config
+		(wh_args_s){ 0, arc, arv },										// command line arguments
+		(wh_string_s){ .str = "gameobject", .length = 11},			// application name
+		(u8*)buf,																// application config
 		.mode = WH_GRAPHICS_MODE_SDL3
 	);
 

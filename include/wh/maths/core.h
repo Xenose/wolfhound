@@ -15,10 +15,10 @@ extern i64 _wh_intpos(_wh_intpos_params params);
 extern i64 _wh_intpow(_wh_intpow_params params);
 extern i64 _wh_hash_simple(_wh_hash_simple_params params);
 
-#define wh_c_intpos(...) _wh_c_intpos((_wh_intpos_params){ __VA_ARGS__ })
+#define wh_c_intpos(...) WH_EPF(_wh_c_intpos((_wh_intpos_params){ __VA_ARGS__ }))
 
-#define wh_intpos(...) _wh_intpos((_wh_intpos_params){ __VA_ARGS__ })
-#define wh_intpow(...) _wh_intpow((_wh_intpow_params){ __VA_ARGS__ })
+#define wh_intpos(...) WH_EPF(_wh_intpos((_wh_intpos_params){ __VA_ARGS__ }))
+#define wh_intpow(...) WH_EPF(_wh_intpow((_wh_intpow_params){ __VA_ARGS__ }))
 
 // wh_abs macros as we need to support C++ as well,
 // this allows us to use them in C++ templates.
@@ -67,7 +67,7 @@ extern i64 _wh_hash_simple(_wh_hash_simple_params params);
 			u32: (x), \
 			u64: (x), \
 			u128: (x), \
-			default: abs(x) \
+			default: labs(x) \
 			)
 #endif
 

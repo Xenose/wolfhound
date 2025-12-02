@@ -2,9 +2,9 @@
 #include<wh/maths/core.h>
 
 #include<ctype.h>
-#include<wh/wrap/string.h>
+#include<wh-posix/string.h>
+#include<wh-sys/file.h>
 #include<wh/maths/core.h>
-#include<wh/file.h>
 
 char* _wh_uint2str(_wh_uint2str_params params) {
 	const char table[] = "0123456789abcdefghijklmnopqrstuvwxyz";

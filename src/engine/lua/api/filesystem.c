@@ -1,7 +1,7 @@
 #include<lualib.h>
 #include<lauxlib.h>
 
-#include<wh/file.h>
+#include<wh-sys/file.h>
 #include<wh/lua/api/filesystem.h>
 
 int wh_lua_dir_read(lua_State* ls) {

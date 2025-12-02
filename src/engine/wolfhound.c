@@ -5,14 +5,14 @@
 #include<wh/render.h>
 #include<wh/signalar.h>
 #include<wh/config.h>
-#include<wh/raylib/raylib.h>
-#include<wh/wrap/unistd.h>
+#include<wh-backend/raylib/raylib.h>
+#include<wh-posix/unistd.h>
 #include<wh/maths/memory.h>
 #include<wh/loader/asset.h>
-#include<wh/testing/unite.h>
+#include<wh-testing/unite.h>
 
 #ifndef WH_VULKAN_NOT_FOUND
-	#include<wh/vulkan.h>
+	#include<wh-backend/vulkan.h>
 #endif
 
 static i8 _wh_init_critical(_wh_init_params* params) {
@@ -70,7 +70,7 @@ wh_instance_s* _wh_init(_wh_init_params params) {
 	// basic data init
 	params.ins[0]->stype = WH_STRUCT_TYPE_INSTANCE;
 	params.ins[0]->app_info.name = params.app_name;
-	params.ins[0]->app_info.engine = wh_string_create("wolfhound");
+	params.ins[0]->app_info.engine = (wh_string_s){ .str = "wolfhound", .length = 9 };
 
 	// loading assets
 	_wh_assets_load("./resources");

@@ -45,7 +45,12 @@ i8 _wh_hashmap_lazy_resize(wh_hashmap_lazy_s* map) {
 go_retry:
 	new_count = (u64)(((long double)new_count) * 1.5);
 	wh_log_debug(("New size is [ %u ]"), new_count);
-	ne = wh_alloc(map->heap, (sizeof(wh_hashmap_lazy_entry_s) + map->data_size) * new_count, .flags = WH_MEM_ZERO);
+	ne = wh_alloc(
+		map->heap, 
+		(sizeof(wh_hashmap_lazy_entry_s) + map->data_size) * new_count, 
+		&ne,
+		WH_MEM_ZERO
+	);
 
 	if (nullptr == ne) {
 		wh_log_error(("Failed to resize hashmap!"));

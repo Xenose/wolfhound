@@ -3,11 +3,12 @@
 
 #include<limits.h>
 
-#include<wh/common/prefix.h>
-#include<wh/common/bytes.h>
-#include<wh/common/enum.h>
-#include<wh/common/macros.h>
-#include<wh/wrap/atomic.h>
+#include<wh-posix/atomic.h>
+
+#include<wh-common/prefix.h>
+#include<wh-common/bytes.h>
+#include<wh-common/enum.h>
+#include<wh-common/macros.h>
 
 WH_C()
 

@@ -7,19 +7,19 @@
 #include<wh/string.h>
 #include<wh/render.h>
 #include<wh/arg_parser.h>
-#include<wh/raylib/raylib.h>
-#include<wh/sys/library.h>
+#include<wh-backend/raylib/raylib.h>
+#include<wh-sys/library.h>
 #include<wh/window.h>
 #include<wh/game/entity.h>
 #include<wh/types/gameinfo.h>
 #include<wh/game/actions.h>
-#include<wh/sys/info.h>
+#include<wh-sys/info.h>
 #include<wh/maths/core.h>
-#include<wh/file.h>
+#include<wh-sys/file.h>
 #include<wh/images/loader.h>
-#include<wh/sys/filesystem.h>
+#include<wh-sys/filesystem.h>
 #include<wh/data/hashmap_lazy.h>
-#include<wh/debug/exceptions.h>
+#include<wh-testing/exceptions.h>
 #include<wh/debug/logger.h>
 
 #include<stdio.h>
@@ -73,6 +73,7 @@ int main(int arc, char* const* arv) {
 
 	char buf[256] = { 0 };
 	char img[256] = { 0 }; 
+
 	wh_sys_program_path(buf, 255);
 	wh_sys_program_path(img, 255);
 
@@ -86,9 +87,9 @@ int main(int arc, char* const* arv) {
 	//_wh_libfind("libraylib.so", (char*[]){ "/usr/lib", "/lib" }, 2);
 	wh_instance_s* ins = wh_init(
 		&ins,
-		(wh_args_s){ 0, arc, arv },					// command line arguments
-		wh_string_create("chess"),						// application name
-		(u8*)buf,											// application config
+		(wh_args_s){ 0, arc, arv },								// command line arguments
+		(wh_string_s){ .str = "chess", .length = 6},			// application name
+		(u8*)buf,														// application config
 		.mode = WH_GRAPHICS_MODE_SDL3
 	);
 
@@ -113,7 +114,7 @@ int main(int arc, char* const* arv) {
 	u64 cid = wh_action_register(ins, &action_collision);
 	u64 hgid = wh_action_register(ins, &action_health_gen);
 
-	u64 wolf = wh_entity_create(ins, wh_string_create("wolf"), nullptr);
+	u64 wolf = wh_entity_create(ins, (wh_string_s){ .str = "wolf", .length = 5}, nullptr);
 
 	wh_action_subscribe(ins, wolf, gid);
 	wh_action_subscribe(ins, wolf, cid);

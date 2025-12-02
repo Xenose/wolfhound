@@ -7,14 +7,15 @@
 // my stuff
 #include<wh/debug/logger.h>
 #include<wh/memory.h>
-#include<wh/sys/memory.h>
+#include<wh-sys/atomic_lock.h>
+#include<wh-sys/memory.h>
 #include<wh/maths/memory.h>
 #include<wh/maths/core.h>
 
 #include<wh/memory/arena.h>
 #include<wh/memory/freelist.h>
 
-#include<wh/wrap/unistd.h>
+#include<wh-posix/unistd.h>
 
 // Linked list tracking
 
@@ -36,7 +37,7 @@ typedef struct _wh_heap_list_entry {
 } _wh_heap_list_entry_s;
 
 typedef struct {
-	atomic_flag lock;
+	wh_atomic_lock_s lock;
 	_wh_heap_list_entry_s* nodes;
 	_wh_heap_list_entry_s* last;
 } _wh_heap_list_s;
@@ -51,7 +52,7 @@ typedef struct {
 } _wh_heap_entry_s;
 
 typedef struct {
-	atomic_flag lock;
+	wh_atomic_lock_s lock;
 	u64 count;
 	u64 used;
 	_wh_heap_entry_s* entries;
@@ -198,7 +199,7 @@ wh_heap_header_s* wh_heap_insert(const char* name, wh_heap_header_s* header) {
 
 	wh_log_debug(("Inserting new entry named [ %s ]"), name);
 
-	//wh_spin_lock(&_table.lock) {
+	wh_spinlock_v2(&_table.lock) {
 		if (_table.used >= _table.count) {
 		go_realloc:
 			wh_log_debug(("Expanding table"));
@@ -206,7 +207,7 @@ wh_heap_header_s* wh_heap_insert(const char* name, wh_heap_header_s* header) {
 
 			if (3 <= retry++) {
 				wh_log_critical(("Failed to realloc hashmap table!"));
-				wh_spin_lock_goto(&_table.lock, go_error_exit);
+				wh_lock_goto(&_table.lock, go_error_exit);
 			}
 
 			page_size += (u64)getpagesize();
@@ -259,7 +260,7 @@ wh_heap_header_s* wh_heap_insert(const char* name, wh_heap_header_s* header) {
 		entry->name = name;
 		entry->header = header;
 		++_table.used;
-	//}
+	}
 
 	return header;
 go_error_exit:
@@ -302,16 +303,16 @@ void* _wh_alloc_no_tracking(_wh_mem_alloc_params params) {
 
 	switch (params.heap->stype) {
 		case WH_STRUCT_TYPE_HEAP_ARENA:
-			//wh_spin_lock(&params.heap->locked) {
+			wh_spinlock_v2(&params.heap->locked) {
 				mem = _wh_mem_alloc_arena(&params);
-			//}
+			}
 			break;
 
 		default:
 		case WH_STRUCT_TYPE_HEAP_FREELIST:
-			//wh_spin_lock(&params.heap->locked) {
+			wh_spinlock_v2(&params.heap->locked) {
 				mem = _wh_mem_alloc_freelist(&params);
-			//}
+			}
 			break;
 	}
 
@@ -330,16 +331,16 @@ void _wh_free_no_tracking(_wh_mem_free_params params) {
 
 	switch (params.heap->stype) {
 		case WH_STRUCT_TYPE_HEAP_ARENA:
-			//wh_spin_lock(&params.heap->locked) {
+			wh_spinlock_v2(&params.heap->locked) {
 				_wh_mem_free_arena(&params);
-			//}
+			}
 			break;
 
 		default:
 		case WH_STRUCT_TYPE_HEAP_FREELIST:
-			//wh_spin_lock(&params.heap->locked) {
+			wh_spinlock_v2(&params.heap->locked) {
 				_wh_mem_free_freelist(&params);
-			//}
+			}
 		break;
 	}
 	
@@ -359,9 +360,9 @@ void* _wh_realloc_no_tracking(_wh_mem_realloc_params params) {
 
 		default:
 		case WH_STRUCT_TYPE_HEAP_FREELIST:
-			//wh_spin_lock(&params.heap->locked) {
+			wh_spinlock_v2(&params.heap->locked) {
 				mem = _wh_mem_realloc_freelist(&params);
-			//}
+			}
 		break;
 	}
 
@@ -494,7 +495,7 @@ i64 _wh_mem_scan(void) {
 	i64 count = 0;
 	_wh_heap_list_entry_s* current = _list.nodes;
 
-	//wh_spinlock(&_list.lock) {
+	wh_spinlock_v2(&_list.lock) {
 		while (nullptr != current) {
 			wh_log_debug(("Node found! [ %u ] next is [ %u ]"), current->ptr, current->next);
 
@@ -524,7 +525,7 @@ i64 _wh_mem_scan(void) {
 
 			current = current->next;
 		}
-	//}
+	}
 
 	//usleep(100);
 	return count;
@@ -567,7 +568,7 @@ wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
 	
 	wh_heap_insert(params.name, heap);
 
-	//wh_spin_lock(&heap->locked) {
+	wh_spinlock_v2(&heap->locked) {
 		wh_heap_node_s* next = nullptr;
 		heap->allocation_count = 0;
 
@@ -606,7 +607,7 @@ wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
 				break;
 		}
 		
-	//}
+	}
 
 go_error_exit:
 go_exit:

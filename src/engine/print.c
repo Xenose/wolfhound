@@ -5,8 +5,8 @@
 #include<stdio.h>
 #include<errno.h>
 
-#include<wh/wrap/unistd.h>
-#include<wh/wrap/string.h>
+#include<wh-posix/unistd.h>
+#include<wh-posix/string.h>
 
 #include<wh/convert.h>
 #include<wh/memory.h>
@@ -251,8 +251,8 @@ static void _wh_print_format(wh_print_data_s* data, va_list list) {
 
 go_loop:
 	switch (*data->format) {
-		// time to break
 		case '\0':
+			// time to break and leave this loop
 			break;
 
 		// custom cases
@@ -261,32 +261,40 @@ go_loop:
 			switch (*(++data->format)) {
 				case '$':
 					goto go_default;
+
 				case '#':
 					data->print_format.flags.alt_form = true;
 					goto go_dollar_switch;
+
 				case '-':
 					data->print_format.flags.left_align = true;
 					goto go_dollar_switch;
+
 				case '+':
 					data->print_format.flags.force_sign = true;
 					goto go_dollar_switch;
+
 				case ' ':
 					data->print_format.flags.space_pad = true;
 					goto go_dollar_switch;
+
 				case '0':
 					data->print_format.flags.zero_pad = true;
 					goto go_dollar_switch;
+
 				case '.':
 					vp = &data->print_format.right;
 					data->print_format.flags.length_set = true;
 					++data->format;
 					goto go_dollar_switch;
+
 				case '1': case '2': case '3': case '4': case '5': 
 				case '6': case '7': case '8': case '9':
 					*vp = (u64)wh_str2int(data->format, (i64)strlen(data->format), 10); 
 					vp = &data->print_format.left;
 					data->format += wh_intpos(*vp);
 					goto go_dollar_switch;
+
 				case '[': // custom function from user using hash maps
 					_wh_print_call_func(data, va_arg(list, void*), data->format + 1, strstr(data->format, "]") - 1);
 					break;
@@ -328,61 +336,80 @@ go_loop:
 			switch (*(++data->format)) {
 				case '%':
 					goto go_default;
+
 				case '#':
 					data->print_format.flags.alt_form = true;
 					goto go_standard_switch;
+
 				case '-':
 					data->print_format.flags.left_align = true;
 					goto go_standard_switch;
+
 				case '+':
 					data->print_format.flags.force_sign = true;
 					goto go_standard_switch;
+
 				case ' ':
 					data->print_format.flags.space_pad = true;
 					goto go_standard_switch;
+
 				case '0':
 					data->print_format.flags.zero_pad = true;
 					goto go_standard_switch;
+
 				case '.':
 					vp = &data->print_format.right;
 					data->print_format.flags.length_set = true;
 					++data->format;
+					goto go_standard_switch;
+
 				case '1': case '2': case '3': case '4': case '5':
 				case '6': case '7': case '8': case '9':
 					*vp = (u64)wh_str2int(data->format, (i64)strlen(data->format), 10); 
 					vp = &data->print_format.left;
 					data->format += wh_intpos(*vp);
 					goto go_standard_switch;
+
 				case 'a':
 					_wh_print_fstr_slow(data, 'a', va_arg(list, double));
 					break;
+
 				case 'A':
 					_wh_print_fstr_slow(data, 'A', va_arg(list, double));
 					break;
+
 				case 'c':
 					_wh_print_cpychar(data, (char)va_arg(list, int));
 					break;
+
 				case 'd':
 					goto go_print_int;
+
 				case 'e':
 					_wh_print_fstr_slow(data, 'e', va_arg(list, double));
 					break;
+
 				case 'E':
 					_wh_print_fstr_slow(data, 'E', va_arg(list, double));
 					break;
+
 				case 'f':
 					_wh_print_fstr_slow(data, 'f', va_arg(list, double));
 					break;
+
 				case 'F':
 					_wh_print_fstr_slow(data, 'F', va_arg(list, double));
 					break;
+
 				case 'g':
 					_wh_print_fstr_slow(data, 'g', va_arg(list, double));
 					break;
+
 				case 'G':
 					_wh_print_fstr_slow(data, 'G', va_arg(list, double));
 					break;
-go_print_int:
+
+go_print_int: // To reduce duplicated for %d
 				case 'i':
 					if (data->print_format.flags.llong_value) {
 						_wh_print_int128(data, va_arg(list, i128), 10);
@@ -392,6 +419,7 @@ go_print_int:
 						_wh_print_int(data, va_arg(list, int), 10);
 					}
 					break;
+
 				case 'l':
 					if (data->print_format.flags.long_value) {
 						data->print_format.flags.llong_value = true;
@@ -400,15 +428,19 @@ go_print_int:
 					}
 					++data->format;
 					goto go_standard_switch;
+
 				case 'u':
 					_wh_print_uint(data, va_arg(list, u64), 10);
 					break;
+
 				case 's':
 					_wh_print_cpystr(data, va_arg(list, char*), 0);
 					break;
+
 				case 'm':
 					_wh_print_cpystr(data, (char*)wh_errno_str(errno), 0);
 					break;
+
 				case 'n':
 					tmp = ((void*)va_arg(list, int*)); 
 
@@ -417,14 +449,17 @@ go_print_int:
 					}
 
 					break;
+
 				case 'o':
 					_wh_print_int(data, va_arg(list, i64), 8);
 					break;
+
 				case 'p':
 					_wh_print_cpystr(data, "0x", 2);
 					data->format--;
 					_wh_print_uint(data, va_arg(list, u64), 16);
 					break;
+
 				case 'x':
 				case 'X':
 					_wh_print_cpystr(data, "0x", 2);
@@ -487,7 +522,8 @@ i64 _wh_print_va(_wh_print_params params, va_list list) {
 		buffer,
 		params.buffer_length,
 		0,
-		params.fd
+		params.fd,
+		{ 0 }
 	};
 	
 	data.buffer += params.offset;
@@ -528,7 +564,7 @@ void _wh_print_add_func(_wh_print_add_func_params params) {
 
 	wh_spin_lock(&_wh_func_table.lock){
 		if (0 == _wh_func_table.slots) {
-			_wh_func_table.table = wh_mem(sizeof(void*) * 16, .flags = WH_MEM_ZERO);
+			_wh_func_table.table = wh_sys_memreq(sizeof(_hw_print_func) * 16);
 			_wh_func_table.slots = 16;
 		}
 

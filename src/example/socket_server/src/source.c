@@ -1,7 +1,7 @@
 #define USE_NAMESPACE_WOLFHOUND
 #include<string.h>
 #include<wh/debug/logger.h>
-#include<wh/network/socket.h>
+#include<wh-sys/socket.h>
 
 int main(int arc, char* const* arv) {
 	int rin = 0;

@@ -13,7 +13,34 @@ OPTION(LINUX_MINGW_WIN "Disbles the C++ compiler" False)
 CHECK_LANGUAGE(Fortran)
 # We want to use Fortran 95 so we select it
 SET(CMAKE_Fortran_STANDARD 95)
+
+SET(CMAKE_C_STANDARD 23)
 SET(CMAKE_C_STANDARD_REQUIRED ON)
+
+SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+SET(WIN_SYSROOT "C:/usr" CACHE PATH "Windows sysroot directory")
+SET(WINUX_SYSROOT "/opt/windows/" CACHE PATH "MinGW cross-sysroot on Linux")
+
+SET(MSVC_FLAGS	
+	-Wall
+	-wd4100
+	-wd5110
+)
+
+SET(NON_MSVC_FLAGS
+	-Wall
+	-Wextra
+	-Wpedantic
+	-Wconversion
+	-Wshadow
+
+	-Wno-implicit-fallthrough
+	-Wno-unused-label
+	-Wno-unused-variable
+	-Wno-unused-parameter
+	-Wno-unused-but-set-variable
+)
 
 # Lets use the new C++ as well
 IF (NOT NO_CXX_COMPILER)
@@ -21,26 +48,21 @@ IF (NOT NO_CXX_COMPILER)
 	SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 ENDIF()
 
-SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-INCLUDE_DIRECTORIES(SYSTEM "include/")
+INCLUDE_DIRECTORIES(SYSTEM "${CMAKE_SOURCE_DIR}/include/")
 
 IF (LINUX_MINGW_WIN)
 	MESSAGE("\n\tWE ARE COMPILING FOR WINDOWS!")
 	MESSAGE(STATUS "-- Cross-compiling from Linux to Windows (MinGW)")
 
-	INCLUDE_DIRECTORIES(SYSTEM "/opt/windows/include")
+	INCLUDE_DIRECTORIES(SYSTEM "${WINUX_SYSROOT}/include")
 	SET(CMAKE_LIBRARY_PATH "${CMAKE_LIBRARY_PATH};/opt/windows/lib")
 	SET(USE_FORTRAN OFF)
 ELSEIF(WIN32)
 	MESSAGE("\n\tWE ARE ON WINDOWS!")
 
-	#MAKE_DIRECTORY("C:/usr/include/")
-	#MAKE_DIRECTORY("C:/usr/lib/")
-	#MAKE_DIRECTORY("C:/tmp/")
-
 	# having the include same as Unix / Linux make more sense
-	INCLUDE_DIRECTORIES(SYSTEM "C:/usr/include/" "include/" "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.44.35207/include")
-	SET(CMAKE_LIBRARY_PATH "${CMAKE_LIBRARY_PATH};C:/usr/lib")
+	INCLUDE_DIRECTORIES(SYSTEM "${WIN_SYSROOT}/include/" "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.44.35207/include")
+	SET(CMAKE_LIBRARY_PATH "${CMAKE_LIBRARY_PATH};${WIN_SYSROOT}/lib")
 	#LINK_DIRECTORIES(AFTER "C:/usr/lib/")
 
 	# More Windows Magic for atomics :: Legacy KEEP
@@ -51,12 +73,9 @@ ELSEIF(WIN32)
 			"/experimental:c11atomics"
 			"/experimental:preprocessor"
 		)
-	ELSE()
-		SET(CMAKE_C_STANDARD 23)
 	ENDIF()
 ELSE()
 	MESSAGE("\n\tWE ARE NOT ON WINDOWS!")
-	SET(CMAKE_C_STANDARD 23)
 
 	# checking if we have Fortran on the system
 	IF(CMAKE_Fortran_COMPILER)
@@ -70,11 +89,26 @@ ELSE()
 	ENDIF()
 ENDIF()
 
-set(F95_SOURCES
-	"src/engine/maths/core.f95"
-)
+IF(USE_FORTRAN)
+	SET(F95_SOURCES
+		"src/engine/maths/core.f95"
+	)
+ENDIF()
 
-set(C_SOURCES
+SET(C_SOURCES
+	"src/engine-posix/string.c"
+	"src/engine-posix/time.c"
+	"src/engine-posix/unistd.c"
+	"src/engine-sys/file.c"
+	"src/engine-sys/filesystem.c"
+	"src/engine-sys/info.c"
+	"src/engine-sys/library.c"
+	"src/engine-sys/memory.c"
+	"src/engine-sys/socket.c"
+
+	"src/engine-testing/exceptions.c"
+	"src/engine-testing/unite.c"
+
 	"src/engine/arg_parser.c"
 	"src/engine/config.c"
 	"src/engine/convert.c"
@@ -83,8 +117,6 @@ set(C_SOURCES
 	"src/engine/debug/error.c"
 	"src/engine/debug/logger.c"
 	"src/engine/debug/signalar.c"
-	"src/engine/file.c"
-	"src/engine/debug/exceptions.c"
 	"src/engine/game/actions.c"
 	"src/engine/game/entity.c"
 	"src/engine/game/loader.c"
@@ -103,50 +135,49 @@ set(C_SOURCES
 	"src/engine/memory/core.c"
 	"src/engine/memory/freelist.c"
 	"src/engine/print.c"
-	"src/engine/raylib/debug.c"
-	"src/engine/raylib/render.c"
-	"src/engine/raylib/window.c"
 	"src/engine/render.c"
-	"src/engine/sdl3/render.c"
-	"src/engine/sdl3/window.c"
 	"src/engine/string.c"
-	"src/engine/sys/filesystem.c"
-	"src/engine/sys/info.c"
-	"src/engine/sys/library.c"
-	"src/engine/sys/memory.c"
-	"src/engine/testing/unite.c"
 	"src/engine/window.c"
 	"src/engine/wolfhound.c"
-	"src/engine/wrap/string.c"
-	"src/engine/wrap/unistd.c"
-	"src/engine/wrap/time.c"
-	"src/engine/network/socket.c"
 )
 
-IF (NOT NO_CXX_COMPILER)
-	set(CXX_SOURCES
-		"src/engine_cpp/wolfhound.cpp"
-		"src/engine_cpp/print.cpp"
-		"src/engine_cpp/memory.cpp"
-		"src/engine_cpp/maths/core.cpp"
+IF (NOT LIB_VULKAN)
+	LIST(APPEND C_SOURCES
+		"src/engines/vulkan.c"
 	)
 ENDIF()
 
-SET(VULKAN_SOURCES
-	"src/engine/vulkan.c"
-)
+IF (NOT LIB_RAYLIB)
+	LIST(APPEND C_SOURCES
+		"src/engine-backends/raylib/debug.c"
+		"src/engine-backends/raylib/render.c"
+		"src/engine-backends/raylib/window.c"
+	)
+ENDIF()
 
+IF (NOT LIB_SLD3)
+	LIST(APPEND C_SOURCES
+		"src/engine-backends/sdl3/render.c"
+		"src/engine-backends/sdl3/window.c"
+	) 
+ENDIF()
+
+IF (NOT NO_CXX_COMPILER)
+	SET(CXX_SOURCES
+		"src/engine-cpp/wolfhound.cpp"
+		"src/engine-cpp/print.cpp"
+		"src/engine-cpp/memory.cpp"
+		"src/engine-cpp/maths/core.cpp"
+	)
+ENDIF()
+
+# defines the macro __FILENAME__ for all the files
 FOREACH(src_file IN LISTS C_SOURCES CXX_SOURCES)
 	GET_FILENAME_COMPONENT(basename ${src_file} NAME)
 	SET_SOURCE_FILES_PROPERTIES(${src_file} PROPERTIES COMPILE_DEFINITIONS "__FILENAME__=\"${basename}\"")
 ENDFOREACH()
 
-IF(USE_FORTRAN)
-	ADD_LIBRARY(${APP_NAME} STATIC ${C_SOURCES} ${CXX_SOURCES} ${F95_SOURCES})
-	TARGET_COMPILE_DEFINITIONS(${APP_NAME} PRIVATE WH_USE_FORTRAN=1)
-ELSE()
-	ADD_LIBRARY(${APP_NAME} STATIC ${C_SOURCES} ${CXX_SOURCES})
-ENDIF()
+ADD_LIBRARY(${APP_NAME} STATIC ${C_SOURCES} ${CXX_SOURCES} ${F95_SOURCES})
 
 # Library search
 INCLUDE(cmake/find_lua.cmake)
@@ -155,56 +186,28 @@ INCLUDE(cmake/find_glew.cmake)
 INCLUDE(cmake/find_vulkan.cmake)
 INCLUDE(cmake/find_unwind.cmake)
 
+IF(USE_FORTRAN)
+	TARGET_COMPILE_DEFINITIONS(${APP_NAME} PRIVATE WH_USE_FORTRAN=1)
+ENDIF()
+
 IF(WIN32)
 	TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE)
 
 	IF (MSVC)
 		TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
-			-Wall
-			
-			-wd4100
-			-wd5110
+			${MSVC_FLAGS}
 		)
 	ELSE()
 		TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
+			${NON_MSVC_FLAGS}
 			--target=x86_64-pc-windows-gnu
-
-			-Wall
-			-Wextra
-			-Wpedantic
-			-Wconversion
-			-Wshadow
-
-			-Wno-implicit-fallthrough
-			-Wno-unused-label
-			-Wno-unused-variable
-			-Wno-unused-parameter
-			-Wno-unused-but-set-variable
-
-			# In C +99 structs are zero out
-			# -Wno-missing-field-initializers
-
 			-O0
 		)
 	ENDIF()
 ELSE()
 	TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE "m" "dl" "atomic" "bsd" "gcov")
 	TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
-		-Wall
-		-Wextra
-		-Wpedantic
-		-Wconversion
-		-Wshadow
-
-		-Wno-implicit-fallthrough
-		-Wno-unused-label
-		-Wno-unused-variable
-		-Wno-unused-parameter
-		-Wno-unused-but-set-variable
-
-		# In C +99 structs are zero out
-		# -Wno-missing-field-initializers
-
+		${NON_MSVC_FLAGS}
 		-O0
 	)
 ENDIF()
@@ -234,7 +237,7 @@ IF (NOT NO_CXX_COMPILER)
 
 	# For now GTEST is not supported on windows.
 	IF (NOT WIN32)
-		ADD_SUBDIRECTORY(src/tests/cpp/gtests/)
+		ADD_SUBDIRECTORY(src/unit-gtests-cpp/)
 	ENDIF()
 ENDIF()
 

@@ -1,8 +1,9 @@
 #ifndef _wh_memory_
 #define _wh_memory_
 
+#include<wh-sys/memory.h>
+
 #include<wh/common.h>
-#include<wh/sys/memory.h>
 #include<wh/types/memory.h>
 #include<wh/params/memory.h>
 
@@ -25,7 +26,7 @@ extern void* (*_wh_realloc)(_wh_mem_realloc_params params);
 // General functions
 extern void _wh_heap_print(_wh_heap_print_params params);
 
-extern void* _wh_mem(_wh_mem_params params);
+// extern void* _wh_mem(_wh_mem_params params);
 extern i32 wh_mem_leak_count(void);
 
 #ifndef __cplusplu
@@ -85,7 +86,7 @@ extern i32 wh_mem_leak_count(void);
 
 /* [MD_DOC]
  */
-#define wh_mem(...) WH_EPF(_wh_mem((_wh_mem_params){ __VA_ARGS__ }))
+//#define wh_mem(...) WH_EPF(_wh_mem((_wh_mem_params){ __VA_ARGS__ }))
 
 #endif /* __cplusplus */
 

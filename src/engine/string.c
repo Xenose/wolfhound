@@ -43,7 +43,7 @@ go_exit:
 	return (wh_string_s) { 0 };
 }*/
 
-wh_string_s _wh_string_create(int dummy, ...) {
+/*wh_string_s _wh_string_create(int dummy, ...) {
 	va_list args;
 	wh_string_s out = { 0 };
 	void* tmp = nullptr;
@@ -83,7 +83,7 @@ wh_string_s _wh_string_create(int dummy, ...) {
 go_exit_error:
 	va_end(args);
 	return out;
-}
+}*/
 
 const char* _wh_strstr(_wh_strstr_params params) {
 	const char* value = nullptr;

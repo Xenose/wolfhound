@@ -1,6 +1,6 @@
 #include<wh/debug/logger.h>
 #include<wh/images/loader.h>
-#include<wh/file.h>
+#include<wh-sys/file.h>
 
 i8 _wh_image_decode(_wh_image_decode_params params) {
 	int type = 0;

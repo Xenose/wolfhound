@@ -2,6 +2,7 @@
 #define _wh_header_types_memory_
 
 #include<wh/common.h>
+#include<wh-sys/atomic_lock.h>
 
 #define WH_MEM_ZERO		((u64)0x0001)
 #define WH_MEM_IN_USE	((u64)0x0002)
@@ -32,7 +33,7 @@ typedef struct {
 
 typedef struct _wh_heap_header_s {
 	struct_type stype;
-	aflag locked;
+	wh_atomic_lock_s locked;
 
 	i64 allocation_count;
 	u64 bytes_used;

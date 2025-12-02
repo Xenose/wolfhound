@@ -2,7 +2,7 @@
 #define _wh_header_images_loader_
 
 #include<wh/common.h>
-#include<wh/file.h>
+#include<wh-sys/file.h>
 
 typedef struct {
 	wh_file_s file;

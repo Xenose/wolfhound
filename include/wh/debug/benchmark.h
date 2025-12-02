@@ -1,7 +1,7 @@
 #ifndef _wh_header_debug_benchmark_
 #define _wh_header_debug_benchmark_
 
-#include<wh/wrap/time.h>
+#include<wh-posix/time.h>
 #include<wh/common.h>
 
 typedef struct {

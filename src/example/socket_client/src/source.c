@@ -1,6 +1,6 @@
 #define USE_NAMESPACE_WOLFHOUND
-#include<wh/wrap/unistd.h>
-#include<wh/network/socket.h>
+#include<wh-posix/unistd.h>
+#include<wh-sys/socket.h>
 
 int main(int arc, char* const* arv) {
 	int rin = 0;
