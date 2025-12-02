@@ -3,11 +3,11 @@
 #include<wh/debug/logger.h>
 
 #include<errno.h>
-#include<netdb.h>
-#include<sys/socket.h>
 #include<sys/types.h>
 
 #if (WH_SYSTEM&WH_SYS_POSIX)
+#include<netdb.h>
+#include<sys/socket.h>
 
 wh_socket_s _wh_socket_init(_wh_socket_init_params params) {
 	int s = -1;
@@ -68,6 +68,13 @@ wh_socket_s _wh_socket_init(_wh_socket_init_params params) {
 
 
 go_error_exit:
+	return out;
+}
+
+#elif (WH_SYSTEM&WH_SYS_WINDOWS)
+
+wh_socket_s _wh_socket_init(_wh_socket_init_params params) {
+	wh_socket_s out = { 0 };
 	return out;
 }
 

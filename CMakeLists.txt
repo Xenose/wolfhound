@@ -61,18 +61,19 @@ ELSEIF(WIN32)
 	MESSAGE("\n\tWE ARE ON WINDOWS!")
 
 	# having the include same as Unix / Linux make more sense
-	INCLUDE_DIRECTORIES(SYSTEM "${WIN_SYSROOT}/include/" "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.44.35207/include")
+	INCLUDE_DIRECTORIES(SYSTEM "${WIN_SYSROOT}/include/" "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt" "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.44.35207/include")
 	SET(CMAKE_LIBRARY_PATH "${CMAKE_LIBRARY_PATH};${WIN_SYSROOT}/lib")
 	#LINK_DIRECTORIES(AFTER "C:/usr/lib/")
 
 	# More Windows Magic for atomics :: Legacy KEEP
 	IF (MSVC)
+		MESSAGE("\tNO ITS MSVC...")
 		SET(CMAKE_C_STANDARD 17)
-		SET(CMAKE_C_FLAGS 
-			"${CMAKE_C_FLAGS}" 
-			"/experimental:c11atomics"
-			"/experimental:preprocessor"
-		)
+		
+		ADD_COMPILE_OPTIONS(
+        $<$<C_COMPILER_ID:MSVC>:/experimental:c11atomics>
+        $<$<C_COMPILER_ID:MSVC>:/Zc:preprocessor>
+    	)
 	ENDIF()
 ELSE()
 	MESSAGE("\n\tWE ARE NOT ON WINDOWS!")

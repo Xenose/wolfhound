@@ -113,9 +113,5 @@ WH_C()
 	#define wh_thread __thread
 #endif
 
-#ifndef CLOCK_MONOTONIC_COARSE
-	#define CLOCK_MONOTONIC_COARSE CLOCK_MONOTONIC
-#endif
-
 WH_C_END()
 #endif /* _wh_header_common_macros_ */

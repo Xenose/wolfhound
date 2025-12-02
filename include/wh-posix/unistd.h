@@ -2,6 +2,7 @@
 #define _wh_header_wrap_unistd_
 
 #include<wh/common.h>
+#include<wh-posix/sys/types.h>
 
 #if (WH_SYSTEM&WH_SYS_POSIX)
 	#include<unistd.h>
