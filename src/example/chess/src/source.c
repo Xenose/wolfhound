@@ -89,8 +89,8 @@ int main(int arc, char* const* arv) {
 		&ins,
 		(wh_args_s){ 0, arc, arv },								// command line arguments
 		(wh_string_s){ .str = "chess", .length = 6},			// application name
+		.mode = WH_GRAPHICS_MODE_SDL3,
 		(u8*)buf,														// application config
-		.mode = WH_GRAPHICS_MODE_SDL3
 	);
 
 	wh_hashmap_lazy_s hml = _wh_hashmap_lazy_create(nullptr, 10, sizeof(int));
@@ -107,7 +107,7 @@ int main(int arc, char* const* arv) {
 	printf("Value is [ %i ]\n", *wh_hashmap_lazy_get(int*, &hml, "test3"));
 	printf("Value is [ %i ]\n", *wh_hashmap_lazy_get(int*, &hml, "test444"));
 
-	wh_action_init(ins, 100);
+	/*wh_action_init(ins, 100);
 	wh_entity_init(ins, 100);
 
 	u64 gid = wh_action_register(ins, &action_gravity);
@@ -118,7 +118,7 @@ int main(int arc, char* const* arv) {
 
 	wh_action_subscribe(ins, wolf, gid);
 	wh_action_subscribe(ins, wolf, cid);
-	wh_action_subscribe(ins, wolf, hgid);
+	wh_action_subscribe(ins, wolf, hgid);*/
 
 	wh_heap_print();
 	wh_loop(ins, &update, &fixed_update);

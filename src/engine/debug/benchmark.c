@@ -21,7 +21,7 @@ void wh_benchmark_end(wh_benchmark_s* bench) {
 
 		if (0 > nsec) {
 			sec -= 1;
-			nsec += 1'000'000'000;
+			nsec += 1000000000;
 		}
 
 		bench->time_delta.tv_sec = (bench->time_delta.tv_sec + sec) / 2;

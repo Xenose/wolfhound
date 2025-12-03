@@ -53,14 +53,14 @@ extern void wh_log_set_level(i64 level, u8 state);
 #define wh_log_va_info(x, _args_)			WH_EPF(_wh_log_va[6]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[36mINFO\033[0m     ",		__LINE__ }, _args_))
 #define wh_log_va_debug(x, _args_)			WH_EPF(_wh_log_va[7]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[90mDEBUG\033[0m    ",		__LINE__ }, _args_))
 
-#define wh_log_emergency(x, ...)		WH_EPF(_wh_log[0]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[35mEMERGENCY\033[0m",		__LINE__ } __VA_OPT__(, __VA_ARGS__)))
-#define wh_log_alert(x, ...)			WH_EPF(_wh_log[1]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[95mALERT\033[0m    ",		__LINE__ } __VA_OPT__(, __VA_ARGS__)))
-#define wh_log_critical(x, ...)		WH_EPF(_wh_log[2]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[31mCRITICAL\033[0m ",		__LINE__ } __VA_OPT__(, __VA_ARGS__)))
-#define wh_log_error(x, ...)			WH_EPF(_wh_log[3]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[91mERROR\033[0m    ",		__LINE__ } __VA_OPT__(, __VA_ARGS__)))
-#define wh_log_warning(x, ...)		WH_EPF(_wh_log[4]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[33mWARNING\033[0m  ",		__LINE__ } __VA_OPT__(, __VA_ARGS__)))
-#define wh_log_notice(x, ...)			WH_EPF(_wh_log[5]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[96mNOTICE\033[0m   ",		__LINE__ } __VA_OPT__(, __VA_ARGS__)))
-#define wh_log_info(x, ...)			WH_EPF(_wh_log[6]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[36mINFO\033[0m     ",		__LINE__ } __VA_OPT__(, __VA_ARGS__)))
-#define wh_log_debug(x, ...)			WH_EPF(_wh_log[7]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[90mDEBUG\033[0m    ",		__LINE__ } __VA_OPT__(, __VA_ARGS__)))
+#define wh_log_emergency(x, ...)		WH_EPF(_wh_log[0]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[35mEMERGENCY\033[0m",		__LINE__ } WH_VA_OPT(__VA_ARGS__)))
+#define wh_log_alert(x, ...)			WH_EPF(_wh_log[1]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[95mALERT\033[0m    ",		__LINE__ } WH_VA_OPT(__VA_ARGS__)))
+#define wh_log_critical(x, ...)		WH_EPF(_wh_log[2]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[31mCRITICAL\033[0m ",		__LINE__ } WH_VA_OPT(__VA_ARGS__)))
+#define wh_log_error(x, ...)			WH_EPF(_wh_log[3]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[91mERROR\033[0m    ",		__LINE__ } WH_VA_OPT(__VA_ARGS__)))
+#define wh_log_warning(x, ...)		WH_EPF(_wh_log[4]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[33mWARNING\033[0m  ",		__LINE__ } WH_VA_OPT(__VA_ARGS__)))
+#define wh_log_notice(x, ...)			WH_EPF(_wh_log[5]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[96mNOTICE\033[0m   ",		__LINE__ } WH_VA_OPT(__VA_ARGS__)))
+#define wh_log_info(x, ...)			WH_EPF(_wh_log[6]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[36mINFO\033[0m     ",		__LINE__ } WH_VA_OPT(__VA_ARGS__)))
+#define wh_log_debug(x, ...)			WH_EPF(_wh_log[7]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[90mDEBUG\033[0m    ",		__LINE__ } WH_VA_OPT(__VA_ARGS__)))
 
 
 /* [MD_DOC]

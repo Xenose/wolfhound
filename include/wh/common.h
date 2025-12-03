@@ -33,7 +33,7 @@ WH_C()
  * | i128     | int128_t   |                                      |
  */
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__TINYC__)
 	typedef int64_t	int128_t;
 	typedef uint64_t	uint128_t;
 #else

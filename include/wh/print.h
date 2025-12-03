@@ -115,8 +115,7 @@ extern void _wh_print_add_func(_wh_print_add_func_params params);
  */
 
 #define wh_print_va(x, args) WH_EPF(_wh_print_va((_wh_print_params){ WH_VA_ARGS x }, args))
-#define wh_print(x, ...) WH_EPF(_wh_print((_wh_print_params){ WH_VA_ARGS x } __VA_OPT__(, __VA_ARGS__)))
-
+#define wh_print(x, ...) WH_EPF(_wh_print((_wh_print_params){ WH_VA_ARGS x } WH_VA_OPT(__VA_ARGS__)))
 
 /* [MD_DOC]
  * # wh_print_buffer_check

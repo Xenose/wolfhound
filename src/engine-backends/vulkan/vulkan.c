@@ -1,6 +1,6 @@
 #include<SDL3/SDL_vulkan.h>
 #include<wh/common.h>
-#include<wh/vulkan.h>
+#include<wh-backend/vulkan.h>
 #include<wh/debug/logger.h>
 
 typedef struct {

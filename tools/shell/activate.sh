@@ -46,6 +46,7 @@ alias wh-clean="PRP='${WP}' ${WP}${TP}clean.sh"
 alias wh-gcc="PRP='${WP}' ${WP}${TP}gcc.sh"
 alias wh-clang="PRP='${WP}' ${WP}${TP}clang.sh"
 alias wh-mingw="PRP='${WP}' ${WP}${TP}mingw.sh"
+alias wh-tcc="PRP='${WP}' ${WP}${TP}tcc.sh"
 
 # build systems
 alias wh-ninja="PRP='${WP}' ${WP}${TP}ninja.sh"

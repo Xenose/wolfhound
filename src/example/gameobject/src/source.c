@@ -13,8 +13,8 @@ int main(int arc, char* const* arv) {
 		&ins,
 		(wh_args_s){ 0, arc, arv },										// command line arguments
 		(wh_string_s){ .str = "gameobject", .length = 11},			// application name
+		.mode = WH_GRAPHICS_MODE_SDL3,
 		(u8*)buf,																// application config
-		.mode = WH_GRAPHICS_MODE_SDL3
 	);
 
 	return 0;

@@ -1,6 +1,8 @@
 #ifndef _wh_header_common_enum_
 #define _wh_header_common_enum_
 
+#include<wh-common/hacks.h>
+
 enum {
 	WH_STRUCT_TYPE_UNKOWN = 0,
 
@@ -51,7 +53,7 @@ enum {
 
 #ifndef _WIN32
 enum {
-	STRUNCATE = 10'000
+	STRUNCATE = 10000
 };
 #endif
 

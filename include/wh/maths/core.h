@@ -54,6 +54,19 @@ extern i64 _wh_hash_simple(_wh_hash_simple_params params);
 		sizeof(x) == 8 ? WH_ABS_I64((i64)x) : \
 		fabs((float)x) \
 	)
+#elif (WH_SYSTEM&WH_SYS_TCC)
+	#define wh_abs(x) \
+		_Generic((x), \
+			i8: WH_ABS_I8(x), \
+			i16: WH_ABS_I16(x), \
+			i32: WH_ABS_I32(x), \
+			i64: WH_ABS_I64(x), \
+			u8: (x), \
+			u16: (x), \
+			u32: (x), \
+			u64: (x), \
+			default: labs(x) \
+			)
 #else
 	#define wh_abs(x) \
 		_Generic((x), \

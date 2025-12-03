@@ -20,6 +20,7 @@ WH_C()
 #define WH_SYS_CLANG		0x08L
 #define WH_SYS_MSVC		0x10L
 #define WH_SYS_MINGW		0x20L
+#define WH_SYS_TCC		0x40L
 
 #define WH_SYS_LINUX		(0x0100L | WH_SYS_UNIX | WH_SYS_POSIX)
 #define WH_SYS_FREEBSD	(0x0200L | WH_SYS_UNIX | WH_SYS_POSIX)
@@ -46,6 +47,8 @@ WH_C()
 
 #ifdef __clang__
 	#define WH_SYSTEM (WH_SYSTEM_OS | WH_SYS_CLANG)
+#elif defined(__TINYC__)
+	#define WH_SYSTEM (WH_SYSTEM_OS | WH_SYS_TCC)
 #elif defined(__MINGW32__)
 	#define WH_SYSTEM (WH_SYSTEM_OS | WH_SYS_MINGW)
 #elif defined(__GNUC__)
@@ -67,8 +70,7 @@ WH_C()
 #endif
 
 // WH_EPF :: Empty Parameter Function
-
-#if !(WH_SYSTEM&WH_SYS_MINGW)&&!(WH_SYSTEM&WH_SYS_MSVC)
+#if !(WH_SYSTEM&WH_SYS_GCC)&&!(WH_SYSTEM&WH_SYS_MINGW)&&!(WH_SYSTEM&WH_SYS_MSVC)&&!(WH_SYSTEM&WH_SYS_TCC)
 	#define WH_EPF(x) \
 		_Pragma("GCC diagnostic push") \
 		_Pragma("GCC diagnostic ignored \"-Wmissing-field-initializers\"") \
@@ -79,6 +81,11 @@ WH_C()
 		x
 #endif
 
+#if (WH_SYSTEM&WH_SYS_TCC)
+	#define WH_VA_OPT(...) , ##__VA_ARGS__
+#else
+	#define WH_VA_OPT(...) __VA_OPT__(,) __VA_ARGS__
+#endif
 
 /* [MD_DOC]
  * wh_for is a macro for a for loop, it will go from 0
@@ -88,16 +95,30 @@ WH_C()
 
 #define wh_spin_lock(_x_) do {} while (atomic_flag_test_and_set(_x_)); for (i8 _lock_##__LINE__ = 0; 1 != _lock_##__LINE__; _lock_##__LINE__++, atomic_flag_clear(_x_))
 
-#define wh_spin_lock_break(_x_)					atomic_flag_clear(_x_); break
-#define wh_spin_lock_return(_x_, _return_)	atomic_flag_clear(_x_);	return _return_
-#define wh_spin_lock_goto(_x_, _goto_)			atomic_flag_clear(_x_);	goto _goto_
+#if (WH_SYSTEM&WH_SYS_TCC)
+	#define wh_spin_lock_break(_x_) break
+	#define wh_spin_lock_return(_x_, _return_) return _return_
+	#define wh_spin_lock_goto(_x_, _goto_) goto _goto_
 
 
-#define wh_spinlock(_x_) do {} while (atomic_flag_test_and_set(_x_)); for (i8 _lock_##__LINE__ = 0; 1 != _lock_##__LINE__; _lock_##__LINE__++, atomic_flag_clear(_x_))
+	#define wh_spinlock(_x_)
 
-#define wh_spinlock_break(_x_)					atomic_flag_clear(_x_); break
-#define wh_spinlock_return(_x_, ...)		atomic_flag_clear(_x_);	return __VA_ARGS__
-#define wh_spinlock_goto(_x_, _goto_)			atomic_flag_clear(_x_);	goto _goto_
+	#define wh_spinlock_break(_x_) break
+	#define wh_spinlock_return(_x_, ...) return __VA_ARGS__
+	#define wh_spinlock_goto(_x_, _goto_) goto _goto_
+
+#else
+	#define wh_spin_lock_break(_x_)					atomic_flag_clear(_x_); break
+	#define wh_spin_lock_return(_x_, _return_)	atomic_flag_clear(_x_);	return _return_
+	#define wh_spin_lock_goto(_x_, _goto_)			atomic_flag_clear(_x_);	goto _goto_
+
+
+	#define wh_spinlock(_x_) do {} while (atomic_flag_test_and_set(_x_)); for (i8 _lock_##__LINE__ = 0; 1 != _lock_##__LINE__; _lock_##__LINE__++, atomic_flag_clear(_x_))
+
+	#define wh_spinlock_break(_x_)					atomic_flag_clear(_x_); break
+	#define wh_spinlock_return(_x_, ...)		atomic_flag_clear(_x_);	return __VA_ARGS__
+	#define wh_spinlock_goto(_x_, _goto_)			atomic_flag_clear(_x_);	goto _goto_
+#endif
 
 /*
  * After C11 it seems like there is a keyword
@@ -106,7 +127,9 @@ WH_C()
  * the extra macro.
  */
 #if (WH_SYSTEM&WH_SYS_MSVC)
-    #define wh_thread __declspec(thread)
+	#define wh_thread __declspec(thread)
+#elif (WH_SYSTEM&WH_SYS_TCC)
+	#define wh_thread
 #elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
 	#define wh_thread _Thread_local
 #else

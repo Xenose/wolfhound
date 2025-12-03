@@ -22,7 +22,7 @@ typedef struct {
 	u8* mask;
 } _wh_file_type_s;
 
-#if !(WH_SYSTEM&WH_SYS_MINGW)&&!(WH_SYSTEM&WH_SYS_MSVC)
+#if !(WH_SYSTEM&WH_SYS_MINGW)&&!(WH_SYSTEM&WH_SYS_MSVC)&&!(WH_SYSTEM&WH_SYS_TCC)
 	_Pragma("GCC diagnostic push")
 	_Pragma("GCC diagnostic ignored \"-Wmissing-field-initializers\"")
 #endif
@@ -89,7 +89,7 @@ _wh_file_type_s formats[] = {
 	{ WH_FILE_TYPE_COM,					1,  (u8[]){ 0x09 },																																																																								(char*[]){ ".com",																							nullptr }},
 };
 
-#if !(WH_SYSTEM&WH_SYS_MINGW)&&!(WH_SYSTEM&WH_SYS_MSVC)
+#if !(WH_SYSTEM&WH_SYS_MINGW)&&!(WH_SYSTEM&WH_SYS_MSVC)&&!(WH_SYSTEM&WH_SYS_TCC)
 	_Pragma("GCC diagnostic pop")
 #endif
 

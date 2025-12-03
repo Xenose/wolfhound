@@ -4,6 +4,8 @@
 #include<wh/common.h>
 #include<wh/params/string.h>
 
+WH_C()
+
 extern char* _wh_strcat(_wh_strcat_params params, ...);
 //extern wh_string_s _wh_string_append(_wh_string_append_params, ...);
 extern wh_string_s _wh_string_create(int dummy, ...);
@@ -17,4 +19,5 @@ extern const char* _wh_strstr(_wh_strstr_params params);
 #define wh_strstr(...)					WH_EPF(_wh_strstr((_wh_strstr_params) { __VA_ARGS__ }))
 #endif /* __cplusplus */
 
+WH_C_END()
 #endif /* _wh_header_string_ */

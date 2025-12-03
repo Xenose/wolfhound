@@ -7,7 +7,11 @@
 static wh_thread i64 _thread_id = -1;
 
 i64 wh_sys_gettid(void) {
-	return -1 == _thread_id ? (_thread_id = (i64)gettid()) : _thread_id;
+	#if (WH_SYSTEM&WH_SYS_TCC)
+		return (i64)gettid();
+	#else
+		return -1 == _thread_id ? (_thread_id = (i64)gettid()) : _thread_id;
+	#endif
 }
 
 #ifdef __linux__

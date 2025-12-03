@@ -71,15 +71,18 @@ ELSEIF(WIN32)
 		SET(CMAKE_C_STANDARD 17)
 		
 		ADD_COMPILE_OPTIONS(
-        $<$<C_COMPILER_ID:MSVC>:/experimental:c11atomics>
-        $<$<C_COMPILER_ID:MSVC>:/Zc:preprocessor>
-    	)
+			$<$<C_COMPILER_ID:MSVC>:/experimental:c11atomics>
+			$<$<C_COMPILER_ID:MSVC>:/Zc:preprocessor>
+		)
 	ENDIF()
 ELSE()
 	MESSAGE("\n\tWE ARE NOT ON WINDOWS!")
 
 	# checking if we have Fortran on the system
-	IF(CMAKE_Fortran_COMPILER)
+	IF(CMAKE_C_COMPILER_ID MATCHES "TinyCC")
+		MESSAGE(WARNING "TCC Fortran turned off.")
+		SET(USE_FORTRAN OFF)
+	ELSEIF(CMAKE_Fortran_COMPILER)
 		MESSAGE(STATUS "Fortran compiler found: ${CMAKE_Fortran_COMPILER}")
 		ENABLE_LANGUAGE(Fortran)
 		#ADD_COMPILE_DEFINITIONS(WH_USE_FORTRAN=1)
@@ -144,7 +147,7 @@ SET(C_SOURCES
 
 IF (NOT LIB_VULKAN)
 	LIST(APPEND C_SOURCES
-		"src/engines/vulkan.c"
+		"src/engine-backends/vulkan/vulkan.c"
 	)
 ENDIF()
 
@@ -205,7 +208,17 @@ IF(WIN32)
 			-O0
 		)
 	ENDIF()
+ELSEIF(CMAKE_C_COMPILER_ID MATCHES "TinyCC")
+	TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE "m" "dl" "atomic" "bsd")
+	TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
+		${NON_MSVC_FLAGS}
+		-O0
+	)
 ELSE()
+	IF(CMAKE_C_COMPILER_ID MATCHES "GNU")
+		LIST(APPEND NON_MSVC_FLAGS -Wno-missing-field-initializers)
+	ENDIF()
+
 	TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE "m" "dl" "atomic" "bsd" "gcov")
 	TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
 		${NON_MSVC_FLAGS}
