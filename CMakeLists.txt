@@ -99,6 +99,9 @@ IF(USE_FORTRAN)
 	)
 ENDIF()
 
+SET(WH_LIBS)
+SET(WH_DEFS)
+
 SET(C_SOURCES
 	"src/engine-posix/string.c"
 	"src/engine-posix/time.c"
@@ -145,26 +148,20 @@ SET(C_SOURCES
 	"src/engine/wolfhound.c"
 )
 
-IF (NOT LIB_VULKAN)
-	LIST(APPEND C_SOURCES
-		"src/engine-backends/vulkan/vulkan.c"
-	)
-ENDIF()
+SET (VULKAN_SOURCES
+	"src/engine-backends/vulkan/vulkan.c"
+)
 
-IF (NOT LIB_RAYLIB)
-	LIST(APPEND C_SOURCES
-		"src/engine-backends/raylib/debug.c"
-		"src/engine-backends/raylib/render.c"
-		"src/engine-backends/raylib/window.c"
-	)
-ENDIF()
+SET(RAYLIB_SOURCES
+	"src/engine-backends/raylib/debug.c"
+	"src/engine-backends/raylib/render.c"
+	"src/engine-backends/raylib/window.c"
+)
 
-IF (NOT LIB_SLD3)
-	LIST(APPEND C_SOURCES
-		"src/engine-backends/sdl3/render.c"
-		"src/engine-backends/sdl3/window.c"
-	) 
-ENDIF()
+SET(SDL3_SOURCES
+	"src/engine-backends/sdl3/render.c"
+	"src/engine-backends/sdl3/window.c"
+)
 
 IF (NOT NO_CXX_COMPILER)
 	SET(CXX_SOURCES
@@ -173,7 +170,7 @@ IF (NOT NO_CXX_COMPILER)
 		"src/engine-cpp/memory.cpp"
 		"src/engine-cpp/maths/core.cpp"
 	)
-ENDIF()
+ENDIF() 
 
 # defines the macro __FILENAME__ for all the files
 FOREACH(src_file IN LISTS C_SOURCES CXX_SOURCES)
@@ -181,14 +178,25 @@ FOREACH(src_file IN LISTS C_SOURCES CXX_SOURCES)
 	SET_SOURCE_FILES_PROPERTIES(${src_file} PROPERTIES COMPILE_DEFINITIONS "__FILENAME__=\"${basename}\"")
 ENDFOREACH()
 
-ADD_LIBRARY(${APP_NAME} STATIC ${C_SOURCES} ${CXX_SOURCES} ${F95_SOURCES})
-
 # Library search
 INCLUDE(cmake/find_lua.cmake)
 INCLUDE(cmake/find_sdl3.cmake)
 INCLUDE(cmake/find_glew.cmake)
 INCLUDE(cmake/find_vulkan.cmake)
 INCLUDE(cmake/find_unwind.cmake)
+
+ADD_LIBRARY(${APP_NAME} STATIC ${C_SOURCES} ${CXX_SOURCES} ${F95_SOURCES})
+TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE ${WH_LIBS})
+
+FOREACH(wh_def IN LISTS WH_DEFS)
+	MESSAGE("Defining ${wh_def}")
+	TARGET_COMPILE_DEFINITIONS(${APP_NAME} PUBLIC ${wh_def}=1)
+ENDFOREACH()
+
+IF(WH_INCLUDES)
+	MESSAGE(STATUS "Adding collected manual include directories: ${WH_INCLUDES}")
+	TARGET_INCLUDE_DIRECTORIES(${APP_NAME} PRIVATE ${WH_INCLUDES})
+ENDIF()
 
 IF(USE_FORTRAN)
 	TARGET_COMPILE_DEFINITIONS(${APP_NAME} PRIVATE WH_USE_FORTRAN=1)
