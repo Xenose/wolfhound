@@ -6,7 +6,7 @@ PROJECT(${APP_NAME} LANGUAGES C CXX)
 INCLUDE(CheckLanguage)
 
 OPTION(NO_CXX_COMPILER "Disbles the C++ compiler" False)
-OPTION(LINUX_MINGW_WIN "Disbles the C++ compiler" False)
+OPTION(LINUX_MINGW_WIN "Cross compiles the code for Windows" False)
 
 # Telling CMake that we use C and Fortran
 # Adding Fortran Support
@@ -18,6 +18,9 @@ SET(CMAKE_C_STANDARD 23)
 SET(CMAKE_C_STANDARD_REQUIRED ON)
 
 SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+SET(WH_LIBS)
+SET(WH_DEFS)
 
 SET(WIN_SYSROOT "C:/usr" CACHE PATH "Windows sysroot directory")
 SET(WINUX_SYSROOT "/opt/windows/" CACHE PATH "MinGW cross-sysroot on Linux")
@@ -93,84 +96,7 @@ ELSE()
 	ENDIF()
 ENDIF()
 
-IF(USE_FORTRAN)
-	SET(F95_SOURCES
-		"src/engine/maths/core.f95"
-	)
-ENDIF()
-
-SET(WH_LIBS)
-SET(WH_DEFS)
-
-SET(C_SOURCES
-	"src/engine-posix/string.c"
-	"src/engine-posix/time.c"
-	"src/engine-posix/unistd.c"
-	"src/engine-sys/file.c"
-	"src/engine-sys/filesystem.c"
-	"src/engine-sys/info.c"
-	"src/engine-sys/library.c"
-	"src/engine-sys/memory.c"
-	"src/engine-sys/socket.c"
-
-	"src/engine-testing/exceptions.c"
-	"src/engine-testing/unite.c"
-
-	"src/engine/arg_parser.c"
-	"src/engine/config.c"
-	"src/engine/convert.c"
-	"src/engine/data/hashmap_lazy.c"
-	"src/engine/debug/benchmark.c"
-	"src/engine/debug/error.c"
-	"src/engine/debug/logger.c"
-	"src/engine/debug/signalar.c"
-	"src/engine/game/actions.c"
-	"src/engine/game/entity.c"
-	"src/engine/game/loader.c"
-	"src/engine/images/loader.c"
-	"src/engine/loader/asset.c"
-	"src/engine/lua/api.c"
-	"src/engine/lua/api/file.c"
-	"src/engine/lua/api/filesystem.c"
-	"src/engine/lua/api/maths.c"
-	"src/engine/lua/config.c"
-	"src/engine/lua/helpers.c"
-	"src/engine/maths/core.c"
-	"src/engine/maths/memory.c"
-	"src/engine/memory.c"
-	"src/engine/memory/arena.c"
-	"src/engine/memory/core.c"
-	"src/engine/memory/freelist.c"
-	"src/engine/print.c"
-	"src/engine/render.c"
-	"src/engine/string.c"
-	"src/engine/window.c"
-	"src/engine/wolfhound.c"
-)
-
-SET (VULKAN_SOURCES
-	"src/engine-backends/vulkan/vulkan.c"
-)
-
-SET(RAYLIB_SOURCES
-	"src/engine-backends/raylib/debug.c"
-	"src/engine-backends/raylib/render.c"
-	"src/engine-backends/raylib/window.c"
-)
-
-SET(SDL3_SOURCES
-	"src/engine-backends/sdl3/render.c"
-	"src/engine-backends/sdl3/window.c"
-)
-
-IF (NOT NO_CXX_COMPILER)
-	SET(CXX_SOURCES
-		"src/engine-cpp/wolfhound.cpp"
-		"src/engine-cpp/print.cpp"
-		"src/engine-cpp/memory.cpp"
-		"src/engine-cpp/maths/core.cpp"
-	)
-ENDIF() 
+INCLUDE(cmake/source_files.cmake)
 
 # defines the macro __FILENAME__ for all the files
 FOREACH(src_file IN LISTS C_SOURCES CXX_SOURCES)
@@ -179,27 +105,35 @@ FOREACH(src_file IN LISTS C_SOURCES CXX_SOURCES)
 ENDFOREACH()
 
 # Library search
+INCLUDE(cmake/find_glew.cmake)
+INCLUDE(cmake/find_glfw.cmake)
 INCLUDE(cmake/find_lua.cmake)
 INCLUDE(cmake/find_sdl3.cmake)
-INCLUDE(cmake/find_glew.cmake)
-INCLUDE(cmake/find_vulkan.cmake)
 INCLUDE(cmake/find_unwind.cmake)
+INCLUDE(cmake/find_vulkan.cmake)
 
 ADD_LIBRARY(${APP_NAME} STATIC ${C_SOURCES} ${CXX_SOURCES} ${F95_SOURCES})
 TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE ${WH_LIBS})
 
+# ####################################################################################
+#   Compiler definition section
+# ####################################################################################
 FOREACH(wh_def IN LISTS WH_DEFS)
 	MESSAGE("Defining ${wh_def}")
 	TARGET_COMPILE_DEFINITIONS(${APP_NAME} PUBLIC ${wh_def}=1)
 ENDFOREACH()
 
+IF(USE_FORTRAN)
+	TARGET_COMPILE_DEFINITIONS(${APP_NAME} PRIVATE WH_USE_FORTRAN=1)
+ENDIF()
+
+# ####################################################################################
+#  End of compiler definition section
+# ####################################################################################
+
 IF(WH_INCLUDES)
 	MESSAGE(STATUS "Adding collected manual include directories: ${WH_INCLUDES}")
 	TARGET_INCLUDE_DIRECTORIES(${APP_NAME} PRIVATE ${WH_INCLUDES})
-ENDIF()
-
-IF(USE_FORTRAN)
-	TARGET_COMPILE_DEFINITIONS(${APP_NAME} PRIVATE WH_USE_FORTRAN=1)
 ENDIF()
 
 IF(WIN32)
@@ -234,6 +168,7 @@ ELSE()
 	)
 ENDIF()
 
+# Allows us to do line coverage testing
 IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" AND GENERATE_REPORT)
 	MESSAGE(STATUS "Enabling coverage flags for GCC/Clang")
 	TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE --coverage -g)
