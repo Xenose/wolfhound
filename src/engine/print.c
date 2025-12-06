@@ -1,18 +1,17 @@
 #include<stdarg.h>
-#include<stdatomic.h>
 
 // tmp for debug
 #include<stdio.h>
 #include<errno.h>
 
-#include<wh-posix/unistd.h>
+#include<wh-posix/stdatomic.h>
 #include<wh-posix/string.h>
-
+#include<wh-posix/unistd.h>
 #include<wh/convert.h>
-#include<wh/memory.h>
 #include<wh/debug/error.h>
-#include<wh/print.h>
 #include<wh/maths/core.h>
+#include<wh/memory.h>
+#include<wh/print.h>
 
 // =======================================================================================================
 // Struct declerations 

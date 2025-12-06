@@ -1,0 +1,57 @@
+#ifndef _wh_header_common_c23_comp_
+#define _wh_header_common_c23_comp_
+
+#include<stdint.h>
+
+#include<wh-common/os.h>
+
+/*
+ * C23 has added the keyword nullptr to the language,
+ * so we should use the more type safe version when possible.
+ */
+#if !defined(__cplusplus)
+	#if !defined(nullptr) && (__STDC_VERSION__ < 202000L)
+		#define nullptr NULL
+	#endif
+#endif
+
+/*
+ * C23 support the new keyword __VA_OPT__ but some
+ * compilers will need to fallback to the older GNU
+ * extension.
+ */
+#if (WH_SYSTEM&WH_SYS_TCC)
+	#define WH_VA_OPT(...) , ##__VA_ARGS__
+#else
+	#define WH_VA_OPT(...) __VA_OPT__(,) __VA_ARGS__
+#endif
+
+/*
+ * After C11 it seems like there is a keyword
+ * wolfhound is built for C23, but this macro
+ * cost me nothing so I would say its worth
+ * the extra macro.
+ */
+#if (WH_SYSTEM&WH_SYS_MSVC)
+	#define wh_thread __declspec(thread)
+#elif (WH_SYSTEM&WH_SYS_TCC)
+	#define wh_thread
+#elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+	#define wh_thread _Thread_local
+#else
+	#define wh_thread __thread
+#endif
+
+/* 
+ * tcc does not implement <stdbool.h> or _Bool reliably 
+ */
+#if (WH_SYSTEM&WH_SYS_TCC)
+	#ifndef __cplusplus
+		#define true 1
+		#define false 0
+	
+		typedef int8_t bool;
+	#endif
+#endif
+
+#endif /* _wh_header_common_c23_comp_ */

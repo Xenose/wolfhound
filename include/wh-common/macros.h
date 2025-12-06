@@ -5,6 +5,7 @@
 
 #include<wh-common/os.h>
 #include<wh-common/prefix.h>
+#include<wh-common/c23-comp.h>
 
 WH_C()
 
@@ -20,12 +21,6 @@ WH_C()
 	#define __FILENAME__ __FILE__
 #endif
 
-#if !defined(__cplusplus)
-	#if !defined(nullptr) && (__STDC_VERSION__ < 202000L)
-		#define nullptr NULL
-	#endif
-#endif
-
 // WH_EPF :: Empty Parameter Function
 #if !(WH_SYSTEM&WH_SYS_GCC)&&!(WH_SYSTEM&WH_SYS_MINGW)&&!(WH_SYSTEM&WH_SYS_MSVC)&&!(WH_SYSTEM&WH_SYS_TCC)
 	#define WH_EPF(x) \
@@ -36,12 +31,6 @@ WH_C()
 #else
 	#define WH_EPF(x) \
 		x
-#endif
-
-#if (WH_SYSTEM&WH_SYS_TCC)
-	#define WH_VA_OPT(...) , ##__VA_ARGS__
-#else
-	#define WH_VA_OPT(...) __VA_OPT__(,) __VA_ARGS__
 #endif
 
 /* [MD_DOC]
@@ -75,22 +64,6 @@ WH_C()
 	#define wh_spinlock_break(_x_)					atomic_flag_clear(_x_); break
 	#define wh_spinlock_return(_x_, ...)		atomic_flag_clear(_x_);	return __VA_ARGS__
 	#define wh_spinlock_goto(_x_, _goto_)			atomic_flag_clear(_x_);	goto _goto_
-#endif
-
-/*
- * After C11 it seems like there is a keyword
- * wolfhound is built for C23, but this macro
- * cost me nothing so I would say its worth
- * the extra macro.
- */
-#if (WH_SYSTEM&WH_SYS_MSVC)
-	#define wh_thread __declspec(thread)
-#elif (WH_SYSTEM&WH_SYS_TCC)
-	#define wh_thread
-#elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
-	#define wh_thread _Thread_local
-#else
-	#define wh_thread __thread
 #endif
 
 WH_C_END()
