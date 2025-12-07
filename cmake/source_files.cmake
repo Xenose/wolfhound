@@ -1,6 +1,11 @@
 
-SET(F95_SOURCES
-	"src/engine/maths/core.f95"
+IF(USE_FORTRAN)
+	SET(F95_SOURCES
+		"src/engine/maths/core.f95"
+	)
+ENDIF()
+
+SET(ASM_SOURCE
 )
 
 SET(C_SOURCES
@@ -49,7 +54,7 @@ SET(C_SOURCES
 	"src/engine/wolfhound.c"
 )
 
-SET (VULKAN_SOURCES
+SET(VULKAN_SOURCES
 	"src/engine-backends/vulkan/vulkan.c"
 )
 
@@ -64,10 +69,17 @@ SET(SDL3_SOURCES
 	"src/engine-backends/sdl3/window.c"
 )
 
-SET(CXX_SOURCES
-	"src/engine-cpp/wolfhound.cpp"
-	"src/engine-cpp/print.cpp"
-	"src/engine-cpp/memory.cpp"
-	"src/engine-cpp/maths/core.cpp"
-)
+IF(CMAKE_C_COMPILER_ID MATCHES "TinyCC")
+	LIST(APPEND ASM_SOURCE
+		"src/engine-asm/x64_sv_stdatomic.asm"
+	)
+ENDIF()
 
+IF (NOT NO_CXX_COMPILER)
+	SET(CXX_SOURCES
+		"src/engine-cpp/wolfhound.cpp"
+		"src/engine-cpp/print.cpp"
+		"src/engine-cpp/memory.cpp"
+		"src/engine-cpp/maths/core.cpp"
+	)
+ENDIF()

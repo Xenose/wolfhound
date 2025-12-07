@@ -130,7 +130,10 @@ static i64 _wh_init_device(_wh_vulkan_step_params* params) {
 	VkDeviceQueueCreateInfo qi = {
 		VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
 		nullptr,
-		0x0,
+		0,
+		0,
+		0,
+		0,
 	};
 
 	VkDeviceCreateInfo di = {

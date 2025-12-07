@@ -1,7 +1,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.28)
 
 SET(APP_NAME wolfhound)
-PROJECT(${APP_NAME} LANGUAGES C CXX)
+PROJECT(${APP_NAME} LANGUAGES C CXX ASM_NASM)
 
 INCLUDE(CheckLanguage)
 
@@ -88,7 +88,7 @@ ELSE()
 	ELSEIF(CMAKE_Fortran_COMPILER)
 		MESSAGE(STATUS "Fortran compiler found: ${CMAKE_Fortran_COMPILER}")
 		ENABLE_LANGUAGE(Fortran)
-		#ADD_COMPILE_DEFINITIONS(WH_USE_FORTRAN=1)
+		ADD_COMPILE_DEFINITIONS(WH_USE_FORTRAN=1)
 		SET(USE_FORTRAN ON)
 	ELSE()
 		MESSAGE(WARNING "Fortran compiler NOT found. Falling back to C implementations.")
@@ -112,7 +112,10 @@ INCLUDE(cmake/find_sdl3.cmake)
 INCLUDE(cmake/find_unwind.cmake)
 INCLUDE(cmake/find_vulkan.cmake)
 
-ADD_LIBRARY(${APP_NAME} STATIC ${C_SOURCES} ${CXX_SOURCES} ${F95_SOURCES})
+SET(NASM_FLAGS "-w-unknown-warning")
+SET(NASM_WARNING_FLAGS "-w+all")
+
+ADD_LIBRARY(${APP_NAME} STATIC ${ASM_SOURCE} ${C_SOURCES} ${CXX_SOURCES} ${F95_SOURCES})
 TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE ${WH_LIBS})
 
 # ####################################################################################

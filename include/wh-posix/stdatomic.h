@@ -6,13 +6,13 @@
 #include<wh-common/macros.h>
 #include<wh-common/os.h>
 
-#define __STDC_NO_ATOMICS__ // for compiler highlight remove later
+//#define __STDC_NO_ATOMICS__ // for compiler highlight remove later
 
 #ifndef __cplusplus
 	#if (WH_SYSTEM&WH_SYS_TCC) || defined(__STDC_NO_ATOMICS__)
 		typedef volatile char atomic_char;
-		typedef volatile bool atomic_flag;
-		typedef volatile bool atomic_bool;
+		typedef volatile int8_t atomic_flag;
+		typedef volatile int8_t atomic_bool;
 
 		typedef volatile signed char atomic_schar;
 		typedef volatile short atomic_short;
@@ -61,7 +61,7 @@
 		/*
 		 * Defined in XXX_XX_stdatomic.asm
 		 */
-		extern bool atomic_flag_test_and_set(atomic_flag* flag);
+		extern int8_t atomic_flag_test_and_set(atomic_flag* flag);
 		extern void atomic_flag_clear(atomic_flag* flag);
 
 		#define atomic_load(ptr) \

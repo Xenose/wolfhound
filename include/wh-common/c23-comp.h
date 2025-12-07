@@ -2,7 +2,6 @@
 #define _wh_header_common_c23_comp_
 
 #include<stdint.h>
-
 #include<wh-common/os.h>
 
 /*
@@ -49,8 +48,6 @@
 	#ifndef __cplusplus
 		#define true 1
 		#define false 0
-	
-		typedef int8_t bool;
 	#endif
 #endif
 
