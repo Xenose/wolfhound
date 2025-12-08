@@ -2,7 +2,7 @@
 #define _wh_header_wh_
 
 #include<wh/common.h>
-#include<wh/memory.h>
+#include<wh-sys/memory.h>
 #include<wh/params/wolfhound.h>
 
 WH_C()

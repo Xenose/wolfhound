@@ -17,6 +17,11 @@ SET(C_SOURCES
 	"src/engine-sys/info.c"
 	"src/engine-sys/library.c"
 	"src/engine-sys/memory.c"
+	"src/engine-sys/memory/arena.c"
+	"src/engine-sys/memory/core.c"
+	"src/engine-sys/memory/freelist.c"
+	"src/engine-sys/memreq.c"
+
 	"src/engine-sys/socket.c"
 
 	"src/engine-testing/exceptions.c"
@@ -43,10 +48,6 @@ SET(C_SOURCES
 	"src/engine/lua/helpers.c"
 	"src/engine/maths/core.c"
 	"src/engine/maths/memory.c"
-	"src/engine/memory.c"
-	"src/engine/memory/arena.c"
-	"src/engine/memory/core.c"
-	"src/engine/memory/freelist.c"
 	"src/engine/print.c"
 	"src/engine/render.c"
 	"src/engine/string.c"

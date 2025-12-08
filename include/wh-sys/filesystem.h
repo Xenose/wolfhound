@@ -1,7 +1,7 @@
 #ifndef _wh_header_sys_filesystem_
 #define _wh_header_sys_filesystem_
 
-#include<limits.h>
+#include<wh-posix/limits.h>
 #include<wh/common.h>
 #include<wh/types/memory.h>
 

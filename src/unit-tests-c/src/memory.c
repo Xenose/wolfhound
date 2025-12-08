@@ -1,4 +1,4 @@
-#include<wh/memory.h>
+#include<wh-sys/memory.h>
 #include<wh-testing/exceptions.h>
 #include<wh-testing/macros.h>
 #include<wh/debug/logger.h>

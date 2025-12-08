@@ -72,3 +72,28 @@ TEST(print, integer_tests) {
 		_testing_print(("--> " + std::to_string(i)).c_str(), "--> %i", i);
 	}
 }
+
+TEST(print, sprintf_string_tests) {
+	char wh_buffer[8096] = { 0 };
+	char sp_buffer[8096] = { 0 };
+
+	wh::print().format("Hello %s!\n").buffer(wh_buffer, 8096).fd(2).flags(WH_PRINT_NO_FLUSH).out("world");
+	sprintf(sp_buffer, "Hello %s!\n", "world");
+	
+	EXPECT_STREQ(sp_buffer, wh_buffer);
+}
+
+TEST(print, sprintf_int_tests) {
+	char wh_buffer[8096] = { 0 };
+	char sp_buffer[8096] = { 0 };
+
+	for (int i = -1000000; i <= 1000000; i++) {
+		memset(wh_buffer, 0, 8096);
+		memset(sp_buffer, 0, 8096);
+
+		wh::print().format("Hello %i!\n").buffer(wh_buffer, 8096).fd(2).flags(WH_PRINT_NO_FLUSH).out(i);
+		sprintf(sp_buffer, "Hello %i!\n", i);
+
+		EXPECT_STREQ(sp_buffer, wh_buffer);
+	}
+}

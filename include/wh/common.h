@@ -53,9 +53,6 @@ typedef struct {
 	void* ptr;
 } wh_buffer_s;
 
-#ifndef NAME_MAX
-#define NAME_MAX 256
-#endif
 
 typedef struct {
 	struct_type stype;

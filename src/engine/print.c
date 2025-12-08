@@ -10,7 +10,7 @@
 #include<wh/convert.h>
 #include<wh/debug/error.h>
 #include<wh/maths/core.h>
-#include<wh/memory.h>
+#include<wh-sys/memreq.h>
 #include<wh/print.h>
 
 // =======================================================================================================
@@ -170,7 +170,7 @@ static void _wh_print_uint(wh_print_data_s* d, u64 value, i64 base) {
 		return;
 	}
 
-	wh_uint2str(value, d->buffer, length, 10);
+	wh_uint2str(value, d->buffer, length, base);
 	d->buffer += length;
 	++d->format;
 }

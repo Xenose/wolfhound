@@ -16,8 +16,18 @@ typedef struct _wh_dllist_item_s {
 } wh_dllist_item_s;
 
 typedef struct {
+	void* ptr;
+	u64 size;
+	u64 free;
+} wh_sysmem_s;
+
+typedef struct {
 	struct_type stype;
-	wh_heap_header_s heap;
+
+	union {
+		wh_heap_header_s heap;
+		wh_sysmem_s sysmem;
+	};
 
 	u64 type_size;
 

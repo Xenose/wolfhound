@@ -7,7 +7,7 @@
 #include<wh-testing/unite.h>
 #include<wh/debug/logger.h>
 #include<wh/lua/api.h>
-#include<wh/memory.h>
+#include<wh-sys/memory.h>
 #include<wh/print.h>
 #include<wh/string.h>
 

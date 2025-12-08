@@ -1,30 +1,94 @@
-#ifndef _wh_header_sys_memory_
-#define _wh_header_sys_memory_
+#ifndef _wh_memory_
+#define _wh_memory_
+
+#include<wh-sys/memory.h>
 
 #include<wh/common.h>
+#include<wh/types/memory.h>
+#include<wh/params/memory.h>
 
 WH_C()
 
-// =====================================================================================
-// Parameter structs
-// =====================================================================================
+extern i64 _wh_mem_scan(void);
 
-typedef struct {
-	u64 bytes;
-} _wh_sys_memreq_params;
+// Heap functions
+extern wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params);
+extern void _wh_memory_tracking(_wh_memory_tracking_params params);
 
-typedef struct {
-	void* ptr;
-	size_t len;
-} _wh_sys_memrel_params;
+extern wh_heap_header_s* wh_heap_get(const char* name);
+extern void wh_heap_print_table();
 
-// System dependent code
-extern void* _wh_sys_memreq(_wh_sys_memreq_params params);
-extern void _wh_sys_memrel(_wh_sys_memrel_params params);
+// Dedicated memory functions
+extern void  (*_wh_free)(_wh_mem_free_params params);
+extern void* (*_wh_alloc)(_wh_mem_alloc_params params);
+extern void* (*_wh_realloc)(_wh_mem_realloc_params params);
 
-#define wh_sys_memreq(...)	WH_EPF(_wh_sys_memreq((_wh_sys_memreq_params) { __VA_ARGS__ }))
-#define wh_sys_memrel(...) WH_EPF(_wh_sys_memrel((_wh_sys_memrel_params) { __VA_ARGS__ }))
+// General functions
+extern void _wh_heap_print(_wh_heap_print_params params);
+
+// extern void* _wh_mem(_wh_mem_params params);
+extern i32 wh_mem_leak_count(void);
+
+#ifndef __cplusplu
+
+/* [MD_DOC]
+ *
+ * ## wh_heap_init
+ *
+ * ```c
+ * wh_heap_header_s* wh_heap_init(u64 bytes, u64* error: optional)
+ * ```
+ *
+ * wh_heap_init is designed create new heaps from either the
+ * global heap or from a sub-heap.
+ *
+ * | Name         | Type               | Status        | Comment                                                 |
+ * | ------------ | ------------------ | ------------- | ------------------------------------------------------- |
+ * | bytes        | uint64_t           | Implemented   | The number of bytes that will be allocated to the heap. |
+ * | heap         | wh_heap_header_s*  | Implemented   | The heap from where the new heap will be created.       |
+ * | error        | uint64_t           | Implemented   | Upon a error this variable is set if not nullptr.       |
+ *
+ * ### Return Value
+ * Upon success a heap pointer is returned and on error a nullptr is returned.
+ * 
+ * ### See also
+ * [common.h](include/wh/common.h)
+ */
+#define wh_heap_init(...)	WH_EPF(_wh_heap_init((_wh_heap_init_params) { __VA_ARGS__ }))
+
+/* [MD_DOC
+ *
+ */
+#define wh_memory_tracking(...) WH_EPF(_wh_memory_tracking((_wh_memory_tracking_params) { __VA_ARGS__ }))
+
+/* [MD_DOC]
+ *
+ * @d_param(wh_heap_s*)		heap : The heap that will be printed.
+ */
+#define wh_heap_print(...) WH_EPF(_wh_heap_print((_wh_heap_print_params) { __VA_ARGS__ }))
+
+/* [MD_DOC]
+ *
+ * ## wh_mem_free(void* owner, void* ptr, wh_heap_header_s* heap : optional, u64* error : optional)
+ */
+#define wh_free(...)	WH_EPF(_wh_free((_wh_mem_free_params) { __VA_ARGS__ }))
+
+
+/* [MD_DOC]
+ *
+ * ## wh_mem_alloc()
+ */
+#define wh_alloc(...) WH_EPF(_wh_alloc((_wh_mem_alloc_params) { __VA_ARGS__, .line = __LINE__, .file = __FILENAME__ }))
+
+/* [MD_DOC]
+ */
+#define wh_realloc(...) WH_EPF(_wh_realloc((_wh_mem_realloc_params) { __VA_ARGS__ }))
+
+/* [MD_DOC]
+ */
+//#define wh_mem(...) WH_EPF(_wh_mem((_wh_mem_params){ __VA_ARGS__ }))
+
+#endif /* __cplusplus */
 
 WH_C_END()
-#endif /* _wh_header_sys_memory_ */
-
+#endif /* _wh_memory_ */

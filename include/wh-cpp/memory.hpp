@@ -3,7 +3,7 @@
 
 #include<string>
 #include<stdint.h>
-#include<wh/memory.h>
+#include<wh-sys/memory.h>
 
 namespace wh {
 
