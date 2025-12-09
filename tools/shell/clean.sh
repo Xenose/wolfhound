@@ -1,8 +1,10 @@
 #!/bin/sh
 
-set -e
 
-cd "${PRP}/build"
+TARGET="$(cat "${PRP}/.target" 2> /dev/null)"
+set -eu
+
+cd "${PRP}/${TARGET}"
 
 TOOL="$(grep "^CMAKE_GENERATOR:INTERNAL=" ./CMakeCache.txt | cut -d= -f2 | tr '[:upper:]' '[:lower:]')"
 

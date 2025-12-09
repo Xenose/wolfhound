@@ -11,7 +11,7 @@
 
 WH_C()
 
-#include<stdint.h>
+#include<wh-posix/stdint.h>
 #include<stddef.h>
 #include<stdbool.h>
 

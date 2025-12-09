@@ -1,7 +1,7 @@
 #ifndef _wh_header_common_c23_comp_
 #define _wh_header_common_c23_comp_
 
-#include<stdint.h>
+#include<wh-posix/stdint.h>
 #include<wh-common/os.h>
 
 /*

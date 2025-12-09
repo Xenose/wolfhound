@@ -1,7 +1,7 @@
 #ifndef _wh_posix_stdatomic_
 #define _wh_posix_stdatomic_
 
-#include<stdint.h>
+#include<wh-posix/stdint.h>
 #include<wh-common/c23-comp.h>
 #include<wh-common/macros.h>
 #include<wh-common/os.h>
@@ -9,7 +9,7 @@
 //#define __STDC_NO_ATOMICS__ // for compiler highlight remove later
 
 #ifndef __cplusplus
-	#if (WH_SYSTEM&WH_SYS_TCC) || defined(__STDC_NO_ATOMICS__)
+	#if (defined(__STDC_NO_ATOMICS__) || (WH_SYSTEM&WH_SYS_TCC)) && !(WH_SYSTEM&WH_SYS_MINGW) 
 		typedef volatile char atomic_char;
 		typedef volatile int8_t atomic_flag;
 		typedef volatile int8_t atomic_bool;

@@ -2,7 +2,7 @@
 #define _wh_header_cpp_memory_
 
 #include<string>
-#include<stdint.h>
+#include<wh-posix/stdint.h>
 #include<wh-sys/memory.h>
 
 namespace wh {
