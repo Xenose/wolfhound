@@ -2,10 +2,11 @@
 
 set -e
 
-mkdir -pv "${PRP}/build"
+TARGET="$(cat "${PRP}/.target")"
+mkdir -pv "${PRP}/${TARGET}"
 
 if command -v cmake > /dev/null; then
-	cmake --build "${PRP}/build" 
+	cmake --build "${PRP}/${TARGET}" 
 else
 	echo "CMake not installed exiting..."
 	exit 1

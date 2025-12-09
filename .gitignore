@@ -1,7 +1,11 @@
 # Ignore all build directories recursively
 build/
 **/build/
+**/build-*/
 **/CMakeFiles/
+
+# Wolfhound files
+.target
 
 # CMake generated files
 CMakeCache.txt

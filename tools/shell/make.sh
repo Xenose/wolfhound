@@ -1,11 +1,14 @@
 #!/bin/sh
 
+
+TARGET="$(cat "${PRP}/.target" 2> /dev/null)"
 set -e
 
-cd "${PRP}/build"
+if [ -z "${TARGET}" ]; then
+	echo "ERROR :: please select a compiler by running wh-[compiler-name]"
+	exit 1
+fi
 
-set +e
-rm CMakeCache.txt
-set -e
-
-cmake -G "Unix Makefiles" ..
+cd "${PRP}/${TARGET}"
+rm "CMakeCache.txt" || True
+cmake -G "Unix Makefiles" "${PRP}"
