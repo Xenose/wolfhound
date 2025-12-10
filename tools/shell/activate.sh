@@ -40,6 +40,7 @@ alias wh-docker="PRP='${WP}' __wh_docker"
 
 # code
 alias wh-build="PRP='${WP}' ${WP}${TP}build.sh"
+alias wh-build-all="PRP='${WP}' ${WP}${TP}build_all.sh"
 alias wh-clean="PRP='${WP}' ${WP}${TP}clean.sh"
 
 # compilers
