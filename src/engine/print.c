@@ -31,7 +31,10 @@ typedef struct {
 // =======================================================================================================
 // Globals
 // =======================================================================================================
-static wh_thread char _buffer[8096];
+#if !(WH_SYSTEM&WH_SYS_TCC)
+	static wh_thread char _buffer[8096];
+#endif
+
 static _hw_print_func_table _wh_func_table = { 0 };
 
 // =======================================================================================================
@@ -503,6 +506,10 @@ go_error_exit:
 }
 
 i64 _wh_print_va(_wh_print_params params, va_list list) {
+	#if (WH_SYSTEM&WH_SYS_TCC)
+		char _buffer[8096];
+	#endif
+
 	i64 ret = 0;
 	char* buffer = params.buffer;
 
