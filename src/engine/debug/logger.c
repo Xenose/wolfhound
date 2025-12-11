@@ -8,8 +8,10 @@ static i64 _wh_log_real_va(_wh_print_params print_params, _wh_log_params params,
 
 static i64 _wh_log_dummy(_wh_print_params print_params, _wh_log_params params, ...);
 static i64 _wh_log_real(_wh_print_params print_params, _wh_log_params params, ...);
-	
-wh_thread char _buffer[8096] = { 0 };
+
+#if !(WH_SYSTEM&WH_SYS_TCC)
+	static wh_thread char _buffer[8096] = { 0 };
+#endif
 
 i64 (*_wh_log_va[])(_wh_print_params print_params, _wh_log_params params, va_list args) = {
 	&_wh_log_real_va, // Emergency
@@ -42,6 +44,10 @@ static i64 _wh_log_dummy_va(_wh_print_params print_params, _wh_log_params params
 }
 
 static i64 _wh_log_real_va(_wh_print_params print_params, _wh_log_params params, va_list args) {
+	#if (WH_SYSTEM&WH_SYS_TCC)
+		char _buffer[8096] = { 0 };
+	#endif
+
 	i64 used = wh_print((
 		"[ %s ] \033[90m%s::%d::%s -->\033[0m "
 		, 2, _buffer, 8096, 0, WH_PRINT_NO_FLUSH),
