@@ -7,6 +7,9 @@
 if [ -f /.dockerenv ]; then
 	echo "Running inside Docker, using current path instead!"
 	WP=$(pwd)
+elif [ ! -z "$ANDROID__BUILD_VERSION_SDK" ]; then
+	echo "Running inside Android, using current path instead!"
+	WP=$(pwd)
 else
 	echo "Not running inside Docker"
 	WP=$(cd "$(dirname "$0")" && pwd)

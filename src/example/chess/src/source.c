@@ -19,7 +19,7 @@
 #include<wh/images/loader.h>
 #include<wh-sys/filesystem.h>
 #include<wh/data/hashmap_lazy.h>
-#include<wh-testing/exceptions.h>
+#include<wh/debug/exceptions.h>
 #include<wh/debug/logger.h>
 
 #include<stdio.h>
@@ -62,6 +62,11 @@ i8 action_collision(wh_instance_s* ins, wh_action_s* action) {
 
 i8 action_health_gen(wh_instance_s* ins, wh_action_s* action) {
 	return 0;
+}
+
+void disown_test() {
+	void* a = wh_alloc(nullptr, 64, &a);
+	wh_disown(nullptr, a, a);
 }
 
 int main(int arc, char* const* arv) {
@@ -122,6 +127,10 @@ int main(int arc, char* const* arv) {
 
 	wh_heap_print();
 	wh_loop(ins, &update, &fixed_update);
+
+	wh_heap_print();
+	disown_test();
+	wh_heap_print();
 
 	_wh_mem_scan();
 	//_wh_mem_scan();

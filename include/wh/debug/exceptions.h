@@ -26,7 +26,8 @@ extern wh_thread sigjmp_buf _jmp_buffers[];
 
 extern i8 _jmp_init();
 
-#define wh_try if (0 == _jmp_init()) if (0 == (_jmp_error[_jmp_index] = sigsetjmp(_jmp_buffers[_jmp_index++], 1)))
+#define wh_try if (0 == _jmp_init()) for (i64 _old_index##__LINE__ = _jmp_index++; \
+	_old_index##__LINE__ != _jmp_index; _jmp_index--) if (0 == (_jmp_error[_jmp_index] = sigsetjmp(_jmp_buffers[_jmp_index], 1)))
 
 #define wh_catch(_ex_) else for (wh_exception_s _ex_ = (wh_exception_s){ .error = _jmp_error[_jmp_index] }; 0 != _ex_.error; _ex_.error = 0)
 

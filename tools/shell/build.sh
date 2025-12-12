@@ -6,6 +6,7 @@ TARGET="$(cat "${PRP}/.target")"
 mkdir -pv "${PRP}/${TARGET}"
 
 if command -v cmake > /dev/null; then
+	printf "Building target [ %s ]\n\n" "$(basename "${TARGET}")"
 	cmake --build "${PRP}/${TARGET}" 
 else
 	echo "CMake not installed exiting..."

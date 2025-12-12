@@ -5,7 +5,7 @@
 
 
 #include<wh-cpp/print.hpp>
-#include<wh-testing/exceptions.h>
+#include<wh/debug/exceptions.h>
 #include<wh-testing/macros.h>
 #include<wh/debug/benchmark.h>
 #include<wh/print.h>

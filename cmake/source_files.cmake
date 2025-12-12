@@ -20,13 +20,13 @@ SET(C_SOURCES
 	"src/engine-sys/memory/arena.c"
 	"src/engine-sys/memory/core.c"
 	"src/engine-sys/memory/freelist.c"
+	"src/engine-sys/memory/tracker.c"
 	"src/engine-sys/memreq.c"
-
 	"src/engine-sys/socket.c"
 
-	"src/engine-testing/exceptions.c"
 	"src/engine-testing/unite.c"
 
+	"src/engine/debug/exceptions.c"
 	"src/engine/arg_parser.c"
 	"src/engine/config.c"
 	"src/engine/convert.c"

@@ -1,7 +1,7 @@
 #include<signal.h>
 #include<stdio.h>
 #include<wh-posix/unistd.h>
-#include<wh-testing/exceptions.h>
+#include<wh/debug/exceptions.h>
 
 #define JMP_MAX 256
 

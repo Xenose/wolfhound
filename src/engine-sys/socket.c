@@ -6,8 +6,12 @@
 #include<sys/types.h>
 
 #if (WH_SYSTEM&WH_SYS_POSIX)
+#include<arpa/inet.h>
 #include<netdb.h>
+#include<netinet/in.h>
+#include<netinet/ip6.h> // if available
 #include<sys/socket.h>
+#include<sys/types.h>
 
 wh_socket_s _wh_socket_init(_wh_socket_init_params params) {
 	int s = -1;
@@ -71,6 +75,12 @@ go_error_exit:
 	return out;
 }
 
+void _wh_sock_recv(wh_socket_s* sock) {
+}
+
+void _wh_sock_send(wh_socket_s* sock) {
+}
+
 #elif (WH_SYSTEM&WH_SYS_WINDOWS)
 
 wh_socket_s _wh_socket_init(_wh_socket_init_params params) {
@@ -78,4 +88,9 @@ wh_socket_s _wh_socket_init(_wh_socket_init_params params) {
 	return out;
 }
 
+#endif
+
+#if (WH_SYSTEM&WH_SYS_LINUX)
+void _wh_sock_epoll(wh_socket_s* sock) {
+}
 #endif
