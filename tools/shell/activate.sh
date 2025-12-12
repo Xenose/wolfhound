@@ -40,6 +40,7 @@ alias wh-refresh=". ${WP}${TP}activate.sh"
 alias wh-bootstrap="PRP='${WP}' ${WP}${TP}bootstrap.sh"
 alias wh-check="PRP='${WP}' ${WP}${TP}check.sh"
 alias wh-docker="PRP='${WP}' __wh_docker"
+alias wh-sync="PRP='${WP}' ${WP}${TP}sync.sh"
 
 # code
 alias wh-build="PRP='${WP}' ${WP}${TP}build.sh"

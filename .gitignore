@@ -6,6 +6,7 @@ build/
 
 # Wolfhound files
 .target
+.servers
 
 # CMake generated files
 CMakeCache.txt
