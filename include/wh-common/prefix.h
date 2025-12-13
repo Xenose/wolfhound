@@ -1,7 +1,6 @@
 #ifndef _wh_header_common_prefix_
 #define _wh_header_common_prefix_
 
-
 #ifndef __cplusplus
 	#define WH_C()
 	#define WH_C_END()
