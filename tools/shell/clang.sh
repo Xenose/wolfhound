@@ -1,7 +1,9 @@
 #!/bin/sh
 
 set -eu
-TARGET="build/clang-linux"
+
+SYS="$("${PRP}/${TP}"/detect_sys.sh)"
+TARGET="build/clang-${SYS}"
 
 mkdir -pv "${PRP}/${TARGET}"
 echo "/${TARGET}" > "${PRP}/.target"

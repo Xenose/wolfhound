@@ -2,7 +2,8 @@
 
 set -e
 
-TARGET="build/tcc-linux"
+SYS="$("${PRP}/${TP}"/detect_sys.sh)"
+TARGET="build/tcc-${SYS}"
 
 mkdir -pv "${PRP}/${TARGET}"
 echo "/${TARGET}" > "${PRP}/.target"

@@ -2,7 +2,8 @@
 
 set -eu
 
-TARGETS="clang-linux gcc-linux tcc-linux"
+SYS="$("${PRP}/${TP}"/detect_sys.sh)"
+TARGETS="clang-${SYS} gcc-${SYS} tcc-${SYS}"
 
 if command -v cmake > /dev/null; then
 	for target in ${TARGETS}; do

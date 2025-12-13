@@ -29,30 +29,30 @@ TP="/tools/shell/"
 echo "Setting active directory to [ $WP ]"
 
 # Fun
-alias wh-count="PRP='${WP}' ${WP}${TP}stats.sh"
+alias wh-count="PRP='${WP}' TP='${TP}' ${WP}${TP}stats.sh"
 
 # Tests / Reviews
-alias wh-ai-review="PRP='${WP}' ${WP}${TP}ai_review.sh"
-alias wh-coverage="PRP='${WP}' ${WP}${TP}coverage.sh"
+alias wh-ai-review="PRP='${WP}' TP='${TP}' ${WP}${TP}ai_review.sh"
+alias wh-coverage="PRP='${WP}' TP='${TP}' ${WP}${TP}coverage.sh"
 
 # Helpers
 alias wh-refresh=". ${WP}${TP}activate.sh"
-alias wh-bootstrap="PRP='${WP}' ${WP}${TP}bootstrap.sh"
-alias wh-check="PRP='${WP}' ${WP}${TP}check.sh"
-alias wh-docker="PRP='${WP}' __wh_docker"
-alias wh-sync="PRP='${WP}' ${WP}${TP}sync.sh"
+alias wh-bootstrap="PRP='${WP}' TP='${TP}' ${WP}${TP}bootstrap.sh"
+alias wh-check="PRP='${WP}' TP='${TP}' ${WP}${TP}check.sh"
+alias wh-docker="PRP='${WP}' TP='${TP}' __wh_docker"
+alias wh-sync="PRP='${WP}' TP='${TP}' ${WP}${TP}sync.sh"
 
 # code
-alias wh-build="PRP='${WP}' ${WP}${TP}build.sh"
-alias wh-build-all="PRP='${WP}' ${WP}${TP}build_all.sh"
-alias wh-clean="PRP='${WP}' ${WP}${TP}clean.sh"
+alias wh-build="PRP='${WP}' TP='${TP}' ${WP}${TP}build.sh"
+alias wh-build-all="PRP='${WP}' TP='${TP}' ${WP}${TP}build_all.sh"
+alias wh-clean="PRP='${WP}' TP='${TP}' ${WP}${TP}clean.sh"
 
 # compilers
-alias wh-gcc="PRP='${WP}' ${WP}${TP}gcc.sh"
-alias wh-clang="PRP='${WP}' ${WP}${TP}clang.sh"
-alias wh-mingw="PRP='${WP}' ${WP}${TP}mingw.sh"
-alias wh-tcc="PRP='${WP}' ${WP}${TP}tcc.sh"
+alias wh-gcc="PRP='${WP}' TP='${TP}' ${WP}${TP}gcc.sh"
+alias wh-clang="PRP='${WP}' TP='${TP}' ${WP}${TP}clang.sh"
+alias wh-mingw="PRP='${WP}' TP='${TP}' ${WP}${TP}mingw.sh"
+alias wh-tcc="PRP='${WP}' TP='${TP}' ${WP}${TP}tcc.sh"
 
 # build systems
-alias wh-ninja="PRP='${WP}' ${WP}${TP}ninja.sh"
-alias wh-make="PRP='${WP}' ${WP}${TP}make.sh"
+alias wh-ninja="PRP='${WP}' TP='${TP}' ${WP}${TP}ninja.sh"
+alias wh-make="PRP='${WP}' TP='${TP}' ${WP}${TP}make.sh"

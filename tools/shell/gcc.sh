@@ -1,7 +1,8 @@
 #!/bin/sh
 
 set -e
-TARGET="build/gcc-linux"
+SYS="$("${PRP}/${TP}"/detect_sys.sh)"
+TARGET="build/gcc-${SYS}"
 
 mkdir -pv "${PRP}/${TARGET}"
 echo "/${TARGET}" > "${PRP}/.target"

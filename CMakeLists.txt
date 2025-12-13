@@ -47,6 +47,15 @@ SET(NON_MSVC_FLAGS
 	-Wno-unused-but-set-variable
 )
 
+IF (ANDROID OR CMAKE_SYSTEM_NAME STREQUAL "Android")
+	MESSAGE(STATUS "Detected Android/Termux environment. Adding Termux prefix.")
+
+	SET(TERMUX_PREFIX "/data/data/com.termux/files/usr")
+	LIST(APPEND CMAKE_PREFIX_PATH ${TERMUX_PREFIX})
+	LIST(APPEND CMAKE_INCLUDE_PATH "${TERMUX_PREFIX}/include")
+	LIST(APPEND CMAKE_LIBRARY_PATH "${TERMUX_PREFIX}/lib")
+ENDIF()
+
 # Lets use the new C++ as well
 IF (NOT NO_CXX_COMPILER)
 	SET(CMAKE_CXX_STANDARD 23)
