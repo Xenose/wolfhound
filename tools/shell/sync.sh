@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 set -eu
 SERVER_LIST="${PRP}/.servers"
@@ -20,5 +20,7 @@ while IFS= read -r line; do
 	 dest="$1"
 	 port="$2"
 
+	 set +e
 	 rsync -av -e "ssh -p $port" "$PRP/" "$dest"
+	 set -e
  done < "$SERVER_LIST"
