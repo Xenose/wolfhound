@@ -30,6 +30,7 @@ typedef struct {
 	};
 
 	u64 type_size;
+	u64 node_count;
 
 	void* head;
 	void* tail;

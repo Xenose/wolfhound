@@ -26,7 +26,15 @@ int8_t (*_wh_internal_sys_llist_init[])(wh_list_s* out, i64 list_type) = {
 	&_wh_sys_llist_single_stdlib_init,
 };
 
-i8 (*_wh_internal_sys_llist_realloc[])(wh_list_s* out) = {
+void (*_wh_internal_sys_list_get_index[]) (wh_list_s* list, u64 index, void** current, void** previous) {
+	nullptr;
+}
+
+void (*_wh_internal_sys_list_insert[]) (wh_list_s* list, void* current, void* previous) {
+	nullptr;
+}
+
+i8 (*_wh_internal_sys_llist_realloc[])(wh_list_s* out, u64 index) = {
 	nullptr,
 };
 
@@ -69,22 +77,64 @@ go_error_exit:
 	return -1;
 }
 
-i8 _wh_sys_list_add(wh_list_s* list, void* item) {
-	wh_dllist_item_s* last = nullptr;
+void _wh_internal_sys_list_get_index_dll (wh_list_s* list, u64 index, void** current, void** previous) {
+	wh_dllist_item_s* c = *current;
+	u64 midpoint = list.node_count / 2;
+
+	if (index > midpoint) {
+		for (*c = list->head; *c != nullptr && 0 < index; *c = *c->next index--);
+		*p = *c->previous;
+	} else {
+		index = index - midpoint;
+		for (*c = list->tail; *c != nullptr && 0 < index; *c = *c->previous index--);
+	}
+
+	*current = c;
+	*previous = c->previous;
+}
+
+void _wh_internal_sys_list_insert_dll(wh_list_s* list, void* current, void* previous, void* node) {
+	wh_dllist_item_s* c = current;
+	wh_dllist_item_s* p = previous;
+
+	c->previous = node;
+	p->next = node;
+
+	node->next = c;
+	node->previous = p;
+}
+
+i8 _wh_sys_list_add(wh_list_s* list, void* item, u64 index) {
+	void* current = nullptr;
+	void* previous = nullptr;
+
+	u64 func_index = 0;
+	u64 allocation_size = 0;
 
 	if (nullptr == item) {
 		wh_log_notice(("Provided a pointer pointing to [ nullptr ], ingoring addition."));
 		goto go_error_exit;
 	}
 
-	if ((list->type_size + sizeof(wh_dllist_item_s)) > list->sysmem.free) {
-		if (0 != _wh_internal_sys_llist_realloc[list->stype - WH_STRUCT_TYPE_LLIST_SINGLE](list)) {
-			wh_log_error(("Failed to relloac the llist!"));
+	if (nullptr == list->head) {
+		wh_log_crtical(("Broken list provided! Head [ %u ] Tail [ %u ]"), list->head, list->tail);
+		goto go_error_exit;
+	}
+
+	func_index = list->stype - WH_STRUCT_TYPE_LLIST_SINGLE;
+	alloc_size = list->type_size + sizeof(wh_dllist_item_s));
+
+	if ((alloc_size > list->sysmem.free) {
+		if (0 != _wh_internal_sys_llist_realloc[func_index](list)) {
+			wh_log_critical(("Failed to relloac the llist!"));
 			goto go_error_exit;
 		}
 	}
 
-	list->sysmem.free -= (list->type_size + sizeof(wh_dllist_item_s));
+	current = _wh_internal_sys_list_get_index[func_index](list, index, &current, &previous);
+	_wh_internal_sys_list_insert[func_index](item, &current, &previous);
+	
+	list->sysmem.free -= alloc_size;
 	last = list->tail;
 
 	return 0;
