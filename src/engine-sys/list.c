@@ -2,6 +2,7 @@
 #include<wh/data/list.h>
 #include<wh/maths/memory.h>
 
+#include<wh/debug/logger.h>
 #include<wh-sys/memreq.h>
 #include<wh-posix/unistd.h>
 
@@ -26,13 +27,13 @@ int8_t (*_wh_internal_sys_llist_init[])(wh_list_s* out, i64 list_type) = {
 	&_wh_sys_llist_single_stdlib_init,
 };
 
-void (*_wh_internal_sys_list_get_index[]) (wh_list_s* list, u64 index, void** current, void** previous) {
-	nullptr;
-}
+void (*_wh_internal_sys_list_get_index[]) (wh_list_s* list, u64 index, void** current, void** previous) = {
+	nullptr,
+};
 
-void (*_wh_internal_sys_list_insert[]) (wh_list_s* list, void* current, void* previous) {
-	nullptr;
-}
+void (*_wh_internal_sys_list_insert[]) (wh_list_s* list, void* current, void* previous) = {
+	nullptr,
+};
 
 i8 (*_wh_internal_sys_llist_realloc[])(wh_list_s* out, u64 index) = {
 	nullptr,
@@ -79,29 +80,29 @@ go_error_exit:
 
 void _wh_internal_sys_list_get_index_dll (wh_list_s* list, u64 index, void** current, void** previous) {
 	wh_dllist_item_s* c = *current;
-	u64 midpoint = list.node_count / 2;
+	u64 midpoint = list->node_count / 2;
 
 	if (index > midpoint) {
-		for (*c = list->head; *c != nullptr && 0 < index; *c = *c->next index--);
-		*p = *c->previous;
+		for (c = list->head; c != nullptr && 0 < index; *c = *c->p_next, index--);
 	} else {
 		index = index - midpoint;
-		for (*c = list->tail; *c != nullptr && 0 < index; *c = *c->previous index--);
+		for (c = list->tail; c != nullptr && 0 < index; *c = *c->p_previous, index--);
 	}
 
 	*current = c;
-	*previous = c->previous;
+	*previous = c->p_previous;
 }
 
 void _wh_internal_sys_list_insert_dll(wh_list_s* list, void* current, void* previous, void* node) {
 	wh_dllist_item_s* c = current;
 	wh_dllist_item_s* p = previous;
+	wh_dllist_item_s* n = node;
 
-	c->previous = node;
-	p->next = node;
+	c->p_previous = node;
+	p->p_next = node;
 
-	node->next = c;
-	node->previous = p;
+	n->p_next = c;
+	n->p_previous = p;
 }
 
 i8 _wh_sys_list_add(wh_list_s* list, void* item, u64 index) {
@@ -109,7 +110,7 @@ i8 _wh_sys_list_add(wh_list_s* list, void* item, u64 index) {
 	void* previous = nullptr;
 
 	u64 func_index = 0;
-	u64 allocation_size = 0;
+	u64 alloc_size = 0;
 
 	if (nullptr == item) {
 		wh_log_notice(("Provided a pointer pointing to [ nullptr ], ingoring addition."));
@@ -117,25 +118,25 @@ i8 _wh_sys_list_add(wh_list_s* list, void* item, u64 index) {
 	}
 
 	if (nullptr == list->head) {
-		wh_log_crtical(("Broken list provided! Head [ %u ] Tail [ %u ]"), list->head, list->tail);
+		wh_log_critical(("Broken list provided! Head [ %u ] Tail [ %u ]"), list->head, list->tail);
 		goto go_error_exit;
 	}
 
-	func_index = list->stype - WH_STRUCT_TYPE_LLIST_SINGLE;
-	alloc_size = list->type_size + sizeof(wh_dllist_item_s));
+	func_index = ((u64)list->stype) - WH_STRUCT_TYPE_LLIST_SINGLE;
+	alloc_size = list->type_size + sizeof(wh_dllist_item_s);
 
-	if ((alloc_size > list->sysmem.free) {
-		if (0 != _wh_internal_sys_llist_realloc[func_index](list)) {
+	if (alloc_size > list->sysmem.free) {
+		if (0 != _wh_internal_sys_llist_realloc[func_index](list, alloc_size)) {
 			wh_log_critical(("Failed to relloac the llist!"));
 			goto go_error_exit;
 		}
 	}
 
-	current = _wh_internal_sys_list_get_index[func_index](list, index, &current, &previous);
+	_wh_internal_sys_list_get_index[func_index](list, index, &current, &previous);
 	_wh_internal_sys_list_insert[func_index](item, &current, &previous);
 	
 	list->sysmem.free -= alloc_size;
-	last = list->tail;
+	//last = list->tail;
 
 	return 0;
 go_error_exit:
