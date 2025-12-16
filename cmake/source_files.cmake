@@ -23,6 +23,7 @@ SET(C_SOURCES
 	"src/engine-sys/memory/tracker.c"
 	"src/engine-sys/memreq.c"
 	"src/engine-sys/socket.c"
+	"src/engine-sys/list.c"
 
 	"src/engine-testing/unite.c"
 

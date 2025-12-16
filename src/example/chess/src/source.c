@@ -21,6 +21,7 @@
 #include<wh/data/hashmap_lazy.h>
 #include<wh/debug/exceptions.h>
 #include<wh/debug/logger.h>
+#include<wh-sys/list.h>
 
 #include<stdio.h>
 
@@ -111,6 +112,8 @@ int main(int arc, char* const* arv) {
 	printf("Value is [ %i ]\n", *wh_hashmap_lazy_get(int*, &hml, "test2"));
 	printf("Value is [ %i ]\n", *wh_hashmap_lazy_get(int*, &hml, "test3"));
 	printf("Value is [ %i ]\n", *wh_hashmap_lazy_get(int*, &hml, "test444"));
+
+	wh_list_s test_list = wh_dlist_init_memreq(int);
 
 	/*wh_action_init(ins, 100);
 	wh_entity_init(ins, 100);
