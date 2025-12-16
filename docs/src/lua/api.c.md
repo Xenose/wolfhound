@@ -1,5 +1,0 @@
-[api.h](wh/lua/api.h)
-[helpers.h](wh/lua/helpers.h)
-[file.h](wh/lua/api/file.h)
-[filesystem.h](wh/lua/api/filesystem.h)
-[maths.h](wh/lua/api/maths.h)

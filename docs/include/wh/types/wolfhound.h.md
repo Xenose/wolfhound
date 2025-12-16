@@ -1,6 +1,0 @@
-[common.h](wh/common.h)
-[memory.h](wh/memory.h)
-[config.h](wh/types/config.h)
-[gameinfo.h](wh/types/gameinfo.h)
-[SDL.h](SDL3/SDL.h)
-[vulkan.h](vulkan/vulkan.h)

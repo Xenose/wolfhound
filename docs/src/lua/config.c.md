@@ -1,6 +1,0 @@
-[lua.h](lua.h)
-[lualib.h](lualib.h)
-[lauxlib.h](lauxlib.h)
-[stdarg.h](stdarg.h)
-[config.h](wh/lua/config.h)
-[helpers.h](wh/lua/helpers.h)
