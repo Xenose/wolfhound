@@ -283,7 +283,7 @@ void _wh_disown_tracking(_wh_mem_free_params params) {
 	_wh_tracker_remove(params.owner, params.ptr);
 }
 
-// Deprecated
+WH_DEPRECATED("DON'T USE THIS FUNCTION!")
 void* _wh_mem(_wh_mem_params params) {
 	void* ptr = nullptr;
 

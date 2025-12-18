@@ -18,8 +18,8 @@ int8_t _wh_sys_list_double_memreq_init(wh_list_s* out, i64 list_type);
 int8_t _wh_sys_list_single_stdlib_init(wh_list_s* out, i64 list_type);
 int8_t _wh_sys_list_double_stdlib_init(wh_list_s* out, i64 list_type);
 
-void _wh_internal_sys_list_get_index_sll (wh_list_s* list, u64 index, void** current, void** previous);
-void _wh_internal_sys_list_get_index_dll (wh_list_s* list, u64 index, void** current, void** previous);
+i8 _wh_internal_sys_list_get_index_sll (wh_list_s* list, u64 index, void** current, void** previous);
+i8 _wh_internal_sys_list_get_index_dll (wh_list_s* list, u64 index, void** current, void** previous);
 
 // Functions for allocations
 i8 _wh_internal_sys_list_alloc_wolfhound(wh_list_s* out, u64 count);
@@ -38,7 +38,7 @@ int8_t (*_wh_internal_sys_list_init[])(wh_list_s* out, i64 list_type) = {
 	nullptr,
 };
 
-void (*_wh_internal_sys_list_get_index[]) (wh_list_s* list, u64 index, void** current, void** previous) = {
+i8 (*_wh_internal_sys_list_get_index[]) (wh_list_s* list, u64 index, void** current, void** previous) = {
 	&_wh_internal_sys_list_get_index_sll,
 	&_wh_internal_sys_list_get_index_dll,
 
@@ -65,6 +65,10 @@ i8 (*_wh_internal_sys_list_alloc[])(wh_list_s* out, u64 count) = {
 	&_wh_internal_sys_list_alloc_stdlib,
 	nullptr,
 };
+
+
+
+
 
 i8 _wh_internal_sys_list_alloc_wolfhound(wh_list_s* out, u64 count) {
 	void* new_data = nullptr;
@@ -129,25 +133,73 @@ i8 _wh_internal_sys_list_alloc_stdlib(wh_list_s* out, u64 count) {
 	return 0;
 }
 
-void _wh_internal_sys_list_get_index_sll (wh_list_s* list, u64 index, void** current, void** previous) {
-	wh_sllist_item_s* c = *current;
 
-	for (c = list->head; c != nullptr && 0 < index; *c = *c->p_next, index--);
-}
 
-void _wh_internal_sys_list_get_index_dll (wh_list_s* list, u64 index, void** current, void** previous) {
-	wh_dllist_item_s* c = *current;
-	u64 midpoint = list->node_count / 2;
-	if (index > midpoint) {
-		_wh_internal_sys_list_get_index_sll(list, index, current, previous);
-	} else {
-		index = index - midpoint;
-		for (c = list->tail; c != nullptr && 0 < index; *c = *c->p_previous, index--);
+
+
+i8 _wh_internal_sys_list_get_index_sll (wh_list_s* list, u64 index, void** current, void** previous) {
+	wh_sllist_item_s* p = nullptr;
+	wh_sllist_item_s* c = list->head;
+
+	if (index >= list->node_count) {
+		goto go_error_exit;
+	}
+
+	while (0 < index--) {
+		p = c;
+		c = c->p_next;
 	}
 
 	*current = c;
-	*previous = c->p_previous;
+	*previous = p;
+	return 0;
+
+go_error_exit:
+	*current = nullptr;
+	*previous = nullptr;
+	return -1;
 }
+
+i8 _wh_internal_sys_list_get_index_dll (wh_list_s* list, u64 index, void** current, void** previous) {
+	wh_dllist_item_s* c = nullptr; 
+	u64 midpoint = list->node_count / 2;
+
+	if (index >= list->node_count) {
+		goto go_error_exit;
+	}
+
+	if (index <= midpoint) {
+		c = list->head;
+
+		while (0 < index--) {
+			c = c->p_next;
+		}
+
+	} else {
+		c = list->tail;
+		index = list->node_count - (index + 1);
+
+		while (0 < index--) {
+			c = c->p_previous;
+		}
+		
+	}
+
+	if (nullptr != c) {
+		*previous = c->p_previous;
+	}
+
+	*current = c;
+	return 0;
+
+go_error_exit:
+	*current = nullptr;
+	*previous = nullptr;
+	return -1;
+}
+
+
+
 
 void _wh_internal_sys_list_insert_dll(wh_list_s* list, void* current, void* previous, void* node) {
 	wh_dllist_item_s* c = current;

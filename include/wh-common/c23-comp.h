@@ -9,7 +9,7 @@
  * so we should use the more type safe version when possible.
  */
 #if !defined(__cplusplus)
-	#if !defined(nullptr) && (__STDC_VERSION__ < 202000L)
+	#if !defined(nullptr) && (__STDC_VERSION__ < 202311L)
 		#define nullptr NULL
 	#endif
 #endif
@@ -34,7 +34,7 @@
 #if (WH_SYSTEM&WH_SYS_MSVC)
 	#define wh_thread __declspec(thread)
 #elif (WH_SYSTEM&WH_SYS_TCC)
-	#define wh_thread
+	#define wh_thread // TODO assert once we solve this...
 #elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
 	#define wh_thread _Thread_local
 #else
@@ -49,6 +49,14 @@
 		#define true 1
 		#define false 0
 	#endif
+#endif
+
+#if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 202311L)
+	#define wh_no_return [[noreturn]]
+	#define WH_DEPRECATED(_msg_) [[deprecated(_msg_)]]
+#else
+	#define wh_no_return _Noreturn
+	#define WH_DEPRECATED(_msg_)
 #endif
 
 #endif /* _wh_header_common_c23_comp_ */
