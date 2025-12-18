@@ -133,10 +133,6 @@ i8 _wh_internal_sys_list_alloc_stdlib(wh_list_s* out, u64 count) {
 	return 0;
 }
 
-
-
-
-
 i8 _wh_internal_sys_list_get_index_sll (wh_list_s* list, u64 index, void** current, void** previous) {
 	wh_sllist_item_s* p = nullptr;
 	wh_sllist_item_s* c = list->head;
@@ -198,8 +194,14 @@ go_error_exit:
 	return -1;
 }
 
+void _wh_internal_sys_list_insert_sll(wh_list_s* list, void* current, void* previous, void* node) {
+	wh_sllist_item_s* c = current;
+	wh_sllist_item_s* p = previous;
+	wh_sllist_item_s* n = node;
 
-
+	p->p_next = node;
+	n->p_next = c;
+}
 
 void _wh_internal_sys_list_insert_dll(wh_list_s* list, void* current, void* previous, void* node) {
 	wh_dllist_item_s* c = current;
