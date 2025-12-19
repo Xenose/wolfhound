@@ -30,8 +30,6 @@ typedef struct {
 
 static _wh_heap_list_s _list = { 0 };
 
-
-
 extern void* _wh_alloc_no_tracking(_wh_mem_alloc_params params);
 extern void _wh_free_no_tracking(_wh_mem_free_params params);
 extern void* _wh_realloc_no_tracking(_wh_mem_realloc_params params);
@@ -100,54 +98,56 @@ void _wh_tracker_insert(void* owner, void* ptr, wh_heap_header_s* heap, u64 line
 }
 
 void _wh_tracker_remove(void* owner, void* ptr) {
-	_wh_heap_list_entry_s* current = _list.nodes;
-
-	if (nullptr == current) {
-		return;
-	}
-
-	while (ptr != current->ptr) {
-		current = current->next;
+	wh_spinlock_v2(&_list.lock) {
+		_wh_heap_list_entry_s* current = _list.nodes;
 
 		if (nullptr == current) {
 			return;
 		}
-	}
 
-	switch (current->owner_count - 1) {
-		case 0:
-			wh_log_error(("Disowning tracked pointer!"));
+		while (ptr != current->ptr) {
+			current = current->next;
 
-			if (nullptr != current->previous) { 
-				wh_log_debug(("Previous node is not null assigning next"));
-				current->previous->next = current->next;
-			} else {
-				wh_log_debug(("Previous node is null assigning to first object"));
-				_list.nodes = current->next;
+			if (nullptr == current) {
+				return;
 			}
+		}
 
-			if (current->next) {
-				current->next->previous = current->previous;
-			} else {
-				_list.last = current->previous;
-			}
+		switch (current->owner_count) {
+			case 1:
+				wh_log_error(("Disowning tracked pointer!"));
 
-			free(current->owners);
-			free(current);
-			break;
-
-		default:
-			wh_log_debug(("Clearing owner!"));
-			wh_for(u64, i, current->owner_count) {
-				if (owner == current->owners[i].owner) {
-					current->owner_count--;
-					current->owners[i].owner = current->owners[current->owner_count].owner;
-					current->owners[i].file = current->owners[current->owner_count].file;
-					current->owners[i].line = current->owners[current->owner_count].line;
-					current->owners = realloc(current->owners, sizeof(_wh_heap_ptr_pair_s) * current->owner_count);
-					break;
+				if (nullptr != current->previous) { 
+					wh_log_debug(("Previous node is not null assigning next"));
+					current->previous->next = current->next;
+				} else {
+					wh_log_debug(("Previous node is null assigning to first object"));
+					_list.nodes = current->next;
 				}
-			}
+
+				if (current->next) {
+					current->next->previous = current->previous;
+				} else {
+					_list.last = current->previous;
+				}
+
+				free(current->owners);
+				free(current);
+				break;
+
+			default:
+				wh_log_debug(("Clearing owner!"));
+				wh_for(u64, i, current->owner_count) {
+					if (owner == current->owners[i].owner) {
+						current->owner_count--;
+						current->owners[i].owner = current->owners[current->owner_count].owner;
+						current->owners[i].file = current->owners[current->owner_count].file;
+						current->owners[i].line = current->owners[current->owner_count].line;
+						current->owners = realloc(current->owners, sizeof(_wh_heap_ptr_pair_s) * current->owner_count);
+						break;
+					}
+				}
+		}
 	}
 }
 

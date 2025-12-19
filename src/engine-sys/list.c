@@ -6,25 +6,30 @@
 #include<wh-sys/memreq.h>
 #include<wh-posix/unistd.h>
 
+#include<string.h>
+#include<stdlib.h>
+
 // Functions using the memory allocator
-int8_t _wh_sys_list_single_init(wh_list_s* out, i64 list_type);
-int8_t _wh_sys_list_double_init(wh_list_s* out, i64 list_type);
+static int8_t _wh_sys_list_single_init(wh_list_s* out, i64 list_type);
+static int8_t _wh_sys_list_double_init(wh_list_s* out, i64 list_type);
 
 // Functions not using the memory allocator, but the system memory directly.
-int8_t _wh_sys_list_single_memreq_init(wh_list_s* out, i64 list_type);
-int8_t _wh_sys_list_double_memreq_init(wh_list_s* out, i64 list_type);
+static int8_t _wh_sys_list_single_memreq_init(wh_list_s* out, i64 list_type);
+static int8_t _wh_sys_list_double_memreq_init(wh_list_s* out, i64 list_type);
 
 // Functions using stdlib malloc instead of the provided allocator.
-int8_t _wh_sys_list_single_stdlib_init(wh_list_s* out, i64 list_type);
-int8_t _wh_sys_list_double_stdlib_init(wh_list_s* out, i64 list_type);
+static int8_t _wh_sys_list_single_stdlib_init(wh_list_s* out, i64 list_type);
+static int8_t _wh_sys_list_double_stdlib_init(wh_list_s* out, i64 list_type);
 
-i8 _wh_internal_sys_list_get_index_sll (wh_list_s* list, u64 index, void** current, void** previous);
-i8 _wh_internal_sys_list_get_index_dll (wh_list_s* list, u64 index, void** current, void** previous);
+static i8 _wh_get_index_sll (wh_list_s* list, u64 index, void** current, void** previous);
+static i8 _wh_get_index_dll (wh_list_s* list, u64 index, void** current, void** previous);
+
+static void _wh_insert_ssl_stdlib (wh_list_s* list, void* current, void* previous, void* data);
 
 // Functions for allocations
-i8 _wh_internal_sys_list_alloc_wolfhound(wh_list_s* out, u64 count);
-i8 _wh_internal_sys_list_alloc_memreq(wh_list_s* out, u64 count);
-i8 _wh_internal_sys_list_alloc_stdlib(wh_list_s* out, u64 count);
+static i8 _wh_internal_sys_list_alloc_wolfhound(wh_list_s* out, u64 count);
+static i8 _wh_internal_sys_list_alloc_memreq(wh_list_s* out, u64 count);
+static i8 _wh_alloc_stdlib(wh_list_s* out, u64 count);
 
 int8_t (*_wh_internal_sys_list_init[])(wh_list_s* out, i64 list_type) = {
 	&_wh_sys_list_single_init,
@@ -38,39 +43,42 @@ int8_t (*_wh_internal_sys_list_init[])(wh_list_s* out, i64 list_type) = {
 	nullptr,
 };
 
-i8 (*_wh_internal_sys_list_get_index[]) (wh_list_s* list, u64 index, void** current, void** previous) = {
-	&_wh_internal_sys_list_get_index_sll,
-	&_wh_internal_sys_list_get_index_dll,
+static i8 (*_wh_get_index[]) (wh_list_s* list, u64 index, void** current, void** previous) = {
+	&_wh_get_index_sll,
+	&_wh_get_index_dll,
 
-	&_wh_internal_sys_list_get_index_sll,
-	&_wh_internal_sys_list_get_index_dll,
+	&_wh_get_index_sll,
+	&_wh_get_index_dll,
 
-	&_wh_internal_sys_list_get_index_sll,
-	&_wh_internal_sys_list_get_index_dll,
+	&_wh_get_index_sll,
+	&_wh_get_index_dll,
 	nullptr,
 };
 
-void (*_wh_internal_sys_list_insert[]) (wh_list_s* list, void* current, void* previous) = {
+static void (*_wh_insert[]) (wh_list_s* list, void* current, void* previous, void* data) = {
+	nullptr,
+	nullptr,
+
+	nullptr,
+	nullptr,
+
+	_wh_insert_ssl_stdlib,
 	nullptr,
 };
 
-i8 (*_wh_internal_sys_list_alloc[])(wh_list_s* out, u64 count) = {
+static i8 (*_wh_list_alloc[])(wh_list_s* out, u64 count) = {
 	&_wh_internal_sys_list_alloc_wolfhound,
 	&_wh_internal_sys_list_alloc_wolfhound,
 
 	&_wh_internal_sys_list_alloc_memreq,
 	&_wh_internal_sys_list_alloc_memreq,
 
-	&_wh_internal_sys_list_alloc_stdlib,
-	&_wh_internal_sys_list_alloc_stdlib,
+	&_wh_alloc_stdlib,
+	&_wh_alloc_stdlib,
 	nullptr,
 };
 
-
-
-
-
-i8 _wh_internal_sys_list_alloc_wolfhound(wh_list_s* out, u64 count) {
+static i8 _wh_internal_sys_list_alloc_wolfhound(wh_list_s* out, u64 count) {
 	void* new_data = nullptr;
 	union {
 		void* ptr;
@@ -90,7 +98,7 @@ i8 _wh_internal_sys_list_alloc_wolfhound(wh_list_s* out, u64 count) {
 	return 0;
 }
 
-i8 _wh_internal_sys_list_alloc_memreq(wh_list_s* out, u64 count) {
+static i8 _wh_internal_sys_list_alloc_memreq(wh_list_s* out, u64 count) {
 	void* new_data = nullptr;
 	i64 pagesize = (i64)getpagesize();
 	u64 new_size = (u64)wh_align((i64)out->sysmem.size + pagesize, pagesize); 
@@ -129,11 +137,11 @@ go_error_exit:
 	return -1;
 }
 
-i8 _wh_internal_sys_list_alloc_stdlib(wh_list_s* out, u64 count) {
+static i8 _wh_alloc_stdlib(wh_list_s* out, u64 count) {
 	return 0;
 }
 
-i8 _wh_internal_sys_list_get_index_sll (wh_list_s* list, u64 index, void** current, void** previous) {
+static i8 _wh_get_index_sll(wh_list_s* list, u64 index, void** current, void** previous) {
 	wh_sllist_item_s* p = nullptr;
 	wh_sllist_item_s* c = list->head;
 
@@ -156,7 +164,7 @@ go_error_exit:
 	return -1;
 }
 
-i8 _wh_internal_sys_list_get_index_dll (wh_list_s* list, u64 index, void** current, void** previous) {
+static i8 _wh_get_index_dll (wh_list_s* list, u64 index, void** current, void** previous) {
 	wh_dllist_item_s* c = nullptr; 
 	u64 midpoint = list->node_count / 2;
 
@@ -194,59 +202,73 @@ go_error_exit:
 	return -1;
 }
 
-void _wh_internal_sys_list_insert_sll(wh_list_s* list, void* current, void* previous, void* node) {
+static void _wh_insert_sll(wh_list_s* list, void* current, void* previous, void* node) {
 	wh_sllist_item_s* c = current;
 	wh_sllist_item_s* p = previous;
 	wh_sllist_item_s* n = node;
 
-	p->p_next = node;
+	if (nullptr != p) {
+		p->p_next = node;
+	}
 	n->p_next = c;
 }
 
-void _wh_internal_sys_list_insert_dll(wh_list_s* list, void* current, void* previous, void* node) {
+static void _wh_insert_dll(wh_list_s* list, void* current, void* previous, void* node) {
 	wh_dllist_item_s* c = current;
 	wh_dllist_item_s* p = previous;
 	wh_dllist_item_s* n = node;
 
-	c->p_previous = node;
-	p->p_next = node;
-
 	n->p_next = c;
 	n->p_previous = p;
-}
 
-i8 _wh_sys_list_add(wh_list_s* list, void* item, u64 index) {
-	void* current = nullptr;
-	void* previous = nullptr;
-
-	u64 func_index = 0;
-	u64 alloc_size = 0;
-
-	if (nullptr == item) {
-		wh_log_notice(("Provided a pointer pointing to [ nullptr ], ingoring addition."));
-		goto go_error_exit;
+	if (nullptr != c) {
+		c->p_previous = node;
+	} else {
+		list->tail = node;
 	}
 
-	if (nullptr == list->head) {
-		wh_log_critical(("Broken list provided! Head [ %u ] Tail [ %u ]"), list->head, list->tail);
+	if (nullptr != p) {
+		p->p_next = node;
+	} else {
+		list->head = node;
+	}
+}
+
+static void _wh_insert_ssl_stdlib(wh_list_s* list, void* current, void* previous, void* data) {
+	wh_sllist_item_s* node = calloc(1, sizeof(wh_sllist_item_s));
+
+	if (nullptr == node) {
+		wh_log_error(("Failed to allocated node!"));
+	}
+
+	node->data = calloc(1, list->type_size);
+
+	if (nullptr == node->data) {
+		wh_log_error(("Failed to allocated node data!"));
+	}
+
+	memcpy(node->data, data, list->type_size);
+
+	_wh_insert_sll(list, current, previous, node);
+}
+
+i8 _wh_sys_list_insert(wh_list_s* list, u64 index, void* data) {
+	void* current = nullptr;
+	void* previous = nullptr;
+	u64 func_index = 0;
+
+	if (nullptr == data) {
+		wh_log_warning(("Provided data is a Nullptr"));
 		goto go_error_exit;
 	}
 
 	func_index = ((u64)list->stype) - WH_STRUCT_TYPE_LLIST_SINGLE;
-	alloc_size = list->type_size + sizeof(wh_dllist_item_s);
 
-	if (alloc_size > list->sysmem.free) {
-		if (0 != _wh_internal_sys_list_alloc[func_index](list, alloc_size)) {
-			wh_log_critical(("Failed to relloac the list!"));
-			goto go_error_exit;
-		}
+	if (0 == _wh_get_index[func_index](list, index, &current, &previous)) {
+		_wh_insert[func_index](list, current, previous, data);
+	} else {
+		goto go_error_exit;
 	}
-
-	_wh_internal_sys_list_get_index[func_index](list, index, &current, &previous);
-	_wh_internal_sys_list_insert[func_index](item, &current, &previous);
-	
-	list->sysmem.free -= alloc_size;
-	//last = list->tail;
 
 	return 0;
 go_error_exit:
@@ -288,10 +310,15 @@ int8_t _wh_sys_list_double_stdlib_init(wh_list_s* out, i64 list_type) {
 wh_list_s _wh_sys_list_init(i64 list_type, u64 type_size) {
 	wh_list_s out = { 0 };
 
+	if (WH_STRUCT_TYPE_LLIST_SINGLE > list_type || WH_STRUCT_TYPE_LLIST_STD_DOUBLE < list_type) {
+		wh_log_critical(("Provided list type are not supported by wh_list_s"));
+		goto go_error_exit;
+	}
+
 	out.stype = list_type;
 	out.type_size = type_size;
-
 	_wh_internal_sys_list_init[list_type - WH_STRUCT_TYPE_LLIST_SINGLE](&out, list_type);
 
+go_error_exit:
 	return out;
 }
