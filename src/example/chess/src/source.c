@@ -113,7 +113,7 @@ int main(int arc, char* const* arv) {
 	printf("Value is [ %i ]\n", *wh_hashmap_lazy_get(int*, &hml, "test3"));
 	printf("Value is [ %i ]\n", *wh_hashmap_lazy_get(int*, &hml, "test444"));
 
-	wh_list_s test_list = wh_dlist_init_memreq(int);
+	//wh_list_s test_list = wh_dlist_init_memreq(int);
 
 	/*wh_action_init(ins, 100);
 	wh_entity_init(ins, 100);

@@ -5,33 +5,35 @@
 #include<wh/debug/logger.h>
 #include<wh-sys/memreq.h>
 #include<wh-posix/unistd.h>
+#include<wh-sys/list.h>
 
 #include<string.h>
 #include<stdlib.h>
 
 // Functions using the memory allocator
-static int8_t _wh_sys_list_single_init(wh_list_s* out, i64 list_type);
-static int8_t _wh_sys_list_double_init(wh_list_s* out, i64 list_type);
+static int8_t _wh_sys_list_single_init(wh_list_s* out, _wh_sys_list_init_params* params);
+static int8_t _wh_sys_list_double_init(wh_list_s* out, _wh_sys_list_init_params* params);
 
 // Functions not using the memory allocator, but the system memory directly.
-static int8_t _wh_sys_list_single_memreq_init(wh_list_s* out, i64 list_type);
-static int8_t _wh_sys_list_double_memreq_init(wh_list_s* out, i64 list_type);
+static int8_t _wh_sys_list_single_memreq_init(wh_list_s* out, _wh_sys_list_init_params* params);
+static int8_t _wh_sys_list_double_memreq_init(wh_list_s* out, _wh_sys_list_init_params* params);
 
 // Functions using stdlib malloc instead of the provided allocator.
-static int8_t _wh_sys_list_single_stdlib_init(wh_list_s* out, i64 list_type);
-static int8_t _wh_sys_list_double_stdlib_init(wh_list_s* out, i64 list_type);
+static int8_t _wh_sys_list_single_stdlib_init(wh_list_s* out, _wh_sys_list_init_params* params);
+static int8_t _wh_sys_list_double_stdlib_init(wh_list_s* out, _wh_sys_list_init_params* params);
 
 static i8 _wh_get_index_sll (wh_list_s* list, u64 index, void** current, void** previous);
 static i8 _wh_get_index_dll (wh_list_s* list, u64 index, void** current, void** previous);
 
-static void _wh_insert_ssl_stdlib (wh_list_s* list, void* current, void* previous, void* data);
+static void _wh_insert_sll_stdlib (wh_list_s* list, void* current, void* previous, void* data);
+static void _wh_insert_dll_stdlib(wh_list_s* list, void* current, void* previous, void* data);
 
 // Functions for allocations
 static i8 _wh_internal_sys_list_alloc_wolfhound(wh_list_s* out, u64 count);
 static i8 _wh_internal_sys_list_alloc_memreq(wh_list_s* out, u64 count);
 static i8 _wh_alloc_stdlib(wh_list_s* out, u64 count);
 
-int8_t (*_wh_internal_sys_list_init[])(wh_list_s* out, i64 list_type) = {
+int8_t (*_wh_internal_sys_list_init[])(wh_list_s* out, _wh_sys_list_init_params* params) = {
 	&_wh_sys_list_single_init,
 	&_wh_sys_list_double_init,
 
@@ -62,8 +64,8 @@ static void (*_wh_insert[]) (wh_list_s* list, void* current, void* previous, voi
 	nullptr,
 	nullptr,
 
-	_wh_insert_ssl_stdlib,
-	nullptr,
+	&_wh_insert_sll_stdlib,
+	&_wh_insert_dll_stdlib,
 };
 
 static i8 (*_wh_list_alloc[])(wh_list_s* out, u64 count) = {
@@ -234,7 +236,7 @@ static void _wh_insert_dll(wh_list_s* list, void* current, void* previous, void*
 	}
 }
 
-static void _wh_insert_ssl_stdlib(wh_list_s* list, void* current, void* previous, void* data) {
+static void _wh_insert_sll_stdlib(wh_list_s* list, void* current, void* previous, void* data) {
 	wh_sllist_item_s* node = calloc(1, sizeof(wh_sllist_item_s));
 
 	if (nullptr == node) {
@@ -248,8 +250,24 @@ static void _wh_insert_ssl_stdlib(wh_list_s* list, void* current, void* previous
 	}
 
 	memcpy(node->data, data, list->type_size);
-
 	_wh_insert_sll(list, current, previous, node);
+}
+
+static void _wh_insert_dll_stdlib(wh_list_s* list, void* current, void* previous, void* data) {
+	wh_dllist_item_s* node = calloc(1, sizeof(wh_dllist_item_s));
+
+	if (nullptr == node) {
+		wh_log_error(("Failed to allocated node!"));
+	}
+
+	node->data = calloc(1, list->type_size);
+
+	if (nullptr == node->data) {
+		wh_log_error(("Failed to allocated node data!"));
+	}
+
+	memcpy(node->data, data, list->type_size);
+	_wh_insert_dll(list, current, previous, node);
 }
 
 i8 _wh_sys_list_insert(wh_list_s* list, u64 index, void* data) {
@@ -281,33 +299,34 @@ void* _wh_sys_list_get(wh_list_s* list, u64 index) {
 
 /// Init blocks
 
-int8_t _wh_sys_list_single_init(wh_list_s* out, i64 list_type) {
+int8_t _wh_sys_list_single_init(wh_list_s* out, _wh_sys_list_init_params* params) {
 	return 0;
 }
 
 
-int8_t _wh_sys_list_double_init(wh_list_s* out, i64 list_type) {
+int8_t _wh_sys_list_double_init(wh_list_s* out, _wh_sys_list_init_params* params) {
 	return 0;
 }
 
-int8_t _wh_sys_list_single_memreq_init(wh_list_s* out, i64 list_type) {
+int8_t _wh_sys_list_single_memreq_init(wh_list_s* out, _wh_sys_list_init_params* params) {
 	return 0;
 }
 
-int8_t _wh_sys_list_double_memreq_init(wh_list_s* out, i64 list_type) {
+int8_t _wh_sys_list_double_memreq_init(wh_list_s* out, _wh_sys_list_init_params* params) {
 	return 0;
 }
 
-int8_t _wh_sys_list_single_stdlib_init(wh_list_s* out, i64 list_type) {
+int8_t _wh_sys_list_single_stdlib_init(wh_list_s* out, _wh_sys_list_init_params* params) {
 	return 0;
 }
 
 
-int8_t _wh_sys_list_double_stdlib_init(wh_list_s* out, i64 list_type) {
+int8_t _wh_sys_list_double_stdlib_init(wh_list_s* out, _wh_sys_list_init_params* params) {
+	wh_log_debug(("Hello!"));
 	return 0;
 }
 
-wh_list_s _wh_sys_list_init(i64 list_type, u64 type_size) {
+wh_list_s _wh_sys_list_init(i64 list_type, _wh_sys_list_init_params params) {
 	wh_list_s out = { 0 };
 
 	if (WH_STRUCT_TYPE_LLIST_SINGLE > list_type || WH_STRUCT_TYPE_LLIST_STD_DOUBLE < list_type) {
@@ -316,8 +335,8 @@ wh_list_s _wh_sys_list_init(i64 list_type, u64 type_size) {
 	}
 
 	out.stype = list_type;
-	out.type_size = type_size;
-	_wh_internal_sys_list_init[list_type - WH_STRUCT_TYPE_LLIST_SINGLE](&out, list_type);
+	out.type_size = params.type_size;
+	_wh_internal_sys_list_init[list_type - WH_STRUCT_TYPE_LLIST_SINGLE](&out, &params);
 
 go_error_exit:
 	return out;

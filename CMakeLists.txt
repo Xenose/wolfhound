@@ -11,6 +11,7 @@ OPTION(LINUX_MINGW_WIN "Cross compiles the code for Windows" False)
 # Telling CMake that we use C and Fortran
 # Adding Fortran Support
 CHECK_LANGUAGE(Fortran)
+
 # We want to use Fortran 95 so we select it
 SET(CMAKE_Fortran_STANDARD 95)
 
@@ -199,6 +200,7 @@ ENDIF()
 # or examples and link against the core libraries defined above.
 # -----------------------------------------------------------------------------
 ADD_SUBDIRECTORY(src/example/chess)
+ADD_SUBDIRECTORY(src/example/lists)
 ADD_SUBDIRECTORY(src/example/gameobject)
 ADD_SUBDIRECTORY(src/example/memory)
 ADD_SUBDIRECTORY(src/example/print)
