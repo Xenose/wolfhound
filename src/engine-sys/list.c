@@ -25,6 +25,9 @@ static int8_t _wh_sys_list_double_stdlib_init(wh_list_s* out, _wh_sys_list_init_
 static i8 _wh_get_index_sll (wh_list_s* list, u64 index, void** current, void** previous);
 static i8 _wh_get_index_dll (wh_list_s* list, u64 index, void** current, void** previous);
 
+static void* _wh_data_sll(void* node);
+static void* _wh_data_dll(void* node);
+
 static void _wh_insert_sll_stdlib (_wh_sys_list_insert* params, void* current, void* previous);
 static void _wh_insert_dll_stdlib(_wh_sys_list_insert* params, void* current, void* previous);
 
@@ -55,6 +58,17 @@ static i8 (*_wh_get_index[]) (wh_list_s* list, u64 index, void** current, void**
 	&_wh_get_index_sll,
 	&_wh_get_index_dll,
 	nullptr,
+};
+
+static void* (*_wh_data[]) (void* node) = {
+	&_wh_data_sll,
+	&_wh_data_dll,
+
+	&_wh_data_sll,
+	&_wh_data_dll,
+
+	&_wh_data_sll,
+	&_wh_data_dll,
 };
 
 static void (*_wh_insert[]) (_wh_sys_list_insert* params, void* current, void* previous) = {
@@ -143,6 +157,16 @@ static i8 _wh_alloc_stdlib(wh_list_s* out, u64 count) {
 	return 0;
 }
 
+static void* _wh_data_sll(void* node) {
+	wh_sllist_item_s* n = node;
+	return n->data;
+}
+
+static void* _wh_data_dll(void* node) {
+	wh_dllist_item_s* n = node;
+	return n->data;
+}
+
 static i8 _wh_get_index_sll(wh_list_s* list, u64 index, void** current, void** previous) {
 	wh_sllist_item_s* p = nullptr;
 	wh_sllist_item_s* c = list->head;
@@ -170,7 +194,8 @@ static i8 _wh_get_index_dll (wh_list_s* list, u64 index, void** current, void** 
 	wh_dllist_item_s* c = nullptr; 
 	u64 midpoint = list->node_count / 2;
 
-	if (index >= list->node_count) {
+	if (index > list->node_count) {
+		wh_log_error(("Index outside list range"));
 		goto go_error_exit;
 	}
 
@@ -257,6 +282,8 @@ static void _wh_insert_sll_stdlib(_wh_sys_list_insert* params, void* current, vo
 static void _wh_insert_dll_stdlib(_wh_sys_list_insert* params, void* current, void* previous) {
 	wh_dllist_item_s* node = calloc(1, sizeof(wh_dllist_item_s));
 
+	wh_log_debug(("Function entered!"));
+
 	if (nullptr == node) {
 		wh_log_error(("Failed to allocated node!"));
 	}
@@ -296,7 +323,17 @@ go_error_exit:
 	return -1;
 }
 
-void* _wh_sys_list_get(wh_list_s* list, u64 index) {
+void* _wh_s2_list_get(_wh_s2_list_get_params params) {
+	void* current = nullptr;
+	void* previous = nullptr;
+	u64 func_index = 0;
+	
+	func_index = ((u64)params.list->stype) - WH_STRUCT_TYPE_LLIST_SINGLE;
+
+	if (0 == _wh_get_index[func_index](params.list, params.index, &current, &previous)) {
+		return _wh_data[func_index](current);
+	}
+
 	return nullptr;
 }
 
