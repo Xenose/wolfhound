@@ -251,6 +251,7 @@ static void _wh_insert_sll_stdlib(_wh_sys_list_insert* params, void* current, vo
 
 	memcpy(node->data, params->data, params->list->type_size);
 	_wh_insert_sll(params, current, previous, node);
+	wh_log_debug(("Inserted item into single std linked list!"));
 }
 
 static void _wh_insert_dll_stdlib(_wh_sys_list_insert* params, void* current, void* previous) {
@@ -268,6 +269,7 @@ static void _wh_insert_dll_stdlib(_wh_sys_list_insert* params, void* current, vo
 
 	memcpy(node->data, params->data, params->list->type_size);
 	_wh_insert_dll(params, current, previous, node);
+	wh_log_debug(("Inserted item into double std linked list!"));
 }
 
 i8 _wh_s2_list_insert(_wh_sys_list_insert params) {
@@ -280,6 +282,7 @@ i8 _wh_s2_list_insert(_wh_sys_list_insert params) {
 		goto go_error_exit;
 	}
 
+	wh_log_debug(("Generating function index..."));
 	func_index = ((u64)params.list->stype) - WH_STRUCT_TYPE_LLIST_SINGLE;
 
 	if (0 == _wh_get_index[func_index](params.list, params.index, &current, &previous)) {
