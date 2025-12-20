@@ -200,6 +200,7 @@ static i8 _wh_get_index_dll (wh_list_s* list, u64 index, void** current, void** 
 	}
 
 	if (index <= midpoint) {
+		wh_log_debug(("Mid point less then index!"));
 		c = list->head;
 
 		while (0 < index--) {
@@ -207,13 +208,13 @@ static i8 _wh_get_index_dll (wh_list_s* list, u64 index, void** current, void** 
 		}
 
 	} else {
+		wh_log_debug(("Mid point more then index!"));
 		c = list->tail;
-		index = list->node_count - (index + 1);
+		index = list->node_count - (index);
 
 		while (0 < index--) {
 			c = c->p_previous;
 		}
-		
 	}
 
 	if (nullptr != c) {
@@ -314,6 +315,7 @@ i8 _wh_s2_list_insert(_wh_sys_list_insert params) {
 
 	if (0 == _wh_get_index[func_index](params.list, params.index, &current, &previous)) {
 		_wh_insert[func_index](&params, current, previous);
+		++params.list->node_count;
 	} else {
 		goto go_error_exit;
 	}
