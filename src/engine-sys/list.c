@@ -25,8 +25,8 @@ static int8_t _wh_sys_list_double_stdlib_init(wh_list_s* out, _wh_sys_list_init_
 static i8 _wh_get_index_sll (wh_list_s* list, u64 index, void** current, void** previous);
 static i8 _wh_get_index_dll (wh_list_s* list, u64 index, void** current, void** previous);
 
-static void _wh_insert_sll_stdlib (wh_list_s* list, void* current, void* previous, void* data);
-static void _wh_insert_dll_stdlib(wh_list_s* list, void* current, void* previous, void* data);
+static void _wh_insert_sll_stdlib (_wh_sys_list_insert* params, void* current, void* previous);
+static void _wh_insert_dll_stdlib(_wh_sys_list_insert* params, void* current, void* previous);
 
 // Functions for allocations
 static i8 _wh_internal_sys_list_alloc_wolfhound(wh_list_s* out, u64 count);
@@ -57,7 +57,7 @@ static i8 (*_wh_get_index[]) (wh_list_s* list, u64 index, void** current, void**
 	nullptr,
 };
 
-static void (*_wh_insert[]) (wh_list_s* list, void* current, void* previous, void* data) = {
+static void (*_wh_insert[]) (_wh_sys_list_insert* params, void* current, void* previous) = {
 	nullptr,
 	nullptr,
 
@@ -204,7 +204,7 @@ go_error_exit:
 	return -1;
 }
 
-static void _wh_insert_sll(wh_list_s* list, void* current, void* previous, void* node) {
+static void _wh_insert_sll(_wh_sys_list_insert* params, void* current, void* previous, void* node) {
 	wh_sllist_item_s* c = current;
 	wh_sllist_item_s* p = previous;
 	wh_sllist_item_s* n = node;
@@ -215,7 +215,7 @@ static void _wh_insert_sll(wh_list_s* list, void* current, void* previous, void*
 	n->p_next = c;
 }
 
-static void _wh_insert_dll(wh_list_s* list, void* current, void* previous, void* node) {
+static void _wh_insert_dll(_wh_sys_list_insert* params, void* current, void* previous, void* node) {
 	wh_dllist_item_s* c = current;
 	wh_dllist_item_s* p = previous;
 	wh_dllist_item_s* n = node;
@@ -226,64 +226,64 @@ static void _wh_insert_dll(wh_list_s* list, void* current, void* previous, void*
 	if (nullptr != c) {
 		c->p_previous = node;
 	} else {
-		list->tail = node;
+		params->list->tail = node;
 	}
 
 	if (nullptr != p) {
 		p->p_next = node;
 	} else {
-		list->head = node;
+		params->list->head = node;
 	}
 }
 
-static void _wh_insert_sll_stdlib(wh_list_s* list, void* current, void* previous, void* data) {
+static void _wh_insert_sll_stdlib(_wh_sys_list_insert* params, void* current, void* previous) {
 	wh_sllist_item_s* node = calloc(1, sizeof(wh_sllist_item_s));
 
 	if (nullptr == node) {
 		wh_log_error(("Failed to allocated node!"));
 	}
 
-	node->data = calloc(1, list->type_size);
+	node->data = calloc(1, params->list->type_size);
 
 	if (nullptr == node->data) {
 		wh_log_error(("Failed to allocated node data!"));
 	}
 
-	memcpy(node->data, data, list->type_size);
-	_wh_insert_sll(list, current, previous, node);
+	memcpy(node->data, params->data, params->list->type_size);
+	_wh_insert_sll(params, current, previous, node);
 }
 
-static void _wh_insert_dll_stdlib(wh_list_s* list, void* current, void* previous, void* data) {
+static void _wh_insert_dll_stdlib(_wh_sys_list_insert* params, void* current, void* previous) {
 	wh_dllist_item_s* node = calloc(1, sizeof(wh_dllist_item_s));
 
 	if (nullptr == node) {
 		wh_log_error(("Failed to allocated node!"));
 	}
 
-	node->data = calloc(1, list->type_size);
+	node->data = calloc(1, params->list->type_size);
 
 	if (nullptr == node->data) {
 		wh_log_error(("Failed to allocated node data!"));
 	}
 
-	memcpy(node->data, data, list->type_size);
-	_wh_insert_dll(list, current, previous, node);
+	memcpy(node->data, params->data, params->list->type_size);
+	_wh_insert_dll(params, current, previous, node);
 }
 
-i8 _wh_sys_list_insert(wh_list_s* list, u64 index, void* data) {
+i8 _wh_s2_list_insert(_wh_sys_list_insert params) {
 	void* current = nullptr;
 	void* previous = nullptr;
 	u64 func_index = 0;
 
-	if (nullptr == data) {
+	if (nullptr == params.data) {
 		wh_log_warning(("Provided data is a Nullptr"));
 		goto go_error_exit;
 	}
 
-	func_index = ((u64)list->stype) - WH_STRUCT_TYPE_LLIST_SINGLE;
+	func_index = ((u64)params.list->stype) - WH_STRUCT_TYPE_LLIST_SINGLE;
 
-	if (0 == _wh_get_index[func_index](list, index, &current, &previous)) {
-		_wh_insert[func_index](list, current, previous, data);
+	if (0 == _wh_get_index[func_index](params.list, params.index, &current, &previous)) {
+		_wh_insert[func_index](&params, current, previous);
 	} else {
 		goto go_error_exit;
 	}
