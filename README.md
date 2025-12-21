@@ -100,10 +100,10 @@ wh-build	# compiles code.
 
 |  Language       | File Count | Lines of Code | Percentage |
 | --------------- | ---------- | ------------- | ---------- |
-| C               | 151        | 6308          | 76.53%     |
-| C++             | 17         | 455           | 5.52%      |
-| CMake           | 21         | 411           | 4.99%      |
-| Bourne Shell    | 20         | 405           | 4.91%      |
+| C               | 151        | 6330          | 76.59%     |
+| C++             | 17         | 455           | 5.51%      |
+| CMake           | 21         | 411           | 4.97%      |
+| Bourne Shell    | 20         | 405           | 4.90%      |
 | Lua             | 13         | 175           | 2.12%      |
 | Markdown        | 3          | 160           | 1.94%      |
 | Python          | 2          | 155           | 1.88%      |
@@ -113,6 +113,6 @@ wh-build	# compiles code.
 | Assembly        | 2          | 11            | 0.13%      |
 | PowerShell      | 3          | 10            | 0.12%      |
 | INI             | 1          | 3             | 0.04%      |
-| Summary         | 244        | 8243          | 100.00%    |
+| Summary         | 244        | 8265          | 100.00%    |
 
 <!--python-stats-end-->

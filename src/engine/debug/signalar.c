@@ -7,12 +7,12 @@
 
 // my code
 #include<wh/debug/logger.h>
-#include<wh/signalar.h>
+#include<wh/debug/signalar.h>
 
 #define _pointer_count 20
 
 
-#ifdef __linux__
+#if (WH_SYSTEM&WH_SYS_POSIX)
 
 #include<ucontext.h>
 #include<execinfo.h>
@@ -25,14 +25,14 @@
 #endif
 
 static void _wh_signal_handler(int sig, siginfo_t* info, ucontext_t* uc) {
-#ifdef WH_UNWIND_NOT_FOUND
 	i64 count = 0;
+
+	signal(sig, SIG_DFL);
+#ifdef WH_UNWIND_NOT_FOUND
 	unw_cursor_t cursor;
 
 	switch(sig) {
 		case SIGSEGV:
-			signal(sig, SIG_DFL);
-
 			if (0 > unw_init_local2(&cursor, uc, UNW_INIT_SIGNAL_FRAME)) {
 				wh_log_critical(("unw_init_local2 [ $n ]"), errno);
 				return;
@@ -56,10 +56,21 @@ static void _wh_signal_handler(int sig, siginfo_t* info, ucontext_t* uc) {
 				}
 			}
 
+			break;
+	}
+#else
+	void* _ptrs[_pointer_count] = { 0 };
+
+	switch(sig) {
+		case SIGSEGV:
+			signal(sig, SIG_DFL);
+			count = backtrace(_ptrs, _pointer_count);
+			backtrace_symbols_fd(_ptrs, (int)count, 2);
 			raise(sig);
 			break;
 	}
 #endif
+	raise(sig);
 }
 
 i8 _wh_signalar_init(_wh_signalar_init_params params) {

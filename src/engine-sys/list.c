@@ -192,14 +192,14 @@ go_error_exit:
 
 static i8 _wh_get_index_dll (wh_list_s* list, u64 index, void** current, void** previous) {
 	wh_dllist_item_s* c = nullptr; 
-	u64 midpoint = list->node_count / 2;
+	u64 midpoint = (list->node_count + 2) / 2;
 
 	if (index > list->node_count) {
 		wh_log_error(("Index outside list range"));
 		goto go_error_exit;
 	}
 
-	if (index <= midpoint) {
+	if (index < midpoint) {
 		wh_log_debug(("Mid point less then index!"));
 		c = list->head;
 
@@ -222,6 +222,7 @@ static i8 _wh_get_index_dll (wh_list_s* list, u64 index, void** current, void** 
 	}
 
 	*current = c;
+	wh_log_debug(("Node location found!"));
 	return 0;
 
 go_error_exit:

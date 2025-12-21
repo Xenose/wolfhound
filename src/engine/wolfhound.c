@@ -3,7 +3,7 @@
 #include<wh/wolfhound.h>
 #include<wh/string.h>
 #include<wh/render.h>
-#include<wh/signalar.h>
+#include<wh/debug/signalar.h>
 #include<wh/config.h>
 #include<wh-backend/raylib/raylib.h>
 #include<wh-posix/unistd.h>
