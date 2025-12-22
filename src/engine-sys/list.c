@@ -9,6 +9,7 @@
 
 #include<string.h>
 #include<stdlib.h>
+#include<stdio.h>
 
 // Functions using the memory allocator
 static int8_t _wh_sys_list_single_init(wh_list_s* out, _wh_sys_list_init_params* params);
@@ -30,6 +31,9 @@ static void* _wh_data_dll(void* node);
 
 static void _wh_insert_sll_stdlib (_wh_sys_list_insert* params, void* current, void* previous);
 static void _wh_insert_dll_stdlib(_wh_sys_list_insert* params, void* current, void* previous);
+
+static void* _wh_list_search_sll(_wh_list_search_params* params);
+static void* _wh_list_search_dll(_wh_list_search_params* params);
 
 // Functions for allocations
 static i8 _wh_internal_sys_list_alloc_wolfhound(wh_list_s* out, u64 count);
@@ -80,6 +84,17 @@ static void (*_wh_insert[]) (_wh_sys_list_insert* params, void* current, void* p
 
 	&_wh_insert_sll_stdlib,
 	&_wh_insert_dll_stdlib,
+};
+
+static void* (*_wh_search[])(_wh_list_search_params* params) = {
+	&_wh_list_search_sll,
+	&_wh_list_search_dll,
+
+	&_wh_list_search_sll,
+	&_wh_list_search_dll,
+	
+	&_wh_list_search_sll,
+	&_wh_list_search_dll,
 };
 
 static i8 (*_wh_list_alloc[])(wh_list_s* out, u64 count) = {
@@ -171,7 +186,7 @@ static i8 _wh_get_index_sll(wh_list_s* list, u64 index, void** current, void** p
 	wh_sllist_item_s* p = nullptr;
 	wh_sllist_item_s* c = list->head;
 
-	if (index >= list->node_count) {
+	if (index > list->node_count) {
 		goto go_error_exit;
 	}
 
@@ -190,39 +205,36 @@ go_error_exit:
 	return -1;
 }
 
-static i8 _wh_get_index_dll (wh_list_s* list, u64 index, void** current, void** previous) {
-	wh_dllist_item_s* c = nullptr; 
+static i8 _wh_get_index_dll(wh_list_s* list, u64 index, void** current, void** previous) {
+	wh_dllist_item_s* c = list->head; 
 	u64 midpoint = (list->node_count + 2) / 2;
-
+	
+	// the go of scope
 	if (index > list->node_count) {
 		wh_log_error(("Index outside list range"));
 		goto go_error_exit;
 	}
 
-	if (index < midpoint) {
-		wh_log_debug(("Mid point less then index!"));
-		c = list->head;
-
+	// TODO :: the tail code is off by one fix
+	//if (index < midpoint) {
 		while (0 < index--) {
 			c = c->p_next;
 		}
-
-	} else {
-		wh_log_debug(("Mid point more then index!"));
+	/*} else {
 		c = list->tail;
 		index = list->node_count - (index);
 
 		while (0 < index--) {
 			c = c->p_previous;
 		}
-	}
+	}*/
 
 	if (nullptr != c) {
 		*previous = c->p_previous;
 	}
 
 	*current = c;
-	wh_log_debug(("Node location found!"));
+go_exit:
 	return 0;
 
 go_error_exit:
@@ -252,7 +264,12 @@ static void _wh_insert_dll(_wh_sys_list_insert* params, void* current, void* pre
 
 	if (nullptr != c) {
 		c->p_previous = node;
+
+		if (nullptr == c->p_next) {
+			params->list->tail = c;
+		}
 	} else {
+		p = params->list->tail;
 		params->list->tail = node;
 	}
 
@@ -282,23 +299,45 @@ static void _wh_insert_sll_stdlib(_wh_sys_list_insert* params, void* current, vo
 }
 
 static void _wh_insert_dll_stdlib(_wh_sys_list_insert* params, void* current, void* previous) {
-	wh_dllist_item_s* node = calloc(1, sizeof(wh_dllist_item_s));
-
-	wh_log_debug(("Function entered!"));
+	wh_dllist_item_s* node = malloc(sizeof(wh_dllist_item_s) + params->list->type_size);
 
 	if (nullptr == node) {
 		wh_log_error(("Failed to allocated node!"));
 	}
 
-	node->data = calloc(1, params->list->type_size);
-
-	if (nullptr == node->data) {
-		wh_log_error(("Failed to allocated node data!"));
-	}
-
+	node->data = wh_ptr_add(node, sizeof(wh_dllist_item_s));
 	memcpy(node->data, params->data, params->list->type_size);
 	_wh_insert_dll(params, current, previous, node);
-	wh_log_debug(("Inserted item into double std linked list!"));
+}
+
+static void* _wh_list_search_sll(_wh_list_search_params* params) {
+}
+
+static void* _wh_list_search_dll(_wh_list_search_params* params) {
+	wh_dllist_item_s* node = params->list->head;
+
+	while (nullptr != node) {
+		if (!memcmp(node->data, params->ptr, params->list->type_size)) {
+			return node;
+		}
+
+		node = node->p_next;
+	}
+
+	return nullptr;
+}
+
+void* _wh_list_search(_wh_list_search_params params) {
+	u64 func_index = 0;
+
+	if (nullptr == params.ptr) {
+		wh_log_warning(("No search item provided!"));
+		return nullptr;
+	}
+	
+	func_index = ((u64)params.list->stype) - WH_STRUCT_TYPE_LLIST_SINGLE;
+
+	return _wh_search[func_index](&params);
 }
 
 i8 _wh_s2_list_insert(_wh_sys_list_insert params) {
@@ -311,19 +350,23 @@ i8 _wh_s2_list_insert(_wh_sys_list_insert params) {
 		goto go_error_exit;
 	}
 
-	wh_log_debug(("Generating function index..."));
 	func_index = ((u64)params.list->stype) - WH_STRUCT_TYPE_LLIST_SINGLE;
 
 	if (0 == _wh_get_index[func_index](params.list, params.index, &current, &previous)) {
 		_wh_insert[func_index](&params, current, previous);
 		++params.list->node_count;
 	} else {
+		wh_log_error(("Failed to get list index!"));
 		goto go_error_exit;
 	}
 
 	return 0;
 go_error_exit:
 	return -1;
+}
+
+static void _wh_append_dll_stdlib(_wh_sys_list_insert* params, void* current) {
+	wh_dllist_item_s* node = malloc(sizeof(wh_dllist_item_s));
 }
 
 void* _wh_s2_list_get(_wh_s2_list_get_params params) {
@@ -334,6 +377,10 @@ void* _wh_s2_list_get(_wh_s2_list_get_params params) {
 	func_index = ((u64)params.list->stype) - WH_STRUCT_TYPE_LLIST_SINGLE;
 
 	if (0 == _wh_get_index[func_index](params.list, params.index, &current, &previous)) {
+		if (nullptr == current) {
+			current = params.list->tail;
+		}
+
 		return _wh_data[func_index](current);
 	}
 
@@ -379,6 +426,7 @@ wh_list_s _wh_sys_list_init(i64 list_type, _wh_sys_list_init_params params) {
 
 	out.stype = list_type;
 	out.type_size = params.type_size;
+	out.node_count = 0;
 	_wh_internal_sys_list_init[list_type - WH_STRUCT_TYPE_LLIST_SINGLE](&out, &params);
 
 go_error_exit:

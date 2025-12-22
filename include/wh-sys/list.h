@@ -18,6 +18,11 @@ typedef struct {
 } _wh_s2_list_get_params;
 
 typedef struct {
+	wh_list_s* list;
+	void* ptr;
+} _wh_list_search_params;
+
+typedef struct {
 	u64 type_size;
 	u64 init_count;
 } _wh_sys_list_init_params;

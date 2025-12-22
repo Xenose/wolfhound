@@ -10,7 +10,10 @@ if command -v cmake > /dev/null; then
 		echo "--> Trarget ${target}"
 
 		mkdir -pv "${PRP}/build/${target}"
+
+		set +e
 		cmake --build "${PRP}/build/${target}" 
+		set -e
 	done
 else
 	echo "CMake not installed exiting..."
