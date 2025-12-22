@@ -29,6 +29,7 @@ typedef struct {
 
 extern void* _wh_s2_list_get(_wh_s2_list_get_params params);
 extern i8 _wh_s2_list_insert(_wh_sys_list_insert params);
+extern void* _wh_list_search(_wh_list_search_params params);
 extern wh_list_s _wh_sys_list_init(i64 list_type, _wh_sys_list_init_params params);
 
 #define wh_dlist_init_memreq(...) _wh_sys_list_init(WH_STRUCT_TYPE_LLIST_SYS_DOUBLE, (_wh_sys_list_init_params) { __VA_ARGS__ })
@@ -37,6 +38,7 @@ extern wh_list_s _wh_sys_list_init(i64 list_type, _wh_sys_list_init_params param
 
 #define wh_s2_list_get(_type_, ...) (_type_*)_wh_s2_list_get((_wh_s2_list_get_params) { __VA_ARGS__ })
 #define wh_sys_list_insert(...) _wh_s2_list_insert((_wh_sys_list_insert) { __VA_ARGS__ })
+#define wh_list_search(...) _wh_list_search((_wh_list_search_params) { __VA_ARGS__ })
 
 //#define wh_list_add(list, in, index) sizeof(in) == list->type_size ? _wh_sys_list_add(list, index, in) : -1
 //#define wh_list_push_back(list, in) sizeof(in) == list->type_size ? _wh_sys_list_push_back(list, in) : -1
