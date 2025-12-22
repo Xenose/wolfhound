@@ -9,9 +9,8 @@ SET(ASM_SOURCE
 )
 
 SET(C_SOURCES
-	"src/engine-posix/string.c"
-	"src/engine-posix/time.c"
-	"src/engine-posix/unistd.c"
+	"src/engine-data/list.c"
+
 	"src/engine-sys/file.c"
 	"src/engine-sys/filesystem.c"
 	"src/engine-sys/info.c"
@@ -23,9 +22,12 @@ SET(C_SOURCES
 	"src/engine-sys/memory/tracker.c"
 	"src/engine-sys/memreq.c"
 	"src/engine-sys/socket.c"
-	"src/engine-sys/list.c"
 
 	"src/engine-testing/unite.c"
+
+	"src/engine-posix/string.c"
+	"src/engine-posix/time.c"
+	"src/engine-posix/unistd.c"
 
 	"src/engine/debug/exceptions.c"
 	"src/engine/arg_parser.c"

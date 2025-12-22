@@ -5,7 +5,7 @@
 #include<wh/debug/logger.h>
 #include<wh-sys/memreq.h>
 #include<wh-posix/unistd.h>
-#include<wh-sys/list.h>
+#include<wh-data/list.h>
 
 #include<string.h>
 #include<stdlib.h>
@@ -19,18 +19,11 @@ static int8_t _wh_sys_list_double_init(wh_list_s* out, _wh_sys_list_init_params*
 static int8_t _wh_sys_list_single_memreq_init(wh_list_s* out, _wh_sys_list_init_params* params);
 static int8_t _wh_sys_list_double_memreq_init(wh_list_s* out, _wh_sys_list_init_params* params);
 
-// Functions using stdlib malloc instead of the provided allocator.
-static int8_t _wh_sys_list_single_stdlib_init(wh_list_s* out, _wh_sys_list_init_params* params);
-static int8_t _wh_sys_list_double_stdlib_init(wh_list_s* out, _wh_sys_list_init_params* params);
-
 static i8 _wh_get_index_sll (wh_list_s* list, u64 index, void** current, void** previous);
 static i8 _wh_get_index_dll (wh_list_s* list, u64 index, void** current, void** previous);
 
 static void* _wh_data_sll(void* node);
 static void* _wh_data_dll(void* node);
-
-static void _wh_insert_sll_stdlib (_wh_sys_list_insert* params, void* current, void* previous);
-static void _wh_insert_dll_stdlib(_wh_sys_list_insert* params, void* current, void* previous);
 
 static void* _wh_list_search_sll(_wh_list_search_params* params);
 static void* _wh_list_search_dll(_wh_list_search_params* params);
@@ -39,6 +32,12 @@ static void* _wh_list_search_dll(_wh_list_search_params* params);
 static i8 _wh_internal_sys_list_alloc_wolfhound(wh_list_s* out, u64 count);
 static i8 _wh_internal_sys_list_alloc_memreq(wh_list_s* out, u64 count);
 static i8 _wh_alloc_stdlib(wh_list_s* out, u64 count);
+
+int8_t _wh_sys_list_single_stdlib_init(wh_list_s* out, _wh_sys_list_init_params* params);
+
+// Including private C files
+#include"_list/dll_stdlib.c"
+#include"_list/sll_stdlib.c"
 
 int8_t (*_wh_internal_sys_list_init[])(wh_list_s* out, _wh_sys_list_init_params* params) = {
 	&_wh_sys_list_single_init,
@@ -92,7 +91,7 @@ static void* (*_wh_search[])(_wh_list_search_params* params) = {
 
 	&_wh_list_search_sll,
 	&_wh_list_search_dll,
-	
+
 	&_wh_list_search_sll,
 	&_wh_list_search_dll,
 };
@@ -168,10 +167,6 @@ go_error_exit:
 	return -1;
 }
 
-static i8 _wh_alloc_stdlib(wh_list_s* out, u64 count) {
-	return 0;
-}
-
 static void* _wh_data_sll(void* node) {
 	wh_sllist_item_s* n = node;
 	return n->data;
@@ -208,7 +203,7 @@ go_error_exit:
 static i8 _wh_get_index_dll(wh_list_s* list, u64 index, void** current, void** previous) {
 	wh_dllist_item_s* c = list->head; 
 	u64 midpoint = (list->node_count + 2) / 2;
-	
+
 	// the go of scope
 	if (index > list->node_count) {
 		wh_log_error(("Index outside list range"));
@@ -217,9 +212,9 @@ static i8 _wh_get_index_dll(wh_list_s* list, u64 index, void** current, void** p
 
 	// TODO :: the tail code is off by one fix
 	//if (index < midpoint) {
-		while (0 < index--) {
-			c = c->p_next;
-		}
+	while (0 < index--) {
+		c = c->p_next;
+	}
 	/*} else {
 		c = list->tail;
 		index = list->node_count - (index);
@@ -241,73 +236,6 @@ go_error_exit:
 	*current = nullptr;
 	*previous = nullptr;
 	return -1;
-}
-
-static void _wh_insert_sll(_wh_sys_list_insert* params, void* current, void* previous, void* node) {
-	wh_sllist_item_s* c = current;
-	wh_sllist_item_s* p = previous;
-	wh_sllist_item_s* n = node;
-
-	if (nullptr != p) {
-		p->p_next = node;
-	}
-	n->p_next = c;
-}
-
-static void _wh_insert_dll(_wh_sys_list_insert* params, void* current, void* previous, void* node) {
-	wh_dllist_item_s* c = current;
-	wh_dllist_item_s* p = previous;
-	wh_dllist_item_s* n = node;
-
-	n->p_next = c;
-	n->p_previous = p;
-
-	if (nullptr != c) {
-		c->p_previous = node;
-
-		if (nullptr == c->p_next) {
-			params->list->tail = c;
-		}
-	} else {
-		p = params->list->tail;
-		params->list->tail = node;
-	}
-
-	if (nullptr != p) {
-		p->p_next = node;
-	} else {
-		params->list->head = node;
-	}
-}
-
-static void _wh_insert_sll_stdlib(_wh_sys_list_insert* params, void* current, void* previous) {
-	wh_sllist_item_s* node = calloc(1, sizeof(wh_sllist_item_s));
-
-	if (nullptr == node) {
-		wh_log_error(("Failed to allocated node!"));
-	}
-
-	node->data = calloc(1, params->list->type_size);
-
-	if (nullptr == node->data) {
-		wh_log_error(("Failed to allocated node data!"));
-	}
-
-	memcpy(node->data, params->data, params->list->type_size);
-	_wh_insert_sll(params, current, previous, node);
-	wh_log_debug(("Inserted item into single std linked list!"));
-}
-
-static void _wh_insert_dll_stdlib(_wh_sys_list_insert* params, void* current, void* previous) {
-	wh_dllist_item_s* node = malloc(sizeof(wh_dllist_item_s) + params->list->type_size);
-
-	if (nullptr == node) {
-		wh_log_error(("Failed to allocated node!"));
-	}
-
-	node->data = wh_ptr_add(node, sizeof(wh_dllist_item_s));
-	memcpy(node->data, params->data, params->list->type_size);
-	_wh_insert_dll(params, current, previous, node);
 }
 
 static void* _wh_list_search_sll(_wh_list_search_params* params) {
@@ -334,7 +262,7 @@ void* _wh_list_search(_wh_list_search_params params) {
 		wh_log_warning(("No search item provided!"));
 		return nullptr;
 	}
-	
+
 	func_index = ((u64)params.list->stype) - WH_STRUCT_TYPE_LLIST_SINGLE;
 
 	return _wh_search[func_index](&params);
@@ -365,15 +293,11 @@ go_error_exit:
 	return -1;
 }
 
-static void _wh_append_dll_stdlib(_wh_sys_list_insert* params, void* current) {
-	wh_dllist_item_s* node = malloc(sizeof(wh_dllist_item_s));
-}
-
 void* _wh_s2_list_get(_wh_s2_list_get_params params) {
 	void* current = nullptr;
 	void* previous = nullptr;
 	u64 func_index = 0;
-	
+
 	func_index = ((u64)params.list->stype) - WH_STRUCT_TYPE_LLIST_SINGLE;
 
 	if (0 == _wh_get_index[func_index](params.list, params.index, &current, &previous)) {
@@ -386,7 +310,6 @@ void* _wh_s2_list_get(_wh_s2_list_get_params params) {
 
 	return nullptr;
 }
-
 /// Init blocks
 
 int8_t _wh_sys_list_single_init(wh_list_s* out, _wh_sys_list_init_params* params) {
@@ -410,9 +333,7 @@ int8_t _wh_sys_list_single_stdlib_init(wh_list_s* out, _wh_sys_list_init_params*
 	return 0;
 }
 
-
-int8_t _wh_sys_list_double_stdlib_init(wh_list_s* out, _wh_sys_list_init_params* params) {
-	wh_log_debug(("Hello!"));
+static i8 _wh_alloc_stdlib(wh_list_s* out, u64 count) {
 	return 0;
 }
 
