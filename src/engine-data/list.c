@@ -28,14 +28,12 @@ static void* _wh_data_dll(void* node);
 static void* _wh_list_search_sll(_wh_list_search_params* params);
 static void* _wh_list_search_dll(_wh_list_search_params* params);
 
-// Functions for allocations
-static i8 _wh_internal_sys_list_alloc_wolfhound(wh_list_s* out, u64 count);
-static i8 _wh_internal_sys_list_alloc_memreq(wh_list_s* out, u64 count);
-static i8 _wh_alloc_stdlib(wh_list_s* out, u64 count);
-
 int8_t _wh_sys_list_single_stdlib_init(wh_list_s* out, _wh_sys_list_init_params* params);
 
 // Including private C files
+#include"_list/wolfhound.c"
+#include"_list/mmap.c"
+
 #include"_list/dll_stdlib.c"
 #include"_list/sll_stdlib.c"
 
@@ -103,69 +101,11 @@ static i8 (*_wh_list_alloc[])(wh_list_s* out, u64 count) = {
 	&_wh_internal_sys_list_alloc_memreq,
 	&_wh_internal_sys_list_alloc_memreq,
 
-	&_wh_alloc_stdlib,
-	&_wh_alloc_stdlib,
+	//&_wh_alloc_stdlib,
+	//&_wh_alloc_stdlib,
+	nullptr,
 	nullptr,
 };
-
-static i8 _wh_internal_sys_list_alloc_wolfhound(wh_list_s* out, u64 count) {
-	void* new_data = nullptr;
-	union {
-		void* ptr;
-		wh_sllist_item_s* sl;
-		wh_dllist_item_s* dl;
-	} node;
-
-	switch(out->stype) {
-		case WH_STRUCT_TYPE_LLIST_SYS_SINGLE:
-			node.sl->p_next = new_data;
-			break;
-		case WH_STRUCT_TYPE_LLIST_SYS_DOUBLE:
-			node.dl->p_next = new_data;
-			break;
-	}
-
-	return 0;
-}
-
-static i8 _wh_internal_sys_list_alloc_memreq(wh_list_s* out, u64 count) {
-	void* new_data = nullptr;
-	i64 pagesize = (i64)getpagesize();
-	u64 new_size = (u64)wh_align((i64)out->sysmem.size + pagesize, pagesize); 
-
-	union {
-		void* ptr;
-		wh_sllist_item_s* sl;
-		wh_dllist_item_s* dl;
-	} node;
-
-	node.ptr = out->tail;
-	new_data = wh_sys_memreq(new_size);
-
-	if (nullptr == new_data) {
-		wh_log_error(("Failed to relloacte list memory! of size [ %u ]"), new_size);
-		goto go_error_exit;
-	}
-
-	switch(out->stype) {
-		case WH_STRUCT_TYPE_LLIST_SYS_SINGLE:
-			node.sl->p_next = new_data;
-			break;
-		case WH_STRUCT_TYPE_LLIST_SYS_DOUBLE:
-			node.dl->p_next = new_data;
-			break;
-		default:
-			goto go_error_exit_free;
-	}
-
-	out->tail = new_data;
-
-	return 0;
-go_error_exit_free:
-	wh_sys_memrel(new_data, new_size);
-go_error_exit:
-	return -1;
-}
 
 void* _wh_list_search(_wh_list_search_params params) {
 	u64 func_index = 0;
