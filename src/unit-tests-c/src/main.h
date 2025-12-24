@@ -3,10 +3,11 @@
 
 #include<stdint.h>
 #include<wh/common.h>
+#include<wh-testing/macros.h>
 
 #define TEST_COUNT 200
 
-extern i64 (*test_funcs[TEST_COUNT])(i64* failed, i64* passed);
+extern i64 (*test_funcs[TEST_COUNT])(wh_utest_results_s* results);
 
 // Helper to add unit tests to the test suit
 #define ADD_TESTS(__array__) \

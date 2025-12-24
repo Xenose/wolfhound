@@ -7,7 +7,7 @@
 #include"maths-core.h"
 #include"memory.h"
 
-i64 (*test_funcs[TEST_COUNT])(i64* failed, i64* passed) = {
+i64 (*test_funcs[TEST_COUNT])(wh_utest_results_s* results) = {
 	nullptr
 };
 
@@ -17,15 +17,14 @@ i64 (*test_funcs[TEST_COUNT])(i64* failed, i64* passed) = {
 };*/
 
 int main(int arc, char** arv) {
-	i64 failed = 0;
-	i64 passed = 0; 
+	wh_utest_results_s results = { 0 };
 
 	wh_log_set_level(WH_LOG_LEVEL_DEBUG,	0);
 	wh_log_set_level(WH_LOG_LEVEL_INFO,		0);
 	wh_log_set_level(WH_LOG_LEVEL_NOTICE,	0);
 
 	for (i64 i = 0; nullptr != test_funcs[i]; i++) {
-		test_funcs[i](&failed, &passed);
+		test_funcs[i](&results);
 	}
 
 	/*printf("Benchmarking...\n");
@@ -33,6 +32,6 @@ int main(int arc, char** arv) {
 		bench_funcs[i]();
 	}*/
 
-	printf("%li of %li failed\n", failed, failed + passed);
+	printf("%li of %li failed\n", results.failed, results.failed + results.passed);
 	return 0;
 }
