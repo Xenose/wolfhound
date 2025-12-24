@@ -8,9 +8,10 @@
 
 extern i64 (*test_funcs[TEST_COUNT])(i64* failed, i64* passed);
 
+// Helper to add unit tests to the test suit
 #define ADD_TESTS(__array__) \
 __attribute__((constructor)) \
-static void reg_func_##__LINE__() { \
+static void reg_func_##__FILE__##__LINE__() { \
 	i64 index = 0; \
 	i64 func_count = sizeof(__array__) / sizeof(__array__[0]); \
 \
