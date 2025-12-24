@@ -2,21 +2,19 @@
 
 #include<wh/debug/logger.h>
 
-#include<wh_tests/print.h>
-#include<wh_tests/maths/core.h>
-#include<wh_tests/memory.h>
+#include"main.h"
+#include"print.h"
+#include"maths-core.h"
+#include"memory.h"
 
-i64 (*test_funcs[])(i64* failed, i64* passed) = {
-	&testing_math,
-	&testing_memory,
-	&testing_print,
+i64 (*test_funcs[TEST_COUNT])(i64* failed, i64* passed) = {
 	nullptr
 };
 
-i64 (*bench_funcs[])() = {
+/*i64 (*bench_funcs[])() = {
 	&benchmark_print,
 	nullptr
-};
+};*/
 
 int main(int arc, char** arv) {
 	i64 failed = 0;

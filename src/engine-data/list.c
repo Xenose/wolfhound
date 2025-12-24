@@ -162,7 +162,7 @@ void* _wh_s2_list_get(_wh_s2_list_get_params params) {
 
 	return nullptr;
 }
-/// Init blocks
+
 
 int8_t _wh_sys_list_single_init(wh_list_s* out, _wh_sys_list_init_params* params) {
 	return 0;

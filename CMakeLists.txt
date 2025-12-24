@@ -218,4 +218,4 @@ IF (NOT NO_CXX_COMPILER)
 ENDIF()
 
 # Tests
-# ADD_SUBDIRECTORY(tests/c/unit_tests/)
+ADD_SUBDIRECTORY(src/unit-tests-c/)

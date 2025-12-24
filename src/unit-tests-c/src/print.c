@@ -4,7 +4,7 @@
 #include<wh/print.h>
 #include<wh/debug/exceptions.h>
 #include<wh/debug/benchmark.h>
-#include<wh/testing/macros.h>
+#include<wh-testing/macros.h>
 
 void _testing_print(i64* failed, i64* passed, char* result, char* format, ...) {
 	char buffer[8096] = { 0 };

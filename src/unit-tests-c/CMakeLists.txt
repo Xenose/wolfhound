@@ -7,10 +7,10 @@ SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}") #-fprofile-arcs -ftest-coverage")
 INCLUDE_DIRECTORIES(SYSTEM "include/")
 
 ADD_EXECUTABLE(compiled_tests
-	"src/maths/core.c"
-	"src/memory.c"
-	"src/print.c"
-	"src/source.c"
+	"src/maths-core.c"
+	#"src/memory.c"
+	#"src/print.c"
+	"src/main.c"
 )
 
 FOREACH(src_file IN LISTS C_SOURCES CXX_SOURCES)

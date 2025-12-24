@@ -1,9 +1,9 @@
 #include<wh-sys/memory.h>
 #include<wh/debug/exceptions.h>
-#include<wh-testing/macros.h>
 #include<wh/debug/logger.h>
 
-#include<wh_tests/memory.h>
+#include"memory.h"
+#include<wh-testing/macros.h>
 
 void _memory_test(i64* failed, i64* passed, wh_heap_header_s* heap, u64 bytes) {
 	void* p1 = nullptr;
