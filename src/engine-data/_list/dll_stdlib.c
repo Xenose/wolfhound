@@ -7,7 +7,7 @@
 
 #include"dll_common.c"
 
-static i8 _wh_sys_list_double_stdlib_init(wh_list_s* out, _wh_sys_list_init_params* params) {
+static i8 _wh_sys_list_double_stdlib_init(wh_list_s* out, _wh_list_init_params* params) {
 	wh_log_debug(("Hello!"));
 	return 0;
 }
@@ -25,7 +25,7 @@ static void _wh_push_back_dll_stdlib(_wh_list_push_back_params* params) {
 }
 
 
-static void _wh_insert_dll_stdlib(_wh_sys_list_insert* params, void* current, void* previous) {
+static void _wh_insert_dll_stdlib(_wh_list_insert_params* params, void* current, void* previous) {
 	wh_dllist_item_s* node = malloc(sizeof(wh_dllist_item_s) + params->list->type_size);
 
 	if (nullptr == node) {
@@ -35,4 +35,7 @@ static void _wh_insert_dll_stdlib(_wh_sys_list_insert* params, void* current, vo
 	node->data = wh_ptr_add(node, sizeof(wh_dllist_item_s));
 	memcpy(node->data, params->data, params->list->type_size);
 	_wh_insert_dll(params, current, previous, node);
+}
+
+static void _wh_delete_dll_stdlib() {
 }

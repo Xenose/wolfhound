@@ -7,7 +7,7 @@
 
 #include"sll_common.c"
 
-static void _wh_insert_sll_stdlib(_wh_sys_list_insert* params, void* current, void* previous) {
+static void _wh_insert_sll_stdlib(_wh_list_insert_params* params, void* current, void* previous) {
 	wh_sllist_item_s* node = calloc(1, sizeof(wh_sllist_item_s));
 
 	if (nullptr == node) {

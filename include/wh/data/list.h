@@ -3,7 +3,7 @@
 
 #include<wh/common.h>
 #include<wh/types/memory.h>
-
+/*
 typedef struct _wh_sllist_item_s {
 	struct _wh_sllist_item_s* p_next;
 	void* data;
@@ -58,6 +58,7 @@ typedef struct {
 	void* ptr;
 } _wh_list_append_params;
 
+
 wh_list_s _wh_list_init(_wh_list_init_params params, ...);
 
 void* _wh_list_get(_wh_list_get_params params);
@@ -72,5 +73,5 @@ void _wh_list_append(_wh_list_append_params params, ...);
 
 #define wh_list_insert(x, ...) WH_EPF(_wh_list_insert((_wh_list_insert_params) { WH_VA_ARGS x }, __VA_ARGS__, nullptr)
 #define wh_list_append(x, ...) WH_EPF(_wh_list_append((_wh_list_append_params) { WH_VA_ARGS x }, __VA_ARGS__, nullptr)
-
+*/
 #endif /* _wh_header_data_linked_list_ */

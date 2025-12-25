@@ -9,7 +9,7 @@ static void* _wh_data_sll(void* node) {
 	return n->data;
 }
 
-static void _wh_insert_sll(_wh_sys_list_insert* params, void* current, void* previous, void* node) {
+static void _wh_insert_sll(_wh_list_insert_params* params, void* current, void* previous, void* node) {
 	wh_sllist_item_s* c = current;
 	wh_sllist_item_s* p = previous;
 	wh_sllist_item_s* n = node;
@@ -43,7 +43,7 @@ go_error_exit:
 	return -1;
 }
 
-static void* _wh_list_search_sll(_wh_list_search_params* params) {
+static void* _wh_search_sll(_wh_list_search_params* params) {
 }
 
 #endif

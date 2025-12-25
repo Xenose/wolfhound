@@ -12,32 +12,25 @@
 #include<stdio.h>
 
 // Functions using the memory allocator
-static int8_t _wh_sys_list_single_init(wh_list_s* out, _wh_sys_list_init_params* params);
-static int8_t _wh_sys_list_double_init(wh_list_s* out, _wh_sys_list_init_params* params);
+static int8_t _wh_sys_list_single_init(wh_list_s* out, _wh_list_init_params* params);
+static int8_t _wh_sys_list_double_init(wh_list_s* out, _wh_list_init_params* params);
 
 // Functions not using the memory allocator, but the system memory directly.
-static int8_t _wh_sys_list_single_memreq_init(wh_list_s* out, _wh_sys_list_init_params* params);
-static int8_t _wh_sys_list_double_memreq_init(wh_list_s* out, _wh_sys_list_init_params* params);
+static int8_t _wh_sys_list_single_memreq_init(wh_list_s* out, _wh_list_init_params* params);
+static int8_t _wh_sys_list_double_memreq_init(wh_list_s* out, _wh_list_init_params* params);
 
-static i8 _wh_get_index_sll (wh_list_s* list, u64 index, void** current, void** previous);
-static i8 _wh_get_index_dll (wh_list_s* list, u64 index, void** current, void** previous);
-
-static void* _wh_data_sll(void* node);
-static void* _wh_data_dll(void* node);
-
-static void* _wh_list_search_sll(_wh_list_search_params* params);
-static void* _wh_list_search_dll(_wh_list_search_params* params);
-
-int8_t _wh_sys_list_single_stdlib_init(wh_list_s* out, _wh_sys_list_init_params* params);
+int8_t _wh_sys_list_single_stdlib_init(wh_list_s* out, _wh_list_init_params* params);
 
 // Including private C files
 #include"_list/wolfhound.c"
 #include"_list/mmap.c"
 
+#include"_list/dll_common.c"
+
 #include"_list/dll_stdlib.c"
 #include"_list/sll_stdlib.c"
 
-int8_t (*_wh_internal_sys_list_init[])(wh_list_s* out, _wh_sys_list_init_params* params) = {
+int8_t (*_wh_internal_sys_list_init[])(wh_list_s* out, _wh_list_init_params* params) = {
 	&_wh_sys_list_single_init,
 	&_wh_sys_list_double_init,
 
@@ -72,7 +65,7 @@ static void* (*_wh_data[]) (void* node) = {
 	&_wh_data_dll,
 };
 
-static void (*_wh_insert[]) (_wh_sys_list_insert* params, void* current, void* previous) = {
+static void (*_wh_insert[]) (_wh_list_insert_params* params, void* current, void* previous) = {
 	nullptr,
 	nullptr,
 
@@ -95,14 +88,14 @@ static void (*_wh_push_back[]) (_wh_list_push_back_params* params) = {
 };
 
 static void* (*_wh_search[])(_wh_list_search_params* params) = {
-	&_wh_list_search_sll,
-	&_wh_list_search_dll,
+	&_wh_search_sll,
+	&_wh_search_dll,
 
-	&_wh_list_search_sll,
-	&_wh_list_search_dll,
+	&_wh_search_sll,
+	&_wh_search_dll,
 
-	&_wh_list_search_sll,
-	&_wh_list_search_dll,
+	&_wh_search_sll,
+	&_wh_search_dll,
 };
 
 static i8 (*_wh_list_alloc[])(wh_list_s* out, u64 count) = {
@@ -131,7 +124,7 @@ void* _wh_list_search(_wh_list_search_params params) {
 	return _wh_search[func_index](&params);
 }
 
-i8 _wh_s2_list_insert(_wh_sys_list_insert params) {
+i8 _wh_list_insert(_wh_list_insert_params params) {
 	void* current = nullptr;
 	void* previous = nullptr;
 	u64 func_index = 0;
@@ -174,7 +167,7 @@ go_error_exit:
 	return -1;
 }
 
-void* _wh_s2_list_get(_wh_s2_list_get_params params) {
+void* _wh_list_get(_wh_list_get_params params) {
 	void* current = nullptr;
 	void* previous = nullptr;
 	u64 func_index = 0;
@@ -193,24 +186,24 @@ void* _wh_s2_list_get(_wh_s2_list_get_params params) {
 }
 
 
-int8_t _wh_sys_list_single_init(wh_list_s* out, _wh_sys_list_init_params* params) {
+int8_t _wh_sys_list_single_init(wh_list_s* out, _wh_list_init_params* params) {
 	return 0;
 }
 
 
-int8_t _wh_sys_list_double_init(wh_list_s* out, _wh_sys_list_init_params* params) {
+int8_t _wh_sys_list_double_init(wh_list_s* out, _wh_list_init_params* params) {
 	return 0;
 }
 
-int8_t _wh_sys_list_single_memreq_init(wh_list_s* out, _wh_sys_list_init_params* params) {
+int8_t _wh_sys_list_single_memreq_init(wh_list_s* out, _wh_list_init_params* params) {
 	return 0;
 }
 
-int8_t _wh_sys_list_double_memreq_init(wh_list_s* out, _wh_sys_list_init_params* params) {
+int8_t _wh_sys_list_double_memreq_init(wh_list_s* out, _wh_list_init_params* params) {
 	return 0;
 }
 
-int8_t _wh_sys_list_single_stdlib_init(wh_list_s* out, _wh_sys_list_init_params* params) {
+int8_t _wh_sys_list_single_stdlib_init(wh_list_s* out, _wh_list_init_params* params) {
 	return 0;
 }
 
@@ -218,7 +211,7 @@ static i8 _wh_alloc_stdlib(wh_list_s* out, u64 count) {
 	return 0;
 }
 
-wh_list_s _wh_sys_list_init(i64 list_type, _wh_sys_list_init_params params) {
+wh_list_s _wh_list_init(i64 list_type, _wh_list_init_params params) {
 	wh_list_s out = { 0 };
 
 	if (WH_STRUCT_TYPE_LLIST_SINGLE > list_type || WH_STRUCT_TYPE_LLIST_STD_DOUBLE < list_type) {

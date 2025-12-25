@@ -11,7 +11,7 @@ static void* _wh_data_dll(void* node) {
 	return n->data;
 }
 
-static void _wh_insert_dll(_wh_sys_list_insert* params, void* current, void* previous, void* node) {
+static void _wh_insert_dll(_wh_list_insert_params* params, void* current, void* previous, void* node) {
 	wh_dllist_item_s* c = current;
 	wh_dllist_item_s* p = previous;
 	wh_dllist_item_s* n = node;
@@ -90,7 +90,7 @@ go_error_exit:
 	return -1;
 }
 
-static void* _wh_list_search_dll(_wh_list_search_params* params) {
+static void* _wh_search_dll(_wh_list_search_params* params) {
 	wh_dllist_item_s* node = params->list->head;
 
 	while (nullptr != node) {
