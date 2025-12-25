@@ -37,5 +37,5 @@ static void _wh_insert_dll_stdlib(_wh_list_insert_params* params, void* current,
 	_wh_insert_dll(params, current, previous, node);
 }
 
-static void _wh_delete_dll_stdlib() {
+static void _wh_delete_dll_stdlib(_wh_list_delete_params params, void* node) {
 }
