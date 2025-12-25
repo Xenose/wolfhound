@@ -37,6 +37,21 @@ static void _wh_insert_dll(_wh_sys_list_insert* params, void* current, void* pre
 	}
 }
 
+static void _wh_push_back_dll(_wh_list_push_back_params* params, void* node) {
+	wh_dllist_item_s* n = node;
+
+	if (nullptr == params->list->head) {
+		params->list->head = n;
+	}
+
+	if (nullptr != params->list->tail) {
+		((wh_dllist_item_s*)params->list->tail)->p_next = n;
+	}
+
+	n->p_previous = params->list->tail;
+	params->list->tail = n;
+}
+
 static i8 _wh_get_index_dll(wh_list_s* list, u64 index, void** current, void** previous) {
 	wh_dllist_item_s* c = list->head; 
 	u64 midpoint = (list->node_count + 2) / 2;

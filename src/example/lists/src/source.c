@@ -8,16 +8,20 @@ int main(int arc, char* const* arv) {
 
 	wh_signalar_init(arv[0]);
 
-	wh_sys_list_insert(&l, 0, (int[]){ 20 });
-	wh_sys_list_insert(&l, 0, (int[]){ 20 });
-	wh_sys_list_insert(&l, 0, (int[]){ 5 });
-	wh_sys_list_insert(&l, 3, (int[]){ 40 });
-	wh_sys_list_insert(&l, 1, (int[]){ 40 });
-	wh_sys_list_insert(&l, 1, (int[]){ 50 });
-	wh_sys_list_insert(&l, 3, (int[]){ 150 });
-	wh_sys_list_insert(&l, 2, (int[]){ 10 });
+	wh_sys_list_insert(&l, 0, WH_INT(20));
+	wh_sys_list_insert(&l, 0, WH_INT(20));
+	wh_sys_list_insert(&l, 0, WH_INT(5));
+	wh_sys_list_insert(&l, 3, WH_INT(40));
+	wh_sys_list_insert(&l, 1, WH_INT(40));
+	wh_sys_list_insert(&l, 1, WH_INT(50));
+	wh_sys_list_insert(&l, 3, WH_INT(150));
+	wh_sys_list_insert(&l, 2, WH_INT(10));
 
-	if (nullptr != wh_list_search(&l, (int[]){ 20 })) {
+	wh_for(int, i, 10) {
+		wh_list_push_back(&l, &i);
+	}
+
+	if (nullptr != wh_list_search(&l, WH_INT(20))) {
 		wh_log_debug(("Item found!"));
 	}
 

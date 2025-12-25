@@ -83,6 +83,17 @@ static void (*_wh_insert[]) (_wh_sys_list_insert* params, void* current, void* p
 	&_wh_insert_dll_stdlib,
 };
 
+static void (*_wh_push_back[]) (_wh_list_push_back_params* params) = {
+	nullptr,
+	nullptr,
+
+	nullptr,
+	nullptr,
+
+	nullptr,
+	_wh_push_back_dll_stdlib,
+};
+
 static void* (*_wh_search[])(_wh_list_search_params* params) = {
 	&_wh_list_search_sll,
 	&_wh_list_search_dll,
@@ -139,6 +150,24 @@ i8 _wh_s2_list_insert(_wh_sys_list_insert params) {
 		wh_log_error(("Failed to get list index!"));
 		goto go_error_exit;
 	}
+
+	return 0;
+go_error_exit:
+	return -1;
+}
+
+i8 _wh_list_push_back(_wh_list_push_back_params params) {
+	u64 func_index = 0;
+
+	if (nullptr == params.data) {
+		wh_log_warning(("Provided data is a Nullptr"));
+		goto go_error_exit;
+	}
+
+	func_index = ((u64)params.list->stype) - WH_STRUCT_TYPE_LLIST_SINGLE;
+
+	 _wh_push_back[func_index](&params);
+	++params.list->node_count;
 
 	return 0;
 go_error_exit:
