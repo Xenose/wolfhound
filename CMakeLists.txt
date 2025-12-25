@@ -48,15 +48,6 @@ SET(NON_MSVC_FLAGS
 	-Wno-unused-but-set-variable
 )
 
-IF (ANDROID OR CMAKE_SYSTEM_NAME STREQUAL "Android")
-	MESSAGE(STATUS "Detected Android/Termux environment. Adding Termux prefix.")
-
-	SET(TERMUX_PREFIX "/data/data/com.termux/files/usr")
-	LIST(APPEND CMAKE_PREFIX_PATH ${TERMUX_PREFIX})
-	LIST(APPEND CMAKE_INCLUDE_PATH "${TERMUX_PREFIX}/include")
-	LIST(APPEND CMAKE_LIBRARY_PATH "${TERMUX_PREFIX}/lib")
-ENDIF()
-
 # Lets use the new C++ as well
 IF (NOT NO_CXX_COMPILER)
 	SET(CMAKE_CXX_STANDARD 23)
@@ -66,49 +57,11 @@ ENDIF()
 INCLUDE_DIRECTORIES(SYSTEM "${CMAKE_SOURCE_DIR}/include/")
 
 IF (LINUX_MINGW_WIN)
-	SET(CMAKE_SYSTEM_NAME Windows)
-	SET(CMAKE_SYSTEM_PROCESSOR x86_64)
-
-	MESSAGE("\n\tWE ARE COMPILING FOR WINDOWS!")
-	MESSAGE(STATUS "-- Cross-compiling from Linux to Windows (MinGW)")
-
-	INCLUDE_DIRECTORIES(SYSTEM "${WINUX_SYSROOT}/include")
-	SET(CMAKE_LIBRARY_PATH "${CMAKE_LIBRARY_PATH};/opt/windows/lib")
-	SET(USE_FORTRAN OFF)
+	INCLUDE(cmake/os_cross_windows.cmake)
 ELSEIF(WIN32)
-	MESSAGE("\n\tWE ARE ON WINDOWS!")
-
-	# having the include same as Unix / Linux make more sense
-	INCLUDE_DIRECTORIES(SYSTEM "${WIN_SYSROOT}/include/" "C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt" "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Tools/MSVC/14.44.35207/include")
-	SET(CMAKE_LIBRARY_PATH "${CMAKE_LIBRARY_PATH};${WIN_SYSROOT}/lib")
-	#LINK_DIRECTORIES(AFTER "C:/usr/lib/")
-
-	# More Windows Magic for atomics :: Legacy KEEP
-	IF (MSVC)
-		MESSAGE("\tNO ITS MSVC...")
-		SET(CMAKE_C_STANDARD 17)
-		
-		ADD_COMPILE_OPTIONS(
-			$<$<C_COMPILER_ID:MSVC>:/experimental:c11atomics>
-			$<$<C_COMPILER_ID:MSVC>:/Zc:preprocessor>
-		)
-	ENDIF()
+	INCLUDE(cmake/os_windows.cmake)
 ELSE()
-	MESSAGE("\n\tWE ARE NOT ON WINDOWS!")
-
-	# checking if we have Fortran on the system
-	IF(CMAKE_C_COMPILER_ID MATCHES "TinyCC")
-		MESSAGE(WARNING "TCC Fortran turned off.")
-		SET(USE_FORTRAN OFF)
-	ELSEIF(CMAKE_Fortran_COMPILER)
-		MESSAGE(STATUS "Fortran compiler found: ${CMAKE_Fortran_COMPILER}")
-		ENABLE_LANGUAGE(Fortran)
-		ADD_COMPILE_DEFINITIONS(WH_USE_FORTRAN=1)
-		SET(USE_FORTRAN ON)
-	ELSE()
-		MESSAGE(WARNING "Fortran compiler NOT found. Falling back to C implementations.")
-		SET(USE_FORTRAN OFF)
-	ENDIF()
+	INCLUDE(cmake/os_posix.cmake)
 ENDIF()
 
 INCLUDE(cmake/source_files.cmake)
@@ -154,37 +107,7 @@ IF(WH_INCLUDES)
 	TARGET_INCLUDE_DIRECTORIES(${APP_NAME} PRIVATE ${WH_INCLUDES})
 ENDIF()
 
-IF(WIN32)
-	TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE)
-
-	IF (MSVC)
-		TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
-			${MSVC_FLAGS}
-		)
-	ELSE()
-		TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
-			${NON_MSVC_FLAGS}
-			--target=x86_64-pc-windows-gnu
-			${COMPILER_O_LEVEL}
-		)
-	ENDIF()
-ELSEIF(CMAKE_C_COMPILER_ID MATCHES "TinyCC")
-	TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE "m" "dl" "atomic" "bsd")
-	TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
-		${NON_MSVC_FLAGS}
-		${COMPILER_O_LEVEL}
-	)
-ELSE()
-	IF(CMAKE_C_COMPILER_ID MATCHES "GNU")
-		LIST(APPEND NON_MSVC_FLAGS -Wno-missing-field-initializers)
-	ENDIF()
-
-	TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE "m" "dl" "atomic" "bsd" "gcov")
-	TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
-		${NON_MSVC_FLAGS}
-		${COMPILER_O_LEVEL}
-	)
-ENDIF()
+OS_COMPILE()
 
 # Allows us to do line coverage testing
 IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" AND GENERATE_REPORT)
