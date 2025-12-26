@@ -11,7 +11,7 @@ static void* _wh_data_dll(void* node) {
 	return n->data;
 }
 
-static void _wh_insert_dll(_wh_list_insert_params* params, void* current, void* previous, void* node) {
+static inline void _wh_insert_dll(_wh_list_insert_params* params, void* current, void* previous, void* node) {
 	wh_dllist_item_s* c = current;
 	wh_dllist_item_s* p = previous;
 	wh_dllist_item_s* n = node;
@@ -21,10 +21,6 @@ static void _wh_insert_dll(_wh_list_insert_params* params, void* current, void* 
 
 	if (nullptr != c) {
 		c->p_previous = node;
-
-		if (nullptr == c->p_next) {
-			params->list->tail = c;
-		}
 	} else {
 		p = params->list->tail;
 		params->list->tail = node;
@@ -34,6 +30,26 @@ static void _wh_insert_dll(_wh_list_insert_params* params, void* current, void* 
 		p->p_next = node;
 	} else {
 		params->list->head = node;
+	}
+}
+
+/* [MD_DOC]
+ * Note this function assumes the list is valid and node,
+ * as this is a internal function not a API function.
+ */
+static inline void _wh_unlink_dll(wh_list_s* list, void* node) {
+	wh_dllist_item_s* n = node;
+
+	if (nullptr != n->p_previous) {
+		n->p_previous->p_next = n->p_next;
+	} else {
+		list->head = n->p_next;
+	}
+
+	if (nullptr != n->p_next) {
+		n->p_next->p_previous = n->p_previous;
+	} else {
+		list->tail = n->p_previous;
 	}
 }
 
@@ -102,6 +118,37 @@ static void* _wh_search_dll(_wh_list_search_params* params) {
 	}
 
 	return nullptr;
+}
+
+static void* _wh_search_func_dll(_wh_list_search_func_params* params) {
+	u64 index = 0;
+	wh_dllist_item_s* node = params->list->head;
+
+	while (nullptr != node) {
+		if (params->is_match(node->data, params->ptr)) {
+			if (nullptr != params->index) {
+				*params->index = index;
+			}
+			return node;
+		}
+
+		node = node->p_next;
+		++index;
+	}
+
+	return nullptr;
+}
+
+static void _wh_for_each_dll(_wh_list_for_each_params* params) {
+	u64 index = 0;
+	wh_dllist_item_s* node = params->list->head;
+	wh_dllist_item_s* next = nullptr;
+
+	while (nullptr != node) {
+		next = node->p_next;
+		params->do_func(node->data, index++);
+		node = next;
+	}
 }
 
 #endif

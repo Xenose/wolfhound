@@ -1,46 +1,46 @@
 #include<wh/debug/exceptions.h>
 #include<wh/debug/logger.h>
 #include<wh-sys/memory.h>
+#include<wh-data/list.h>
 
 #include<stdlib.h>
 // Linked list tracking
 
 typedef struct {
-	void** owner;
+	void* ptr;
+	void** owners;
+	u64 owner_count;
 	u64 line;
 	const char* file;
 } _wh_heap_ptr_pair_s;
 
-typedef struct _wh_heap_list_entry {
-	u64 owner_count;
-	_wh_heap_ptr_pair_s* owners;
-	
-	void* ptr;
-	void* heap;
-
-	struct _wh_heap_list_entry* next;
-	struct _wh_heap_list_entry* previous;
-} _wh_heap_list_entry_s;
-
-typedef struct {
-	wh_atomic_lock_s lock;
-	_wh_heap_list_entry_s* nodes;
-	_wh_heap_list_entry_s* last;
-} _wh_heap_list_s;
-
-static _wh_heap_list_s _list = { 0 };
+//static _wh_heap_list_s _list = { 0 };
 
 extern void* _wh_alloc_no_tracking(_wh_mem_alloc_params params);
 extern void _wh_free_no_tracking(_wh_mem_free_params params);
 extern void* _wh_realloc_no_tracking(_wh_mem_realloc_params params);
+
+static wh_list_s _list = {
+	.stype = WH_STRUCT_TYPE_LLIST_STD_DOUBLE,
+	.type_size = sizeof(_wh_heap_ptr_pair_s),
+};
+
+bool _wh_track_search(void* entry_in, void* ptr_in) {
+	_wh_heap_ptr_pair_s* entry = entry_in;
+
+	if (entry->ptr == ptr_in) {
+		return true;
+	}
+
+	return false;
+}
 
 /*
  * Tracking functions
  *
  */
 void _wh_tracker_insert(void* owner, void* ptr, wh_heap_header_s* heap, u64 line, const char* file) {
-	_wh_heap_list_entry_s* last = nullptr;
-	_wh_heap_ptr_pair_s* owners = nullptr;
+	_wh_heap_ptr_pair_s* entry = nullptr;
 
 	if (nullptr == ptr) {
 		return;
@@ -48,112 +48,106 @@ void _wh_tracker_insert(void* owner, void* ptr, wh_heap_header_s* heap, u64 line
 
 	if (nullptr == owner) {
 		wh_log_critical(("Untracked pointer at [ %s:%u ]!"), file, line);
-		return;
 	}
 
-	if (nullptr == _list.nodes) {
-		_list.nodes = calloc(1, sizeof(_wh_heap_list_entry_s));
-		_list.last = _list.nodes;
+	entry = wh_list_search_func(&_list, ptr, &_wh_track_search);
 
-		if (nullptr == _list.nodes) {
-			wh_log_error(("Failed to allocate memory"));
-			return;
+	if (nullptr == entry) {
+		_wh_heap_ptr_pair_s tmp = {
+			.ptr = ptr,
+			.owners = malloc(sizeof(void*)),
+			.owner_count = 1,
+			.line = line,
+			.file = file,
+		};
+
+		if (nullptr == tmp.owners) {
+			wh_log_critical(("Failed to allocate owner ptr memory"));
+		} else {
+			tmp.owners[0] = owner;
 		}
 
-		last = _list.last;
+		wh_list_push_back(&_list, &tmp);
 	} else {
-		last = _list.last;
-		last->next = calloc(1, sizeof(_wh_heap_list_entry_s));
+		void** tmp = realloc(entry->owners, sizeof(void*) * (entry->owner_count + 1));
 
-		if (nullptr == last->next) {
-			wh_log_error(("Failed to allocate memory"));
-			return;
+		if (nullptr == tmp) {
+			wh_log_critical(("Failed to allocate owner ptr memory"));
+		} else {
+			entry->owners = tmp;
+			entry->owners[entry->owner_count] = owner;
 		}
 
-		// shuffling the nodes
-		last->next->previous = last;
-		_list.last = last->next;
-		last = last->next;
+		++entry->owner_count;
 	}
-
-	last->ptr = ptr;
-	last->heap = heap;
-	last->owner_count = 0;
-
-	owners = realloc(last->owners, sizeof(_wh_heap_ptr_pair_s) * (last->owner_count + 1));
-
-	if (nullptr == owners) {
-		wh_log_error(("Failed to allocate memory"));
-		return;
-	}
-
-	last->owners = owners;
-
-	owners[last->owner_count].owner = owner;
-	owners[last->owner_count].line = line;
-	owners[last->owner_count].file = file;
-	last->owner_count += 1;
 
 	wh_log_debug(("inserted new node!"));
 }
 
 void _wh_tracker_remove(void* owner, void* ptr) {
-	wh_spinlock_v2(&_list.lock) {
-		_wh_heap_list_entry_s* current = _list.nodes;
+	u64 index = 0;
+	_wh_heap_ptr_pair_s* entry = nullptr;
 
-		if (nullptr == current) {
-			return;
-		}
+	if (nullptr == ptr) {
+		return;
+	}
 
-		while (ptr != current->ptr) {
-			current = current->next;
+	if (nullptr == owner) {
+		wh_log_critical(("Freeing untracked pointer!"));
+	}
 
-			if (nullptr == current) {
-				return;
+	entry = wh_list_search_func(&_list, ptr, &_wh_track_search, &index);
+
+	if (nullptr != entry) {
+		wh_for(u64, i, entry->owner_count) {
+			if (owner == entry->owners[i]) {
+				--entry->owner_count;
+				entry->owners[i] = entry->owners[entry->owner_count];
+				break;
 			}
 		}
 
-		switch (current->owner_count) {
-			case 1:
-				wh_log_error(("Disowning tracked pointer!"));
-
-				if (nullptr != current->previous) { 
-					wh_log_debug(("Previous node is not null assigning next"));
-					current->previous->next = current->next;
-				} else {
-					wh_log_debug(("Previous node is null assigning to first object"));
-					_list.nodes = current->next;
-				}
-
-				if (current->next) {
-					current->next->previous = current->previous;
-				} else {
-					_list.last = current->previous;
-				}
-
-				free(current->owners);
-				free(current);
-				break;
-
-			default:
-				wh_log_debug(("Clearing owner!"));
-				wh_for(u64, i, current->owner_count) {
-					if (owner == current->owners[i].owner) {
-						current->owner_count--;
-						current->owners[i].owner = current->owners[current->owner_count].owner;
-						current->owners[i].file = current->owners[current->owner_count].file;
-						current->owners[i].line = current->owners[current->owner_count].line;
-						current->owners = realloc(current->owners, sizeof(_wh_heap_ptr_pair_s) * current->owner_count);
-						break;
-					}
-				}
+		if (0 == entry->owner_count) {
+			wh_list_delete(&_list, index);
 		}
+	}
+}
+
+void _wh_mem_scan_for_each(void* node, u64 index) {
+	bool clean_up = false;
+	_wh_heap_ptr_pair_s* entry = node;
+
+	wh_for(u64, i, entry->owner_count) {
+		wh_try {
+			if (entry->owners[i] != entry->ptr) {
+				//wh_log_warning(("Owner change! ptr [ %u ] != owner [ %u ] in file:line [ %s:%u ]"), current->owners[i].owner, current->ptr, current->owners[i].file, current->owners[i].line);
+				clean_up = true;
+			}
+		} wh_catch(ex) {
+			//wh_log_critical(("SEGFAULT :: Owner change! ptr [ %u ] != owner [ %u ] in file:line [ %s:%u ]"), current->owners[i].owner, current->ptr, current->owners[i].file, current->owners[i].line);
+			clean_up = true;
+		}
+
+		if (clean_up) {
+			wh_log_error(("Found a loss end pointer, clean up your mess!"));
+			--entry->owner_count;
+			entry->owners[i] = entry->owners[entry->owner_count];
+		}
+	}
+
+	if (0 == entry->owner_count) {
+		wh_log_error(("LEAK FOUND! freeing... ptr : [ %u ]"), entry->ptr);
+		//wh_free(->heap, current->ptr, nullptr);
 	}
 }
 
 i64 _wh_mem_scan(void) {
 	i64 count = 0;
-	_wh_heap_list_entry_s* current = _list.nodes;
+
+	wh_list_for_each(&_list, &_wh_mem_scan_for_each);
+
+
+	/*_wh_heap_list_entry_s* current = _list.nodes;
 
 	wh_spinlock_v2(&_list.lock) {
 		while (nullptr != current) {
@@ -193,7 +187,7 @@ i64 _wh_mem_scan(void) {
 
 			current = current->next;
 		}
-	}
+	}*/
 
 	//usleep(100);
 	return count;

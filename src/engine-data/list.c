@@ -1,11 +1,12 @@
-#include<wh/debug/logger.h>
-#include<wh/data/list.h>
-#include<wh/maths/memory.h>
 
-#include<wh/debug/logger.h>
-#include<wh-sys/memreq.h>
-#include<wh-posix/unistd.h>
 #include<wh-data/list.h>
+#include<wh-posix/unistd.h>
+#include<wh-sys/atomic_lock.h>
+#include<wh-sys/memreq.h>
+#include<wh/data/list.h>
+#include<wh/debug/logger.h>
+#include<wh/debug/logger.h>
+#include<wh/maths/memory.h>
 
 #include<string.h>
 #include<stdlib.h>
@@ -87,6 +88,17 @@ static void (*_wh_push_back[]) (_wh_list_push_back_params* params) = {
 	_wh_push_back_dll_stdlib,
 };
 
+static void (*_wh_delete[])(_wh_list_delete_params* params, void* current, void* previous) = {
+	nullptr,
+	nullptr,
+
+	nullptr,
+	nullptr,
+
+	nullptr,
+	&_wh_delete_dll_stdlib
+};
+
 static void* (*_wh_search[])(_wh_list_search_params* params) = {
 	&_wh_search_sll,
 	&_wh_search_dll,
@@ -96,6 +108,29 @@ static void* (*_wh_search[])(_wh_list_search_params* params) = {
 
 	&_wh_search_sll,
 	&_wh_search_dll,
+};
+
+
+static void* (*_wh_search_func[])(_wh_list_search_func_params* params) = {
+	nullptr,
+	nullptr,
+
+	nullptr,
+	nullptr,
+
+	nullptr,
+	&_wh_search_func_dll
+};
+
+static void (*_wh_for_each[])(_wh_list_for_each_params* params) = {
+	nullptr,
+	nullptr,
+
+	nullptr,
+	nullptr,
+
+	nullptr,
+	_wh_for_each_dll,
 };
 
 static i8 (*_wh_list_alloc[])(wh_list_s* out, u64 count) = {
@@ -124,6 +159,31 @@ void* _wh_list_search(_wh_list_search_params params) {
 	return _wh_search[func_index](&params);
 }
 
+void* _wh_list_search_func(_wh_list_search_func_params params) {
+	u64 func_index = 0;
+
+	if (nullptr == params.ptr) {
+		wh_log_warning(("No search item provided!"));
+		return nullptr;
+	}
+
+	func_index = ((u64)params.list->stype) - WH_STRUCT_TYPE_LLIST_SINGLE;
+
+	return _wh_search_func[func_index](&params);
+}
+
+void _wh_list_for_each(_wh_list_for_each_params params) {
+	u64 func_index = 0;
+
+	if (nullptr != params.do_func) {
+		wh_log_error(("for each function is a nullptr"));
+		return;
+	}
+
+	func_index = ((u64)params.list->stype) - WH_STRUCT_TYPE_LLIST_SINGLE;
+	_wh_for_each[func_index](&params);
+}
+
 i8 _wh_list_insert(_wh_list_insert_params params) {
 	void* current = nullptr;
 	void* previous = nullptr;
@@ -136,12 +196,14 @@ i8 _wh_list_insert(_wh_list_insert_params params) {
 
 	func_index = ((u64)params.list->stype) - WH_STRUCT_TYPE_LLIST_SINGLE;
 
-	if (0 == _wh_get_index[func_index](params.list, params.index, &current, &previous)) {
-		_wh_insert[func_index](&params, current, previous);
-		++params.list->node_count;
-	} else {
-		wh_log_error(("Failed to get list index!"));
-		goto go_error_exit;
+	wh_spinlock_v2(&params.list->lock) {
+		if (0 == _wh_get_index[func_index](params.list, params.index, &current, &previous)) {
+			_wh_insert[func_index](&params, current, previous);
+			++params.list->node_count;
+		} else {
+			wh_log_error(("Failed to get list index!"));
+			wh_lock_goto(&params.list->lock, go_error_exit);
+		}
 	}
 
 	return 0;
@@ -165,6 +227,23 @@ i8 _wh_list_push_back(_wh_list_push_back_params params) {
 	return 0;
 go_error_exit:
 	return -1;
+}
+
+void _wh_list_delete(_wh_list_delete_params params) {
+	void* current = nullptr;
+	void* previous = nullptr;
+	u64 func_index = 0;
+
+	func_index = ((u64)params.list->stype) - WH_STRUCT_TYPE_LLIST_SINGLE;
+
+	wh_spinlock_v2(&params.list->lock) {
+		if (0 == _wh_get_index[func_index](params.list, params.index, &current, &previous)) {
+			_wh_delete[func_index](&params, current, previous);
+			--params.list->node_count;
+		} else {
+			wh_log_error(("Failed to get list index!"));
+		}
+	}
 }
 
 void* _wh_list_get(_wh_list_get_params params) {

@@ -17,6 +17,8 @@ int main(int arc, char* const* arv) {
 	wh_list_insert(&l, 3, WH_INT(150));
 	wh_list_insert(&l, 2, WH_INT(10));
 
+	wh_list_delete(&l, 3);
+
 	wh_for(int, i, 10) {
 		wh_list_push_back(&l, &i);
 	}
