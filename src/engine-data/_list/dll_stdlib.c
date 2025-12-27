@@ -13,7 +13,7 @@ static i8 _wh_sys_list_double_stdlib_init(wh_list_s* out, _wh_list_init_params* 
 }
 
 static void _wh_push_back_dll_stdlib(_wh_list_push_back_params* params) {
-	wh_dllist_item_s* node = malloc(sizeof(wh_dllist_item_s) + params->list->type_size);
+	wh_dllist_item_s* node = calloc(1, sizeof(wh_dllist_item_s) + params->list->type_size);
 
 	if (nullptr == node) {
 		wh_log_error(("Failed to allocated node!"));
@@ -26,7 +26,7 @@ static void _wh_push_back_dll_stdlib(_wh_list_push_back_params* params) {
 
 
 static void _wh_insert_dll_stdlib(_wh_list_insert_params* params, void* current, void* previous) {
-	wh_dllist_item_s* node = malloc(sizeof(wh_dllist_item_s) + params->list->type_size);
+	wh_dllist_item_s* node = calloc(1, sizeof(wh_dllist_item_s) + params->list->type_size);
 
 	if (nullptr == node) {
 		wh_log_error(("Failed to allocated node!"));

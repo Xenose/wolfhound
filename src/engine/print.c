@@ -237,6 +237,43 @@ static void _wh_print_int128(wh_print_data_s* d, i128 value, i64 base) {
 	++d->format;
 }
 
+static void _wh_print_memory(wh_print_data_s* data, u8* ptr, int bytes) {
+	i64 written = 0;
+	i64 length = 0;
+
+	written = wh_print_buffer_check(data, bytes * 3);
+
+	wh_for(u64, i, bytes) {
+		length = wh_intpos(ptr[i], 16) + 1;
+
+		if (!(i % 8)) {
+			*data->buffer = '\n';
+			++data->buffer;
+			*data->buffer = '\t';
+			++data->buffer;
+		}
+
+		*data->buffer = ' ';
+		++data->buffer;
+
+		switch (length) {
+			case 1:
+				*data->buffer = '0';
+				++data->buffer;
+
+				wh_int2str(ptr[i], data->buffer, (u64)length, 16);
+				data->buffer += length;
+				break;
+			case 2:
+				wh_int2str(ptr[i], data->buffer, (u64)length, 16);
+				data->buffer += length;
+				break;
+		}
+	}
+
+	++data->format;
+}
+
 static void _wh_print_format_sub(wh_print_data_s* data, va_list list) {
 	char* f = data->format;
 
@@ -318,9 +355,12 @@ go_loop:
 					data->print_format.flags.space_pad = true;
 					break;
 				case 'm': // memory
+					tmp = va_arg(list, u8*);
+					_wh_print_memory(data, tmp, va_arg(list, int));
 					break;
 				case 's': // string with length
-					_wh_print_cpystr(data, va_arg(list, char*), va_arg(list, i64));
+					tmp = va_arg(list, char*);
+					_wh_print_cpystr(data, tmp, va_arg(list, i64));
 					break;
 				case 't': // time with format $t[]
 					break;

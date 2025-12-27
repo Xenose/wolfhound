@@ -264,6 +264,13 @@ void* _wh_list_get(_wh_list_get_params params) {
 	return nullptr;
 }
 
+void* _wh_list_data(_wh_list_data_params params) {
+	u64 func_index = 0;
+	func_index = ((u64)params.list->stype) - WH_STRUCT_TYPE_LLIST_SINGLE;
+
+	return _wh_data[func_index](params.node);
+}
+
 
 int8_t _wh_sys_list_single_init(wh_list_s* out, _wh_list_init_params* params) {
 	return 0;

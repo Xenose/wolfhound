@@ -145,8 +145,10 @@ static void _wh_for_each_dll(_wh_list_for_each_params* params) {
 	wh_dllist_item_s* next = nullptr;
 
 	while (nullptr != node) {
+		wh_log_debug(("For each %i"), index);
 		next = node->p_next;
-		params->do_func(node->data, index++);
+		params->do_func(node->data, index);
+		index++;
 		node = next;
 	}
 }

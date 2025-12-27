@@ -13,11 +13,23 @@
 #include<wh/lua/api.h>
 
 i8 _wh_conf_defaults(_wh_init_params* params, wh_config_s* config) {
+	memset(config, 0, sizeof(wh_config_s));
+
 	config->heap.size = 4096 < params->heap_size ? params->heap_size : WH_64MB;
+
+	config->flags.log_debug			= 1;
+	config->flags.log_info			= 1;
+	config->flags.log_notice		= 1;
+	config->flags.log_warning		= 1;
+	config->flags.log_error			= 1;
+	config->flags.log_critical		= 1;
+	config->flags.log_alert			= 1;
+	config->flags.log_emergency	= 1;
+
 	return 0;
 }
 
-static void _config_lua(_wh_init_params* params, wh_config_s* conf, lua_State* ls) {
+static void _config_lua_file(_wh_init_params* params, wh_config_s* conf, lua_State* ls) {
 	wh_file_s cf = { 0 };
 	u64 heap_size = 0;
 
@@ -70,7 +82,7 @@ wh_config_s _wh_config_load(_wh_init_params* params, wh_config_s* config) {
 
 	_wh_args_parser_init();
 	_wh_conf_defaults(params, config);
-	_config_lua(params, config, ls);
+	_config_lua_file(params, config, ls);
 	wh_args_parse(ls, params->args.count, params->args.ptr, config);
 
 	wh_lua_get_values(
@@ -108,14 +120,14 @@ wh_config_s _wh_config_load(_wh_init_params* params, wh_config_s* config) {
 
 	wh_memory_tracking(config->flags.memory_tracking);
 
-	wh_log_set_level(WH_LOG_LEVEL_DEBUG,		config->flags.log_debug);
+	/*wh_log_set_level(WH_LOG_LEVEL_DEBUG,		config->flags.log_debug);
 	wh_log_set_level(WH_LOG_LEVEL_INFO,			config->flags.log_info);
 	wh_log_set_level(WH_LOG_LEVEL_NOTICE,		config->flags.log_notice);
 	wh_log_set_level(WH_LOG_LEVEL_WARNING,		config->flags.log_warning);
 	wh_log_set_level(WH_LOG_LEVEL_ERROR,		config->flags.log_error);
 	wh_log_set_level(WH_LOG_LEVEL_CRITICAL,	config->flags.log_critical);
 	wh_log_set_level(WH_LOG_LEVEL_ALERT,		config->flags.log_alert);
-	wh_log_set_level(WH_LOG_LEVEL_EMERGENCY,	config->flags.log_emergency);
+	wh_log_set_level(WH_LOG_LEVEL_EMERGENCY,	config->flags.log_emergency);*/
 
 	lua_close(ls);
 	return *config;

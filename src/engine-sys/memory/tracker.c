@@ -50,9 +50,12 @@ void _wh_tracker_insert(void* owner, void* ptr, wh_heap_header_s* heap, u64 line
 		wh_log_critical(("Untracked pointer at [ %s:%u ]!"), file, line);
 	}
 
+	wh_log_info(("Inserting node for %u owner %u"), ptr, owner);
 	entry = wh_list_search_func(&_list, ptr, &_wh_track_search);
 
 	if (nullptr == entry) {
+		wh_log_debug(("New pointer entry added!"));
+
 		_wh_heap_ptr_pair_s tmp = {
 			.ptr = ptr,
 			.owners = malloc(sizeof(void*)),
@@ -68,8 +71,12 @@ void _wh_tracker_insert(void* owner, void* ptr, wh_heap_header_s* heap, u64 line
 		}
 
 		wh_list_push_back(&_list, &tmp);
+		entry = wh_list_search_func(&_list, ptr, &_wh_track_search);
 	} else {
+		entry = wh_list_data(&_list, entry);
+
 		void** tmp = realloc(entry->owners, sizeof(void*) * (entry->owner_count + 1));
+		wh_log_debug(("The owner count is %u"), entry->owner_count);
 
 		if (nullptr == tmp) {
 			wh_log_critical(("Failed to allocate owner ptr memory"));
@@ -96,9 +103,14 @@ void _wh_tracker_remove(void* owner, void* ptr) {
 		wh_log_critical(("Freeing untracked pointer!"));
 	}
 
-	entry = wh_list_search_func(&_list, ptr, &_wh_track_search, &index);
+	wh_log_info(("Removing node for %u owner %u"), ptr, owner);
+	entry = wh_list_data(&_list, wh_list_search_func(&_list, ptr, &_wh_track_search, &index));
+
+	wh_log_info(("Node memory is $m"), entry, sizeof(_wh_heap_ptr_pair_s));
 
 	if (nullptr != entry) {
+		wh_log_debug(("The owner count is %u"), entry->owner_count);
+
 		wh_for(u64, i, entry->owner_count) {
 			if (owner == entry->owners[i]) {
 				--entry->owner_count;
@@ -108,7 +120,8 @@ void _wh_tracker_remove(void* owner, void* ptr) {
 		}
 
 		if (0 == entry->owner_count) {
-			wh_list_delete(&_list, index);
+			wh_log_info(("Owner count reached zero!"));
+			//wh_list_delete(&_list, index);
 		}
 	}
 }

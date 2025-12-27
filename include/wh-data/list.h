@@ -78,6 +78,11 @@ typedef struct {
 } _wh_list_for_each_params;
 
 typedef struct {
+	wh_list_s* list;
+	void* node;
+} _wh_list_data_params;
+
+typedef struct {
 	u64 type_size;
 	u64 init_count;
 } _wh_list_init_params;
@@ -90,6 +95,7 @@ extern void _wh_list_delete(_wh_list_delete_params params);
 extern void* _wh_list_search(_wh_list_search_params params);
 extern void* _wh_list_search_func(_wh_list_search_func_params params);
 extern void _wh_list_for_each(_wh_list_for_each_params params);
+extern void* _wh_list_data(_wh_list_data_params params);
 
 extern wh_list_s _wh_list_init(i64 list_type, _wh_list_init_params params);
 
@@ -105,6 +111,7 @@ extern wh_list_s _wh_list_init(i64 list_type, _wh_list_init_params params);
 #define wh_list_search(...) _wh_list_search((_wh_list_search_params) { __VA_ARGS__ })
 #define wh_list_search_func(...) _wh_list_search_func((_wh_list_search_func_params) { __VA_ARGS__ })
 #define wh_list_for_each(...) _wh_list_for_each((_wh_list_for_each_params) { __VA_ARGS__ })
+#define wh_list_data(...) _wh_list_data((_wh_list_data_params) { __VA_ARGS__ })
 
 //#define wh_list_add(list, in, index) sizeof(in) == list->type_size ? _wh_sys_list_add(list, index, in) : -1
 //#define wh_list_push_back(list, in) sizeof(in) == list->type_size ? _wh_sys_list_push_back(list, in) : -1
