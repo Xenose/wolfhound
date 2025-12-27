@@ -149,7 +149,7 @@ void _wh_mem_scan_for_each(void* node, u64 index) {
 	}
 
 	if (0 == entry->owner_count) {
-		wh_log_error(("LEAK FOUND! freeing... ptr : [ %u ]"), entry->ptr);
+		wh_log_error(("LEAK FOUND! freeing... ptr : [ %p ]"), entry->ptr);
 		//wh_free(->heap, current->ptr, nullptr);
 	}
 }

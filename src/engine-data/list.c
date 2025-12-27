@@ -175,7 +175,7 @@ void* _wh_list_search_func(_wh_list_search_func_params params) {
 void _wh_list_for_each(_wh_list_for_each_params params) {
 	u64 func_index = 0;
 
-	if (nullptr != params.do_func) {
+	if (nullptr == params.do_func) {
 		wh_log_error(("for each function is a nullptr"));
 		return;
 	}

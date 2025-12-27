@@ -41,6 +41,7 @@ rules.ninja
 
 # other 
 **.obsidian/
+vgcore.*
 perf.data
 
 # Ignore by-product directories
