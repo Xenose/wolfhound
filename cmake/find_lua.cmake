@@ -1,5 +1,5 @@
 INCLUDE(${CMAKE_CURRENT_LIST_DIR}/find.cmake)
 
 SET(LIB_NAME_ALTS lua lua54)
-SET(LIB_HEADER_NAMES lua.h)
+SET(LIB_HEADER_NAMES lua.h lualib.h)
 WH_FIND_LIB(Lua)

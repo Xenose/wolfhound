@@ -333,7 +333,7 @@ int32_t wh_mem_leak_count(void) {
 	return 0;//atomic_load(&_heap_main->ptr_count);
 }
 
-void wh_heap_print_table() {
+void wh_heap_print_table(void) {
 	wh_for (u64, i, _table.count) {
 		wh_print(("Table entry [ index : %i ] [ name : %9s ] [ pointer : %u ]\n"), i, _table.entries[i].name ,_table.entries[i].header);
 	}
@@ -446,7 +446,7 @@ go_exit:
 	return heap;
 }
 
-i8 _wh_heap_delete() {
+i8 _wh_heap_delete(void) {
 	if (nullptr == _heap_main) {
 		return -1;
 	}

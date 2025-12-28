@@ -3,6 +3,8 @@
 
 #include<wh/wolfhound.h>
 
+WH_C()
+
 enum {
 	WH_EVENT_UNKOWN,
 	WH_EVENT_WINDOW_CLOSE,
@@ -85,4 +87,5 @@ extern i8 _wh_render_init(_wh_render_init_params params);
 
 #define wh_render_init(...)	WH_EPF(_wh_render_init((_wh_render_init_params) { __VA_ARGS__ }))
 
+WH_C_END()
 #endif /* _wh_header_render_ */

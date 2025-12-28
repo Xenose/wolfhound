@@ -2,7 +2,7 @@
 #define _wh_header_types_library_
 
 #if _WIN32
-#include<windows.h>
+#include<wh-posix/windows.h>
 #endif
 
 typedef struct {

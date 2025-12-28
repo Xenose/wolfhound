@@ -6,14 +6,7 @@
 #if (WH_SYSTEM&WH_SYS_POSIX)
 	#include<netdb.h>
 #elif (WH_SYSTEM&WH_SYS_WINDOWS)
-	#ifndef WIN32_LEAN_AND_MEAN
-	#define WIN32_LEAN_AND_MEAN
-	#endif
-
-	#include <windows.h>
-	#include <winsock2.h>
-	#include <ws2tcpip.h>
-	#include <iphlpapi.h>
+	#include<wh-posix/windows.h>
 #endif
 
 

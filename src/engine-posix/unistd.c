@@ -43,8 +43,8 @@ int usleep(useconds_t usec) {
 }
 
 int sleep(unsigned int seconds) {
-	struct timespec_t start = { 0 };
-	struct timespec_t end = { 0 };
+	struct timespec start = { 0 };
+	struct timespec end = { 0 };
 
 	clock_gettime(CLOCK_MONOTONIC, &start);
 	

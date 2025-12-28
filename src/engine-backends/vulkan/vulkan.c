@@ -46,7 +46,7 @@ static i64 _wh_init_vulkan_instance(_wh_vulkan_step_params* params) {
 }
 
 static i64 _wh_queue_properties(u32* count, VkPhysicalDevice* dev, _wh_vulkan_step_params* params) {
-	u32 support_surface = 0;
+	/*u32 support_surface = 0;
 	VkQueueFamilyProperties fp[*count];
 
 	vkGetPhysicalDeviceQueueFamilyProperties(*dev, count, fp);
@@ -65,12 +65,12 @@ static i64 _wh_queue_properties(u32* count, VkPhysicalDevice* dev, _wh_vulkan_st
 			support_surface ? "TRUE" : "FALSE"
 		);
 	}
-
+*/
 	return 0;
 }
 
 static i64 _wh_init_physical_device2(uint32_t count, _wh_vulkan_step_params* params) {
-	u32 fq_count = 0;
+	/*u32 fq_count = 0;
 	VkPhysicalDevice pd[count];
 	VkPhysicalDeviceProperties pdp[count];
 
@@ -92,7 +92,8 @@ static i64 _wh_init_physical_device2(uint32_t count, _wh_vulkan_step_params* par
 	params->vk->physical = pd[0];
 
 go_error_exit:
-	return *params->res;
+	return *params->res;*/
+	return 0;
 }
 
 /* [MD DOC]

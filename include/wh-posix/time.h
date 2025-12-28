@@ -9,7 +9,7 @@ WH_C()
 #if (WH_SYSTEM&WH_SYS_POSIX)
 
 #else
-#include<windows.h>
+#include<wh-posix/windows.h>
 
 typedef enum {
 	CLOCK_REALTIME,

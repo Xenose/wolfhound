@@ -1,8 +1,6 @@
 #ifndef _wh_header_common_enum_
 #define _wh_header_common_enum_
 
-#include<wh-common/hacks.h>
-
 enum {
 	WH_STRUCT_TYPE_UNKOWN = 0,
 

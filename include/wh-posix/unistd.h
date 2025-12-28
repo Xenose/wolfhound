@@ -7,8 +7,7 @@
 #if (WH_SYSTEM&WH_SYS_POSIX)
 	#include<unistd.h>
 #elif (WH_SYSTEM&WH_SYS_WINDOWS)
-	#include<io.h>
-	#include<windows.h>
+	#include<wh-posix/windows.h>
 
 	#define write _write
 

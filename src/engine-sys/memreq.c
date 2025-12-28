@@ -38,7 +38,7 @@ void _wh_sys_memrel(_wh_sys_memrel_params params) {
 
 
 #elif defined(_WIN64)
-#include<windows.h>
+#include<wh-posix/windows.h>
 	
 void* _wh_sys_memreq(_wh_sys_memreq_params params) {
 	void* mem = nullptr;
