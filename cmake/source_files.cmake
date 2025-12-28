@@ -10,6 +10,7 @@ SET(ASM_SOURCE
 
 SET(C_SOURCES
 	"src/engine-data/list.c"
+	"src/engine-data/hashmap.c"
 
 	"src/engine-sys/file.c"
 	"src/engine-sys/filesystem.c"
