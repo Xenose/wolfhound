@@ -2,7 +2,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.28)
 
 
 SET(APP_NAME wolfhound)
-PROJECT(${APP_NAME} LANGUAGES C CXX) #ASM_NASM)
+PROJECT(${APP_NAME} LANGUAGES C CXX ASM_NASM)
 
 INCLUDE(CheckLanguage)
 
@@ -71,8 +71,8 @@ ELSE()
 	INCLUDE(cmake/os_posix.cmake)
 ENDIF()
 
-INCLUDE(cmake/source_files.cmake)
 OS_CONFIGURE()
+INCLUDE(cmake/source_files.cmake)
 
 # defines the macro __FILENAME__ for all the files
 FOREACH(src_file IN LISTS C_SOURCES CXX_SOURCES)
