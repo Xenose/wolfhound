@@ -1,84 +1,38 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.28)
 SET(APP_NAME wolfhound)
-PROJECT(${APP_NAME} LANGUAGES C CXX)
-ENABLE_LANGUAGE(ASM_NASM OPTIONAL)
+PROJECT(${APP_NAME} LANGUAGES C)
 
-OPTION(NO_CXX_COMPILER "Disbles the C++ compiler" False)
-OPTION(LINUX_MINGW_WIN "Cross compiles the code for Windows" False)
+INCLUDE(settings.cmake)
+INCLUDE(cmake/language.cmake)
 
-# We want to use Fortran 95 so we select it
-SET(CMAKE_Fortran_STANDARD 95)
-
-SET(CMAKE_C_STANDARD 23)
-SET(CMAKE_C_STANDARD_REQUIRED ON)
-SET(NASM_FLAGS "-w-unknown-warning")
-SET(NASM_WARNING_FLAGS "-w+all")
-
-SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-SET(WH_LIBS)
-SET(WH_DEFS)
-
-SET(WIN_SYSROOT "C:/usr" CACHE PATH "Windows sysroot directory")
-SET(WINUX_SYSROOT "/opt/windows/" CACHE PATH "MinGW cross-sysroot on Linux")
-
-SET(COMPILER_O_LEVEL -O0)
-
-SET(MSVC_FLAGS	
-	-Wall
-	-wd4100
-	-wd5110
-)
-
-SET(NON_MSVC_FLAGS
-	-Wall
-	-Wextra
-	-Wpedantic
-	-Wconversion
-	-Wshadow
-
-	-Wno-implicit-fallthrough
-	-Wno-unused-label
-	-Wno-unused-variable
-	-Wno-unused-parameter
-	-Wno-unused-but-set-variable
-)
+SET(INCLUDE_PATHS "${CMAKE_SOURCE_DIR}/include/")
 
 IF (LINUX_MINGW_WIN)
-	INCLUDE_DIRECTORIES(SYSTEM "${CMAKE_SOURCE_DIR}/include/")
 	INCLUDE(cmake/os_cross_windows.cmake)
 ELSEIF(WIN32)
 	# having the include same as Unix / Linux make more sense
-	LIST(PREPEND CMAKE_PREFIX_PATH "${WIN_SYSROOT}")
 	SET(CMAKE_LIBRARY_PATH "${CMAKE_LIBRARY_PATH};${WIN_SYSROOT}/lib")
-	INCLUDE_DIRECTORIES(SYSTEM "${CMAKE_SOURCE_DIR}/include/" "${WIN_SYSROOT}/include/")
+
+	LIST(PREPEND CMAKE_PREFIX_PATH "${WIN_SYSROOT}")
+	LIST(APPEND INCLUDE_PATHS "${WIN_SYSROOT}/include/")
 	# LINK_DIRECTORIES(AFTER "${WIN_SYSROOT}/lib/")
 
 	INCLUDE(cmake/os_windows.cmake)
 ELSE()
-	INCLUDE_DIRECTORIES(SYSTEM "${CMAKE_SOURCE_DIR}/include/")
 	INCLUDE(cmake/os_posix.cmake)
 ENDIF()
 
 OS_CONFIGURE()
+ENABLE_LANGS()
 
-# Enable optional compilers / assemblers
-IF(USE_FORTRAN)
-	ENABLE_LANGUAGE(Fortran)
-ENDIF()
+IF(FORTRAN_ENABLED)
+		ADD_COMPILE_DEFINITIONS(WH_USE_FORTRAN=1)
+		ENABLE_LANGUAGE(Fortran)
+	ENDIF()
 
-# Lets use the new C++ as well
-IF (NOT NO_CXX_COMPILER)
-	SET(CMAKE_CXX_STANDARD 23)
-	SET(CMAKE_CXX_STANDARD_REQUIRED ON)
-ENDIF()
-
-IF(CMAKE_ASM_NASM_COMPILER)
-	MESSAGE(STATUS "NASM found: ${CMAKE_ASM_NASM_COMPILER}")
-	SET(FOUND_NASM FALSE)
-ELSE()
-	SET(FOUND_NASM TRUE)
-	MESSAGE(STATUS "NASM not found")
+IF(NASM_ENABLED)
+	ADD_COMPILE_DEFINITIONS(WH_USE_NASM=1)
+	ENABLE_LANGUAGE(ASM_NASM)
 ENDIF()
 
 # Source files
@@ -98,7 +52,11 @@ INCLUDE(cmake/find_sdl3.cmake)
 INCLUDE(cmake/find_unwind.cmake)
 INCLUDE(cmake/find_vulkan.cmake)
 
+# old way
+#INCLUDE_DIRECTORIES(SYSTEM ${INCLUDE_PATHS})
+
 ADD_LIBRARY(${APP_NAME} STATIC ${ASM_SOURCE} ${C_SOURCES} ${CXX_SOURCES} ${F95_SOURCES})
+TARGET_INCLUDE_DIRECTORIES(${APP_NAME} PUBLIC ${INCLUDE_PATHS})
 TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE ${WH_LIBS})
 
 # ####################################################################################
@@ -109,7 +67,7 @@ FOREACH(wh_def IN LISTS WH_DEFS)
 	TARGET_COMPILE_DEFINITIONS(${APP_NAME} PUBLIC ${wh_def}=1)
 ENDFOREACH()
 
-IF(USE_FORTRAN)
+IF(FORTRAN_ENABLED)
 	TARGET_COMPILE_DEFINITIONS(${APP_NAME} PRIVATE WH_USE_FORTRAN=1)
 ENDIF()
 
@@ -119,13 +77,13 @@ ENDIF()
 
 IF(WH_INCLUDES)
 	MESSAGE(STATUS "Adding collected manual include directories: ${WH_INCLUDES}")
-	TARGET_INCLUDE_DIRECTORIES(${APP_NAME} PRIVATE ${WH_INCLUDES})
+	TARGET_INCLUDE_DIRECTORIES(${APP_NAME} PUBLIC ${WH_INCLUDES})
 ENDIF()
 
 OS_COMPILE()
 
 # Allows us to do line coverage testing
-IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" AND GENERATE_REPORT)
+IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" AND GENERATE_REPORT AND NOT ${IS_ANDROID})
 	MESSAGE(STATUS "Enabling coverage flags for GCC/Clang")
 	TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE --coverage -g)
 	TARGET_LINK_OPTIONS(${APP_NAME} PRIVATE --coverage)
@@ -146,7 +104,7 @@ ADD_SUBDIRECTORY(src/example/socket_server)
 ADD_SUBDIRECTORY(src/example/socket_client)
 
 # C++ examples
-IF (NOT NO_CXX_COMPILER)
+IF (NOT CXX_ENABLED)
 	ADD_SUBDIRECTORY(src/example/cpp)
 
 	# For now GTEST is not supported on windows.

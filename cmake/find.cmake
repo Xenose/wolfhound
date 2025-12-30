@@ -1,10 +1,13 @@
 
 FUNCTION(WH_FIND_LIB LIB_NAME)
-	FIND_PACKAGE(${LIB_NAME})
+	FIND_PACKAGE(${LIB_NAME} QUIET)
 	STRING(TOUPPER ${LIB_NAME} UPPER_LIB_NAME)
 
-	IF(${LIB_NAME}_FOUND)
-		MESSAGE(STATUS "Found ${LIB_NAME} (Version ${${UPPER_LIB_NAME}_VERSION})")
+	IF (${${UPPER_LIB_NAME}_DISABLED})
+		MESSAGE("${LOG_PREFIX} ${LIB_NAME} library disabled by user. ${LIB_NAME} features will be disabled.")
+		LIST(APPEND WH_DEFS WH_${UPPER_LIB_NAME}_NOT_FOUND)
+	ELSEIF(${LIB_NAME}_FOUND)
+		MESSAGE("${LOG_PREFIX} Found ${LIB_NAME} (Version ${${UPPER_LIB_NAME}_VERSION})")
 		LIST(APPEND C_SOURCES ${${UPPER_LIB_NAME}_SOURCES})
 
 		IF(TARGET ${LIB_NAME}::${LIB_NAME})
@@ -14,18 +17,18 @@ FUNCTION(WH_FIND_LIB LIB_NAME)
 			LIST(APPEND WH_INCLUDES ${${UPPER_LIB_NAME}_INCLUDE_DIRS})
 		ENDIF()
 	ELSE()
-		MESSAGE("Did not find pakage [ ${LIB_NAME} ] doing it old school.")
+		MESSAGE("${LOG_PREFIX} Did not find pakage [ ${LIB_NAME} ] doing it old school.")
 
 		FIND_PATH(INC_DIR
 				NAMES ${LIB_HEADER_NAMES}
-				PATH_SUFFIXES include/Headers include/lib${UPPER_LIB_NAME} include/lib${LIB_NAME} include
+				PATH_SUFFIXES ${INCLUDE_PREFIX} include/Headers include/lib${UPPER_LIB_NAME} include/lib${LIB_NAME} include
 		)
 
 		IF(NOT INC_DIR)
-			MESSAGE("${LIB_NAME} library not found. ${LIB_NAME} features will be disabled.")
+			MESSAGE("${LOG_PREFIX} ${LIB_NAME} library not found. ${LIB_NAME} features will be disabled.")
 			LIST(APPEND WH_DEFS WH_${UPPER_LIB_NAME}_NOT_FOUND)
 		ELSE()
-			MESSAGE("${LIB_NAME} headers found!")
+			MESSAGE("${LOG_PREFIX} ${LIB_NAME} headers found!")
 
 			FIND_LIBRARY(LIB_${LIB_NAME}
 				NAMES ${LIB_NAME_ALTS}
@@ -41,7 +44,7 @@ FUNCTION(WH_FIND_LIB LIB_NAME)
 			ENDIF()
 
 			IF(NOT LIB_${LIB_NAME})
-				MESSAGE(WARNING "${LIB_NAME} library not found. ${LIB_NAME} features will be disabled.")
+				MESSAGE(WARNING "${LOG_PREFIX} ${LIB_NAME} library not found. ${LIB_NAME} features will be disabled.")
 				LIST(APPEND WH_DEFS "WH_${UPPER_LIB_NAME}_NOT_FOUND")
 			ELSE()
 				LIST(APPEND C_SOURCES ${${UPPER_LIB_NAME}_SOURCES})

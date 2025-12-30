@@ -2,4 +2,4 @@ INCLUDE(${CMAKE_CURRENT_LIST_DIR}/find.cmake)
 
 SET(LIB_NAME_ALTS vulkan Vulkan vulkan-1)
 SET(LIB_HEADER_NAMES vulkan/vulkan.h)
-WH_FIND_LIB(VULKAN)
+WH_FIND_LIB(Vulkan)

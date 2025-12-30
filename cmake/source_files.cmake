@@ -1,5 +1,5 @@
 
-IF(USE_FORTRAN)
+IF(FORTRAN_ENABLED)
 	SET(F95_SOURCES
 		"src/engine/maths/core.f95"
 	)
@@ -72,7 +72,7 @@ SET(SDL3_SOURCES
 )
 
 
-IF(NOT FOUND_NASM)
+IF(NASM_ENABLED)
 	SET(ASM_SOURCE
 	)
 
@@ -83,7 +83,7 @@ IF(NOT FOUND_NASM)
 	ENDIF()
 ENDIF()
 
-IF (NOT NO_CXX_COMPILER)
+IF (CXX_ENABLED)
 	SET(CXX_SOURCES
 		"src/engine-cpp/wolfhound.cpp"
 		"src/engine-cpp/print.cpp"
