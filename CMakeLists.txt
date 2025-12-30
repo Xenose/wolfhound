@@ -68,7 +68,7 @@ FOREACH(wh_def IN LISTS WH_DEFS)
 ENDFOREACH()
 
 IF(FORTRAN_ENABLED)
-	TARGET_COMPILE_DEFINITIONS(${APP_NAME} PRIVATE WH_USE_FORTRAN=1)
+	TARGET_COMPILE_DEFINITIONS(${APP_NAME} PUBLIC WH_USE_FORTRAN=1)
 ENDIF()
 
 # ####################################################################################
