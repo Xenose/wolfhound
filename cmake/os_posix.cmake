@@ -1,6 +1,11 @@
+INCLUDE(CheckLanguage)
 
 FUNCTION(OS_CONFIGURE)
 	MESSAGE("\n\tWE ARE NOT ON WINDOWS!")
+
+	# Telling CMake that we use C and Fortran
+	# Adding Fortran Support
+	CHECK_LANGUAGE(Fortran)
 
 	IF (ANDROID OR CMAKE_SYSTEM_NAME STREQUAL "Android")
 		MESSAGE(STATUS "Detected Android/Termux environment. Adding Termux prefix.")
@@ -19,7 +24,6 @@ FUNCTION(OS_CONFIGURE)
 		SET(USE_FORTRAN ${USE_FORTRAN} PARENT_SCOPE)
 	ELSEIF(CMAKE_Fortran_COMPILER)
 		MESSAGE(STATUS "Fortran compiler found: ${CMAKE_Fortran_COMPILER}")
-		ENABLE_LANGUAGE(Fortran)
 		ADD_COMPILE_DEFINITIONS(WH_USE_FORTRAN=1)
 
 		SET(USE_FORTRAN ON)

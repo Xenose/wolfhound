@@ -1,23 +1,18 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.28)
-
-
 SET(APP_NAME wolfhound)
-PROJECT(${APP_NAME} LANGUAGES C CXX ASM_NASM)
-
-INCLUDE(CheckLanguage)
+PROJECT(${APP_NAME} LANGUAGES C CXX)
+ENABLE_LANGUAGE(ASM_NASM OPTIONAL)
 
 OPTION(NO_CXX_COMPILER "Disbles the C++ compiler" False)
 OPTION(LINUX_MINGW_WIN "Cross compiles the code for Windows" False)
-
-# Telling CMake that we use C and Fortran
-# Adding Fortran Support
-CHECK_LANGUAGE(Fortran)
 
 # We want to use Fortran 95 so we select it
 SET(CMAKE_Fortran_STANDARD 95)
 
 SET(CMAKE_C_STANDARD 23)
 SET(CMAKE_C_STANDARD_REQUIRED ON)
+SET(NASM_FLAGS "-w-unknown-warning")
+SET(NASM_WARNING_FLAGS "-w+all")
 
 SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -49,12 +44,6 @@ SET(NON_MSVC_FLAGS
 	-Wno-unused-but-set-variable
 )
 
-# Lets use the new C++ as well
-IF (NOT NO_CXX_COMPILER)
-	SET(CMAKE_CXX_STANDARD 23)
-	SET(CMAKE_CXX_STANDARD_REQUIRED ON)
-ENDIF()
-
 IF (LINUX_MINGW_WIN)
 	INCLUDE_DIRECTORIES(SYSTEM "${CMAKE_SOURCE_DIR}/include/")
 	INCLUDE(cmake/os_cross_windows.cmake)
@@ -72,6 +61,27 @@ ELSE()
 ENDIF()
 
 OS_CONFIGURE()
+
+# Enable optional compilers / assemblers
+IF(USE_FORTRAN)
+	ENABLE_LANGUAGE(Fortran)
+ENDIF()
+
+# Lets use the new C++ as well
+IF (NOT NO_CXX_COMPILER)
+	SET(CMAKE_CXX_STANDARD 23)
+	SET(CMAKE_CXX_STANDARD_REQUIRED ON)
+ENDIF()
+
+IF(CMAKE_ASM_NASM_COMPILER)
+	MESSAGE(STATUS "NASM found: ${CMAKE_ASM_NASM_COMPILER}")
+	SET(FOUND_NASM FALSE)
+ELSE()
+	SET(FOUND_NASM TRUE)
+	MESSAGE(STATUS "NASM not found")
+ENDIF()
+
+# Source files
 INCLUDE(cmake/source_files.cmake)
 
 # defines the macro __FILENAME__ for all the files
@@ -87,9 +97,6 @@ INCLUDE(cmake/find_lua.cmake)
 INCLUDE(cmake/find_sdl3.cmake)
 INCLUDE(cmake/find_unwind.cmake)
 INCLUDE(cmake/find_vulkan.cmake)
-
-SET(NASM_FLAGS "-w-unknown-warning")
-SET(NASM_WARNING_FLAGS "-w+all")
 
 ADD_LIBRARY(${APP_NAME} STATIC ${ASM_SOURCE} ${C_SOURCES} ${CXX_SOURCES} ${F95_SOURCES})
 TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE ${WH_LIBS})

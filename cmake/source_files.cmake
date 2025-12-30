@@ -5,9 +5,6 @@ IF(USE_FORTRAN)
 	)
 ENDIF()
 
-SET(ASM_SOURCE
-)
-
 SET(C_SOURCES
 	"src/engine-data/list.c"
 	"src/engine-data/hashmap.c"
@@ -74,10 +71,16 @@ SET(SDL3_SOURCES
 	"src/engine-backends/sdl3/window.c"
 )
 
-IF(CMAKE_C_COMPILER_ID MATCHES "TinyCC")
-	LIST(APPEND ASM_SOURCE
-		"src/engine-asm/x64_sv_stdatomic.asm"
+
+IF(NOT FOUND_NASM)
+	SET(ASM_SOURCE
 	)
+
+	IF(CMAKE_C_COMPILER_ID MATCHES "TinyCC")
+		LIST(APPEND ASM_SOURCE
+			"src/engine-asm/x64_sv_stdatomic.asm"
+		)
+	ENDIF()
 ENDIF()
 
 IF (NOT NO_CXX_COMPILER)
