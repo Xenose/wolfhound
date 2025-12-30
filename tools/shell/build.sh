@@ -2,8 +2,14 @@
 
 set -e
 
+SYS="$("${PRP}/${TP}"/detect_sys.sh)"
 TARGET="$(cat "${PRP}/.target")"
 mkdir -pv "${PRP}/${TARGET}"
+
+if ! echo "${TARGET}" | grep -e "${SYS}"; then
+	echo "Target [ ${TARGET} :: ${SYS} ] is incorrect run [ wh-clang, wh-tcc, wh-gcc, wh-mingw, wh-msvc ] to fix this"
+	exit 1
+fi
 
 if command -v cmake > /dev/null; then
 	printf "Building target [ %s ]\n\n" "$(basename "${TARGET}")"
