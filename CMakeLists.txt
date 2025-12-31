@@ -104,7 +104,7 @@ ADD_SUBDIRECTORY(src/example/socket_server)
 ADD_SUBDIRECTORY(src/example/socket_client)
 
 # C++ examples
-IF (NOT CXX_ENABLED)
+IF (CXX_ENABLED)
 	ADD_SUBDIRECTORY(src/example/cpp)
 
 	# For now GTEST is not supported on windows.

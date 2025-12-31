@@ -6,31 +6,31 @@
 #define WH_256B	256
 #define WH_512B	512
 
-#define WH_1KB		1'024
-#define WH_2KB		2'048
-#define WH_4KB		4'096
-#define WH_8KB		8'192
-#define WH_16KB	16'384
-#define WH_32KB	32'768
-#define WH_64KB	65'536
-#define WH_128KB	131'072
-#define WH_256KB	262'144
-#define WH_512KB	524'288
+#define WH_1KB		1024
+#define WH_2KB		2048
+#define WH_4KB		4096
+#define WH_8KB		8192
+#define WH_16KB	16384
+#define WH_32KB	32768
+#define WH_64KB	65536
+#define WH_128KB	131072
+#define WH_256KB	262144
+#define WH_512KB	524288
 
-#define WH_1MB		1'048'576
-#define WH_2MB		2'097'152
-#define WH_4MB		4'194'304
-#define WH_8MB		8'388'608
-#define WH_16MB	16'777'216
-#define WH_32MB	33'554'432
-#define WH_64MB	67'108'864
-#define WH_128MB	134'217'728
-#define WH_256MB	268'425'456
-#define WH_512MB	536'830'912
+#define WH_1MB		1048576
+#define WH_2MB		2097152
+#define WH_4MB		4194304
+#define WH_8MB		8388608
+#define WH_16MB	16777216
+#define WH_32MB	33554432
+#define WH_64MB	67108864
+#define WH_128MB	134217728
+#define WH_256MB	268425456
+#define WH_512MB	536830912
 
-#define WH_1GB		1'073'661'824
-#define WH_2GB		2'147'323'648
-#define WH_4GB		4'294'647'296
-#define WH_8GB		8'589'294'592
+#define WH_1GB		1073661824
+#define WH_2GB		2147323648
+#define WH_4GB		4294647296
+#define WH_8GB		8589294592
 
 #endif /* _wh_header_common_bytes_ */

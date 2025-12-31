@@ -3,13 +3,13 @@
 set -eu
 
 SYS="$("${PRP}/${TP}"/detect_sys.sh)"
-TARGETS="clang-${SYS} gcc-${SYS} tcc-${SYS}"
+TARGETS=""
 
 if command -v clang > /dev/null; then
 	TARGETS="${TARGETS} clang-${SYS}"
 fi
 
-if commnd -v gcc > /dev/null; then
+if command -v gcc > /dev/null; then
 	TARGETS="${TARGETS} gcc-${SYS}"
 fi
 
