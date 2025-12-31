@@ -5,7 +5,7 @@ SYS="$("${PRP}/${TP}"/detect_sys.sh)"
 TARGET="build/gcc-${SYS}"
 
 mkdir -pv "${PRP}/${TARGET}"
-echo "/${TARGET}" > "${PRP}/.target"
+echo "/${TARGET}" > "${PRP}/.wolfhound/target"
 #cd "${PRP}/${TARGET}"
 
 if command -v gcc > /dev/null && command -v g++ > /dev/null; then

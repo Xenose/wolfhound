@@ -3,7 +3,7 @@
 set -e
 
 SYS="$("${PRP}/${TP}"/detect_sys.sh)"
-TARGET="$(cat "${PRP}/.target")"
+TARGET="$(cat "${PRP}/.wolfhound/target")"
 mkdir -pv "${PRP}/${TARGET}"
 
 if ! echo "${TARGET}" | grep -e "${SYS}"; then

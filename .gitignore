@@ -8,6 +8,7 @@ docs/
 # Wolfhound files
 .target
 .servers
+.wolfhound/
 
 # CMake generated files
 CMakeCache.txt

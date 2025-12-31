@@ -27,6 +27,7 @@ __wh_docker() {
 # The tools foolder
 TP="/tools/shell/"
 echo "Setting active directory to [ $WP ]"
+mkdir -pv "${WP}/.wolfhound"
 
 # Fun
 alias wh-count="PRP='${WP}' TP='${TP}' ${WP}${TP}stats.sh"

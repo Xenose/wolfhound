@@ -6,7 +6,7 @@ SYS="$("${PRP}/${TP}"/detect_sys.sh)"
 TARGET="build/tcc-${SYS}"
 
 mkdir -pv "${PRP}/${TARGET}"
-echo "/${TARGET}" > "${PRP}/.target"
+echo "/${TARGET}" > "${PRP}/.wolfhound/target"
 
 if command -v tcc > /dev/null; then
 	echo "[WARNING] c++ is not supported by TCC, running in C only mode" 

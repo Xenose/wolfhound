@@ -6,7 +6,7 @@ SYS="$("${PRP}/${TP}"/detect_sys.sh)"
 TARGET="build/clang-${SYS}"
 
 mkdir -pv "${PRP}/${TARGET}"
-echo "/${TARGET}" > "${PRP}/.target"
+echo "/${TARGET}" > "${PRP}/.wolfhound/target"
 
 if command -v clang > /dev/null && command -v clang++ > /dev/null; then
 	cmake \
