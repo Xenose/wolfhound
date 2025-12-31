@@ -283,6 +283,9 @@ void _wh_disown_tracking(_wh_mem_free_params params) {
 	_wh_tracker_remove(params.owner, params.ptr);
 }
 
+void _wh_disown_no_tracking(_wh_mem_free_params params) {
+}
+
 WH_DEPRECATED("DON'T USE THIS FUNCTION!")
 void* _wh_mem(_wh_mem_params params) {
 	void* ptr = nullptr;
@@ -461,9 +464,13 @@ void _wh_memory_tracking(_wh_memory_tracking_params params) {
 		_wh_alloc	= &_wh_alloc_tracking;
 		_wh_realloc	= &_wh_realloc_tracking;
 		_wh_free		= &_wh_free_tracking;
+		
+		_wh_disown	= &_wh_disown_tracking;
 	} else {
 		_wh_alloc	= &_wh_alloc_no_tracking;
 		_wh_realloc	= &_wh_realloc_no_tracking;
 		_wh_free		= &_wh_free_no_tracking;
+
+		_wh_disown	= &_wh_disown_no_tracking;
 	}
 }
