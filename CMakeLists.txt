@@ -26,9 +26,9 @@ OS_CONFIGURE()
 ENABLE_LANGS()
 
 IF(FORTRAN_ENABLED)
-		ADD_COMPILE_DEFINITIONS(WH_USE_FORTRAN=1)
-		ENABLE_LANGUAGE(Fortran)
-	ENDIF()
+	ADD_COMPILE_DEFINITIONS(WH_USE_FORTRAN=1)
+	ENABLE_LANGUAGE(Fortran)
+ENDIF()
 
 IF(NASM_ENABLED)
 	ADD_COMPILE_DEFINITIONS(WH_USE_NASM=1)
@@ -59,9 +59,9 @@ ADD_LIBRARY(${APP_NAME} STATIC ${ASM_SOURCE} ${C_SOURCES} ${CXX_SOURCES} ${F95_S
 TARGET_INCLUDE_DIRECTORIES(${APP_NAME} PUBLIC ${INCLUDE_PATHS})
 TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE ${WH_LIBS})
 
-# ####################################################################################
+# ------------------------------------------------------------------------------------
 #   Compiler definition section
-# ####################################################################################
+# ------------------------------------------------------------------------------------
 FOREACH(wh_def IN LISTS WH_DEFS)
 	MESSAGE("Defining ${wh_def}")
 	TARGET_COMPILE_DEFINITIONS(${APP_NAME} PUBLIC ${wh_def}=1)
@@ -71,9 +71,9 @@ IF(FORTRAN_ENABLED)
 	TARGET_COMPILE_DEFINITIONS(${APP_NAME} PUBLIC WH_USE_FORTRAN=1)
 ENDIF()
 
-# ####################################################################################
+# ------------------------------------------------------------------------------------
 #  End of compiler definition section
-# ####################################################################################
+# ------------------------------------------------------------------------------------
 
 IF(WH_INCLUDES)
 	MESSAGE(STATUS "Adding collected manual include directories: ${WH_INCLUDES}")
