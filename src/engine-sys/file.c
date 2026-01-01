@@ -152,7 +152,7 @@ go_error_exit:
 }
 
 
-#ifdef __linux__
+#if (WH_SYSTEM&WH_SYS_POSIX)
 
 wh_file_s _wh_file_load(_wh_file_load_params params) {
 	int fd = open(params.path, 0, 0);
