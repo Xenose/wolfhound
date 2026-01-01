@@ -1,0 +1,5 @@
+cmake
+llvm15
+lua54
+sdl3
+vulkan-headers

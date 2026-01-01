@@ -7,7 +7,7 @@
 if [ -f /.dockerenv ]; then
 	echo "Running inside Docker, using current path instead!"
 	WP=$(pwd)
-elif [ ! -z "$ANDROID__BUILD_VERSION_SDK" ]; then
+elif [ -n "$ANDROID__BUILD_VERSION_SDK" ]; then
 	echo "Running inside Android, using current path instead!"
 	WP=$(pwd)
 else
@@ -27,7 +27,7 @@ __wh_docker() {
 # The tools foolder
 TP="/tools/shell/"
 echo "Setting active directory to [ $WP ]"
-mkdir -pv "${WP}/.wolfhound"
+mkdir -p "${WP}/.wolfhound"
 
 # Fun
 alias wh-count="PRP='${WP}' TP='${TP}' ${WP}${TP}stats.sh"

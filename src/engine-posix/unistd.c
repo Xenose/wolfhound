@@ -1,3 +1,4 @@
+#include<wh-common/os.h>
 #include<wh-posix/unistd.h>
 #include<wh/maths/core.h>
 

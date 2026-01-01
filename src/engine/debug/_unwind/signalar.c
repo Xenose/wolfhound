@@ -21,6 +21,7 @@ static void _wh_signal_handler(int sig, siginfo_t* info, ucontext_t* uc) {
 	unw_cursor_t cursor;
 
 	signal(sig, SIG_DFL);
+	unw_cursor_t cursor;
 
 	switch(sig) {
 		case SIGSEGV:
