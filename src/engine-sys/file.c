@@ -7,7 +7,7 @@
 
 #include<string.h>
 
-#ifdef __linux__
+#if (WH_SYSTEM&WH_SYS_LINUX)
 	#include<unistd.h>
 	#include<sys/mman.h>
 #else // windows
