@@ -4,9 +4,9 @@
 #include<wh-common/os.h>
 
 #if (WH_SYSTEM&WH_SYS_FREEBSD)
-	#include<sys/lua.h>
-	#include<sys/lualib.h>
-	#include<sys/lauxlib.h>
+	#include<lua54/lua.h>
+	#include<lua54/lualib.h>
+	#include<lua54/lauxlib.h>
 #else
 	#include<lua.h>
 	#include<lualib.h>
