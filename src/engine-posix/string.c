@@ -1,7 +1,7 @@
 #include<errno.h>
 #include<wh-posix/string.h>
 
-#ifdef _WIN32
+#if (WH_SYSTEM&WH_SYS_WINDOWS)
 
 char* stpncpy(char* restrict dst, const char* restrict src, size_t length) {
 	size_t l = strlen(src);
@@ -16,7 +16,7 @@ char* stpcpy(char* restrict dst, const char* restrict src) {
 	return wh_ptr_add(memmove(dst, src, l), l); // <--- dst + l
 }
 
-#elif defined(__linux__)
+#elif (WH_SYSTEM&WH_SYS_POSIX)
 
 int strncpy_s(char* restrict dst, size_t dst_size, const char* restrict src, size_t src_size) {
 	int error = 0;

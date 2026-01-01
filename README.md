@@ -1,13 +1,18 @@
 # The Wolfhound Game Engine [ C23 ]
 *This code is IN the Rapid DEVelopment branch or 'INRDEV' for short, meaning that the code will change a lot and that after first release the commit history will be squashed.*
 
-| Platform     | Tested | Supported | Description                             |
-| ------------ | ------ | --------- | --------------------------------------- |
-| Arch Linux   | YES    | YES       | Primary development platform.           |
-| Fedora Linux | YES    | YES       | Secondary development platform.         |
-| Debian Linux | NO     | Not yet   | Planned.                                |
-| Windows      | NO     | Not yet   | Unstable might break at any second      |
-| MacOS        | NO     | No        | No Plans.                               |
+| Platform        | Tested | Supported     | Description                             |
+| --------------- | ------ | ------------- | --------------------------------------- |
+| Arch Linux      | YES    | UNSTABLE      | Primary development platform.           |
+| Fedora Linux    | YES    | UNSTABLE      | Secondary development platform.         |
+| Debian Linux    | NO     | PLANNED       | Planned.                                |
+| Windows         | YES    | UNSTABLE      | Unstable might break at any second.     |
+| Android(Termux) | YES    | UNSTABLE      |                                         |
+| FreeBSD         | YES    | UNSTABLE      |                                         |
+| OpenIndiana     | NO     | PLANNED       |                                         |
+| Haiku           | NO     | PLANNED       |                                         |
+| Aros            | NO     | PLANNED       |                                         |
+| MacOS           | NO     | EXPERIMENTING | No Plans for full support.              |
 
 ## Core Concepts
 ### Action Entity System
@@ -100,19 +105,19 @@ wh-build	# compiles code.
 
 |  Language       | File Count | Lines of Code | Percentage |
 | --------------- | ---------- | ------------- | ---------- |
-| C               | 162        | 6565          | 76.55%     |
-| CMake           | 26         | 470           | 5.48%      |
-| C++             | 17         | 455           | 5.31%      |
-| Bourne Shell    | 20         | 422           | 4.92%      |
-| Lua             | 13         | 175           | 2.04%      |
-| Markdown        | 3          | 160           | 1.87%      |
-| Python          | 2          | 155           | 1.81%      |
-| Dockerfile      | 4          | 82            | 0.96%      |
+| C               | 166        | 6655          | 76.75%     |
+| CMake           | 26         | 470           | 5.42%      |
+| C++             | 17         | 455           | 5.25%      |
+| Bourne Shell    | 20         | 422           | 4.87%      |
+| Lua             | 13         | 175           | 2.02%      |
+| Markdown        | 3          | 165           | 1.90%      |
+| Python          | 2          | 155           | 1.79%      |
+| Dockerfile      | 4          | 82            | 0.95%      |
 | DOS Batch       | 6          | 36            | 0.42%      |
 | Fortran 95      | 1          | 32            | 0.37%      |
 | Assembly        | 2          | 11            | 0.13%      |
 | PowerShell      | 3          | 10            | 0.12%      |
 | INI             | 1          | 3             | 0.03%      |
-| Summary         | 260        | 8576          | 100.00%    |
+| Summary         | 264        | 8671          | 100.00%    |
 
 <!--python-stats-end-->

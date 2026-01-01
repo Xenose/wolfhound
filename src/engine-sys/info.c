@@ -14,7 +14,7 @@ i64 wh_sys_gettid(void) {
 	#endif
 }
 
-#ifdef __linux__
+#if (WH_SYSTEM&WH_SYS_LINUX)
 
 /* [MD_DOC]
  * Gets the path to the current executable/binary
@@ -35,7 +35,13 @@ i64 wh_sys_program_path(char* buffer, u64 buffer_size) {
 	return length;
 }
 
-#elif defined(_WIN32)
+#elif (WH_SYSTEM&WH_SYS_BSD)
+
+i64 wh_sys_program_path(char* buffer, u64 buffer_size) {
+	return 0;
+}
+
+#elif (WH_SYSTEM&WH_SYS_WINDOWS)
 #include<wh-posix/windows.h>
 
 i64 wh_sys_program_path(char* buffer, u64 buffer_size) {

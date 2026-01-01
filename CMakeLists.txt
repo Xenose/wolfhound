@@ -113,7 +113,7 @@ IF (CXX_ENABLED)
 	ADD_SUBDIRECTORY(src/example/cpp)
 
 	# For now GTEST is not supported on windows.
-	IF (NOT WIN32)
+	IF (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 		ADD_SUBDIRECTORY(src/unit-gtests-cpp/)
 	ENDIF()
 ENDIF()

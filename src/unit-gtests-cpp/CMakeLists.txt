@@ -4,7 +4,6 @@ PROJECT(gtests LANGUAGES C)
 
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}") #-fprofile-arcs -ftest-coverage")
 
-
 INCLUDE_DIRECTORIES(SYSTEM "include/")
 
 ADD_EXECUTABLE(${PROJECT_NAME}

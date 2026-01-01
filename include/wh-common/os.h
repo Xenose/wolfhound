@@ -3,16 +3,17 @@
 
 #define WH_SYS_UNIX		0x01L
 #define WH_SYS_POSIX		0x02L
-#define WH_SYS_GCC		0x04L
-#define WH_SYS_CLANG		0x08L
-#define WH_SYS_MSVC		0x10L
-#define WH_SYS_MINGW		0x20L
-#define WH_SYS_TCC		0x40L
+#define WH_SYS_BSD		0x04L 
+#define WH_SYS_GCC		0x08L
+#define WH_SYS_CLANG		0x10L
+#define WH_SYS_MSVC		0x20L
+#define WH_SYS_MINGW		0x40L
+#define WH_SYS_TCC		0x80L
 
 #define WH_SYS_LINUX		0x0100L
 #define WH_SYS_FREEBSD	0x0200L
 #define WH_SYS_MACOS		0x0400L
-#define WH_SYS_BSD		0x0800L 
+#define WH_SYS_SOLARIS	0x0800L
 
 #define WH_SYS_WINDOWS	0x1000L
 
@@ -23,7 +24,7 @@
 #elif defined(__APPLE__) && defined(__MACH__)
 	#define WH_SYSTEM_OS (WH_SYS_MACOS | WH_SYS_UNIX | WH_SYS_POSIX)
 #elif defined(__FreeBSD__)
-	#define WH_SYSTEM_OS (WH_SYS_FREEBSD | WH_SYS_UNIX | WH_SYS_POSIX)
+	#define WH_SYSTEM_OS (WH_SYS_FREEBSD | WH_SYS_BSD | WH_SYS_UNIX | WH_SYS_POSIX)
 #elif defined(__unix__)
 	#ifdef _POSIX_C_SOURCE
 		#define WH_SYSTEM_OS (WH_SYS_UNIX | WH_SYS_POSIX)
@@ -43,7 +44,7 @@
 #elif defined(_MSC_VER)
 	#define WH_SYSTEM (WH_SYSTEM_OS | WH_SYS_MSVC)
 #else
-    #error "Unknown OS: Please add support for your platform to WH_SYSTEM_OS"
+	#error "Unknown OS: Please add support for your platform to WH_SYSTEM_OS"
 #endif
 
 #endif /* _wh_header_common_os_ */

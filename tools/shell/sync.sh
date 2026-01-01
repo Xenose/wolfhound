@@ -1,7 +1,7 @@
 #!/bin/sh
 
 set -eu
-SERVER_LIST="${PRP}/.servers"
+SERVER_LIST="${PRP}/.wolfhound/servers"
 
 if ! command -v rsync >/dev/null; then
 	echo "This command requires rsync to be installed."
@@ -21,6 +21,6 @@ while IFS= read -r line; do
 	 port="$2"
 
 	 set +e
-	 rsync -av -e "ssh -p $port" "$PRP/" "$dest"
+	 rsync --exclude ".wolfhound" -qav -e "ssh -p $port" "$PRP/" "$dest"
 	 set -e
  done < "$SERVER_LIST"

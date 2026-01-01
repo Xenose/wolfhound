@@ -5,6 +5,7 @@
 
 #if (WH_SYSTEM&WH_SYS_POSIX)
 	#include<netdb.h>
+	#include<sys/socket.h>
 #elif (WH_SYSTEM&WH_SYS_WINDOWS)
 	#include<wh-posix/windows.h>
 #endif
