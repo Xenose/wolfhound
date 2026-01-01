@@ -1,7 +1,6 @@
-#include<lualib.h>
-#include<lauxlib.h>
 #include<stdarg.h>
 
+#include<wh-headers/lua.h>
 #include<wh/debug/logger.h>
 #include<wh/print.h>
 #include<wh/lua/helpers.h>

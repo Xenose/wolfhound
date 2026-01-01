@@ -1,9 +1,6 @@
-#include<wh-headers/lua.h>
-#include<lualib.h>
-#include<lauxlib.h>
-
 #include<stdarg.h>
 
+#include<wh-headers/lua.h>
 #include<wh-sys/file.h>
 #include<wh/debug/logger.h>
 #include<wh/config.h>

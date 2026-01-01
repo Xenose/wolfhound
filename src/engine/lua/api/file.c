@@ -1,5 +1,4 @@
-#include<lualib.h>
-#include<lauxlib.h>
+#include<wh-headers/lua.h>
 
 #include<wh-sys/file.h>
 #include<wh/lua/api/file.h>
