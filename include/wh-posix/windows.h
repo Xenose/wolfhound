@@ -1,8 +1,12 @@
 #ifndef _wh_header_posix_windows_
 #define _wh_header_posix_windows_
 
+#include<wh-common/os.h>
+
+#if (WH_SYSTEM&WH_SYS_WINDOWS)
+
 #ifndef _WINSOCKAPI_
-   #define _WINSOCKAPI_
+	#define _WINSOCKAPI_
 #endif
 
 #ifndef WIN32_LEAN_AND_MEAN
@@ -10,7 +14,7 @@
 #endif
 
 #ifndef NOMINMAX
-   #define NOMINMAX
+	#define NOMINMAX
 #endif
 
 #define NTDDI_VERSION NTDDI_WIN10
@@ -32,4 +36,5 @@
 #include <windows.h>
 #include <winternl.h>
 
+#endif
 #endif
