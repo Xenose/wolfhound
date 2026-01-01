@@ -9,21 +9,21 @@
 #define WH_SYS_MINGW		0x20L
 #define WH_SYS_TCC		0x40L
 
-#define WH_SYS_LINUX		(0x0100L | WH_SYS_UNIX | WH_SYS_POSIX)
-#define WH_SYS_FREEBSD	(0x0200L | WH_SYS_UNIX | WH_SYS_POSIX)
-#define WH_SYS_MACOS		(0x0400L | WH_SYS_UNIX | WH_SYS_POSIX)
-#define WH_SYS_BSD		(0x0800L | WH_SYS_UNIX | WH_SYS_POSIX)
+#define WH_SYS_LINUX		0x0100L
+#define WH_SYS_FREEBSD	0x0200L
+#define WH_SYS_MACOS		0x0400L
+#define WH_SYS_BSD		0x0800L 
 
-#define WH_SYS_WINDOWS	(0x1000L)
+#define WH_SYS_WINDOWS	0x1000L
 
 #if defined(__linux__)
-	#define WH_SYSTEM_OS WH_SYS_LINUX
+	#define WH_SYSTEM_OS (WH_SYS_LINUX | WH_SYS_UNIX | WH_SYS_POSIX)
 #elif defined(_WIN32)
 	#define WH_SYSTEM_OS WH_SYS_WINDOWS
 #elif defined(__APPLE__) && defined(__MACH__)
-	#define WH_SYSTEM_OS WH_SYS_MACOS
+	#define WH_SYSTEM_OS (WH_SYS_MACOS | WH_SYS_UNIX | WH_SYS_POSIX)
 #elif defined(__FreeBSD__)
-	#define WH_SYSTEM_OS WH_SYS_FREEBSD
+	#define WH_SYSTEM_OS (WH_SYS_FREEBSD | WH_SYS_UNIX | WH_SYS_POSIX)
 #elif defined(__unix__)
 	#ifdef _POSIX_C_SOURCE
 		#define WH_SYSTEM_OS (WH_SYS_UNIX | WH_SYS_POSIX)

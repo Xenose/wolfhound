@@ -1,7 +1,7 @@
 #ifndef _wh_header_arg_parser_
 #define _wh_header_arg_parser_
 
-#include<lua.h>
+#include<wh-headers/lua.h>
 
 #include<wh/common.h>
 #include<wh/types/config.h>

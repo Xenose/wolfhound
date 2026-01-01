@@ -1,7 +1,7 @@
 #ifndef _wh_header_lua_api_maths_
 #define _wh_header_lua_api_maths_
 
-#include<lua.h>
+#include<wh-headers/lua.h>
 #include<wh/common.h>
 
 extern int wh_lua_intpos(lua_State* ls);

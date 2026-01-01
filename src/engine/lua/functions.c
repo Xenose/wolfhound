@@ -1,4 +1,4 @@
-#include<lua.h>
+#include<wh-headers/lua.h>
 #include<lualib.h>
 #include<lauxlib.h>
 

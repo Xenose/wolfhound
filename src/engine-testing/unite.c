@@ -1,7 +1,4 @@
-#include<lua.h>
-#include<lualib.h>
-#include<lauxlib.h>
-
+#include<wh-headers/lua.h>
 #include<wh-sys/file.h>
 #include<wh-sys/filesystem.h>
 #include<wh-testing/unite.h>

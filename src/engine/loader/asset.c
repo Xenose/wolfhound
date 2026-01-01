@@ -7,9 +7,7 @@
 #include<wh/lua/api.h>
 #include<wh/string.h>
 
-#include<lua.h>
-#include<lualib.h>
-#include<lauxlib.h>
+#include<wh-headers/lua.h>
 
 typedef struct {
 	struct_type stype;
