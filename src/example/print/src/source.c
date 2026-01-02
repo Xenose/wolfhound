@@ -24,7 +24,7 @@ int main(int arc, char* const* arv) {
 
 	print(("Test memory: \t$m\n"), data, sizeof(data) / sizeof(data[0]));
 	
-	/*wh_benchmark(&bench, 100) {
+	wh_benchmark(&bench, 100) {
 		print(("Test number 1 -> %i\n"), 1);
 		print(("Test number str -> %s\n"), "str");
 		print(("Test number oct 16 -> %o\n"), 16);
@@ -38,7 +38,7 @@ int main(int arc, char* const* arv) {
 		print(("Test string length %%s -> | %.6s |\n"), "hello");
 
 		print(("Errnor test [ $n ]\n"), 2);
-	}*/
+	}
 
 	return 0;
 }

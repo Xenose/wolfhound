@@ -117,14 +117,14 @@ wh_config_s _wh_config_load(_wh_init_params* params, wh_config_s* config) {
 
 	wh_memory_tracking(config->flags.memory_tracking);
 
-	/*wh_log_set_level(WH_LOG_LEVEL_DEBUG,		config->flags.log_debug);
+	wh_log_set_level(WH_LOG_LEVEL_DEBUG,		config->flags.log_debug);
 	wh_log_set_level(WH_LOG_LEVEL_INFO,			config->flags.log_info);
 	wh_log_set_level(WH_LOG_LEVEL_NOTICE,		config->flags.log_notice);
 	wh_log_set_level(WH_LOG_LEVEL_WARNING,		config->flags.log_warning);
 	wh_log_set_level(WH_LOG_LEVEL_ERROR,		config->flags.log_error);
 	wh_log_set_level(WH_LOG_LEVEL_CRITICAL,	config->flags.log_critical);
 	wh_log_set_level(WH_LOG_LEVEL_ALERT,		config->flags.log_alert);
-	wh_log_set_level(WH_LOG_LEVEL_EMERGENCY,	config->flags.log_emergency);*/
+	wh_log_set_level(WH_LOG_LEVEL_EMERGENCY,	config->flags.log_emergency);
 
 	lua_close(ls);
 	return *config;
