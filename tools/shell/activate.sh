@@ -53,6 +53,7 @@ alias wh-gcc="PRP='${WP}' TP='${TP}' ${WP}${TP}gcc.sh"
 alias wh-clang="PRP='${WP}' TP='${TP}' ${WP}${TP}clang.sh"
 alias wh-mingw="PRP='${WP}' TP='${TP}' ${WP}${TP}mingw.sh"
 alias wh-tcc="PRP='${WP}' TP='${TP}' ${WP}${TP}tcc.sh"
+alias wh-zig="PRP='${WP}' TP='${TP}' ${WP}${TP}zig.sh"
 
 # build systems
 alias wh-ninja="PRP='${WP}' TP='${TP}' ${WP}${TP}ninja.sh"
