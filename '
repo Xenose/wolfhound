@@ -3,46 +3,19 @@
 
 #include<wh/common.h>
 
-// Constant key hashmap
-// needs to live for the scope of the hashmap
 typedef struct {
 	void* data;
 	char* key;
 } wh_hashmap_slot_string_s;
-
-// Fixed sized key hashmap
-// cannot be longer then the key array
-typedef struct {
-	void* data;
-	char key[32];
-} wh_hashmap_slot_string32_s;
-
-typedef struct {
-	void* data;
-	char key[64];
-} wh_hashmap_slot_string64_s;
-
-typedef struct {
-	void* data;
-	char key[128];
-} wh_hashmap_slot_string128_s;
-
-// Numeric hashmap's
-typedef struct {
-	void* data;
-	i32 key;
-} wh_hashmap_slot_i32_s;
 
 typedef struct {
 	void* data;
 	i64 key;
 } wh_hashmap_slot_i64_s;
 
-// Data container struct
 typedef struct {
 	struct_type stype;
 	void* slots;
-	u64 type_size;
 	u64 slot_count;
 } wh_hashmap_s;
 
