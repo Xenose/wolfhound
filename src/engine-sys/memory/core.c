@@ -16,7 +16,7 @@ i64 _wh_memcmp_mask(_wh_memcmp_mask_params params) {
 	}
 
 	if (nullptr == m) {
-		wh_for(i64, i, params.length) {
+		wh_for(u64, i, params.length) {
 			out = *cc0 - *cc1;
 
 			if (0 != out) {
@@ -28,7 +28,7 @@ i64 _wh_memcmp_mask(_wh_memcmp_mask_params params) {
 			cc1 += 1;
 		}
 	} else {
-		wh_for(i64, i, params.length) {
+		wh_for(u64, i, params.length) {
 			out = (*cc0 & *m) - (*cc1 & *m);
 
 			if (0 != out) {

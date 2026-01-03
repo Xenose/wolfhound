@@ -409,7 +409,7 @@ go_loop:
 				case '6': case '7': case '8': case '9':
 					*vp = (u64)wh_str2int(data->format, (i64)strlen(data->format), 10); 
 					vp = &data->print_format.left;
-					data->format += wh_intpos(*vp);
+					data->format += wh_intpos((i64)*vp);
 					goto go_standard_switch;
 
 				case 'a':
