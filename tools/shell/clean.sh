@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-TARGET="$(cat "${PRP}/.target" 2> /dev/null)"
+TARGET="$(cat "${PRP}/.wolfhound/target" 2> /dev/null)"
 set -eu
 
 cd "${PRP}/${TARGET}"

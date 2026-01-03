@@ -85,6 +85,7 @@ IF(WH_INCLUDES)
 	TARGET_INCLUDE_DIRECTORIES(${APP_NAME} PUBLIC ${WH_INCLUDES})
 ENDIF()
 
+INCLUDE(cmake/compiler.cmake)
 OS_COMPILE()
 
 # Allows us to do line coverage testing

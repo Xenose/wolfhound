@@ -1,8 +1,17 @@
-IF(MSVC) # IF WINDOWS
+IF(CMAKE_C_COMPILER_ID STREQUAL "MSVC") # IF WINDOWS
 	add_compile_options(
 		-Wall
 	)
 ELSE() # ELSE IF NOT WINDOWS
+	# If we are using the GNU compiler we can enable more flags
+	IF (CMAKE_C_COMPILER_ID STREQUAL "GNU" AND CMAKE_LANG STREQUAL "C")
+		add_compile_options(
+		-rdynamic
+		-Wformat-security
+		)
+	ENDIF()
+
+
 	add_compile_options(
 		-O0
 		-g
@@ -23,14 +32,4 @@ ELSE() # ELSE IF NOT WINDOWS
 		-Wno-missing-field-initializers
 		-Wno-c23-extensions
 	)
-
-	# If we are using the GNU compiler we can enable more flags
-	IF (CMAKE_C_COMPILER_ID STREQUAL "GNU" AND CMAKE_LANG STREQUAL "C")
-		add_compile_options(
-		-rdynamic
-		-Wformat-security
-		)
-	ENDIF() # MSVC
-ENDIF()
-
-
+ENDIF() # MSVC

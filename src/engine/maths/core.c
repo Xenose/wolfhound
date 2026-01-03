@@ -25,6 +25,20 @@ i64 _wh_c_intpos(_wh_intpos_params params) {
 	return out;
 }
 
+u64 _wh_uintpos(_wh_uintpos_params params) {
+	// TODO improve the C code
+	u64 out = 0;
+
+	if (0 == params.base) {
+		params.base = 10;
+	}
+
+	while (params.value /= params.base) {
+		++out;
+	}
+
+	return out;
+}
 
 i64 _wh_intpos(_wh_intpos_params params) {
 #ifdef WH_USE_FORTRAN

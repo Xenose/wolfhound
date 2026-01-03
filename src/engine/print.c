@@ -105,7 +105,7 @@ static void _wh_print_fstr_slow(wh_print_data_s* d, char type, double value) {
 		return;
 	}
 
-	if (-1 == wh_print_buffer_check(d, length)) {
+	if (-1 == wh_print_buffer_check(d, (u64)length)) {
 		return;
 	}
 
@@ -131,7 +131,7 @@ static void _wh_print_cpystr(wh_print_data_s* d, char* tmp, i64 length) {
 
 	padding = (i64)d->print_format.left > length ? (i64)d->print_format.left - length : 0;
 
-	if (-1 == (written = wh_print_buffer_check(d, length + padding))) {
+	if (-1 == (written = wh_print_buffer_check(d, (u64)(length + padding)))) {
 		goto go_error_exit;
 	}
 
@@ -139,7 +139,7 @@ static void _wh_print_cpystr(wh_print_data_s* d, char* tmp, i64 length) {
 		memcpy(d->buffer, tmp, (u64)length);
 
 		if (d->print_format.flags.alt_form) {
-			wh_str_invert(d->buffer, length);
+			wh_str_invert(d->buffer, (u64)length);
 		}
 
 		d->buffer += length;
@@ -153,7 +153,7 @@ static void _wh_print_cpystr(wh_print_data_s* d, char* tmp, i64 length) {
 		memcpy(d->buffer, tmp, (u64)length);
 
 		if (d->print_format.flags.alt_form) {
-			wh_str_invert(d->buffer, length);
+			wh_str_invert(d->buffer, (u64)length);
 		}
 
 		d->buffer += length;
@@ -163,9 +163,9 @@ go_error_exit:
 	++d->format;
 }
 
-static void _wh_print_uint(wh_print_data_s* d, u64 value, i64 base) {
+static void _wh_print_uint(wh_print_data_s* d, u64 value, u64 base) {
 	i64 written = 0;
-	i64 length = wh_intpos(value, base) + (0 > value ? 2 : 1);
+	u64 length = wh_uintpos(value, base) + (0 > value ? 2 : 1);
 
 	written = wh_print_buffer_check(d, length);
 
@@ -195,13 +195,13 @@ static void _wh_print_int_bytes(wh_print_data_s* d, i64 value, i64 base) {
 	}
 
 	length = wh_intpos(value, base) + (0 > value ? 2 : 1);
-	written = wh_print_buffer_check(d, length + 2);
+	written = wh_print_buffer_check(d, (u64)length + 2);
 
 	if (-1 == written) {
 		return;
 	}
 
-	wh_int2str(value, d->buffer, length, base);
+	wh_int2str(value, d->buffer, (u64)length, (u64)base);
 	d->buffer += length;
 	d->buffer += stpcpy(d->buffer, end) - d->buffer;
 	++d->format;
@@ -211,13 +211,13 @@ static void _wh_print_int(wh_print_data_s* d, i64 value, i64 base) {
 	i64 written = 0;
 	i64 length = wh_intpos(value, base) + (0 > value ? 2 : 1);
 
-	written = wh_print_buffer_check(d, length);
+	written = wh_print_buffer_check(d, (u64)length);
 
 	if (-1 == written) {
 		return;
 	}
 
-	wh_int2str(value, d->buffer, length, base);
+	wh_int2str(value, d->buffer, (u64)length, (u64)base);
 	d->buffer += length;
 	++d->format;
 }
@@ -226,7 +226,7 @@ static void _wh_print_int128(wh_print_data_s* d, i128 value, i64 base) {
 	i64 written = 0;
 	i64 length = wh_intpos(value, base) + (0 > value ? 2 : 1);
 
-	written = wh_print_buffer_check(d, length);
+	written = wh_print_buffer_check(d, (u64)length);
 
 	if (-1 == written) {
 		return;
@@ -241,9 +241,9 @@ static void _wh_print_memory(wh_print_data_s* data, u8* ptr, int bytes) {
 	i64 written = 0;
 	i64 length = 0;
 
-	written = wh_print_buffer_check(data, bytes * 3);
+	written = wh_print_buffer_check(data, (u64)bytes * 3);
 
-	wh_for(u64, i, bytes) {
+	wh_for(i64, i, bytes) {
 		length = wh_intpos(ptr[i], 16) + 1;
 
 		if (!(i % 8)) {
@@ -331,7 +331,7 @@ go_loop:
 				case '6': case '7': case '8': case '9':
 					*vp = (u64)wh_str2int(data->format, (i64)strlen(data->format), 10); 
 					vp = &data->print_format.left;
-					data->format += wh_intpos(*vp);
+					data->format += wh_uintpos(*vp);
 					goto go_dollar_switch;
 
 				case '[': // custom function from user using hash maps
@@ -409,7 +409,7 @@ go_loop:
 				case '6': case '7': case '8': case '9':
 					*vp = (u64)wh_str2int(data->format, (i64)strlen(data->format), 10); 
 					vp = &data->print_format.left;
-					data->format += wh_intpos((i64)*vp);
+					data->format += wh_uintpos(*vp);
 					goto go_standard_switch;
 
 				case 'a':

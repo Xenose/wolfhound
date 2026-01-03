@@ -34,7 +34,7 @@ TEST(spinlock_testing, single_layer) {
 		tasks.push_back(std::thread(task_001));
 	}
 
-	for (int i = 0; i < tasks.size(); i++) {
+	for (size_t i = 0; i < tasks.size(); i++) {
 		tasks[i].join();
 	}
 
@@ -52,7 +52,7 @@ TEST(spinlock_testing, two_layers) {
 		tasks.push_back(std::thread(task_002));
 	}
 
-	for (int i = 0; i < tasks.size(); i++) {
+	for (size_t i = 0; i < tasks.size(); i++) {
 		tasks[i].join();
 	}
 

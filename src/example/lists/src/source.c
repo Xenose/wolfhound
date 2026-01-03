@@ -27,7 +27,7 @@ int main(int arc, char* const* arv) {
 		wh_log_debug(("Item found!"));
 	}
 
-	for (int i = 0; i < l.node_count; i++) {
+	for (u64 i = 0; i < l.node_count; i++) {
 		printf("--> %i\n", *wh_list_get(int, &l, i));
 	}
 
