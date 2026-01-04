@@ -10,7 +10,8 @@ typedef struct {
 	wh_string_s app_name;
 	wh_string_s config_path;
 	u64 heap_size;
-	u64 mode;
+	u64 mode_window;
+	u64 mode_graphics;
 	wh_config_s config;
 
 	wh_heap_header_s* heap;

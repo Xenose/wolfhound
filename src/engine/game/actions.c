@@ -1,6 +1,8 @@
 #include<wh/debug/logger.h>
 #include<wh/game/actions.h>
 
+#include<string.h>
+
 i8 _wh_action_init(_wh_action_init_params params) {
 	u64 bytes = sizeof(wh_action_s) * params.count;
 

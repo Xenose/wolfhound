@@ -9,6 +9,8 @@
 #include<wh/lua/helpers.h>
 #include<wh/lua/api.h>
 
+#include<string.h>
+
 i8 _wh_conf_defaults(_wh_init_params* params, wh_config_s* config) {
 	memset(config, 0, sizeof(wh_config_s));
 

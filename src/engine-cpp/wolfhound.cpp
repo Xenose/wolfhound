@@ -1,5 +1,7 @@
 #include<wh-cpp/wolfhound.hpp>
 
+#include<cstring>
+
 extern "C" {
 #include<wh/wolfhound.h>
 }
@@ -19,7 +21,8 @@ instance_c::instance_c(const char* name, int arc, char* const* arv) {
 
 	params.ins = &_instance;
 	params.args = args;
-	params.mode = WH_GRAPHICS_MODE_SDL3;
+	params.mode_window = WH_WINDOW_MODE_SDL3;
+	params.mode_graphics = WH_GRAPHICS_MODE_SDL3;
 
 	_instance = _wh_init(params);
 }

@@ -2,4 +2,6 @@ INCLUDE(${CMAKE_CURRENT_LIST_DIR}/find.cmake)
 
 SET(LIB_NAME_ALTS glfw glfw3 GLFW3)
 SET(LIB_HEADER_NAMES glfw.h glfw/glfw3.h GLFW/glfw3.h)
-WH_FIND_LIB(glfw3)
+SET(LIB_NAME_ALTS glfw glfw3 glfw3dll GLFW GLFW3)
+
+WH_FIND_LIB(glfw)

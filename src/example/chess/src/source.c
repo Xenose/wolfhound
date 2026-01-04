@@ -24,6 +24,7 @@
 #include<wh-data/list.h>
 
 #include<stdio.h>
+#include<string.h>
 
 void update(wh_instance_s* ins) {
 	float square[] = {
@@ -95,8 +96,9 @@ int main(int arc, char* const* arv) {
 		&ins,
 		(wh_args_s){ 0, arc, arv },								// command line arguments
 		(wh_string_s){ .str = "chess", .length = 6},			// application name
-		.mode = WH_GRAPHICS_MODE_SDL3,
-		.config_path = (wh_string_s) { .str = buf, 0 },														// application config
+		.mode_window   = WH_WINDOW_MODE_GLFW,
+		.mode_graphics = WH_GRAPHICS_MODE_VULKAN,
+		.config_path   = (wh_string_s) { .str = buf, 0 },														// application config
 	);
 
 	wh_hashmap_lazy_s hml = _wh_hashmap_lazy_create(nullptr, 10, sizeof(int));

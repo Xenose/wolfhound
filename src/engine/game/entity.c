@@ -2,6 +2,7 @@
 #include<wh/debug/logger.h>
 #include<wh/game/entity.h>
 
+#include<string.h>
 // The best path probably is to use a linked list and
 // then finalize the header data and delete the linked list.
 

@@ -51,17 +51,26 @@ ENDFOREACH()
 
 # Library search
 INCLUDE(cmake/find_glew.cmake)
-INCLUDE(cmake/find_glfw.cmake)
+INCLUDE(cmake/find_glfw3.cmake)
 INCLUDE(cmake/find_lua.cmake)
 INCLUDE(cmake/find_sdl3.cmake)
 INCLUDE(cmake/find_unwind.cmake)
 INCLUDE(cmake/find_vulkan.cmake)
+
+# Legacy fallback
+IF (WH_SDL3_NOT_FOUND) 
+	INCLUDE(cmake/find_sdl2.cmake)
+ELSE()
+	LIST(APPEND WH_DEFS "WH_SDL2_NOT_FOUND")
+ENDIF()
 
 # old way
 #INCLUDE_DIRECTORIES(SYSTEM ${INCLUDE_PATHS})
 
 ADD_LIBRARY(${APP_NAME} STATIC ${ASM_SOURCE} ${C_SOURCES} ${CXX_SOURCES} ${F95_SOURCES})
 TARGET_INCLUDE_DIRECTORIES(${APP_NAME} PUBLIC ${INCLUDE_PATHS})
+
+MESSAGE(STATUS "WH_LIBS = ${WH_LIBS}")
 TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE ${WH_LIBS})
 
 # ------------------------------------------------------------------------------------

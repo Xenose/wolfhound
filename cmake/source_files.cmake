@@ -66,9 +66,19 @@ SET(RAYLIB_SOURCES
 	"src/engine-backends/raylib/window.c"
 )
 
+SET(SDL2_SOURCES
+	"src/engine-backends/sdl2/render.c"
+	"src/engine-backends/sdl2/window.c"
+)
+
 SET(SDL3_SOURCES
 	"src/engine-backends/sdl3/render.c"
 	"src/engine-backends/sdl3/window.c"
+)
+
+SET(GLFW3_SOURCES
+	"src/engine-backends/glfw3/render.c"
+	"src/engine-backends/glfw3/window.c"
 )
 
 

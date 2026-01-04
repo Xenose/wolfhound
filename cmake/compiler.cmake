@@ -6,8 +6,9 @@ ELSE() # ELSE IF NOT WINDOWS
 	# If we are using the GNU compiler we can enable more flags
 	IF (CMAKE_C_COMPILER_ID STREQUAL "GNU" AND CMAKE_LANG STREQUAL "C")
 		add_compile_options(
-		-rdynamic
-		-Wformat-security
+			-rdynamic
+			-Wformat-security
+			-pg
 		)
 	ENDIF()
 
@@ -15,7 +16,6 @@ ELSE() # ELSE IF NOT WINDOWS
 	add_compile_options(
 		-O0
 		-g
-		-pg
 		-ggdb
 
 		## Warnings

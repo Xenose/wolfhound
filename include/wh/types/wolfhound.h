@@ -7,13 +7,17 @@
 #include<wh/types/config.h>
 
 #include<wh/types/gameinfo.h>
-#include<SDL3/SDL.h>
+
+#if (!defined WH_SDL3_NOT_FOUND) && (!defined WH_SDL2_NOT_FOUND)
+	#error SDL3 and SDL2 included at the same time.
+#endif
 
 #ifndef WH_VULKAN_NOT_FOUND
 	#include<vulkan/vulkan.h>
 #endif
 
 enum {
+	WH_WINDOW_MODE_SDL2,
 	WH_WINDOW_MODE_SDL3,
 	WH_WINDOW_MODE_GLFW,
 };
@@ -21,6 +25,7 @@ enum {
 enum {
 	WH_GRAPHICS_MODE_CPU,
 	WH_GRAPHICS_MODE_VULKAN,
+	WH_GRAPHICS_MODE_SDL2,
 	WH_GRAPHICS_MODE_SDL3,
 	WH_GRAPHICS_MODE_OPENGL,
 	WH_GRAPHICS_MODE_RAYLIB,
@@ -52,21 +57,29 @@ typedef struct {
 } wh_vulkan_s;
 
 typedef struct {
-	SDL_Renderer* renderer;
-	SDL_Surface* surface;
+	void* renderer;
+	void* surface;
 } wh_sdl3_s;
 
 typedef struct {
+	void* renderer;
+	void* surface;
+} wh_sdl2_s;
+
+typedef struct {
 	struct_type stype;
-	u64 mode;
+	u64 mode_window;
+	u64 mode_graphics;
 	
 	union {
-		SDL_Window* sdl;
+		void* sdl;
+		void* glfw;
 	} window;
-	
+
 	union {
 		wh_vulkan_s vulkan;
 		wh_sdl3_s sdl3;
+		wh_sdl2_s sdl2;
 	};
 } wh_graphics_s;
 

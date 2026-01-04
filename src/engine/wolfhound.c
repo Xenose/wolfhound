@@ -11,6 +11,8 @@
 #include<wh/loader/asset.h>
 #include<wh-testing/unite.h>
 
+#include<string.h>
+
 #ifndef WH_VULKAN_NOT_FOUND
 	#include<wh-backend/vulkan.h>
 #endif
@@ -36,9 +38,12 @@ static i8 _wh_init_critical(_wh_init_params* params) {
 
 	// making a shortcut
 	params->grap = &params->ins[0]->graphics;
-	params->grap->mode = params->mode;
 
-	wh_log_init(params->mode);
+	params->grap->mode_window = params->mode_window;
+	params->grap->mode_graphics = params->mode_graphics;
+
+	// Unused remove
+	//wh_log_init(params->mode_graphics);
 	wh_log_info(("Done loading critical section!"));
 
 	return 0;

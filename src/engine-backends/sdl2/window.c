@@ -1,9 +1,9 @@
 #include<wh/render.h>
 #include<wh/window.h>
 
-#include<SDL3/SDL.h>
+#include<SDL2/SDL.h>
 
-void _wh_window_get_size_sdl3(_wh_window_get_size_params params) {
+void _wh_window_get_size_sdl2(_wh_window_get_size_params params) {
 	int x = 0;
 	int y = 0;
 
