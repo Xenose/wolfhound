@@ -5,7 +5,7 @@
 	#include<wh-backend/sdl2.h>
 #endif
 
-#ifndef WH_GLFW3_NOT_FOUND
+#ifndef WH_GLFW_NOT_FOUND
 	#include<wh-backend/glfw3.h>
 #endif
 
@@ -40,7 +40,7 @@ i8 _wh_render_init(_wh_render_init_params params) {
 go_window_retry:
 	switch(params.ins->graphics.mode_window) {
 		case WH_WINDOW_MODE_GLFW:
-#ifndef WH_GLFW3_NOT_FOUND
+#ifndef WH_GLFW_NOT_FOUND
 			switch (params.ins->graphics.mode_graphics) {
 				case WH_GRAPHICS_MODE_SDL2:
 					wh_log_warning(("SDL2 graphics mode but backend set to GLFW3 switching window stack!"));

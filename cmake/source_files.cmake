@@ -76,7 +76,7 @@ SET(SDL3_SOURCES
 	"src/engine-backends/sdl3/window.c"
 )
 
-SET(GLFW3_SOURCES
+SET(GLFW_SOURCES
 	"src/engine-backends/glfw3/render.c"
 	"src/engine-backends/glfw3/window.c"
 )
