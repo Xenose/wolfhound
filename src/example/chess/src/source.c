@@ -96,8 +96,8 @@ int main(int arc, char* const* arv) {
 		&ins,
 		(wh_args_s){ 0, arc, arv },								// command line arguments
 		(wh_string_s){ .str = "chess", .length = 6},			// application name
-		.mode_window   = WH_WINDOW_MODE_GLFW,
-		.mode_graphics = WH_GRAPHICS_MODE_VULKAN,
+		.mode_window   = WH_WINDOW_MODE_SDL3,
+		.mode_graphics = WH_GRAPHICS_MODE_SDL3,
 		.config_path   = (wh_string_s) { .str = buf, 0 },														// application config
 	);
 
