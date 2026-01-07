@@ -17,6 +17,12 @@
 	#include<wh-backend/vulkan.h>
 #endif
 
+static void _wh_update_dummy(wh_instance_s* ins) {
+}
+
+static void _wh_fixed_update_dummy(wh_instance_s* ins) {
+}
+
 static i8 _wh_init_critical(_wh_init_params* params) {
 	wh_instance_s tmp = { 0 };
 
@@ -113,14 +119,20 @@ void _wh_loop(_wh_loop_params params) {
 		goto go_skip_event_pull;
 	}
 
+	if (nullptr == params.update) {
+		params.update = &_wh_update_dummy;
+	}
+
+	if (nullptr == params.fixed_update) {
+		params.fixed_update = &_wh_fixed_update_dummy;
+	}
+
 go_loop:
 	wh_event_pull(ins, &event);
 go_skip_event_pull:
 	wh_render_clear(ins);
 
-	if (nullptr != params.update) {
-		params.update(ins);
-	}
+	params.update(ins);
 	
 	wh_action_s* c = ins->game.actions;
 
@@ -130,10 +142,7 @@ go_skip_event_pull:
 		}
 	}
 
-	if (nullptr != params.fixed_update) {
-		params.fixed_update(ins);
-	}
-	
+	params.fixed_update(ins);
 	wh_render_show(ins);
 
 	switch (event.code) {
