@@ -17,6 +17,11 @@ else
 	WP=$(dirname "$WP")
 fi
 
+# Intel needs it special file
+if [ -z "$INTEL_PYTHONHOME" ] && [ -f /opt/intel/oneapi/setvars.sh ]; then
+	. /opt/intel/oneapi/setvars.sh > /dev/null 2>&1
+fi
+
 #. "${WP}${TP}docker.sh"
 __wh_docker() {
 	docker build -t "test_image_wolfhound" -f "${PRP}/tools/docker/${1}.dockerfile" "${PRP}"
@@ -49,6 +54,7 @@ alias wh-build-all="PRP='${WP}' TP='${TP}' ${WP}${TP}build_all.sh"
 alias wh-clean="PRP='${WP}' TP='${TP}' ${WP}${TP}clean.sh"
 
 # compilers
+alias wh-icx="PRP='${WP}' TP='${TP}' ${WP}${TP}icx.sh"
 alias wh-gcc="PRP='${WP}' TP='${TP}' ${WP}${TP}gcc.sh"
 alias wh-clang="PRP='${WP}' TP='${TP}' ${WP}${TP}clang.sh"
 alias wh-mingw="PRP='${WP}' TP='${TP}' ${WP}${TP}mingw.sh"

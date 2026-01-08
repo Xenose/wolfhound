@@ -156,51 +156,7 @@ void _wh_mem_scan_for_each(void* node, u64 index) {
 
 i64 _wh_mem_scan(void) {
 	i64 count = 0;
-
 	wh_list_for_each(&_list, &_wh_mem_scan_for_each);
-
-
-	/*_wh_heap_list_entry_s* current = _list.nodes;
-
-	wh_spinlock_v2(&_list.lock) {
-		while (nullptr != current) {
-			wh_log_debug(("Node found! [ %u ] next is [ %u ]"), current->ptr, current->next);
-
-			wh_for(u64, i, current->owner_count) {
-				bool clean_up = false;
-
-				if (nullptr == current->owners[i].owner) {
-					continue;
-				}
-
-				wh_try {
-					if (*current->owners[i].owner != current->ptr) {
-						wh_log_warning(("Owner change! ptr [ %u ] != owner [ %u ] in file:line [ %s:%u ]"), current->owners[i].owner, current->ptr, current->owners[i].file, current->owners[i].line);
-						clean_up = true;
-					}
-				} wh_catch(ex) {
-					wh_log_critical(("SEGFAULT :: Owner change! ptr [ %u ] != owner [ %u ] in file:line [ %s:%u ]"), current->owners[i].owner, current->ptr, current->owners[i].file, current->owners[i].line);
-					clean_up = true;
-				}
-
-				if ( clean_up) {
-					current->owners[i].owner = current->owners[current->owner_count].owner;
-					current->owners[i].line = current->owners[current->owner_count].line;
-					current->owners[i].file = current->owners[current->owner_count].file;
-					current->owner_count--;
-					current->owners = realloc(current->owners, sizeof(_wh_heap_ptr_pair_s) * current->owner_count);
-				}
-			}
-
-			if (0 == current->owner_count) {
-				count++;
-				wh_log_error(("LEAK FOUND! freeing... ptr : [ %u ]"), current->ptr);
-				wh_free(current->heap, current->ptr, nullptr);
-			}
-
-			current = current->next;
-		}
-	}*/
 
 	//usleep(100);
 	return count;
