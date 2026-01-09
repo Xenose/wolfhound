@@ -22,9 +22,9 @@
 #include<wh/debug/exceptions.h>
 #include<wh/debug/logger.h>
 #include<wh-data/list.h>
+#include<wh-posix/string.h>
 
 #include<stdio.h>
-#include<string.h>
 
 void update(wh_instance_s* ins) {
 	float square[] = {
@@ -114,6 +114,7 @@ int main(int arc, char* const* arv) {
 	printf("Value is [ %i ]\n", *wh_hashmap_lazy_get(int*, &hml, "test2"));
 	printf("Value is [ %i ]\n", *wh_hashmap_lazy_get(int*, &hml, "test3"));
 	printf("Value is [ %i ]\n", *wh_hashmap_lazy_get(int*, &hml, "test444"));
+
 
 	//wh_list_s test_list = wh_dlist_init_memreq(int);
 
