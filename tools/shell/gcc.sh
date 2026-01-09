@@ -1,12 +1,13 @@
 #!/bin/sh
 
-set -e
+ANDROID__BUILD_VERSION_SDK="${ANDROID__BUILD_VERSION_SDK:=}"
+set -eu
+
 SYS="$("${PRP}/${TP}"/detect_sys.sh)"
 TARGET="build/gcc-${SYS}"
 
 mkdir -pv "${PRP}/${TARGET}"
 echo "/${TARGET}" > "${PRP}/.wolfhound/target"
-#cd "${PRP}/${TARGET}"
 
 if command -v gcc > /dev/null && command -v g++ > /dev/null; then
 	cmake \

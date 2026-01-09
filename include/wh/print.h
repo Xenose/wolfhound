@@ -86,7 +86,7 @@ extern void _wh_print_add_func(_wh_print_add_func_params params);
  * | $f      | Wolfhound     | Formatted String | YES                   | Allows recursive calling of formatted string.                         |
  * | $k      | Wolfhound     | Int to Bytes     | YES                   | Prints the integer into [ B, KB. MD. GB, TB, ...].                    |
  * | $n      | Wolfhound     | Errno            | YES                   |                                                                       |
- * | $m      | Wolfhound     | Memory, Length   | NO                    | Takes a pointer to memory and its length printing it in hex.          |
+ * | $m      | Wolfhound     | Memory, Length   | YES                   | Takes a pointer to memory and its length printing it in hex.          |
  * | $s      | Wolfhound     | String, Length   | NO                    | Prints a string using the provided length.                            |
  * | $t      | Wolfhound     | Format String    | NO                    | Reads the inputted string and print the formatted time.               |
  * | $v      | Wolfhound     | VK_Result        | YES                   | Takes the status code and prints in human readable format.            |

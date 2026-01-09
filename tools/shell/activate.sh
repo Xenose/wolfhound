@@ -17,7 +17,12 @@ else
 	WP=$(dirname "$WP")
 fi
 
-# Intel needs it special file
+if [ -p "tools/shell/activate.sh" ]; then
+	echo "Not in the wolfhound directory ABORTING!"
+	return 1
+fi
+
+# Intel needs its special file
 if [ -z "$INTEL_PYTHONHOME" ] && [ -f /opt/intel/oneapi/setvars.sh ]; then
 	. /opt/intel/oneapi/setvars.sh > /dev/null 2>&1
 fi
