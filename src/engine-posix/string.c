@@ -2,59 +2,9 @@
 #include<wh-posix/string.h>
 
 #if (WH_SYSTEM&WH_SYS_WINDOWS)
-
-char* stpncpy(char* restrict dst, const char* restrict src, size_t length) {
-	size_t l = strlen(src);
-	l = l < length ? l : length;
-
-	memset(&dst[l], 0, length - l);
-	return wh_ptr_add(memmove(dst, src, l), l); // <--- dst + l
-}
-
-char* stpcpy(char* restrict dst, const char* restrict src) {
-	size_t l = strlen(src);
-	return wh_ptr_add(memmove(dst, src, l), l); // <--- dst + l
-}
-
+	#include"_windows/string.c"
 #elif (WH_SYSTEM&WH_SYS_POSIX)
-
-int strncpy_s(char* restrict dst, size_t dst_size, const char* restrict src, size_t src_size) {
-	int error = 0;
-
-	if (nullptr == dst) {
-		error = EINVAL;
-		goto go_error_exit;
-	}
-
-	if (0 == dst_size) {
-		error = EINVAL;
-		goto go_error_exit;
-	}
-
-	if (nullptr == src) {
-		error = EINVAL;
-		dst[0] = 0;
-		goto go_error_exit;
-	}
-
-	if (WH_TRUNCATE == src_size) {
-		src_size = strnlen(src, dst_size - 1);
-		error = STRUNCATE;
-	} else if (0 == src_size) {
-		error = EINVAL;
-		goto go_error_exit;
-	} else if ((src_size + 1) > dst_size) {
-		error = ERANGE;
-		dst[0] = 0;
-		goto go_error_exit;
-	}
-
-	memmove(dst, src, src_size);
-	dst[src_size] = '\0';
-go_error_exit:
-	return error;
-}
-
+	#include"_posix/string.c"
 #endif
 
 char* stpncpy_s(char* restrict dst, const char* restrict src, size_t length, int* error) {
