@@ -12,6 +12,10 @@ char* _wh_strcat(_wh_strcat_params params, ...) {
 	va_list list;
 
 	if (0 == params.buffer_length || nullptr == params.buffer) {
+		if (nullptr != params.error) {
+			*params.error = 1;
+		}
+
 		goto go_exit;
 	}
 
@@ -24,6 +28,10 @@ char* _wh_strcat(_wh_strcat_params params, ...) {
 		sl = strlen(s);
 
 		if (len < sl) {
+			if (nullptr != params.error) {
+				*params.error = 1;
+			}
+
 			memcpy(params.buffer, s, len);
 			params.buffer += len;
 			break;

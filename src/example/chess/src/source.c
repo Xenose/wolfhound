@@ -98,7 +98,7 @@ int main(int arc, char* const* arv) {
 		(wh_string_s){ .str = "chess", .length = 6},			// application name
 		.mode_window   = WH_WINDOW_MODE_SDL3,
 		.mode_graphics = WH_GRAPHICS_MODE_SDL3,
-		.config_path   = (wh_string_s) { .str = buf, 0 },														// application config
+		.config_path   = (wh_string_s) { .str = buf, 0 },	// application config
 	);
 
 	wh_hashmap_lazy_s hml = _wh_hashmap_lazy_create(nullptr, 10, sizeof(int));

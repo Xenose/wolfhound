@@ -7,6 +7,7 @@ typedef struct {
 	char* buffer;
 	u64 buffer_length;
 	u64 offset;
+	u64* error;
 } _wh_strcat_params;
 
 typedef struct {
