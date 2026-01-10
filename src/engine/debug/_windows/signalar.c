@@ -1,4 +1,4 @@
-#include<signal.h>
+#include<wh-posix/signal.h>
 #include<string.h>
 #include<errno.h>
 
