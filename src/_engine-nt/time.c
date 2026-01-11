@@ -15,3 +15,10 @@ void _wnt_get_system_time_precise_as_file_time(wnt_filetime_s* out) {
    out->low_date_time = ft.dwLowDateTime;
    out->high_date_time = ft.dwHighDateTime;
 }
+
+i64 _wnt_delay_execution(bool alertable, i64 delay_interval) {
+   BOOLEAN a = alertable ? TRUE : FALSE;
+   LARGE_INTEGER di = { .QuadPart = delay_interval };
+
+   return NtDelayExecution(a, &di);
+}
