@@ -1,7 +1,7 @@
 #ifndef _wh_header_convert_
 #define _wh_header_convert_
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 
 typedef struct {
 	u64 value;

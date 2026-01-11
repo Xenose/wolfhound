@@ -1,7 +1,7 @@
 #ifndef _wh_header_types_assets_
 #define _wh_header_types_assets_
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 
 typedef struct {
 	struct_type stype;

@@ -1,7 +1,7 @@
 #ifndef _wh_header_socket_
 #define _wh_header_socket_
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 
 #if (WH_SYSTEM&WH_SYS_POSIX)
 	#include<netdb.h>

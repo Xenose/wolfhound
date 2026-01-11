@@ -1,7 +1,7 @@
 #ifndef _wh_header_sys_library_
 #define _wh_header_sys_library_
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 #include<wh/types/library.h>
 #include<wh/params/library.h>
 

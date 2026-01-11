@@ -1,7 +1,7 @@
 #ifndef _wh_header_types_memory_
 #define _wh_header_types_memory_
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 #include<wh-sys/atomic_lock.h>
 
 #define WH_MEM_ZERO		((u64)0x0001)

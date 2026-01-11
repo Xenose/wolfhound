@@ -1,7 +1,7 @@
 #ifndef _wh_header_types_config_
 #define _wh_header_types_config_
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 
 typedef struct {
 	u8 dryrun				: 1;

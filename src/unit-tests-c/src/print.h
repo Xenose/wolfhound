@@ -1,7 +1,7 @@
 #ifndef _wh_header_testing_print_
 #define _wh_header_testing_print_
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 
 extern i64 testing_print(i64* failed, i64* passed);
 extern i64 benchmark_print();

@@ -5,7 +5,7 @@
 	#include<wh-posix/windows.h>
 #endif
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 
 enum {
 	WH_FILE_TYPE_UNKNOWN,

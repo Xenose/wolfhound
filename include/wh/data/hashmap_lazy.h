@@ -1,7 +1,7 @@
 #ifndef _wh_header_data_hashmap_lazy_
 #define _wh_header_data_hashmap_lazy_
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 #include<wh-sys/memory.h>
 
 typedef struct {

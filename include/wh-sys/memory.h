@@ -3,7 +3,7 @@
 
 #include<wh-sys/memory.h>
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 #include<wh/types/memory.h>
 #include<wh/params/memory.h>
 
@@ -54,7 +54,7 @@ extern i32 wh_mem_leak_count(void);
  * Upon success a heap pointer is returned and on error a nullptr is returned.
  * 
  * ### See also
- * [common.h](include/wh/common.h)
+ * [common.h](include/wh-common/common.h)
  */
 #define wh_heap_init(...)	WH_EPF(_wh_heap_init((_wh_heap_init_params) { __VA_ARGS__ }))
 

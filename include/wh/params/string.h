@@ -1,7 +1,7 @@
 #ifndef _wh_header_params_string_
 #define _wh_header_params_string_
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 
 typedef struct {
 	char* buffer;

@@ -1,7 +1,7 @@
 #ifndef _wh_header_string_
 #define _wh_header_string_
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 #include<wh/params/string.h>
 
 WH_C()

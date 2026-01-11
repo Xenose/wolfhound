@@ -1,7 +1,7 @@
 #ifndef _wh_header_types_gameinfo_
 #define _wh_header_types_gameinfo_
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 
 enum {
 	WH_DATA_HEADER_START,

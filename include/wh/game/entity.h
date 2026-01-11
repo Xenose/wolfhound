@@ -1,7 +1,7 @@
 #ifndef _wh_header_game_entity_
 #define _wh_header_game_entity_
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 #include<wh/types/wolfhound.h>
 
 typedef struct {

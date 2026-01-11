@@ -3,7 +3,7 @@
 
 #include<stddef.h>
 #include<string.h>
-#include<wh/common.h>
+#include<wh-common/common.h>
 
 #if (WH_SYSTEM&WH_SYS_WINDOWS)
 

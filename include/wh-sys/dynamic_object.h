@@ -1,7 +1,7 @@
 #ifndef _wh_header_sys_dynamic_object_
 #define _wh_header_sys_dynamic_object_
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 
 typedef struct {
 	void* handle;

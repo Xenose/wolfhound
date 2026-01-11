@@ -1,7 +1,7 @@
 #ifndef _wh_header_wh_
 #define _wh_header_wh_
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 #include<wh-sys/memory.h>
 #include<wh/params/wolfhound.h>
 

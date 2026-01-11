@@ -1,6 +1,6 @@
 #include<wh/memory/freelist.h>
 #include<wh/debug/logger.h>
-#include<wh/maths/memory.h>
+#include<wh-maths/memory.h>
 
 #include<string.h>
 

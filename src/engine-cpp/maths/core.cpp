@@ -1,5 +1,5 @@
 #include<string>
-#include<wh/maths/core.h>
+#include<wh-maths/core.h>
 #include<wh-cpp/maths/core.hpp>
 
 

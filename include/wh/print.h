@@ -2,7 +2,7 @@
 #define _wh_header_print_
 
 #include<stdarg.h>
-#include<wh/common.h>
+#include<wh-common/common.h>
 
 WH_C()
 

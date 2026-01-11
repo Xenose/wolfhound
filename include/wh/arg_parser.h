@@ -3,7 +3,7 @@
 
 #include<wh-headers/lua.h>
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 #include<wh/types/config.h>
 
 typedef struct {

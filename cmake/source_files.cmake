@@ -1,13 +1,16 @@
 
 IF(FORTRAN_ENABLED)
 	SET(F95_SOURCES
-		"src/engine/maths/core.f95"
+		"src/engine-maths/core.f95"
 	)
 ENDIF()
 
 SET(C_SOURCES
 	"src/engine-data/list.c"
 	"src/engine-data/hashmap.c"
+
+	"src/engine-maths/core.c"
+	"src/engine-maths/memory.c"
 
 	"src/engine-sys/file.c"
 	"src/engine-sys/filesystem.c"
@@ -47,8 +50,6 @@ SET(C_SOURCES
 	"src/engine/lua/api/maths.c"
 	"src/engine/lua/config.c"
 	"src/engine/lua/helpers.c"
-	"src/engine/maths/core.c"
-	"src/engine/maths/memory.c"
 	"src/engine/print.c"
 	"src/engine/render.c"
 	"src/engine/string.c"

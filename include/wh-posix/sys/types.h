@@ -1,7 +1,7 @@
 #ifndef _wh_header_posix_sys_types_
 #define _wh_header_posix_sys_types_
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 
 WH_C()
 

@@ -1,5 +1,5 @@
-#include<string.h>
-#include<wh/maths/core.h>
+#include<wh-posix/string.h>
+#include<wh-maths/core.h>
 
 #include<stdio.h>
 

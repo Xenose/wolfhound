@@ -3,7 +3,7 @@
 
 #include<stdarg.h>
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 
 typedef enum {
 	RAY_LOG_ALL,

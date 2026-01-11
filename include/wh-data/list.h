@@ -1,7 +1,7 @@
 #ifndef _wh_header_system_list_
 #define _wh_header_system_list_
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 #include<wh/data/list.h>
 
 WH_C()

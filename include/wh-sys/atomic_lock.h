@@ -1,7 +1,7 @@
 #ifndef _wh_header_common_spinlock_
 #define _wh_header_common_spinlock_
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 #include<wh-sys/info.h>
 #include<wh-posix/unistd.h>
 

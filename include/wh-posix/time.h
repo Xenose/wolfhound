@@ -2,7 +2,7 @@
 #define _wh_header_wrap_time_
 
 #include<time.h>
-#include<wh/common.h>
+#include<wh-common/common.h>
 
 WH_C()
 

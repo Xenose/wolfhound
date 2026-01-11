@@ -2,7 +2,7 @@
 #define _wh_header_debug_benchmark_
 
 #include<wh-posix/time.h>
-#include<wh/common.h>
+#include<wh-common/common.h>
 
 typedef struct {
 	i64 count;

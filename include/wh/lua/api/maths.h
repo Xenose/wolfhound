@@ -2,7 +2,7 @@
 #define _wh_header_lua_api_maths_
 
 #include<wh-headers/lua.h>
-#include<wh/common.h>
+#include<wh-common/common.h>
 
 extern int wh_lua_intpos(lua_State* ls);
 extern int wh_lua_intpow(lua_State* ls);

@@ -1,15 +1,13 @@
 #include<wh-headers/lua.h>
-
-#include<string.h>
-
-#include<wh/print.h>
-#include<wh/arg_parser.h>
-#include<wh/maths/core.h>
-#include<wh/debug/logger.h>
+#include<wh-maths/core.h>
+#include<wh-posix/string.h>
 #include<wh-sys/file.h>
+#include<wh/arg_parser.h>
+#include<wh/debug/logger.h>
 #include<wh/lua/config.h>
-#include<wh/string.h>
 #include<wh/lua/helpers.h>
+#include<wh/print.h>
+#include<wh/string.h>
 
 i64 _wh_args_parse(_wh_args_parse_params params) {
 	char command[256] = { 0 };

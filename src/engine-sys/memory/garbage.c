@@ -8,13 +8,13 @@ typedef struct {
 typedef struct {
 	void* ptr;
 
-	uint64_t owner_count;
+	u64 owner_count;
 	_wh_track_owner* owners;
 } _wh_track_entry;
 
 typedef struct {
 	atomic_bool locked;
-	uint64_t _count;
+	u64 _count;
 	_wh_track_entry* _entires;
 } _wh_tracker;
 

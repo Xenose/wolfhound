@@ -1,7 +1,7 @@
 #ifndef _wh_header_images_loader_
 #define _wh_header_images_loader_
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 #include<wh-sys/file.h>
 
 typedef struct {

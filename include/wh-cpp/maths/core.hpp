@@ -2,7 +2,7 @@
 #define _wh_cpp_header_maths_core_
 
 #include<string>
-#include<wh/common.h>
+#include<wh-common/common.h>
 
 namespace wh::maths {
 

@@ -1,7 +1,7 @@
 #ifndef _wh_header_params_memory_
 #define _wh_header_params_memory_
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 #include<wh/types/memory.h>
 
 #define WH_ALLOC_TAIL	0x0001

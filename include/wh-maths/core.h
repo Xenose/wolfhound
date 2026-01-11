@@ -4,7 +4,7 @@
 #include<math.h>
 #include<stdlib.h>
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 #include<wh/params/math.h>
 
 WH_C()

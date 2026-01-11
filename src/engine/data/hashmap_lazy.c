@@ -1,6 +1,6 @@
 #include<stdarg.h>
 #include<wh/data/hashmap_lazy.h>
-#include<wh/maths/core.h>
+#include<wh-maths/core.h>
 #include<wh-sys/memory.h>
 #include<wh/print.h>
 #include<wh/debug/logger.h>

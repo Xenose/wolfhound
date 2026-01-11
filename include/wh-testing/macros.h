@@ -4,7 +4,7 @@
 #include<stdio.h>
 #include<string.h>
 
-#include<wh/common.h>
+#include<wh-common/common.h>
 
 typedef struct {
 	i64 passed;

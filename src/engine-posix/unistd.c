@@ -1,6 +1,6 @@
 #include<wh-common/os.h>
 #include<wh-posix/unistd.h>
-#include<wh/maths/core.h>
+#include<wh-maths/core.h>
 
 #if (WH_SYSTEM&WH_SYS_LINUX)
 	#include"_linux/unistd.c"

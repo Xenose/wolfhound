@@ -2,7 +2,7 @@
 #define _wh_unit_main_
 
 #include<stdint.h>
-#include<wh/common.h>
+#include<wh-common/common.h>
 #include<wh-testing/macros.h>
 
 #define TEST_COUNT 200

@@ -2,7 +2,7 @@
 #define _wh_header_debug_exceptions_
 
 #include<setjmp.h>
-#include<wh/common.h>
+#include<wh-common/common.h>
 
 enum {
 	WH_EXCEPTION_SIGSEGV = -1,
