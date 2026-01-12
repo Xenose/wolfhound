@@ -17,6 +17,14 @@ if command -v tcc > /dev/null; then
 	TARGETS="${TARGETS} tcc-${SYS}"
 fi
 
+if command -v ixc > /dev/null; then
+	TARGETS="${TARGETS} ixc-${SYS}"
+fi
+
+if command -v zig > /dev/null; then
+	TARGETS="${TARGETS} zig-${SYS}"
+fi
+
 if command -v cmake > /dev/null; then
 	for target in ${TARGETS}; do
 		echo "--> Trarget ${target}"

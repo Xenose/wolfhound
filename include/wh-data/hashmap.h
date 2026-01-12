@@ -48,6 +48,7 @@ typedef struct {
 
 typedef struct {
 	struct_type stype;
+	u64 type_size;
 	u64 init_size;
 } _wh_hashmap_init_params;
 

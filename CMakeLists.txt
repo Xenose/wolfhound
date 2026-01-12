@@ -112,6 +112,7 @@ ENDIF()
 # -----------------------------------------------------------------------------
 ADD_SUBDIRECTORY(src/example/chess)
 ADD_SUBDIRECTORY(src/example/lists)
+ADD_SUBDIRECTORY(src/example/hashmaps)
 ADD_SUBDIRECTORY(src/example/gameobject)
 ADD_SUBDIRECTORY(src/example/memory)
 ADD_SUBDIRECTORY(src/example/print)
