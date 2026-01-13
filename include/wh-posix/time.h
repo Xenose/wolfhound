@@ -7,7 +7,9 @@
 WH_C()
 
 #if (WH_SYSTEM&WH_SYS_POSIX)
-
+	#if (WH_SYSTEM&WH_SYS_SOLARIS)
+		#define CLOCK_MONOTONIC_COARSE CLOCK_MONOTONIC
+	#endif
 #else
 #include<wh-posix/windows.h>
 

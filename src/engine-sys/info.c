@@ -41,6 +41,12 @@ i64 wh_sys_program_path(char* buffer, u64 buffer_size) {
 	return 0;
 }
 
+#elif (WH_SYSTEM&WH_SYS_SOLARIS)
+
+i64 wh_sys_program_path(char* buffer, u64 buffer_size) {
+	return 0;
+}
+
 #elif (WH_SYSTEM&WH_SYS_WINDOWS)
 #include<wh-posix/windows.h>
 

@@ -6,7 +6,7 @@
 #include<wh/print.h>
 #include<wh/debug/logger.h>
 
-#ifndef _WIN32
+#if (WH_SYSTEM&WH_SYS_POSIX)
 
 #include<dirent.h>
 
@@ -17,7 +17,7 @@ wh_dir_s _wh_read_dir(_wh_dir_read_params params) {
 		.entries = nullptr,
 	};
 
-	struct dirent* current = nullptr;
+	/*struct dirent* current = nullptr;
 	DIR* dir = nullptr;
 
 	if (nullptr == params.path) {
@@ -91,7 +91,7 @@ go_error_exit_close:
 go_error_exit:
 	if (nullptr != params.error) {
 		*params.error = error;
-	}
+	}*/
 	return out;
 }
 

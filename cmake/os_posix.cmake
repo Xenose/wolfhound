@@ -19,6 +19,11 @@ ENDFUNCTION()
 FUNCTION(OS_COMPILE) 
 	SET(LIBS "m" "dl" "atomic")
 
+	# Solaris-specific linking
+	IF(CMAKE_SYSTEM_NAME STREQUAL "SunOS")
+		LIST(APPEND LIBS "socket" "nsl")
+	ENDIF()
+
 	IF(CMAKE_C_COMPILER_ID MATCHES "TinyCC")
 		MESSAGE("${LOG_PREFIX} TCC not gcov skipping it!")
 	ELSE()

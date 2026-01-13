@@ -6,6 +6,8 @@
 	#include"_linux/unistd.c"
 #elif (WH_SYSTEM&WH_SYS_WINDOWS)
 	#include"_windows/unistd.c"
-#elif (WH_SYSTEM&WH_SYS_BSD)
+#elif (WH_SYSTEM&(WH_SYS_BSD))
 	#include"_bsd/unistd.c"
+#elif (WH_SYSTEM&(WH_SYS_SOLARIS))
+	#include"_solaris/unistd.c"
 #endif

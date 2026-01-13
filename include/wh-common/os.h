@@ -25,6 +25,8 @@
 	#define WH_SYSTEM_OS (WH_SYS_MACOS | WH_SYS_UNIX | WH_SYS_POSIX)
 #elif defined(__FreeBSD__)
 	#define WH_SYSTEM_OS (WH_SYS_FREEBSD | WH_SYS_BSD | WH_SYS_UNIX | WH_SYS_POSIX)
+#elif defined(__sun) || defined(__SVR4) || defined(__illumos__)
+	#define WH_SYSTEM_OS (WH_SYS_SOLARIS | WH_SYS_UNIX | WH_SYS_POSIX)
 #elif defined(__unix__)
 	#ifdef _POSIX_C_SOURCE
 		#define WH_SYSTEM_OS (WH_SYS_UNIX | WH_SYS_POSIX)

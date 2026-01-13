@@ -4,17 +4,20 @@
 # folder only
 # shellcheck disable=SC2139
 
-if [ -f /.dockerenv ]; then
-	echo "Running inside Docker, using current path instead!"
-	WP=$(pwd)
-elif [ -n "$ANDROID__BUILD_VERSION_SDK" ]; then
+if [ -n "$ANDROID__BUILD_VERSION_SDK" ]; then
 	echo "Running inside Android, using current path instead!"
 	WP=$(pwd)
 else
 	echo "Not running inside Docker"
-	WP=$(cd "$(dirname "$0")" && pwd)
-	WP=$(dirname "$WP")
-	WP=$(dirname "$WP")
+	WP="$(cd -- "$(dirname -- "$0")" && pwd)"
+
+	if echo "${WP}" | grep -q "shell"; then
+		WP=$(dirname "$WP")
+	fi
+
+	if echo "${WP}" | grep -q "tools"; then
+		WP=$(dirname "$WP");
+	fi
 fi
 
 if [ -p "tools/shell/activate.sh" ]; then
@@ -30,7 +33,7 @@ fi
 #. "${WP}${TP}docker.sh"
 __wh_docker() {
 	docker build -t "test_image_wolfhound" -f "${PRP}/tools/docker/${1}.dockerfile" "${PRP}"
-	docker run --rm -it -v "$PWD":/wolfhound "test_image_wolfhound"
+	docker run --rm -itv "${PRP}":/wolfhound "test_image_wolfhound"
 	docker rmi "test_image_wolfhound"
 }
 

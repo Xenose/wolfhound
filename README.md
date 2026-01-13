@@ -1,18 +1,18 @@
 # The Wolfhound Game Engine [ C23 ]
 *This code is IN the Rapid DEVelopment branch or 'INRDEV' for short, meaning that the code will change a lot and that after first release the commit history will be squashed.*
 
-| Platform        | Tested | Supported     | Description                             |
-| --------------- | ------ | ------------- | --------------------------------------- |
-| Arch Linux      | YES    | UNSTABLE      | Primary development platform.           |
-| Fedora Linux    | YES    | UNSTABLE      | Secondary development platform.         |
-| Debian Linux    | NO     | PLANNED       | Planned.                                |
-| Windows         | YES    | UNSTABLE      | Unstable might break at any second.     |
-| Android(Termux) | YES    | UNSTABLE      |                                         |
-| FreeBSD         | YES    | UNSTABLE      |                                         |
-| OpenIndiana     | NO     | PLANNED       |                                         |
-| Haiku           | NO     | PLANNED       |                                         |
-| Aros            | NO     | PLANNED       |                                         |
-| MacOS           | NO     | EXPERIMENTING | No Plans for full support.              |
+| Platform        | Kernel  | Tested | Supported     | Description                             |
+| --------------- | ------- | ------ | ------------- | --------------------------------------- |
+| Arch Linux      | Linux   | YES    | UNSTABLE      | Primary development platform.           |
+| Fedora Linux    | Linux   | YES    | UNSTABLE      | Secondary development platform.         |
+| Debian Linux    | Linux   | NO     | PLANNED       | Planned.                                |
+| Windows         | NT      | YES    | UNSTABLE      | Unstable might break at any second.     |
+| Android(Termux) | Android | YES    | UNSTABLE      |                                         |
+| FreeBSD         | BSD     | YES    | UNSTABLE      |                                         |
+| OpenIndiana     | Solaris | YES    | PLANNED       |                                         |
+| Haiku           | Haiku   | NO     | PLANNED       |                                         |
+| Aros            | Amiga   | NO     | PLANNED       |                                         |
+| MacOS           | Darwin  | NO     | EXPERIMENTING | No Plans for full support.              |
 
 ## Compilers
 
@@ -121,21 +121,21 @@ wh-build	# compiles code.
 
 |  Language       | File Count | Lines of Code | Percentage |
 | --------------- | ---------- | ------------- | ---------- |
-| C               | 188        | 7036          | 76.59%     |
-| CMake           | 28         | 496           | 5.40%      |
-| Bourne Shell    | 22         | 492           | 5.36%      |
-| C++             | 17         | 457           | 4.97%      |
-| Markdown        | 3          | 186           | 2.02%      |
+| C               | 189        | 7004          | 76.45%     |
+| CMake           | 28         | 499           | 5.45%      |
+| Bourne Shell    | 23         | 496           | 5.41%      |
+| C++             | 17         | 457           | 4.99%      |
+| Markdown        | 3          | 186           | 2.03%      |
 | Lua             | 13         | 175           | 1.91%      |
 | Python          | 3          | 157           | 1.71%      |
-| Dockerfile      | 4          | 82            | 0.89%      |
+| Dockerfile      | 4          | 82            | 0.90%      |
 | DOS Batch       | 6          | 36            | 0.39%      |
 | Fortran 95      | 1          | 32            | 0.35%      |
 | GLSL            | 1          | 13            | 0.14%      |
 | Assembly        | 2          | 11            | 0.12%      |
 | PowerShell      | 3          | 10            | 0.11%      |
 | INI             | 1          | 3             | 0.03%      |
-| Summary         | 292        | 9186          | 100.00%    |
+| Summary         | 294        | 9161          | 100.00%    |
 
 <!--python-stats-end-->
 
