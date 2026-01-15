@@ -126,7 +126,7 @@ static void _wh_print_cpystr(wh_print_data_s* d, char* tmp, i64 length) {
 	}
 
 	if (d->print_format.flags.length_set) {
-		length =  (i64)d->print_format.right > length ? length : (i64)d->print_format.right;
+		length = (i64)d->print_format.right > length ? length : (i64)d->print_format.right;
 	}
 
 	padding = (i64)d->print_format.left > length ? (i64)d->print_format.left - length : 0;

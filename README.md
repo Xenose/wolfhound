@@ -30,6 +30,8 @@
 * Tier 0x02 :: Should work and could be used for release.
 * Tier 0x03 :: Validating C correctness and shouldn't be used for release builds.
 
+**Note by using the include/wh-common/c23-comp.h header it maybe possible to use a c11/c17 compiler also**
+
 ## Core Concepts
 ### Action Entity System
 The Action Entity System is based on DoD model while still some similarity to
@@ -42,7 +44,7 @@ In AES system :: action(logic) -> Entity -> Data
 ## Building instructions
 See full [Manual Build Guide](docs/markdown/build.md) for details.
 
-### Linux [ POSIX SHELL, BASH, ZSH ]
+### Linux [ POSIX SHELL, BASH, ZSH, ASH, DASH ]
 ```sh
 . ./tools/cmake/activate.sh
 ```
@@ -67,17 +69,19 @@ wh-build	# compiles code.
 
 ### Commands
 
-| Command     | Platform                        | Description                                                               |
-| ----------- | ------------------------------- | ------------------------------------------------------------------------- |
-| wh-check    | Linux                           | Checks for missing software and libraries.                                |
-| wh-build    | Linux, Windows(PowerShell, CMD) | Compiles the code.                                                        |
-| wh-clang    | Linux, Windows(CMD)             | Sets the compiler to Clang.                                               |
-| wh-coverage | Linux                           | Generates a coverage report and opens it.                                 |
-| wh-gcc      | Linux                           | Sets the compiler to gcc                                                  |
-| wh-msvc     | Windows(CMD)                    | Sets the compiler to MSVC                                                 |
-| wh-mingw    | Linux                           | Sets the compiler to gcc-mingw.                                           |
-| wh-ninja    | Linux, Windows(CMD)             | Sets the build system to Ninja.                                           |
-| wh-make     | Linux, Windows(CMD)             | Sets the build system to Make, NMake for windows and UNIX for the others. |
+| Command      | Platform                                                   | Description                                                               |
+| ------------ | ---------------------------------------------------------- | ------------------------------------------------------------------------- |
+| wh-check     | Linux                                                      | Checks for missing software and libraries.                                |
+| wh-build     | Linux, BSD, Android, OpenIndiana, Windows(PowerShell, CMD) | Compiles the code.                                                        |
+| wh-build-all | Linux                                                      | Builds the CMake using all compilers that are installed/supported.        |
+| wh-clang     | Linux, Windows(CMD)                                        | Sets the compiler to Clang.                                               |
+| wh-coverage  | Linux                                                      | Generates a coverage report and opens it.                                 |
+| wh-gcc       | Linux                                                      | Sets the compiler to gcc                                                  |
+| wh-tcc       | Linux                                                      | Sets the compiler to TinyCC                                               |
+| wh-msvc      | Windows(CMD)                                               | Sets the compiler to MSVC                                                 |
+| wh-mingw     | Linux                                                      | Sets the compiler to gcc-mingw.                                           |
+| wh-ninja     | Linux, Windows(CMD)                                        | Sets the build system to Ninja.                                           |
+| wh-make      | Linux, Windows(CMD/nmake)                                  | Sets the build system to Make, NMake for windows and UNIX for the others. |
 
 ## Languages
 | Name        | Version | Use                                              |
