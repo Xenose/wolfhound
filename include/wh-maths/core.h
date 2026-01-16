@@ -13,12 +13,16 @@ extern i64 _wh_c_intpos(_wh_intpos_params params);
 extern u64 _wh_uintpos(_wh_uintpos_params params);
 
 extern i64 _wh_intpos(_wh_intpos_params params);
+extern i128 _wh_intpos128(_wh_intpos128_params params);
+
 extern i64 _wh_intpow(_wh_intpow_params params);
 extern i64 _wh_hash_simple(_wh_hash_simple_params params);
 
 #define wh_c_intpos(...) WH_EPF(_wh_c_intpos((_wh_intpos_params){ __VA_ARGS__ }))
 
 #define wh_intpos(...)	WH_EPF(_wh_intpos((_wh_intpos_params){ __VA_ARGS__ }))
+#define wh_intpos128(...) WH_EPF(_wh_intpos128((_wh_intpos128_params){ __VA_ARGS__ }))
+
 #define wh_uintpos(...)	WH_EPF(_wh_uintpos((_wh_uintpos_params){ __VA_ARGS__ }))
 #define wh_intpow(...)	WH_EPF(_wh_intpow((_wh_intpow_params){ __VA_ARGS__ }))
 

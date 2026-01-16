@@ -20,6 +20,7 @@
 | ------ | ---- | ------------------------------------------------------------ | ----------------------------------------- |
 | Clang  | 0x01 | None                                                         | Main compiler.                            |
 | GCC    | 0x01 | WH_EPF(breaks)                                               | Main compiler outside Windows.            |
+| ICX    | 0x02 |                                                              | Testing as a 3rd tier 0x01 compiler       |
 | Zig    | 0x02 | Unknown                                                      | Testing vability.                         |
 | TCC    | 0x03 | No thread local, No 128 bit integers.                        |                                           |
 | MSVC   | 0x03 | No 128 bit integers.                                         | C++ compiler masking as a C compiler...   |

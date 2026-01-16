@@ -9,6 +9,11 @@ typedef struct {
 } _wh_intpos_params;
 
 typedef struct {
+	i128 value;
+	i64 base;
+} _wh_intpos128_params;
+
+typedef struct {
 	u64 value;
 	u64 base;
 } _wh_uintpos_params;

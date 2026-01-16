@@ -54,7 +54,7 @@ static void _wh_print_call_func(wh_print_data_s* data, void* ptr, char* key_star
 	}
 
 	wh_spin_lock(&_wh_func_table.lock) {
-		key = wh_hash_simple(key_start, _wh_func_table.slots, key_end - key_start);
+		key = wh_hash_simple(key_start, (i64)_wh_func_table.slots, (u64)(key_end - key_start));
 
 		if (-1 == key) {
 			wh_spin_lock_goto(&_wh_func_table.lock, go_error_exit);
@@ -224,7 +224,7 @@ static void _wh_print_int(wh_print_data_s* d, i64 value, i64 base) {
 
 static void _wh_print_int128(wh_print_data_s* d, i128 value, i64 base) {
 	i64 written = 0;
-	i64 length = wh_intpos(value, base) + (0 > value ? 2 : 1);
+	i128 length = wh_intpos128(value, base) + (0 > value ? 2 : 1);
 
 	written = wh_print_buffer_check(d, (u64)length);
 

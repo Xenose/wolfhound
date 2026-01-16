@@ -48,6 +48,23 @@ i64 _wh_intpos(_wh_intpos_params params) {
 #endif
 }
 
+i128 _wh_intpos128(_wh_intpos128_params params) {
+	// TODO improve the C code
+	i128 out = 0;
+
+	if (0 == params.base) {
+		params.base = 10;
+	}
+
+	params.value = wh_abs(params.value);
+
+	while (params.value /= params.base) {
+		++out;
+	}
+
+	return out;
+}
+
 i64 _wh_intpow(_wh_intpow_params params) {
 	i64 power = 1;
 	
