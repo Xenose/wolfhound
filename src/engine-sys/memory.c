@@ -89,8 +89,8 @@ wh_heap_header_s* wh_heap_insert(const char* name, wh_heap_header_s* header) {
 					continue;
 				}
 				
-				old_hash = wh_hash_simple(_table.entries[i].name, _table.count);
-				new_hash = wh_hash_simple(_table.entries[i].name, new_count);
+				old_hash = wh_hash_simple(_table.entries[i].name, (i64)_table.count);
+				new_hash = wh_hash_simple(_table.entries[i].name, (i64)new_count);
 
 				if (nullptr != new_entries[new_hash].header) {
 					wh_log_critical(("Collision detected for [ %9s ] and [ %9s ]!"), entry->name, name);
@@ -110,7 +110,7 @@ wh_heap_header_s* wh_heap_insert(const char* name, wh_heap_header_s* header) {
 			_table.count = new_count;
 		}
 
-		hash = wh_hash_simple(name, _table.count);
+		hash = wh_hash_simple(name, (i64)_table.count);
 		entry = &_table.entries[hash];
 
 		if (nullptr != entry->name) {
@@ -134,14 +134,14 @@ wh_heap_header_s* wh_heap_get(const char* name) {
 	i64 hash = 0;
 
 go_redo:
-	hash = wh_hash_simple(name, _table.count);
+	hash = wh_hash_simple(name, (i64)_table.count);
 	entry = &_table.entries[hash];
 
 	if (nullptr == entry->header) {
 		goto go_error_exit;
 	}
 
-	if (hash != wh_hash_simple(name, _table.count)) {
+	if (hash != wh_hash_simple(name, (i64)_table.count)) {
 		goto go_redo;
 	}
 

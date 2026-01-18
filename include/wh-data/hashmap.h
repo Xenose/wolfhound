@@ -42,8 +42,10 @@ typedef struct {
 typedef struct {
 	struct_type stype;
 	void* slots;
+
 	u64 type_size;
 	u64 slot_count;
+	u64 resize_size;
 } wh_hashmap_s;
 
 typedef struct {

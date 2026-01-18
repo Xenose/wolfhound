@@ -86,7 +86,7 @@ extern i64 _wh_hash_simple(_wh_hash_simple_params params);
 			u32: (x), \
 			u64: (x), \
 			u128: (x), \
-			default: labs(x) \
+			default: fabsl((long double)x) \
 			)
 #endif
 
