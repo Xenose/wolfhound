@@ -4,8 +4,8 @@
 # folder only
 # shellcheck disable=SC2139
 
-if [ -n "$ANDROID__BUILD_VERSION_SDK" ]; then
-	echo "Running inside Android, using current path instead!"
+if [ -n "$ANDROID__BUILD_VERSION_SDK" ] || [ "/bin/ash" = "$0" ]; then
+	echo "Running inside Android/Ash Shell, using current path instead!"
 	WP=$(pwd)
 else
 	echo "Not running inside Docker"
