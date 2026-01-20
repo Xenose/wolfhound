@@ -1,7 +1,7 @@
 FROM archlinux:latest
 
-ENV TERM xterm-256color
-ENV LANG C.UTF-8
+ENV TERM=xterm-256color
+ENV LANG=C.UTF-8
 
 RUN pacman -Syu --noconfirm
 RUN pacman -S --noconfirm \
