@@ -126,30 +126,31 @@ wh-build	# compiles code.
 
 |  Language       | File Count | Lines of Code | Percentage |
 | --------------- | ---------- | ------------- | ---------- |
-| C               | 190        | 7075          | 76.28%     |
+| C               | 190        | 7075          | 76.27%     |
 | CMake           | 28         | 556           | 5.99%      |
 | Bourne Shell    | 23         | 496           | 5.35%      |
 | C++             | 17         | 457           | 4.93%      |
-| Markdown        | 3          | 190           | 2.05%      |
+| Markdown        | 3          | 191           | 2.06%      |
 | Lua             | 13         | 175           | 1.89%      |
 | Python          | 3          | 157           | 1.69%      |
 | Dockerfile      | 4          | 64            | 0.69%      |
 | DOS Batch       | 6          | 36            | 0.39%      |
-| Fortran 95      | 1          | 32            | 0.35%      |
+| Fortran 95      | 1          | 32            | 0.34%      |
 | GLSL            | 1          | 13            | 0.14%      |
 | Assembly        | 2          | 11            | 0.12%      |
 | PowerShell      | 3          | 10            | 0.11%      |
 | INI             | 1          | 3             | 0.03%      |
-| Summary         | 295        | 9275          | 100.00%    |
+| Summary         | 295        | 9276          | 100.00%    |
 
 <!--python-stats-end-->
 
 ## Hardware Tested on
 
-| OS         | CPU         | RAM  | GPU           | Notes                  |
-| ---------- | ----------- | ---- | ------------- | ---------------------- |
-| Arch Linux | Ryzen 3900x | 64GB | RX6800xt      |                        |
-| FreeBSD    | I5 6300u    | 32GB | NaN           |                        |
-| Android    | T616        | 8GB  | NaN           | Compiled using Termux. |
-| Windows 11 | Ryzen 2200g | 16GB | Redaon WX6100 |                        |
+| OS           | CPU           | RAM  | GPU            | Notes                  |
+| ------------ | ------------- | ---- | -------------- | ---------------------- |
+| Arch Linux   | Ryzen 3900x   | 64GB | RX6800xt       |                        |
+| FreeBSD      | I5 6300u      | 32GB | NaN            |                        |
+| Android      | T616          | 8GB  | NaN            | Compiled using Termux. |
+| Windows 11   | Ryzen 2200g   | 16GB | Radeon WX6100  |                        |
+| Alpine Linux | Pentium D 820 | 8GB  | Radeon HD 6950 |                        |
 
