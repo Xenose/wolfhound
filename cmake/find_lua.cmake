@@ -6,7 +6,8 @@ INCLUDE(${CMAKE_CURRENT_LIST_DIR}/find.cmake)
 #WH_FIND_LIB(Lua)
 
 WH_FIND_V2(
-	"lua54;lua53;liblua-5.4;liblua-5.3;lua-5.4;lua5.4;lua-5.3;lua5.3;lua.5.1;lua51;lua"
+	"lua"
+	"liblua;lua;Lua;lua54;lua53;liblua-5.4;liblua-5.3;lua-5.4;lua5.4;lua-5.3;lua5.3;lua.5.1;lua51"
 	"lua.h;lualib.h"
 	"lua5.4;lua5.4;lua5.3;lua5.3;lua;lua54;lua53"
 	FALSE 

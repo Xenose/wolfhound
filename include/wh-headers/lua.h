@@ -26,6 +26,10 @@ WH_C()
 	}
 #endif
 
+#ifndef LUA_OK
+	#define LUA_OK 0
+#endif
+
 WH_C_END()
 
 #endif

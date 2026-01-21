@@ -10,10 +10,13 @@
 #include<wh/debug/logger.h>
 #include<wh/debug/signalar.h>
 #include<ucontext.h>
-#include<execinfo.h>
 #include<sys/reg.h>
 #include<sys/ucontext.h>
 #define UNW_LOCAL_ONLY
+
+#ifdef _GNU_SOURCE
+#include<execinfo.h>
+#endif
 
 static void _wh_signal_handler(int sig, siginfo_t* info, ucontext_t* uc) {
 	i64 count = 0;
@@ -24,8 +27,10 @@ static void _wh_signal_handler(int sig, siginfo_t* info, ucontext_t* uc) {
 	switch(sig) {
 		case SIGSEGV:
 			signal(sig, SIG_DFL);
+#ifdef _GNU_SOURCE
 			count = backtrace(_ptrs, _pointer_count);
 			backtrace_symbols_fd(_ptrs, (int)count, 2);
+#endif
 			raise(sig);
 			break;
 	}
