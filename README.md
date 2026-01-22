@@ -10,7 +10,7 @@
 | Windows         | NT      | YES    | UNSTABLE      | Unstable might break at any second.     |
 | Android(Termux) | Android | YES    | UNSTABLE      |                                         |
 | FreeBSD         | BSD     | YES    | UNSTABLE      |                                         |
-| OpenIndiana     | Solaris | YES    | PLANNED       |                                         |
+| OpenIndiana     | Solaris | YES    | UNSTABLE      |                                         |
 | Haiku           | Haiku   | NO     | PLANNED       |                                         |
 | Aros            | Amiga   | NO     | PLANNED       |                                         |
 | MacOS           | Darwin  | NO     | EXPERIMENTING | No Plans for full support.              |

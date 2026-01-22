@@ -50,9 +50,9 @@ FOREACH(src_file IN LISTS C_SOURCES CXX_SOURCES)
 ENDFOREACH()
 
 # Library search
+INCLUDE(cmake/find_lua.cmake)
 INCLUDE(cmake/find_glew.cmake)
 INCLUDE(cmake/find_glfw3.cmake)
-INCLUDE(cmake/find_lua.cmake)
 INCLUDE(cmake/find_sdl3.cmake)
 INCLUDE(cmake/find_unwind.cmake)
 INCLUDE(cmake/find_vulkan.cmake)
