@@ -56,6 +56,7 @@ INCLUDE(cmake/find_lua.cmake)
 INCLUDE(cmake/find_sdl3.cmake)
 INCLUDE(cmake/find_unwind.cmake)
 INCLUDE(cmake/find_vulkan.cmake)
+MESSAGE("\n")
 
 # Legacy fallback
 IF (WH_SDL3_NOT_FOUND) 

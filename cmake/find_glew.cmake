@@ -1,9 +1,5 @@
 INCLUDE(${CMAKE_CURRENT_LIST_DIR}/find.cmake)
 
-#SET(LIB_NAME_ALTS )
-#SET(LIB_HEADER_NAMES glew.h gl/glew.h GL/glew.h)
-#WH_FIND_LIB(GLEW)
-
 WH_FIND_V2(
 	"GLEW"
 	"glew;GLEW;glew32;glew32s"
