@@ -5,6 +5,7 @@
 | --------------- | ------- | ------ | ------------- | --------------------------------------- |
 | Arch Linux      | Linux   | YES    | UNSTABLE      | Primary development platform.           |
 | Fedora Linux    | Linux   | YES    | UNSTABLE      | Secondary development platform.         |
+| Alpine Linux    | Linux   | YES    | UNSTABLE      | Testing on Musl.                        |
 | Debian Linux    | Linux   | NO     | PLANNED       | Planned.                                |
 | Windows         | NT      | YES    | UNSTABLE      | Unstable might break at any second.     |
 | Android(Termux) | Android | YES    | UNSTABLE      |                                         |
@@ -43,10 +44,11 @@ In a ECS system :: Entity -> \[ Data, Logic \]
 In AES system :: action(logic) -> Entity -> Data
 
 ## Building instructions
-See full [Manual Build Guide](docs/markdown/build.md) for details.
+See full [Manual Build Guide](markdown/build.md) for details.
 
-### Linux [ POSIX SHELL, BASH, ZSH, ASH, DASH ]
+### Linux [ POSIX SHELL, BASH, ZSH, DASH ]
 ```sh
+# Note ASH might not work
 . ./tools/cmake/activate.sh
 ```
 
@@ -146,11 +148,13 @@ wh-build	# compiles code.
 
 ## Hardware Tested on
 
-| OS           | CPU           | RAM  | GPU            | Notes                  |
-| ------------ | ------------- | ---- | -------------- | ---------------------- |
-| Arch Linux   | Ryzen 3900x   | 64GB | RX6800xt       |                        |
-| FreeBSD      | I5 6300u      | 32GB | NaN            |                        |
-| Android      | T616          | 8GB  | NaN            | Compiled using Termux. |
-| Windows 11   | Ryzen 2200g   | 16GB | Radeon WX6100  |                        |
-| Alpine Linux | Pentium D 820 | 8GB  | Radeon HD 6950 |                        |
+| OS           | CPU           | RAM  | GPU            | Notes                              |
+| ------------ | ------------- | ---- | -------------- | ---------------------------------- |
+| Alpine Linux | Pentium D 820 | 8GB  | Radeon HD 6950 |                                    |
+| Android      | T616          | 8GB  | NaN            | Compiled using Termux.             |
+| Arch Linux   | Ryzen 3900x   | 64GB | RX6800xt       |                                    |
+| Arch Linux   | Ryzen 4650u   | 16GB | NaN            |                                    |
+| FreeBSD      | I5 6300u      | 32GB | NaN            |                                    |
+| Windows 11   | Ryzen 2200g   | 16GB | Radeon WX6100  |                                    |
+| OpenINdiana  | VM            | NaN  | NaN            | Hard to test on physical machines. |
 
