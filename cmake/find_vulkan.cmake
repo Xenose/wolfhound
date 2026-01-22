@@ -1,5 +1,24 @@
 INCLUDE(${CMAKE_CURRENT_LIST_DIR}/find.cmake)
 
-SET(LIB_NAME_ALTS vulkan Vulkan vulkan-1)
-SET(LIB_HEADER_NAMES vulkan/vulkan.h)
-WH_FIND_LIB(Vulkan)
+#SET(LIB_NAME_ALTS vulkan Vulkan vulkan-1)
+#SET(LIB_HEADER_NAMES vulkan/vulkan.h)
+#WH_FIND_LIB(Vulkan)
+
+
+WH_FIND_V2(
+	"vulkan"
+	"vulkn;Vulkan;vulkan-1"
+	"vulkan.h"
+	"vulkan"
+	FALSE 
+	WH_VULKAN_LIB 
+	WH_VULKAN_INC
+)
+
+IF(WH_VULKAN_LIB)
+	LIST(APPEND WH_LIBS ${WH_VULKAN_LIB})
+	LIST(APPEND WH_INCLUDES ${WH_VULKAN_INC})
+	LIST(APPEND VULKAN_SOURCES ${C_SOURCES})
+ELSE()
+	LIST(APPEND WH_DEFS "WH_VULKAN_NOT_FOUND")
+ENDIF()
