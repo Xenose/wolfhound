@@ -11,7 +11,7 @@ WH_FIND_V2(
 	"glfw;glfw3;GLFW3"
 	"glfw.h;glfw3.h;glfw3.h"
 	"GLFW;glfw"
-	FALSE 
+	TRUE
 	WH_GLFW_LIB 
 	WH_GLFW_INC
 )
