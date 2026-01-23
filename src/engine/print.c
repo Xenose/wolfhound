@@ -53,6 +53,7 @@ static void _wh_print_call_func(wh_print_data_s* data, void* ptr, char* key_star
 		goto go_error_exit_no_end_key;
 	}
 
+	--key_end;
 	wh_spin_lock(&_wh_func_table.lock) {
 		key = wh_hash_simple(key_start, (i64)_wh_func_table.slots, (u64)(key_end - key_start));
 
@@ -335,7 +336,7 @@ go_loop:
 					goto go_dollar_switch;
 
 				case '[': // custom function from user using hash maps
-					_wh_print_call_func(data, va_arg(list, void*), data->format + 1, strstr(data->format, "]") - 1);
+					_wh_print_call_func(data, va_arg(list, void*), data->format + 1, strstr(data->format, "]"));
 					break;
 				case 'b': // binary
 					break;
