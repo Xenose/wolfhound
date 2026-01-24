@@ -17,15 +17,15 @@
 
 ## Compilers
 
-| Name   | Tier | Issues                                                       | Notes                                     |
-| ------ | ---- | ------------------------------------------------------------ | ----------------------------------------- |
-| Clang  | 0x01 | None                                                         | Main compiler.                            |
-| GCC    | 0x01 | WH_EPF(breaks)                                               | Main compiler outside Windows.            |
-| ICX    | 0x02 |                                                              | Testing as a 3rd tier 0x01 compiler       |
-| Zig    | 0x02 | Unknown                                                      | Testing vability.                         |
-| TCC    | 0x03 | No thread local, No 128 bit integers.                        |                                           |
-| MSVC   | 0x03 | No 128 bit integers.                                         | C++ compiler masking as a C compiler...   |
-| MinGW  | 0x03 | A pain to setup.                                             |                                           |
+| Name   | Version | Tier | Issues                                                       | Notes                                     |
+| ------ | ------- | ---- | ------------------------------------------------------------ | ----------------------------------------- |
+| Clang  |         | 0x01 | None                                                         | Main compiler.                            |
+| GCC    |         | 0x01 | WH_EPF(breaks)                                               | Main compiler outside Windows.            |
+| ICX    |         | 0x02 |                                                              | Testing as a 3rd tier 0x01 compiler       |
+| Zig    |         | 0x02 | Unknown                                                      | Testing vability.                         |
+| TCC    |         | 0x03 | No thread local, No 128 bit integers.                        |                                           |
+| MSVC   |         | 0x03 | No 128 bit integers.                                         | C++ compiler masking as a C compiler...   |
+| MinGW  |         | 0x03 | A pain to setup.                                             |                                           |
 
 **Tiers**
 * Tier 0x01 :: Main compilers and used for release builds.
@@ -98,20 +98,13 @@ wh-build	# compiles code.
 | DOS Batch   | N/A     | Build tools.                                     |
 | Dockerfiles | N/A     | Temporary testing enviroments.                   |
 
-## Compilers
-| Name  | Version | Notes                                         |
-| ----- | ------- | --------------------------------------------- |
-| clang | 21      |                                               |
-| gcc   | 15      |                                               |
-| msvc  | 2020    | Compiles for now, but could break any second. |
-
 ## Libraries
 
 | Name    | Current Supported | Required       | Notes                                                                     |
 | ------- | ----------------- | -------------- | ------------------------------------------------------------------------- |
-| vulkan  | NO                | NO             | At least one graphics library is required, vulkan needs sdl3 also.        |
-| sdl3    | NO                | NO             | At least one graphics library is required,                                |
-| glfw    | NO                | NO             | At least one graphics library is required,                                |
+| vulkan  | NO                | NO             |                                                                           |
+| sdl3    | NO                | NO             |                                                                           |
+| glfw    | NO                | NO             |                                                                           |
 | lua     |                   | YES            | Used for data, arguments and configurations.                              |
 | unwind  |                   | NO(but useful) | Used to backtrace Segfaults from the signal handler.                      |
 | gtest   |                   | NO             | Used for unit testing of the engine.                                      |
@@ -148,13 +141,13 @@ wh-build	# compiles code.
 
 ## Hardware Tested on
 
-| OS           | CPU           | RAM  | GPU            | Notes                              |
-| ------------ | ------------- | ---- | -------------- | ---------------------------------- |
-| Alpine Linux | Pentium D 820 | 8GB  | Radeon HD 6950 |                                    |
-| Android      | T616          | 8GB  | NaN            | Compiled using Termux.             |
-| Arch Linux   | Ryzen 3900x   | 64GB | RX6800xt       |                                    |
-| Arch Linux   | Ryzen 4650u   | 16GB | NaN            |                                    |
-| FreeBSD      | I5 6300u      | 32GB | NaN            |                                    |
-| Windows 11   | Ryzen 2200g   | 16GB | Radeon WX6100  |                                    |
-| OpenINdiana  | VM            | NaN  | NaN            | Hard to test on physical machines. |
+| OS           | Arictecture | CPU           | RAM  | GPU            | Notes                              |
+| ------------ | ----------- | ------------- | ---- | -------------- | ---------------------------------- |
+| Alpine Linux | X64         | Pentium D 820 | 8GB  | Radeon HD 6950 |                                    |
+| Android      | AArch64     | T616          | 8GB  | NaN            | Compiled using Termux.             |
+| Arch Linux   | X64         | Ryzen 3900x   | 64GB | RX6800xt       |                                    |
+| Arch Linux   | X64         | Ryzen 4650u   | 16GB | NaN            |                                    |
+| FreeBSD      | X64         | I5 6300u      | 32GB | NaN            |                                    |
+| Windows 11   | X64         | Ryzen 2200g   | 16GB | Radeon WX6100  |                                    |
+| OpenIndiana  | X64         | VM            | NaN  | NaN            | Hard to test on physical machines. |
 
