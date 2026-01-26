@@ -14,6 +14,7 @@
 | Haiku           | Haiku   | NO     | PLANNED       |                                         |
 | Aros            | Amiga   | NO     | PLANNED       |                                         |
 | MacOS           | Darwin  | NO     | EXPERIMENTING | No Plans for full support.              |
+
 **Noted UNSTABLE means it can break and Linux is probably the most stable**
 
 ## Compilers
