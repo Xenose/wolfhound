@@ -87,6 +87,7 @@ wh_instance_s* _wh_init(_wh_init_params params) {
 	// loading assets
 	_wh_assets_load("./resources");
 
+	wh_log_debug(("Started graphics section!"));
 	if (-1 == wh_render_init(params.ins[0])) {
 		wh_log_error(("Failed to load render functions!"));
 		goto go_error_exit;
@@ -97,6 +98,7 @@ wh_instance_s* _wh_init(_wh_init_params params) {
 	if (-1 == wh_window_create(params.ins[0], 1920, 1080, (wh_string_s){ .str = "hello" })) {
 		goto go_error_exit;
 	}
+	wh_log_debug(("Graphics section over!"));
 
 	return params.ins[0];
 go_error_exit:
