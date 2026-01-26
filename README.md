@@ -14,6 +14,7 @@
 | Haiku           | Haiku   | NO     | PLANNED       |                                         |
 | Aros            | Amiga   | NO     | PLANNED       |                                         |
 | MacOS           | Darwin  | NO     | EXPERIMENTING | No Plans for full support.              |
+**Noted UNSTABLE means it can break and Linux is probably the most stable**
 
 ## Compilers
 
@@ -42,6 +43,17 @@ so the logic calls the data.
 
 In a ECS system :: Entity -> \[ Data, Logic \]
 In AES system :: action(logic) -> Entity -> Data
+
+### Systems planned
+| Name                               | Status        | File                    | Notes                                                                        |
+| ---------------------------------- | ------------- | ----------------------- | ---------------------------------------------------------------------------  |
+| AES                                | Expermenting  | NaN                     | DoD style enity system.                                                      |
+| print system                       | Finilizing    | Print.h                 | Print functionality with possbility for C++ hooks.                           |
+| Grabage collector                  | Finilizing    | Tracker.h               | Needs to move from linked list to hashmap.                                   |
+| Fixed point CPU math               | Theory        | NaN                     | Using fixed point math for positions on the CPU and floats on the GPU.       |
+| SDF Mesh hybrid rendering          | Theory        | NaN                     | To save model size and allow faster transfer should look into SDF rendering. |
+| Lua command line and config parser | Needs cleanup | arg_parser.h / config.h | A bit ruff and could need improvment.                                        |
+| Generic render backend interface   | Indev         | render.h                | Allow use of sdl, glfw, vulkan, gl and etc instead of hardcoding backends.   |
 
 ## Building instructions
 See full [Manual Build Guide](markdown/build.md) for details.
