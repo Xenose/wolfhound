@@ -5,6 +5,7 @@
 #include<errno.h>
 
 #include<wh-maths/core.h>
+#include<wh-posix/time.h>
 #include<wh-posix/stdatomic.h>
 #include<wh-posix/string.h>
 #include<wh-posix/unistd.h>
@@ -275,6 +276,25 @@ static void _wh_print_memory(wh_print_data_s* data, u8* ptr, int bytes) {
 	++data->format;
 }
 
+static void _wh_print_time(wh_print_data_s* data, va_list list) {
+	i64 written = 0;
+	struct tm* tm = nullptr;
+	char buffer[256] = { 0 };
+	char* format = va_arg(list, char*);
+	u64 length = 0;
+	time_t t = time(NULL);
+
+	tm = localtime(&t);
+	strftime(buffer, sizeof(buffer), format, tm);
+
+	length = strlen(buffer);
+	written = wh_print_buffer_check(data, (u64)length);
+	memcpy(data->buffer, buffer, length);
+
+	data->buffer += length;
+	++data->format;
+}
+
 static void _wh_print_format_sub(wh_print_data_s* data, va_list list) {
 	char* f = data->format;
 
@@ -364,6 +384,7 @@ go_loop:
 					_wh_print_cpystr(data, tmp, va_arg(list, i64));
 					break;
 				case 't': // time with format $t[]
+					_wh_print_time(data, list);
 					break;
 				case 'v': // vk result
 					_wh_print_cpystr(data, (char*)wh_vk_status_str(va_arg(list, i64)), 0);
