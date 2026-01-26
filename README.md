@@ -23,7 +23,7 @@
 | Clang  |         | 0x01 | None                                                         | Main compiler.                            |
 | GCC    |         | 0x01 | WH_EPF(breaks)                                               | Main compiler outside Windows.            |
 | ICX    |         | 0x02 |                                                              | Testing as a 3rd tier 0x01 compiler       |
-| Zig    |         | 0x02 | Unknown                                                      | Testing vability.                         |
+| Zig    |         | 0x02 | Unknown                                                      | Testing viability.                        |
 | TCC    |         | 0x03 | No thread local, No 128 bit integers.                        |                                           |
 | MSVC   |         | 0x03 | No 128 bit integers.                                         | C++ compiler masking as a C compiler...   |
 | MinGW  |         | 0x03 | A pain to setup.                                             |                                           |
@@ -47,12 +47,12 @@ In AES system :: action(logic) -> Entity -> Data
 ### Systems planned
 | Name                               | Status        | File                    | Notes                                                                        |
 | ---------------------------------- | ------------- | ----------------------- | ---------------------------------------------------------------------------  |
-| AES                                | Expermenting  | NaN                     | DoD style enity system.                                                      |
-| print system                       | Finilizing    | Print.h                 | Print functionality with possbility for C++ hooks.                           |
-| Grabage collector                  | Finilizing    | Tracker.h               | Needs to move from linked list to hashmap.                                   |
-| Fixed point CPU math               | Theory        | NaN                     | Using fixed point math for positions on the CPU and floats on the GPU.       |
-| SDF Mesh hybrid rendering          | Theory        | NaN                     | To save model size and allow faster transfer should look into SDF rendering. |
-| Lua command line and config parser | Needs cleanup | arg_parser.h / config.h | A bit ruff and could need improvment.                                        |
+| AES                                | Experimenting | N/A                     | DoD style entity system.                                                     |
+| print system                       | Finalizing    | Print.h                 | Print functionality with possbility for C++ hooks.                           |
+| Grabage collector                  | Finalizing    | Tracker.h               | Needs to move from linked list to hashmap.                                   |
+| Fixed point CPU math               | Theory        | N/A                     | Using fixed point math for positions on the CPU and floats on the GPU.       |
+| SDF Mesh hybrid rendering          | Theory        | N/A                     | To save model size and allow faster transfer should look into SDF rendering. |
+| Lua command line and config parser | Needs cleanup | arg_parser.h / config.h | A bit rough and could need improvment.                                       |
 | Generic render backend interface   | Indev         | render.h                | Allow use of sdl, glfw, vulkan, gl and etc instead of hardcoding backends.   |
 
 ## Building instructions
@@ -153,13 +153,13 @@ wh-build	# compiles code.
 
 ## Hardware Tested on
 
-| OS           | Arictecture | CPU           | RAM  | GPU            | Notes                              |
-| ------------ | ----------- | ------------- | ---- | -------------- | ---------------------------------- |
-| Alpine Linux | X64         | Pentium D 820 | 8GB  | Radeon HD 6950 |                                    |
-| Android      | AArch64     | T616          | 8GB  | NaN            | Compiled using Termux.             |
-| Arch Linux   | X64         | Ryzen 3900x   | 64GB | RX6800xt       |                                    |
-| Arch Linux   | X64         | Ryzen 4650u   | 16GB | NaN            |                                    |
-| FreeBSD      | X64         | I5 6300u      | 32GB | NaN            |                                    |
-| Windows 11   | X64         | Ryzen 2200g   | 16GB | Radeon WX6100  |                                    |
-| OpenIndiana  | X64         | VM            | NaN  | NaN            | Hard to test on physical machines. |
+| OS           | Architecture | CPU           | RAM  | GPU            | Notes                              |
+| ------------ | ------------ | ------------- | ---- | -------------- | ---------------------------------- |
+| Alpine Linux | X64          | Pentium D 820 | 8GB  | Radeon HD 6950 |                                    |
+| Android      | AArch64      | T616          | 8GB  | NaN            | Compiled using Termux.             |
+| Arch Linux   | X64          | Ryzen 3900x   | 64GB | RX6800xt       |                                    |
+| Arch Linux   | X64          | Ryzen 4650u   | 16GB | NaN            |                                    |
+| FreeBSD      | X64          | I5 6300u      | 32GB | NaN            |                                    |
+| Windows 11   | X64          | Ryzen 2200g   | 16GB | Radeon WX6100  |                                    |
+| OpenIndiana  | X64          | VM            | NaN  | NaN            | Hard to test on physical machines. |
 
