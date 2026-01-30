@@ -134,21 +134,21 @@ wh-build	# compiles code.
 
 |  Language       | File Count | Lines of Code | Percentage |
 | --------------- | ---------- | ------------- | ---------- |
-| C               | 190        | 7096          | 76.08%     |
-| CMake           | 28         | 588           | 6.30%      |
-| Bourne Shell    | 23         | 496           | 5.32%      |
-| C++             | 17         | 457           | 4.90%      |
-| Markdown        | 3          | 189           | 2.03%      |
-| Lua             | 13         | 175           | 1.88%      |
+| C               | 191        | 7109          | 76.02%     |
+| CMake           | 28         | 589           | 6.30%      |
+| Bourne Shell    | 23         | 496           | 5.30%      |
+| C++             | 17         | 457           | 4.89%      |
+| Markdown        | 3          | 200           | 2.14%      |
+| Lua             | 13         | 175           | 1.87%      |
 | Python          | 3          | 157           | 1.68%      |
-| Dockerfile      | 4          | 64            | 0.69%      |
-| DOS Batch       | 6          | 36            | 0.39%      |
+| Dockerfile      | 4          | 64            | 0.68%      |
+| DOS Batch       | 6          | 36            | 0.38%      |
 | Fortran 95      | 1          | 32            | 0.34%      |
 | GLSL            | 1          | 13            | 0.14%      |
 | Assembly        | 2          | 11            | 0.12%      |
 | PowerShell      | 3          | 10            | 0.11%      |
 | INI             | 1          | 3             | 0.03%      |
-| Summary         | 295        | 9327          | 100.00%    |
+| Summary         | 296        | 9352          | 100.00%    |
 
 <!--python-stats-end-->
 
@@ -157,10 +157,10 @@ wh-build	# compiles code.
 | OS           | Architecture | CPU           | RAM  | GPU            | Notes                              |
 | ------------ | ------------ | ------------- | ---- | -------------- | ---------------------------------- |
 | Alpine Linux | X64          | Pentium D 820 | 8GB  | Radeon HD 6950 |                                    |
-| Android      | AArch64      | T616          | 8GB  | NaN            | Compiled using Termux.             |
+| Android      | AArch64      | T616          | 8GB  | N/A            | Compiled using Termux.             |
 | Arch Linux   | X64          | Ryzen 3900x   | 64GB | RX6800xt       |                                    |
-| Arch Linux   | X64          | Ryzen 4650u   | 16GB | NaN            |                                    |
-| FreeBSD      | X64          | I5 6300u      | 32GB | NaN            |                                    |
+| Arch Linux   | X64          | Ryzen 4650u   | 16GB | N/A            | X13 Gen 1 ThinkPad.                |
+| FreeBSD      | X64          | I5 6300u      | 32GB | N/A            | T470                               |
 | Windows 11   | X64          | Ryzen 2200g   | 16GB | Radeon WX6100  |                                    |
-| OpenIndiana  | X64          | VM            | NaN  | NaN            | Hard to test on physical machines. |
+| OpenIndiana  | X64          | VM            | N/A  | N/A            | Hard to test on physical machines. |
 

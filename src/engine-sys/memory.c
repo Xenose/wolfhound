@@ -68,7 +68,8 @@ wh_heap_header_s* wh_heap_insert(const char* name, wh_heap_header_s* header) {
 
 			if (3 <= retry++) {
 				wh_log_critical(("Failed to realloc hashmap table!"));
-				wh_lock_goto(&_table.lock, go_error_exit);
+				wh_unlock(&_table.lock);
+				goto go_error_exit;
 			}
 
 			page_size += (u64)getpagesize();

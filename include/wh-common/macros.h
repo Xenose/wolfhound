@@ -39,33 +39,6 @@ WH_C()
  */
 #define wh_for(_type_, _index_, _count_) for (_type_ _index_ = 0; (_index_) < (_count_); (_index_)++)
 
-#define wh_spin_lock(_x_) do {} while (atomic_flag_test_and_set(_x_)); for (i8 _lock_##__LINE__ = 0; 1 != _lock_##__LINE__; _lock_##__LINE__++, atomic_flag_clear(_x_))
-
-#if (WH_SYSTEM&WH_SYS_TCC)
-	#define wh_spin_lock_break(_x_) break
-	#define wh_spin_lock_return(_x_, _return_) return _return_
-	#define wh_spin_lock_goto(_x_, _goto_) goto _goto_
-
-
-	#define wh_spinlock(_x_)
-
-	#define wh_spinlock_break(_x_) break
-	#define wh_spinlock_return(_x_, ...) return __VA_ARGS__
-	#define wh_spinlock_goto(_x_, _goto_) goto _goto_
-
-#else
-	#define wh_spin_lock_break(_x_)					atomic_flag_clear(_x_); break
-	#define wh_spin_lock_return(_x_, _return_)	atomic_flag_clear(_x_);	return _return_
-	#define wh_spin_lock_goto(_x_, _goto_)			atomic_flag_clear(_x_);	goto _goto_
-
-
-	#define wh_spinlock(_x_) do {} while (atomic_flag_test_and_set(_x_)); for (i8 _lock_##__LINE__ = 0; 1 != _lock_##__LINE__; _lock_##__LINE__++, atomic_flag_clear(_x_))
-
-	#define wh_spinlock_break(_x_)				atomic_flag_clear(_x_); break
-	#define wh_spinlock_return(_x_, ...)		atomic_flag_clear(_x_);	return __VA_ARGS__
-	#define wh_spinlock_goto(_x_, _goto_)		atomic_flag_clear(_x_);	goto _goto_
-#endif
-
 #define WH_INT(_x_) (int[]){ _x_ }
 
 #define WH_I8(_x_) (i8[]){ _x_ }

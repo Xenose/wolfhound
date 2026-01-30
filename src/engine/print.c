@@ -5,10 +5,11 @@
 #include<errno.h>
 
 #include<wh-maths/core.h>
-#include<wh-posix/time.h>
 #include<wh-posix/stdatomic.h>
 #include<wh-posix/string.h>
+#include<wh-posix/time.h>
 #include<wh-posix/unistd.h>
+#include<wh-sys/atomic_lock.h>
 #include<wh-sys/memreq.h>
 #include<wh/convert.h>
 #include<wh/debug/error.h>
@@ -23,7 +24,7 @@ typedef struct {
 } _hw_print_func;
 
 typedef struct {
-	atomic_flag lock;
+	wh_atomic_lock_s lock;
 	u64 count;
 	u64 slots;
 	_hw_print_func* table;
@@ -55,11 +56,12 @@ static void _wh_print_call_func(wh_print_data_s* data, void* ptr, char* key_star
 	}
 
 	--key_end;
-	wh_spin_lock(&_wh_func_table.lock) {
+	wh_spinlock_v3(&_wh_func_table.lock) {
 		key = wh_hash_simple(key_start, (i64)_wh_func_table.slots, (u64)(key_end - key_start));
 
 		if (-1 == key) {
-			wh_spin_lock_goto(&_wh_func_table.lock, go_error_exit);
+			wh_unlock(&_wh_func_table.lock);
+			goto go_error_exit;
 		}
 
 		func = _wh_func_table.table[key].func;
@@ -630,7 +632,7 @@ i64 _wh_print(_wh_print_params params, ...) {
 void _wh_print_add_func(_wh_print_add_func_params params) {
 	i64 key = 0;
 
-	wh_spin_lock(&_wh_func_table.lock){
+	wh_spinlock_v3(&_wh_func_table.lock){
 		if (0 == _wh_func_table.slots) {
 			_wh_func_table.table = wh_sys_memreq(sizeof(_hw_print_func) * 16);
 			_wh_func_table.slots = 16;

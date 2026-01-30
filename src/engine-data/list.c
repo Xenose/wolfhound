@@ -198,7 +198,8 @@ i8 _wh_list_insert(_wh_list_insert_params params) {
 			++params.list->node_count;
 		} else {
 			wh_log_error(("Failed to get list index!"));
-			wh_lock_goto(&params.list->lock, go_error_exit);
+			wh_unlock(&params.list->lock);
+			goto go_error_exit;
 		}
 	}
 
