@@ -12,6 +12,7 @@ SET(C_SOURCES
 	"src/engine-maths/core.c"
 	"src/engine-maths/memory.c"
 
+	"src/engine-sys/atomic_lock.c"
 	"src/engine-sys/file.c"
 	"src/engine-sys/filesystem.c"
 	"src/engine-sys/info.c"

@@ -8,15 +8,15 @@ int count = 0;
 wh_atomic_lock_s lock = {};
 
 void task_001() {
-	wh_spinlock_v2(&lock) {
+	wh_spinlock_v3(&lock) {
 		++count;
 		usleep(500);
 	}
 }
 
 void task_002() {
-	wh_spinlock_v2(&lock) {
-		wh_spinlock_v2(&lock) {
+	wh_spinlock_v3(&lock) {
+		wh_spinlock_v3(&lock) {
 			++count;
 			usleep(500);
 		}

@@ -192,7 +192,7 @@ i8 _wh_list_insert(_wh_list_insert_params params) {
 
 	func_index = ((u64)params.list->stype) - WH_STRUCT_TYPE_LLIST_SINGLE;
 
-	wh_spinlock_v2(&params.list->lock) {
+	wh_spinlock_v3(&params.list->lock) {
 		if (0 == _wh_get_index[func_index](params.list, params.index, &current, &previous)) {
 			_wh_insert[func_index](&params, current, previous);
 			++params.list->node_count;
@@ -232,7 +232,7 @@ void _wh_list_delete(_wh_list_delete_params params) {
 
 	func_index = ((u64)params.list->stype) - WH_STRUCT_TYPE_LLIST_SINGLE;
 
-	wh_spinlock_v2(&params.list->lock) {
+	wh_spinlock_v3(&params.list->lock) {
 		if (0 == _wh_get_index[func_index](params.list, params.index, &current, &previous)) {
 			_wh_delete[func_index](&params, current, previous);
 			--params.list->node_count;

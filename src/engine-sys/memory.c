@@ -60,7 +60,7 @@ wh_heap_header_s* wh_heap_insert(const char* name, wh_heap_header_s* header) {
 
 	wh_log_debug(("Inserting new entry named [ %s ]"), name);
 
-	wh_spinlock_v2(&_table.lock) {
+	wh_spinlock_v3(&_table.lock) {
 		if (_table.used >= _table.count) {
 		go_realloc:
 			wh_log_debug(("Expanding table"));
@@ -164,14 +164,14 @@ void* _wh_alloc_no_tracking(_wh_mem_alloc_params params) {
 
 	switch (params.heap->stype) {
 		case WH_STRUCT_TYPE_HEAP_ARENA:
-			wh_spinlock_v2(&params.heap->locked) {
+			wh_spinlock_v3(&params.heap->locked) {
 				mem = _wh_mem_alloc_arena(&params);
 			}
 			break;
 
 		default:
 		case WH_STRUCT_TYPE_HEAP_FREELIST:
-			wh_spinlock_v2(&params.heap->locked) {
+			wh_spinlock_v3(&params.heap->locked) {
 				mem = _wh_mem_alloc_freelist(&params);
 			}
 			break;
@@ -192,19 +192,18 @@ void _wh_free_no_tracking(_wh_mem_free_params params) {
 
 	switch (params.heap->stype) {
 		case WH_STRUCT_TYPE_HEAP_ARENA:
-			wh_spinlock_v2(&params.heap->locked) {
+			wh_spinlock_v3(&params.heap->locked) {
 				_wh_mem_free_arena(&params);
 			}
 			break;
 
 		default:
 		case WH_STRUCT_TYPE_HEAP_FREELIST:
-			wh_spinlock_v2(&params.heap->locked) {
+			wh_spinlock_v3(&params.heap->locked) {
 				_wh_mem_free_freelist(&params);
 			}
 		break;
 	}
-	
 }
 
 void* _wh_realloc_no_tracking(_wh_mem_realloc_params params) {
@@ -221,7 +220,7 @@ void* _wh_realloc_no_tracking(_wh_mem_realloc_params params) {
 
 		default:
 		case WH_STRUCT_TYPE_HEAP_FREELIST:
-			wh_spinlock_v2(&params.heap->locked) {
+			wh_spinlock_v3(&params.heap->locked) {
 				mem = _wh_mem_realloc_freelist(&params);
 			}
 		break;
@@ -403,7 +402,7 @@ wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
 	
 	wh_heap_insert(params.name, heap);
 
-	wh_spinlock_v2(&heap->locked) {
+	wh_spinlock_v3(&heap->locked) {
 		wh_heap_node_s* next = nullptr;
 		heap->allocation_count = 0;
 
