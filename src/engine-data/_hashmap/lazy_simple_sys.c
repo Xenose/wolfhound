@@ -50,6 +50,7 @@ go_error_exit:
 	return nullptr;
 }
 
-static i8 _insert_lazy_simple_sys(wh_hashmap_s* map, void* value) {
+static i8 _insert_lazy_simple_sys(wh_hashmap_s* map, void* key, void* value) {
+	i64 hash = wh_hash_simple(key, map->slot_count);
 	return 0;
 }

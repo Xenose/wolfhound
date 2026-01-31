@@ -14,8 +14,6 @@ set -e
 #	--user="$(id -u):$(id -g)" \
 #	"${1}" /bin/bash
 
-__wh_docker() {
-	docker build -t "test_image_wolfhound" -f "${PRP}/tools/docker/${1}.dockerfile" "${PRP}"
-	docker run --gpus all --rm -it -v "$PWD":/wolfhound "test_image_wolfhound"
-	docker rmi "test_image_wolfhound"
-}
+docker build -t "test_image_wolfhound" -f "${PRP}/tools/docker/${1}.dockerfile" "${PRP}"
+docker run --gpus all --rm -it -v "$PWD":/wolfhound "test_image_wolfhound"
+docker rmi "test_image_wolfhound"

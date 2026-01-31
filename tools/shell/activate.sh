@@ -31,11 +31,11 @@ if [ -z "$INTEL_PYTHONHOME" ] && [ -f /opt/intel/oneapi/setvars.sh ]; then
 fi
 
 #. "${WP}${TP}docker.sh"
-__wh_docker() {
-	docker build -t "test_image_wolfhound" -f "${PRP}/tools/docker/${1}.dockerfile" "${PRP}"
-	docker run --rm -itv "${PRP}":/wolfhound "test_image_wolfhound"
-	docker rmi "test_image_wolfhound"
-}
+#__wh_docker() {
+#	docker build -t "test_image_wolfhound" -f "${PRP}/tools/docker/${1}.dockerfile" "${PRP}"
+#	docker run --rm -itv "${PRP}":/wolfhound "test_image_wolfhound"
+#	docker rmi "test_image_wolfhound"
+#}
 
 # The tools foolder
 TP="/tools/shell/"
@@ -53,7 +53,7 @@ alias wh-coverage="PRP='${WP}' TP='${TP}' ${WP}${TP}coverage.sh"
 alias wh-refresh=". ${WP}${TP}activate.sh"
 alias wh-bootstrap="PRP='${WP}' TP='${TP}' ${WP}${TP}bootstrap.sh"
 alias wh-check="PRP='${WP}' TP='${TP}' ${WP}${TP}check.sh"
-alias wh-docker="PRP='${WP}' TP='${TP}' __wh_docker"
+alias wh-docker="PRP='${WP}' TP='${TP}' ${WP}${TP}docker.sh $*"
 alias wh-sync="PRP='${WP}' TP='${TP}' ${WP}${TP}sync.sh"
 
 # code
