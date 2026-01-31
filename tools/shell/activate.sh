@@ -40,20 +40,27 @@ fi
 # The tools foolder
 TP="/tools/shell/"
 echo "Setting active directory to [ $WP ]"
+
+# Creating the wolfhound directory
 mkdir -p "${WP}/.wolfhound"
 
+WH_ENV="PRP='${WP}' TP='${TP}'"
+
+
 # Fun
-alias wh-count="PRP='${WP}' TP='${TP}' ${WP}${TP}stats.sh"
+. "${WP}${TP}stats.sh"
+
+alias wh-stats="${WH_ENV} __wh_stats"
 
 # Tests / Reviews
-alias wh-ai-review="PRP='${WP}' TP='${TP}' ${WP}${TP}ai_review.sh"
-alias wh-coverage="PRP='${WP}' TP='${TP}' ${WP}${TP}coverage.sh"
+# alias wh-ai-review="PRP='${WP}' TP='${TP}' ${WP}${TP}ai_review.sh"
+#alias wh-coverage="${WH_ENV} ${WP}${TP}coverage.sh"
 
 # Helpers
 alias wh-refresh=". ${WP}${TP}activate.sh"
-alias wh-bootstrap="PRP='${WP}' TP='${TP}' ${WP}${TP}bootstrap.sh"
+#alias wh-bootstrap="PRP='${WP}' TP='${TP}' ${WP}${TP}bootstrap.sh"
 alias wh-check="PRP='${WP}' TP='${TP}' ${WP}${TP}check.sh"
-alias wh-docker="PRP='${WP}' TP='${TP}' ${WP}${TP}docker.sh $*"
+alias wh-docker="PRP='${WP}' TP='${TP}' ${WP}${TP}docker.sh"
 alias wh-sync="PRP='${WP}' TP='${TP}' ${WP}${TP}sync.sh"
 
 # code
