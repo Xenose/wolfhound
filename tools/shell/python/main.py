@@ -2,10 +2,10 @@ import os
 import sys
 import subprocess
 
-if os.name == "nt"
+if os.name == "nt":
     CMD_CLEAR="cls"
     CMD_LS="dir"
-else
+else:
     CMD_CLEAR="clear"
     CMD_LS="ls"
 
@@ -14,13 +14,13 @@ def code_build():
 
 
 def cmd_clear():
-    subprocess.run([CMD_CLEAR])
+    subprocess.run([CMD_CLEAR], shell=True)
 
 def cmd_exit():
     sys.exit(0)
 
 def cmd_ls():
-    out = subprocess.run([CMD_LS])
+    out = subprocess.run([CMD_LS], shell=True)
 
 
 commands = {
