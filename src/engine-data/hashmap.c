@@ -18,7 +18,7 @@ static i8 (*_insert[])(wh_hashmap_s* map, void* key, void* value) = {
 	_insert_lazy_simple_sys,
 };
 
-static void* (*_get[])(wh_hashmap_s* map, void* key) {
+static void* (*_get[])(wh_hashmap_s* map, void* key) = {
 	nullptr,
 	nullptr,
 };
@@ -40,10 +40,12 @@ void* _wh_hashmap_get(wh_hashmap_s* map, void* key) {
 
 void* _wh_hashmap_delete(wh_hashmap_s* map, void* key) {
 	i64 func_index = map->stype - WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_WOLF;
+	return nullptr;
 }
 
 void* _wh_hashmap_foreach(wh_hashmap_s* map) {
 	i64 func_index = map->stype - WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_WOLF;
+	return nullptr;
 }
 
 wh_hashmap_s _wh_hashmap_init(_wh_hashmap_init_params params) {
