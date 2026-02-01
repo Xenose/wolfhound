@@ -38,7 +38,7 @@ fi
 #}
 
 # The tools foolder
-TP="/tools/shell/"
+TP="/tools/shell/shell/"
 echo "Setting active directory to [ $WP ]"
 
 # Creating the wolfhound directory

@@ -37,7 +37,7 @@ commands = {
 
 def dispatch(cmd, args):
     mod = None
-    print(f"{cmd}")
+    # print(f"{cmd}")
 
     try:
         mod = importlib.import_module(f"bin.{cmd}")
@@ -52,9 +52,9 @@ def dispatch(cmd, args):
 
 
 while True:
-    cmd = input("wh-shell> ").strip()
+    cmd = input("wh-shell> ").strip().split(" ")
 
-    dispatch(cmd, None)
+    dispatch(cmd[0], cmd[1:])
 
     # if cmd in commands:
     #    commands[cmd]()
