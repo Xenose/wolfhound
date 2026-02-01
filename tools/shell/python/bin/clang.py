@@ -9,6 +9,7 @@ def execute(cmd, args, session, state):
         epilog='Text at the bottom of help')
 
     parser.add_argument("--arch", help="Set the architecture")
+    parser.add_argument("--build-system", help="Set the build system to use")
 
     a = parser.parse_args(args)
 
@@ -27,3 +28,19 @@ def execute(cmd, args, session, state):
                 print(f"Unknown architecture: {a.arch}, keeping previous value")
     else:
         state.setdefault("arch", "x64")
+
+    if a.build_system:
+        match a.build_system.lower():
+            case "ninja":
+                state["build-system"] = "Ninja"
+            case "make":
+                if "posix" == os.name:
+                    state["build-system"] = "Unix Makefiles"
+                elif "nt" == os.name:
+                    state["build-system"] = "NMake Makefiles"
+            case _:
+                print(f"Unknown build system: {a.build_system}, keeping previous value")
+    else:
+        state["build-system"] = "ninja"
+
+
