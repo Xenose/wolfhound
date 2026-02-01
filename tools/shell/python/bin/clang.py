@@ -1,6 +1,7 @@
 import os
 import argparse
 import platform
+import shutil
 
 def execute(cmd, args, session, state):
     parser = argparse.ArgumentParser(
@@ -13,8 +14,13 @@ def execute(cmd, args, session, state):
 
     a = parser.parse_args(args)
 
-    state["compiler"] = "clang"
     state["platform"] = platform.uname().system.lower()
+
+    state["compiler"] = {
+        "name": "clang",
+        "c": shutil.which("clang"),
+        "cxx": shutil.which("clang++"),
+    }
 
     if a.arch:
         match a.arch.lower():
