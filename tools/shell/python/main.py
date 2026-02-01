@@ -1,6 +1,8 @@
 import os
 import sys
 import subprocess
+import importlib
+
 
 if os.name == "nt":
     CMD_CLEAR="cls"
@@ -8,6 +10,7 @@ if os.name == "nt":
 else:
     CMD_CLEAR="clear"
     CMD_LS="ls"
+
 
 def code_build():
     print("Building code")
@@ -32,8 +35,26 @@ commands = {
 }
 
 
-while True:
-    cmd = input("wh-shell> ")
+def dispatch(cmd, args):
+    mod = None
+    print(f"{cmd}")
 
-    if cmd in commands:
-        commands[cmd]()
+    try:
+        mod = importlib.import_module(f"bin.{cmd}")
+    except ImportError:
+        print(f"Unknown commnad: {cmd}")
+        return
+
+    if not hasattr(mod, "execute"):
+        print(f"{cmd}: invalid command module")
+
+    mod.execute(cmd, args)
+
+
+while True:
+    cmd = input("wh-shell> ").strip()
+
+    dispatch(cmd, None)
+
+    # if cmd in commands:
+    #    commands[cmd]()
