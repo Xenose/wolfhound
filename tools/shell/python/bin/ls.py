@@ -45,5 +45,5 @@ def execute(cmd, args, session, state):
 
         func(files, dirs, x)
 
-    print(f"{sp.join(dirs)} {sp.join(files)}")
+    print(f"{sp.join(dirs)}\n{sp.join(files)}")
     pass

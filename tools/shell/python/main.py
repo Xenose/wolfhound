@@ -4,6 +4,20 @@ import json
 import subprocess
 import importlib
 
+from prompt_toolkit import PromptSession
+from prompt_toolkit.completion import Completer, Completion
+from pathlib import Path
+
+class file_completer_c(Completer):
+    def __init__(self, dir):
+        self.dir = Path(dir)
+
+    def get_completions(self, doc, c_event):
+        text = doc.text
+
+        for f in self.dir.glob("*.py"):
+            if f.name.startswith(text):
+                yield Completion(f.name.removesuffix(".py"), start_position=-len(text))
 
 def dispatch(cmd, args, session, state):
     mod = None
@@ -17,6 +31,7 @@ def dispatch(cmd, args, session, state):
 
     if not hasattr(mod, "execute"):
         print(f"{cmd}: invalid command module")
+        return
 
     mod.execute(cmd, args, session, state)
 # end def dispatch
@@ -24,6 +39,8 @@ def dispatch(cmd, args, session, state):
 
 # Setting up the session
 session = {}
+ps = PromptSession();
+pc = file_completer_c(dir="tools/shell/python/bin")
 
 if os.path.exists(".wolfhound/state.json"):
     print("State found")
@@ -36,7 +53,12 @@ else:
 
 # Main loop
 while True:
-    cmd = input("wh-shell> ").strip().split(" ")
+    cmd = ps.prompt("wh-shell> ", completer=pc)
+
+    if not cmd:
+        continue
+
+    cmd = cmd.strip().split()
 
     try:
         dispatch(cmd[0], cmd[1:], session, state)
