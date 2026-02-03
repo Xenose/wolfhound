@@ -3,21 +3,24 @@ import subprocess
 
 
 def execute(cmd, args, session, state):
-    print("building...")
-    target = f"{state["compiler"]["name"]}-{state["platform"]}-{state["arch"]}"
+    if "compiler" not in state:
+        print("No compiler selected!")
+        return
+
+    target = f"{state['compiler']['name']}-{state['platform']}-{state['arch']}"
     path = f"build/{target}"
 
     if not os.path.exists(path):
         os.mkdir(path)
 
     # Remove hard coded target
-    subprocess.run(
-        f"""
-            cmake -S '.' -B '{path}' \
-                -DCMAKE_C_COMPILER='{state['compiler']['c']}' \
-                -DCMAKE_CXX_COMPILER='{state['compiler']['cxx']}'
-        """,
-        shell=True,
+    subprocess.run([
+            "cmake",
+            "-S", ".",
+            "-B", path,
+            f"-DCMAKE_C_COMPILER={state['compiler']['c']}",
+            f"-DCMAKE_CXX_COMPILER={state['compiler']['cxx']}",
+        ],
         check=True
     )
 

@@ -59,7 +59,7 @@ else:
 # Main loop
 while not session["exit"]:
     current_dir = "/".join(os.getcwd().split(os.sep)[-3:]) or "/"
-    cmd = ps.prompt(f" - {current_dir}\nwh-shell> ", completer=pc)
+    cmd = ps.prompt(f"\n - {current_dir}\nwh-shell> ", completer=pc)
 
     if not cmd:
         continue
