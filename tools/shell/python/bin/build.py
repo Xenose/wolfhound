@@ -8,7 +8,7 @@ def execute(cmd, args, session, state):
     path = f"build/{target}"
 
     if not os.path.exists(path):
-        os.mkdir(path, exist_ok=True)
+        os.mkdir(path)
 
     # Remove hard coded target
     subprocess.run(

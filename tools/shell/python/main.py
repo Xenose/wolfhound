@@ -40,8 +40,10 @@ def dispatch(cmd, args, session, state):
 
 # Setting up the session
 session = {
-    "exit": False
+    "exit": False,
+    "home": os.getcwd(),
 }
+
 ps = PromptSession();
 pc = file_completer_c(dir="tools/shell/python/bin")
 
@@ -56,7 +58,8 @@ else:
 
 # Main loop
 while not session["exit"]:
-    cmd = ps.prompt("wh-shell> ", completer=pc)
+    current_dir = "/".join(os.getcwd().split(os.sep)[-3:]) or "/"
+    cmd = ps.prompt(f" - {current_dir}\nwh-shell> ", completer=pc)
 
     if not cmd:
         continue
