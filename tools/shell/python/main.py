@@ -55,6 +55,16 @@ else:
     print("No state found creating one")
     state = {}
 
+welcome = """
+Welcome to wolfhound shell, this shell
+is designed to be familiar but its not
+POSIX, the commands maybe looks the same
+but they are not the same.\n
+
+To get started type help for information.\n
+"""
+
+print(welcome)
 
 # Main loop
 while not session["exit"]:
