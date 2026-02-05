@@ -38,7 +38,6 @@ def execute(cmd, args, session, state):
         sp = ' '
         func = short
 
-
     for x in os.scandir():
         if x.name.startswith('.') and not a.all:
             continue

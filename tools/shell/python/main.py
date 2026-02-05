@@ -1,13 +1,12 @@
 import os
-import sys
 import json
-import subprocess
 import importlib
 import argparse
 
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import Completer, Completion
 from pathlib import Path
+
 
 class file_completer_c(Completer):
     def __init__(self, dir):
@@ -18,7 +17,11 @@ class file_completer_c(Completer):
 
         for f in self.dir.glob("*.py"):
             if f.name.startswith(text):
-                yield Completion(f.name.removesuffix(".py"), start_position=-len(text))
+                yield Completion(
+                    f.name.removesuffix(".py"),
+                    start_position=-len(text)
+                )
+
 
 def dispatch(cmd, args, session, state):
     mod = None
@@ -44,7 +47,8 @@ session = {
     "home": os.getcwd(),
 }
 
-ps = PromptSession();
+# The prompt_toolkit's context
+ps = PromptSession()
 pc = file_completer_c(dir="tools/shell/python/bin")
 
 if os.path.exists(".wolfhound/state.json"):
@@ -56,14 +60,16 @@ else:
     state = {}
 
 welcome = """
-Welcome to wolfhound shell, this shell
-is designed to be familiar but its not
-POSIX, the commands maybe looks the same
-but they are not the same.\n
 
-To get started type help for information.
+   Welcome to wolfhound shell, this shell
+   is designed to be familiar but its not
+   POSIX, the commands maybe looks the same
+   but they are not the same.
+
+   To get started type help for information.
 """
 
+# We clear the screen before the welcome message.
 dispatch("clear", None, session, state)
 print(welcome)
 
@@ -83,3 +89,4 @@ while not session["exit"]:
         print(f"Command failed! {e}")
     except SystemExit:
         pass
+

@@ -24,8 +24,10 @@ def execute(cmd, args, session, state):
         check=True
     )
 
-    subprocess.run(
-        f"cmake --build '{path}'",
-        shell=True,
+    subprocess.run([
+            "cmake",
+            "--build", f"{path}"
+        ],
+        # f"cmake --build '{path}'",
         check=True
     )
