@@ -61,9 +61,10 @@ is designed to be familiar but its not
 POSIX, the commands maybe looks the same
 but they are not the same.\n
 
-To get started type help for information.\n
+To get started type help for information.
 """
 
+dispatch("clear", None, session, state)
 print(welcome)
 
 # Main loop
