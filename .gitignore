@@ -8,6 +8,7 @@ docs/
 # Python temp files
 __pycache__/
 *.pyc
+.pyre/
 
 # Wolfhound files
 .target
