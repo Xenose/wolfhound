@@ -10,6 +10,9 @@ def execute(cmd, args, session, state):
     target = f"{state['compiler']['name']}-{state['platform']}-{state['arch']}"
     path = f"build/{target}"
 
+    if not os.path.exists("build"):
+        os.mkdir("build")
+
     if not os.path.exists(path):
         os.mkdir(path)
 

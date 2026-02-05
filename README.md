@@ -138,7 +138,7 @@ wh-build	# compiles code.
 | CMake           | 28         | 589           | 6.13%      |
 | Bourne Shell    | 24         | 493           | 5.13%      |
 | C++             | 17         | 457           | 4.76%      |
-| Python          | 17         | 402           | 4.18%      |
+| Python          | 18         | 403           | 4.19%      |
 | Markdown        | 3          | 200           | 2.08%      |
 | Lua             | 13         | 175           | 1.82%      |
 | Dockerfile      | 4          | 64            | 0.67%      |
@@ -148,7 +148,7 @@ wh-build	# compiles code.
 | Assembly        | 2          | 11            | 0.11%      |
 | PowerShell      | 3          | 10            | 0.10%      |
 | INI             | 1          | 3             | 0.03%      |
-| Summary         | 311        | 9607          | 100.00%    |
+| Summary         | 312        | 9608          | 100.00%    |
 
 <!--python-stats-end-->
 
