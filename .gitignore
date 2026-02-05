@@ -5,8 +5,9 @@ docs/
 **/build-*/
 **/CMakeFiles/
 
-# Python files
-**/__pycache__/
+# Python temp files
+__pycache__/
+*.pyc
 
 # Wolfhound files
 .target
