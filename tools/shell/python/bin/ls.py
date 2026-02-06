@@ -20,6 +20,7 @@ def short(files, dirs, x):
 def execute(cmd, args, session, state):
     dirs = []
     files = []
+    path = '.'
 
     parser = argparse.ArgumentParser(
         prog='ls',
@@ -41,8 +42,6 @@ def execute(cmd, args, session, state):
 
     if 0 < len(a.PATH):
         path = a.PATH[0]
-    else:
-        path = '.'
 
     for x in os.scandir(path):
         if x.name.startswith('.') and not a.all:
