@@ -89,4 +89,5 @@ while not session["exit"]:
         print(f"Command failed! {e}")
     except SystemExit:
         pass
-
+    except Exception as e:
+        print(e)
