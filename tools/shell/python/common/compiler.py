@@ -1,7 +1,8 @@
 import argparse
 import os
 import platform
-import shutil
+# import shutil
+
 
 def compiler(state, args):
     parser = argparse.ArgumentParser(
@@ -43,8 +44,7 @@ def compiler(state, args):
                 print(f"Unknown build system: {a.build_system}, keeping previous value")
     else:
         if "build-system" not in state.keys():
-            print(f"No build system inputed, defaulting to [ Ninja ]")
+            print("No build system inputed, defaulting to [ Ninja ]")
             state["build-system"] = "ninja"
         else:
-            print(f"No build system inputed, keeping previous value")
-
+            print("No build system inputed, keeping previous value")

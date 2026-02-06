@@ -28,6 +28,7 @@ def execute(cmd, args, session, state):
 
     parser.add_argument("-l", "--long", action='store_true', help="list view")
     parser.add_argument("-a", "--all", action='store_true', help="list view")
+    parser.add_argument('PATH', nargs=argparse.REMAINDER)
 
     a = parser.parse_args(args)
 
@@ -38,7 +39,12 @@ def execute(cmd, args, session, state):
         sp = ' '
         func = short
 
-    for x in os.scandir():
+    if 0 < len(a.PATH):
+        path = a.PATH[0]
+    else:
+        path = '.'
+
+    for x in os.scandir(path):
         if x.name.startswith('.') and not a.all:
             continue
 
