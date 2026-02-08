@@ -65,17 +65,21 @@ python3 tools/shell/python/main.py
 
 ### Commands ( NOT POSIX : Experimental )
 **Fore more info do --help**
-| Name  | Notes                                                             |
-| ----- | ----------------------------------------------------------------- |
-| build | Create the build folder and compiles the software.                |
-| cd    | Change the current directory.                                     |
-| clang | Set the shell state compiler to Clang.                            |
-| clear | Clears the shell screen.                                          |
-| exit  | Exits the shell.                                                  |
-| gcc   | Set the shell state compiler to GGC.                              |
-| ls    | List a directories content.                                       |
-| pwd   | Get the current working path.                                     |
-| tcc   | Set the shell state compiler to TCC.                              |
+| Name        | Notes                                                                                   |
+| ----------- | --------------------------------------------------------------------------------------- |
+| build       | Create the build folder and compiles the software, uses cmake underneth.                |
+| cd          | Change the current directory.                                                           |
+| clang       | Set the shell state compiler to Clang.                                                  |
+| clear       | Clears the shell screen.                                                                |
+| dump-state  | Dumps the current state of the shell.                                                   |
+| exit        | Exits the shell.                                                                        |
+| gcc         | Set the shell state compiler to GGC.                                                    |
+| ls          | List a directories content.                                                             |
+| push_inrdev | On the inrdev branch allows automated pushing of code.                                  |
+| pwd         | Get the current working path.                                                           |
+| stats       | Uses Cloc to dump project status, might not work on Windows.                            |
+| tcc         | Set the shell state compiler to TCC.                                                    |
+
 [legacy_build.md](Legacy Build System)
 
 ### Manual build
