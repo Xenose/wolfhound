@@ -80,6 +80,7 @@ python3 tools/shell/python/main.py
 | stats       | Uses Cloc to dump project status, might not work on Windows.                            |
 | tcc         | Set the shell state compiler to TCC.                                                    |
 
+
 [legacy_build.md](Legacy Build System)
 
 ### Manual build
