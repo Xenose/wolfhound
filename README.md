@@ -57,47 +57,37 @@ In AES system :: action(logic) -> Entity -> Data
 | Generic render backend interface   | Indev         | render.h                | Allow use of sdl, glfw, vulkan, gl and etc instead of hardcoding backends.   |
 
 ## Building instructions
-See full [Manual Build Guide](markdown/build.md) for details.
-
-### Linux [ POSIX SHELL, BASH, ZSH, DASH ]
+**Need to be in the project root dir**
 ```sh
-# Note ASH might not work
-. ./tools/cmake/activate.sh
+# Activates the python build shell.
+python3 tools/shell/python/main.py
 ```
 
-### Windows [ CMD ]
-```cmd
-call tools\cmake\activate.bat
-```
+### Commands ( NOT POSIX : Experimental )
+**Fore more info do --help**
+| Name  | Notes                                                             |
+| ----- | ----------------------------------------------------------------- |
+| build | Create the build folder and compiles the software.                |
+| cd    | Change the current directory.                                     |
+| clang | Set the shell state compiler to Clang.                            |
+| clear | Clears the shell screen.                                          |
+| exit  | Exits the shell.                                                  |
+| gcc   | Set the shell state compiler to GGC.                              |
+| ls    | List a directories content.                                       |
+| pwd   | Get the current working path.                                     |
+| tcc   | Set the shell state compiler to TCC.                              |
+[legacy_build.md](Legacy Build System)
 
-### Windows [ Powershell Experimental ]
-```ps1
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-. .\tools\shell\activate.ps1
-```
-
-### Build
+### Manual build
 ```sh
-wh-ninja	# set build system.
-wh-clang	# set compiler.
-wh-build	# compiles code.
+cmake \
+   -S . \
+   -B "build/some_path" \
+   -DCMAKE_C_COMPILER="your_compiler" \
+   -DCMAKE_CXX_COMPILER="your_compiler"
+
+cmake --build "build/some_path"
 ```
-
-### Commands
-
-| Command      | Platform                                                   | Description                                                               |
-| ------------ | ---------------------------------------------------------- | ------------------------------------------------------------------------- |
-| wh-check     | Linux                                                      | Checks for missing software and libraries.                                |
-| wh-build     | Linux, BSD, Android, OpenIndiana, Windows(PowerShell, CMD) | Compiles the code.                                                        |
-| wh-build-all | Linux                                                      | Builds the CMake using all compilers that are installed/supported.        |
-| wh-clang     | Linux, Windows(CMD)                                        | Sets the compiler to Clang.                                               |
-| wh-coverage  | Linux                                                      | Generates a coverage report and opens it.                                 |
-| wh-gcc       | Linux                                                      | Sets the compiler to gcc                                                  |
-| wh-tcc       | Linux                                                      | Sets the compiler to TinyCC                                               |
-| wh-msvc      | Windows(CMD)                                               | Sets the compiler to MSVC                                                 |
-| wh-mingw     | Linux                                                      | Sets the compiler to gcc-mingw.                                           |
-| wh-ninja     | Linux, Windows(CMD)                                        | Sets the build system to Ninja.                                           |
-| wh-make      | Linux, Windows(CMD/nmake)                                  | Sets the build system to Make, NMake for windows and UNIX for the others. |
 
 ## Languages
 | Name        | Version | Use                                              |
