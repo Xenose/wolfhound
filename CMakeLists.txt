@@ -71,6 +71,11 @@ ENDIF()
 ADD_LIBRARY(${APP_NAME} STATIC ${ASM_SOURCE} ${C_SOURCES} ${CXX_SOURCES} ${F95_SOURCES})
 TARGET_INCLUDE_DIRECTORIES(${APP_NAME} PUBLIC ${INCLUDE_PATHS})
 
+IF(WH_INCLUDES)
+	MESSAGE(STATUS "Adding collected manual include directories: ${WH_INCLUDES}")
+	TARGET_INCLUDE_DIRECTORIES(${APP_NAME} PUBLIC ${WH_INCLUDES})
+ENDIF()
+
 MESSAGE(STATUS "WH_LIBS = ${WH_LIBS}")
 TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE ${WH_LIBS})
 
@@ -89,11 +94,6 @@ ENDIF()
 # ------------------------------------------------------------------------------------
 #  End of compiler definition section
 # ------------------------------------------------------------------------------------
-
-IF(WH_INCLUDES)
-	MESSAGE(STATUS "Adding collected manual include directories: ${WH_INCLUDES}")
-	TARGET_INCLUDE_DIRECTORIES(${APP_NAME} PUBLIC ${WH_INCLUDES})
-ENDIF()
 
 INCLUDE(cmake/compiler.cmake)
 OS_COMPILE()

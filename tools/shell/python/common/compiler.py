@@ -21,7 +21,10 @@ def compiler(state, args):
     if a.arch:
         match a.arch.lower():
             case "x64":
-                state["arch"] = "x64"
+                if "clang" == state["compiler"]["name"] and "nt" == os.name:
+                    state["arch"] = "x86_64-pc-windows-gnu"
+                else:
+                    state["arch"] = "x64"
             case "arm64":
                 state["arch"] = "aarch64"
             case "w64":

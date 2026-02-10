@@ -2,9 +2,9 @@ INCLUDE(${CMAKE_CURRENT_LIST_DIR}/find.cmake)
 
 WH_FIND_V2(
 	"vulkan"
-	"vulkn;Vulkan;vulkan-1"
-	"vulkan.h"
-	"vulkan"
+	"Vulkan;vulkan;vulkan-1"
+	"vulkan/vulkan.h"
+	""
 	FALSE 
 	WH_VULKAN_LIB 
 	WH_VULKAN_INC
