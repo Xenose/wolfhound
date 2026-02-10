@@ -7,6 +7,8 @@ INCLUDE(cmake/language.cmake)
 
 SET(INCLUDE_PATHS "${CMAKE_SOURCE_DIR}/include/")
 
+MESSAGE("C standard set to ${CMAKE_C_STANDARD}")
+
 IF (LINUX_MINGW_WIN)
 	INCLUDE(cmake/os_cross_windows.cmake)
 ELSEIF(WIN32)

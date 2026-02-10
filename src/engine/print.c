@@ -586,6 +586,10 @@ i64 _wh_print_va(_wh_print_params params, va_list list) {
 		params.format = "%%NULL%%";
 	}
 
+	if (0 == params.fd) {
+		params.fd = 1;
+	}
+
 	wh_print_data_s data = {
 		buffer,
 		(char*)params.format,

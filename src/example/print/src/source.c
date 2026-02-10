@@ -1,4 +1,5 @@
 #define USE_NAMESPACE_WOLFHOUND
+#include<stdio.h>
 #include<wh/print.h>
 #include<wh/debug/benchmark.h>
 
@@ -22,6 +23,7 @@ u8 data[] = {
 int main(int arc, char* const* arv) {
 	wh_benchmark_s bench = { 0 };
 
+	puts("hello!");
 	print(("Test memory: \t$m\n"), data, sizeof(data) / sizeof(data[0]));
 	
 	wh_benchmark(&bench, 100) {

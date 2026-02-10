@@ -70,6 +70,7 @@ void disown_test() {
 }
 
 int main(int arc, char* const* arv) {
+	printf("test\n");
 	wh_print(("Testing floats -> %f\n"), 1.25f);
 
 #if LINUX==WH_SYSTEM
