@@ -1,6 +1,6 @@
 IF(CMAKE_C_COMPILER_ID STREQUAL "MSVC") # IF WINDOWS
 	add_compile_options(
-		-Wall
+		# -Wall
 	)
 ELSE() # ELSE IF NOT WINDOWS
 	# If we are using the GNU compiler we can enable more flags
