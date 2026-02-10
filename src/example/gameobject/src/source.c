@@ -3,11 +3,13 @@
 #include<wh-sys/info.h>
 
 #include<string.h>
+#include<stdio.h>
 
 int main(int arc, char* const* arv) {
 	char buf[256] = { 0 };
 	wh_instance_s* ins = { 0 };
 
+	puts("Hello!");
 	wh_sys_program_path(buf, 255);
 	wh_strcat((buf, 256, strlen(buf)), "config.lua");
 

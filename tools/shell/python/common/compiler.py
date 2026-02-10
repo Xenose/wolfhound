@@ -51,6 +51,6 @@ def compiler(state, args):
     else:
         if "build-system" not in state.keys():
             print("No build system inputed, defaulting to [ Ninja ]")
-            state["build-system"] = "ninja"
+            state["build-system"] = "Ninja"
         else:
             print("No build system inputed, keeping previous value")

@@ -27,6 +27,7 @@ def execute(cmd, args, session, state):
                 "cmake",
                 "-S", ".",
                 "-B", path,
+                "-G", state["build-system"],
                 f"-DCMAKE_C_COMPILER={state['compiler']['c']}",
                 f"-DCMAKE_CXX_COMPILER={state['compiler']['cxx']}",
             ],
