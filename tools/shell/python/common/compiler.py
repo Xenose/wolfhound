@@ -16,7 +16,10 @@ def compiler(state, args):
 
     a = parser.parse_args(args)
 
-    state["platform"] = platform.uname().system.lower()
+    if "android" in platform.platform():
+        state["platform"] = "android"
+    else:
+        state["platform"] = platform.uname().system.lower()
 
     if a.arch:
         match a.arch.lower():

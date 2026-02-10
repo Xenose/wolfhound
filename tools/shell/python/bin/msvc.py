@@ -1,9 +1,14 @@
+import os
 import shutil
 
 from common.compiler import compiler
 
 
 def execute(cmd, args, session, state):
+    if "nt" != os.name:
+        print("msvc is only supported on windows!")
+        return
+
     state["compiler"] = {
         "name": "msvc",
         "c": shutil.which("cl"),
