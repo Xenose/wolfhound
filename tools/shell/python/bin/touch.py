@@ -2,7 +2,7 @@ import os
 import argparse
 
 
-def execute(cmd, args, session, state):
+def execute(cmd, args, session, state, prompt):
     parser = argparse.ArgumentParser(
         prog='touch',
         description='',

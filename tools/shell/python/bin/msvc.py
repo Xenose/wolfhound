@@ -4,7 +4,7 @@ import shutil
 from common.compiler import compiler
 
 
-def execute(cmd, args, session, state):
+def execute(cmd, args, session, state, prompt):
     if "nt" != os.name:
         print("msvc is only supported on windows!")
         return

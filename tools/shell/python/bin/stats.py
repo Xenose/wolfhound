@@ -2,7 +2,7 @@ import os
 import subprocess
 
 
-def execute(cmd, args, session, state):
+def execute(cmd, args, session, state, prompt):
     exlude_dirs = "build"
 
     match os.name:

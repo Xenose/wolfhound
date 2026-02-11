@@ -2,8 +2,9 @@ import os
 import json
 import importlib
 import argparse
+import getpass
 
-from prompt_toolkit import PromptSession
+from prompt_toolkit import PromptSession, ANSI
 from prompt_toolkit.completion import Completer, Completion
 from pathlib import Path
 
@@ -23,7 +24,7 @@ class file_completer_c(Completer):
                 )
 
 
-def dispatch(cmd, args, session, state):
+def dispatch(cmd, args, session, state, prompt):
     mod = None
     # print(f"{cmd}")
 
@@ -37,7 +38,7 @@ def dispatch(cmd, args, session, state):
         print(f"{cmd}: invalid command module")
         return
 
-    mod.execute(cmd, args, session, state)
+    mod.execute(cmd, args, session, state, prompt)
 # end def dispatch
 
 
@@ -70,13 +71,13 @@ welcome = """
 """
 
 # We clear the screen before the welcome message.
-dispatch("clear", None, session, state)
+dispatch("clear", None, session, state, ps)
 print(welcome)
 
 # Main loop
 while not session["exit"]:
     current_dir = "/".join(os.getcwd().split(os.sep)[-3:]) or "/"
-    cmd = ps.prompt(f"\n - {current_dir}\nwh-shell> ", completer=pc)
+    cmd = ps.prompt(ANSI(f"\n{getpass.getuser()}@{current_dir}\n\033[32mwh-shell>\033[0m "), completer=pc)
 
     if not cmd:
         continue
@@ -84,7 +85,7 @@ while not session["exit"]:
     cmd = cmd.strip().split()
 
     try:
-        dispatch(cmd[0], cmd[1:], session, state)
+        dispatch(cmd[0], cmd[1:], session, state, ps)
     except argparse.ArgumentError as e:
         print(f"Command failed! {e}")
     except SystemExit:

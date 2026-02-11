@@ -1,5 +1,6 @@
 import os
 import argparse
+from prompt_toolkit import print_formatted_text, ANSI
 
 
 def long(files, dirs, x):
@@ -17,7 +18,7 @@ def short(files, dirs, x):
         files.append(f"{x.name}")
 
 
-def execute(cmd, args, session, state):
+def execute(cmd, args, session, statem, prompt):
     dirs = []
     files = []
     path = '.'
@@ -49,5 +50,4 @@ def execute(cmd, args, session, state):
 
         func(files, dirs, x)
 
-    print(f"{sp.join(dirs + files)}")
-    pass
+    print_formatted_text(ANSI(f"{sp.join(dirs + files)}"))

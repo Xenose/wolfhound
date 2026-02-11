@@ -1,7 +1,7 @@
 import git
 
 
-def execute(cmd, args, session, state):
+def execute(cmd, args, session, state, prompt):
     repo = git.Repo(session["home"])
     branch = repo.active_branch
 

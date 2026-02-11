@@ -2,12 +2,18 @@ import os
 import subprocess
 
 
-def execute(cmd, args, session, state):
+def execute(cmd, args, session, state, prompt):
     if "compiler" not in state:
         print("No compiler selected!")
         return
 
-    target = f"{state['compiler']['name']}-{state['platform']}-{state['arch']}"
+    target = "{}-{}-{}-{}".format(
+        state['compiler']['name'],
+        state['build-system'],
+        state['platform'],
+        state['arch']
+    ).lower()
+
     path = f"build/{target}"
 
     if not os.path.exists("build"):
