@@ -88,7 +88,5 @@ while not session["exit"]:
         dispatch(cmd[0], cmd[1:], session, state, ps)
     except argparse.ArgumentError as e:
         print(f"Command failed! {e}")
-    except SystemExit:
-        pass
     except Exception as e:
         print(e)

@@ -96,10 +96,10 @@ IF(NASM_ENABLED)
 ENDIF()
 
 IF (CXX_ENABLED)
-	SET(CXX_SOURCES
-		"src/engine-cpp/wolfhound.cpp"
-		"src/engine-cpp/print.cpp"
-		"src/engine-cpp/memory.cpp"
-		"src/engine-cpp/maths/core.cpp"
-	)
+	#SET(CXX_SOURCES
+		#"src/engine-cpp/wolfhound.cpp"
+		#"src/engine-cpp/print.cpp"
+		#"src/engine-cpp/memory.cpp"
+		#"src/engine-cpp/maths/core.cpp"
+	#)
 ENDIF()

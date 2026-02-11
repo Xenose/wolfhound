@@ -35,7 +35,10 @@ def compiler(state, args):
             case _:
                 print(f"Unknown architecture: {a.arch}, keeping previous value")
     else:
-        state.setdefault("arch", "x64")
+        if "clang" == state["compiler"]["name"] and "nt" == os.name:
+            state["arch"] = "x86_64-pc-windows-gnu"
+        else:
+            state.setdefault("arch", "x64")
 
     if a.build_system:
         match a.build_system.lower():

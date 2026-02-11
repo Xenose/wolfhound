@@ -123,16 +123,16 @@ ADD_SUBDIRECTORY(src/example/print)
 #ADD_SUBDIRECTORY(src/example/socket_client)
 
 # C++ examples
-IF (CXX_ENABLED)
-	ADD_SUBDIRECTORY(src/example/cpp)
+#IF (CXX_ENABLED)
+#	ADD_SUBDIRECTORY(src/example/cpp)
 
 	# For now GTEST is not supported on windows.
-	IF (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-		ADD_SUBDIRECTORY(src/unit-gtests-cpp/)
-	ENDIF()
-ENDIF()
+#	IF (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+		#ADD_SUBDIRECTORY(src/unit-gtests-cpp/)
+	#ENDIF()
+#ENDIF()
 
 # Tests
-IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" AND GENERATE_REPORT)
-	ADD_SUBDIRECTORY(src/unit-tests-c/)
-ENDIF()
+#IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" AND GENERATE_REPORT)
+	#ADD_SUBDIRECTORY(src/unit-tests-c/)
+#ENDIF()

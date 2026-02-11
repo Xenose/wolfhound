@@ -22,6 +22,7 @@ def execute(cmd, args, session, state, prompt):
     if not os.path.exists(path):
         os.mkdir(path)
 
+    print("Configuring cmake...")
     if "zig" == state["compiler"]["name"]:
         subprocess.run(
             f"CC='{state['compiler']['c']}' cmake -S . -B {path}",
@@ -34,6 +35,8 @@ def execute(cmd, args, session, state, prompt):
                 "-S", ".",
                 "-B", path,
                 "-G", state["build-system"],
+                f"-DCMAKE_C_FLAGS='--target={state["arch"]}'",
+                f"-DCMAKE_CXX_FLAGS='--target={state["arch"]}'",
                 f"-DCMAKE_C_COMPILER={state['compiler']['c']}",
                 f"-DCMAKE_CXX_COMPILER={state['compiler']['cxx']}",
             ],
