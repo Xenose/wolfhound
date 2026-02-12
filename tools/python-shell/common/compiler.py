@@ -5,18 +5,19 @@ import platform
 
 conf_compiler = {
     "clang": {
-        "nt": {
+        "windows": {
             "x64": "x86_64-pc-windows-gnu"
         },
 
-        "posix": {
-            "x64": "x86_64-linux-gnu"
+        "linux": {
+            "x64": "x86_64-linux-gnu",
+            "wasm64": "wasm64-unknown-unknown"
         },
     },
 
     "gcc": {
-        "posix": {
-            "x64": "x64"
+        "linux": {
+            "x64": "x86_64-linux-gnu"
         },
     }
 }
@@ -39,7 +40,7 @@ def get_arch(args, state):
     else:
         arch = "x64"
 
-    out = conf_compiler[state["compiler"]["name"]][os.name][arch]
+    out = conf_compiler[state["compiler"]["name"]][platform.system().lower()][arch]
 
     # if args.arch:
     #     match args.arch.lower():
