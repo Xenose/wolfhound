@@ -3,6 +3,7 @@ import json
 import importlib
 import argparse
 import getpass
+import traceback
 
 from prompt_toolkit import PromptSession, ANSI
 from prompt_toolkit.completion import Completer, Completion
@@ -50,7 +51,7 @@ session = {
 
 # The prompt_toolkit's context
 ps = PromptSession()
-pc = file_completer_c(dir="tools/shell/python/bin")
+pc = file_completer_c(dir="tools/python-shell/bin")
 
 if os.path.exists(".wolfhound/state.json"):
     print("State found")
@@ -60,19 +61,10 @@ else:
     print("No state found creating one")
     state = {}
 
-welcome = """
-
-   Welcome to wolfhound shell, this shell
-   is designed to be familiar but its not
-   POSIX, the commands maybe looks the same
-   but they are not the same.
-
-   To get started type help for information.
-"""
 
 # We clear the screen before the welcome message.
 dispatch("clear", None, session, state, ps)
-print(welcome)
+dispatch("welcome", None, session, state, ps)
 
 # Main loop
 while not session["exit"]:
@@ -89,4 +81,5 @@ while not session["exit"]:
     except argparse.ArgumentError as e:
         print(f"Command failed! {e}")
     except Exception as e:
-        print(e)
+        error_text = traceback.format_exc()
+        print(f"command failed {e} :: {error_text}")

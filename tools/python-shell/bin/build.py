@@ -9,9 +9,9 @@ def execute(cmd, args, session, state, prompt):
 
     target = "{}-{}-{}-{}".format(
         state['compiler']['name'],
-        state['build-system'],
+        state['compiler']['build-system'],
         state['platform'],
-        state['arch']
+        state['compiler']['arch']
     ).lower()
 
     path = f"build/{target}"
@@ -34,9 +34,9 @@ def execute(cmd, args, session, state, prompt):
                 "cmake",
                 "-S", ".",
                 "-B", path,
-                "-G", state["build-system"],
-                f"-DCMAKE_C_FLAGS='--target={state["arch"]}'",
-                f"-DCMAKE_CXX_FLAGS='--target={state["arch"]}'",
+                "-G", state['compiler']["build-system"],
+                f"-DCMAKE_C_FLAGS='--target={state['compiler']["arch"]}'",
+                f"-DCMAKE_CXX_FLAGS='--target={state['compiler']["arch"]}'",
                 f"-DCMAKE_C_COMPILER={state['compiler']['c']}",
                 f"-DCMAKE_CXX_COMPILER={state['compiler']['cxx']}",
             ],
