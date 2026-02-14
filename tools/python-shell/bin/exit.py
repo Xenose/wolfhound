@@ -1,4 +1,4 @@
 
 
-def execute(cmd, args, session, state, prompt):
-    session["exit"] = True
+def execute(sh, cmd, args):
+    sh.session["exit"] = True

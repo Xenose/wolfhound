@@ -1,3 +1,3 @@
 
-def execute(cmd, args, session, state, prompt):
-    print(f"session :: {session}\nstate :: {state}")
+def execute(sh, cmd, args):
+    print(f"session :: {sh.session}\nstate :: {sh.state}")

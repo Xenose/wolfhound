@@ -1,6 +1,6 @@
 
 
-def execute(cmd, args, session, state, prompt):
+def execute(sh, cmd, args):
     welcome = """
        Welcome to wolfhound shell, this shell
        is designed to be familiar but its not

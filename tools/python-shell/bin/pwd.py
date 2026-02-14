@@ -1,5 +1,5 @@
 import os
 
 
-def execute(cmd, args, session, state, prompt):
+def execute(sh, cmd, args):
     print(f"{os.getcwd()}")

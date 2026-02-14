@@ -18,7 +18,7 @@ def short(files, dirs, x):
         files.append(f"{x.name}")
 
 
-def execute(cmd, args, session, statem, prompt):
+def execute(sh, cmd, args):
     dirs = []
     files = []
     path = '.'

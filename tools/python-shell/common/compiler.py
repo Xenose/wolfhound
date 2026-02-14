@@ -3,6 +3,12 @@ import os
 import platform
 # import shutil
 
+
+class compiler_c:
+    def __init__():
+        pass
+
+
 conf_compiler = {
     "clang": {
         "windows": {

@@ -2,7 +2,7 @@ import os
 import argparse
 
 
-def execute(cmd, args, session, state, prompt):
+def execute(sh, cmd, args):
     parser = argparse.ArgumentParser(
         prog='cd',
         description='change the current working directory',
@@ -17,5 +17,5 @@ def execute(cmd, args, session, state, prompt):
     if 0 < len(a.PATH):
         os.chdir(a.PATH[0])
     else:
-        os.chdir(session["home"])
+        os.chdir(sh.session["home"])
     # subprocess.run("cd", shell=True)

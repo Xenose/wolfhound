@@ -2,7 +2,7 @@ import os
 import subprocess
 
 
-def execute(cmd, args, session, state, prompt):
+def execute(sh, cmd, args):
     match os.name:
         case 'nt':
             subprocess.run("cls", shell=True)
