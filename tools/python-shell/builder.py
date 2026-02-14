@@ -30,13 +30,21 @@ class builder_c:
         self.set_build_system()
         self.set_compilers("gcc", "gcc", "g++")
 
+    def icx(self):
+        self.set_build_system()
+        self.set_compilers("icx", "icx")
+
     def msvc(self):
+        if "nt" != os.name():
+            print("Sorry MSVC is windows only...")
+            return
+
         self.set_build_system()
         self.set_compilers("msvc", "cl", "cl")
 
     def tcc(self):
         if "nt" == os.name():
-            print("tcc is unsupported on windows!")
+            print("TinyCC is unsupported on windows!")
             return
 
         self.set_build_system()
@@ -50,6 +58,10 @@ class builder_c:
         self.build_system = "Ninja"
 
     def set_compilers(self, name: str, cc: str, cxx: str = None):
+        if shutil.which(cc) is None:
+            print(f"Compiler [ {name} ] not installed")
+            return
+
         self.compiler = name
         self.cxx = None
 
