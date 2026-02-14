@@ -9,6 +9,8 @@ from prompt_toolkit import PromptSession, ANSI
 from prompt_toolkit.completion import Completer, Completion
 from pathlib import Path
 
+from builder import builder_c
+
 
 class file_completer_c(Completer):
     def __init__(self, dir):
@@ -49,6 +51,8 @@ class shell_c:
         else:
             print("No state found creating one")
             self.state = {}
+
+        self.builder = builder_c(self.state)
 
     def dispatch(self, cmd, args):
         mod = None
