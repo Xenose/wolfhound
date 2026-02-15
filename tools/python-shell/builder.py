@@ -23,7 +23,7 @@ class builder_c:
         self.set_compilers("clang", "clang", "clang++")
 
     def gcc(self):
-        if "nt" == os.name():
+        if "nt" == os.name:
             print("gcc is unsupported on windows!")
             return
 
@@ -43,7 +43,7 @@ class builder_c:
         self.set_compilers("msvc", "cl", "cl")
 
     def tcc(self):
-        if "nt" == os.name():
+        if "nt" == os.name:
             print("TinyCC is unsupported on windows!")
             return
 
