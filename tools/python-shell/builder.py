@@ -64,16 +64,21 @@ class builder_c:
 
         self.compiler = name
         self.cxx = None
+        self.cc = shutil.which(cc)
 
-        # Zig is special for C
-        if "zig" == name:
-            self.cc = cc
-            self.cxx = cxx
-        else:
-            self.cc = shutil.which(cc)
+        if cxx is not None:
+            self.cxx = shutil.which(cxx)
 
-            if cxx is not None:
-                self.cxx = shutil.which(cxx)
+    def compilers(self):
+        out = []
+
+        out.extend([f"-DCMAKE_C_COMPILER={self.cc}"])
+
+        if self.cxx is not None:
+            print("No C++ compiler found skipping...")
+            out.extend([f"-DCMAKE_CXX_COMPILER={self.cxx}"])
+
+        return out
 
     def is_ready(self):
         return None not in [
@@ -117,30 +122,22 @@ class builder_c:
 
         print("Setting up temporary enviroment...")
         os.makedirs(path, exist_ok=True)
-        env = os.environ.copy()
-        env["CC"] = self.cc
-
-        if self.cxx is not None:
-            env["CXX"] = self.cxx
-        else:
-            env.pop("CXX", None)
 
         print("Configuring cmake...")
-        subprocess.run([
-                "cmake",
-                "-S", ".",
-                "-B", path,
-                "-G", self.build_system,
-            ],
-            env=env,
-            check=True
-        )
+        config = [
+            "cmake",
+            "-S", ".",
+            "-B", path,
+            "-G", self.build_system,
+        ]
+
+        config.extend(self.compilers())
+        subprocess.run(config, check=True)
 
         print("CMake building...")
         subprocess.run([
                 "cmake",
                 "--build", f"{path}"
             ],
-            env=env,
             check=True
         )
