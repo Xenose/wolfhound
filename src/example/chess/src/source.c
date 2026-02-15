@@ -85,9 +85,9 @@ int main(int arc, char* const* arv) {
 	wh_strcat((buf, 256, strlen(buf)), "config.lua");
 	wh_strcat((img, 256, strlen(img)), "test.lua");
 
-	// wh_file_s imgf = wh_file_load(img);
-	// wh_image_decode(imgf);
-	// wh_file_unload(imgf);
+	wh_file_s imgf = wh_file_load(img);
+	wh_image_decode(imgf);
+	wh_file_unload(imgf);
 
 	printf("test\n");
 	//_wh_libfind("libraylib.so", (char*[]){ "/usr/lib", "/lib" }, 2);

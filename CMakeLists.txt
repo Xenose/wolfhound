@@ -106,6 +106,7 @@ MESSAGE("\n")
 
 # Legacy fallback
 IF (WH_SDL3_NOT_FOUND) 
+	MESSAGE("Modern SDL3 not found using SDL2.")
 	INCLUDE(cmake/find_sdl2.cmake)
 ELSE()
 	LIST(APPEND WH_DEFS "WH_SDL2_NOT_FOUND")
@@ -123,7 +124,13 @@ IF(WH_INCLUDES)
 ENDIF()
 
 MESSAGE(STATUS "WH_LIBS = ${WH_LIBS}")
-TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE ${WH_LIBS})
+
+IF(WIN32)
+	MESSAGE(STATUS "LINKING STATICALLY")
+	TARGET_LINK_LIBRARIES(${APP_NAME} PUBLIC ${WH_LIBS})
+ELSE()
+	TARGET_LINK_LIBRARIES(${APP_NAME} SHARED ${WH_LIBS})
+ENDIF()
 
 # ------------------------------------------------------------------------------------
 #   Compiler definition section
