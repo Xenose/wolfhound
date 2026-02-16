@@ -19,3 +19,6 @@ sdl3-dev
 vulkan-headers
 vulkan-validation-layers
 zsh
+python3
+py3-prompt_toolkit
+py3-pip

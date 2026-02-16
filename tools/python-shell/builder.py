@@ -39,7 +39,7 @@ class builder_c:
         if "nt" != os.name:
             print("Sorry MSVC is windows only...")
             return
-        
+
         a = self.parse_args(args)
 
         self.set_build_system(a)
@@ -57,7 +57,6 @@ class builder_c:
         self.set_build_system()
         self.set_compilers("zig", "zig cc", "zig c++")
 
-
     def parse_args(self, args):
         parser = argparse.ArgumentParser(
             prog='clang selector',
@@ -65,8 +64,16 @@ class builder_c:
             epilog='Text at the bottom of help'
         )
 
-        parser.add_argument("--arch", help="Set the architecture")
-        parser.add_argument("--build-system", default="ninja", help="Set the build system to use")
+        parser.add_argument(
+            "--arch",
+            help="Set the architecture"
+        )
+
+        parser.add_argument(
+            "--build-system",
+            default="ninja",
+            help="Set the build system to use"
+        )
 
         return parser.parse_args(args)
 

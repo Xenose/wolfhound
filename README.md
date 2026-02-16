@@ -129,21 +129,21 @@ cmake --build "build/some_path"
 
 |  Language       | File Count | Lines of Code | Percentage |
 | --------------- | ---------- | ------------- | ---------- |
-| C               | 191        | 7130          | 72.62%     |
-| CMake           | 27         | 588           | 5.99%      |
-| Python          | 25         | 576           | 5.87%      |
-| Bourne Shell    | 24         | 493           | 5.02%      |
-| C++             | 17         | 457           | 4.65%      |
-| Markdown        | 4          | 230           | 2.34%      |
-| Lua             | 13         | 175           | 1.78%      |
+| C               | 191        | 7130          | 72.19%     |
+| Python          | 26         | 629           | 6.37%      |
+| CMake           | 27         | 594           | 6.01%      |
+| Bourne Shell    | 24         | 493           | 4.99%      |
+| C++             | 17         | 457           | 4.63%      |
+| Markdown        | 4          | 230           | 2.33%      |
+| Lua             | 13         | 175           | 1.77%      |
 | Dockerfile      | 4          | 64            | 0.65%      |
-| DOS Batch       | 6          | 36            | 0.37%      |
-| Fortran 95      | 1          | 32            | 0.33%      |
+| DOS Batch       | 6          | 36            | 0.36%      |
+| Fortran 95      | 1          | 32            | 0.32%      |
 | GLSL            | 1          | 13            | 0.13%      |
 | Assembly        | 2          | 11            | 0.11%      |
 | PowerShell      | 3          | 10            | 0.10%      |
 | INI             | 1          | 3             | 0.03%      |
-| Summary         | 319        | 9818          | 100.00%    |
+| Summary         | 320        | 9877          | 100.00%    |
 
 <!--python-stats-end-->
 

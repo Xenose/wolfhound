@@ -8,6 +8,6 @@ COPY packages/alpine.packages /tmp/alpine.packages
 RUN apk upgrade
 RUN apk add $(tr '\n' ' ' < /tmp/alpine.packages)
 
-WORKDIR /wolfhound
+WORKDIR /project
 
 ENTRYPOINT ["/bin/ash"]

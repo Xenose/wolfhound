@@ -26,4 +26,4 @@ RUN pacman -S --noconfirm \
 
 RUN useradd -m dev
 USER dev
-WORKDIR /home/dev/wolfhound
+WORKDIR /project
