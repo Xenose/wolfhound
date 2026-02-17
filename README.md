@@ -7,7 +7,7 @@
 | Fedora Linux    | Linux   | YES    | UNSTABLE      | Secondary development platform.         |
 | Alpine Linux    | Linux   | YES    | UNSTABLE      | Testing on Musl.                        |
 | Debian Linux    | Linux   | NO     | PLANNED       | Planned.                                |
-| Windows         | NT      | YES    | UNSTABLE      | Unstable might break at any second.     |
+| Windows         | NT      | YES    | BROKEN        | Unstable might break at any second.     |
 | Android(Termux) | Android | YES    | UNSTABLE      |                                         |
 | FreeBSD         | BSD     | YES    | UNSTABLE      |                                         |
 | OpenIndiana     | Solaris | YES    | UNSTABLE      |                                         |
