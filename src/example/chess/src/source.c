@@ -85,11 +85,10 @@ int main(int arc, char* const* arv) {
 	wh_strcat((buf, 256, strlen(buf)), "config.lua");
 	wh_strcat((img, 256, strlen(img)), "test.lua");
 
-	wh_file_s imgf = wh_file_load(img);
-	wh_image_decode(imgf);
-	wh_file_unload(imgf);
+	// wh_file_s imgf = wh_file_load(img);
+   //	wh_image_decode(imgf);
+	// wh_file_unload(imgf);
 
-	printf("test\n");
 	//_wh_libfind("libraylib.so", (char*[]){ "/usr/lib", "/lib" }, 2);
 	wh_instance_s* ins = wh_init(
 		&ins,
@@ -100,6 +99,7 @@ int main(int arc, char* const* arv) {
 		.config_path   = (wh_string_s) { .str = buf, 0 },	// application config
 	);
 
+	printf("test\n");
 	wh_hashmap_lazy_s hml = _wh_hashmap_lazy_create(nullptr, 10, sizeof(int));
 
 	wh_hashmap_lazy_insert(&hml, "test", (int[]){ 9 });

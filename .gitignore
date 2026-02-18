@@ -57,6 +57,7 @@ perf.data
 **/reports/
 
 # Visual Studio files
+.vs/
 *.sln
 *.vcxproj
 *.vcxproj.filters
