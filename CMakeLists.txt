@@ -125,13 +125,6 @@ ENDIF()
 
 MESSAGE(STATUS "WH_LIBS = ${WH_LIBS}")
 
-IF(WIN32)
-	MESSAGE(STATUS "LINKING STATICALLY")
-	TARGET_LINK_LIBRARIES(${APP_NAME} PUBLIC ${WH_LIBS})
-ELSE()
-	TARGET_LINK_LIBRARIES(${APP_NAME} SHARED ${WH_LIBS})
-ENDIF()
-
 # ------------------------------------------------------------------------------------
 #   Compiler definition section
 # ------------------------------------------------------------------------------------
