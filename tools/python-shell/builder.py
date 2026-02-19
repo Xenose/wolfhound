@@ -133,6 +133,9 @@ class builder_c:
             self.platform
         ]
 
+    def create_links(output, dirs: []):
+        pass
+
     def build(self):
         if not self.is_ready():
             print("builder_c is not in a ready state!{}".format(
