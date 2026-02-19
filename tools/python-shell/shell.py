@@ -1,5 +1,6 @@
 import os
 import json
+import sys
 import importlib
 import argparse
 import getpass
@@ -29,7 +30,7 @@ class file_completer_c(Completer):
 
 class shell_c:
     wolf_config = Path(".wolfhound", "state.json")
-    state: {}
+    state: dict
 
     def __init__(self):
         # Setting up the session
@@ -38,6 +39,7 @@ class shell_c:
             "home": os.getcwd(),
         }
 
+        self.modules = []
         self.ps = PromptSession()
         self.pc = file_completer_c(dir="tools/python-shell/bin")
         self.dispatch("clear", None)
@@ -54,13 +56,27 @@ class shell_c:
 
         self.builder = builder_c(self.state)
 
+    def reload(self):
+        # unload command modules
+        for m in list(self.modules):
+            sys.modules.pop(m.__name__, None)
+
+        self.modules.clear()
+
+        # recreate runtime services
+        self.builder = builder_c(self.state)
+
     def dispatch(self, cmd, args):
         mod = None
 
         try:
             mod = importlib.import_module(f"bin.{cmd}")
+
+            if mod not in self.modules:
+                self.modules.append(mod)
+
         except ImportError:
-            print(f"Unknown commnad: {cmd}")
+            print(f"Unknown command: {cmd}")
             return
 
         if not hasattr(mod, "execute"):
