@@ -57,13 +57,10 @@ class shell_c:
         self.builder = builder_c(self.state)
 
     def reload(self):
-        # unload command modules
         for m in list(self.modules):
             sys.modules.pop(m.__name__, None)
 
         self.modules.clear()
-
-        # recreate runtime services
         self.builder = builder_c(self.state)
 
     def dispatch(self, cmd, args):
