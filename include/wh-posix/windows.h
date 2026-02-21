@@ -5,6 +5,12 @@
 
 #if (WH_SYSTEM&WH_SYS_WINDOWS)
 
+#ifdef _MSC_VER
+	#pragma warning(push)
+	#pragma warning(disable : 4005)
+	#pragma warning(disable : 4028)
+#endif
+
 #ifndef _WINSOCKAPI_
 	#define _WINSOCKAPI_
 #endif
@@ -37,5 +43,9 @@
 #include <windows.h>
 #include <winternl.h>
 
+#ifdef _MSC_VER
+	#pragma warning(pop)
 #endif
+
+#endif // end windows
 #endif
