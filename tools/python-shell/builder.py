@@ -32,7 +32,7 @@ class builder_c:
 
         a = self.parse_args(args)
 
-        self.set_build_system(a)
+        self.set_build_system(a, "make")
         self.set_compilers("gcc", "gcc", "g++")
 
     def icx(self):
@@ -46,7 +46,7 @@ class builder_c:
 
         a = self.parse_args(args)
 
-        self.set_build_system(a)
+        self.set_build_system(a, "visual")
         self.set_compilers("msvc", "cl", "cl")
 
     def tcc(self):
@@ -75,33 +75,33 @@ class builder_c:
 
         parser.add_argument(
             "--build-system",
-            default="ninja",
+            default=None,
             help="Set the build system to use"
         )
 
         return parser.parse_args(args)
 
-    def set_build_system(self, args=None):
-        print(args)
+    def set_build_system(self, args=None, dbs="ninja"):
+        bs = args.build_system
 
-        if args is None:
-            self.build_system = "Ninja"
-        else:
-            match args.build_system.lower():
-                case "ninja":
-                    self.build_system = "Ninja"
-                case "make":
-                    if "nt" == os.name:
-                        self.build_system = "NMake Makefiles"
-                    else:
-                        self.build_system = "Unix Makefiles"
-                case "visual":
-                    if "nt" != os.name:
-                        print("Visual is for windows ONLY!")
-                        return
-                    self.build_system = "Visual Studio 17 2022"
-                case _:
-                    self.build_system = "Ninja"
+        if bs is None:
+            bs = dbs
+
+        match bs.lower():
+            case "ninja":
+                self.build_system = "Ninja"
+            case "make":
+                if "nt" == os.name:
+                    self.build_system = "NMake Makefiles"
+                else:
+                    self.build_system = "Unix Makefiles"
+            case "visual":
+                if "nt" != os.name:
+                    print("Visual is for windows ONLY!")
+                    return
+                self.build_system = "Visual Studio 17 2022"
+            case _:
+                self.build_system = "Ninja"
 
     def set_compilers(self, name: str, cc: str, cxx: str = None):
         if shutil.which(cc) is None:
