@@ -12,7 +12,6 @@ OPTION(LINUX_MINGW_WIN "Cross compiles the code for Windows" False)
 # We want to use Fortran 95 so we select it
 SET(CMAKE_Fortran_STANDARD 95)
 
-SET(CMAKE_C_STANDARD 23)
 SET(CMAKE_C_STANDARD_REQUIRED ON)
 SET(NASM_FLAGS "-w-unknown-warning")
 SET(NASM_WARNING_FLAGS "-w+all")
@@ -29,40 +28,12 @@ SET(COMPILER_O_LEVEL -O0)
 
 SET(LOG_PREFIX "[ Wolfhound ]")
 
-SET(MSVC_FLAGS	
-	#-Wall
-	#-wd4100
-	#-wd5110
-	#-MT
-)
-
-SET(NON_MSVC_FLAGS
-	-Wall
-	-Wextra
-	-Wpedantic
-	-Wconversion
-	-Wshadow
-
-	-Wno-implicit-fallthrough
-	-Wno-unused-label
-	-Wno-unused-variable
-	-Wno-unused-parameter
-	-Wno-unused-but-set-variable
-)
-
 IF (WIN32)
 	MESSAGE("${LOG_PREFIX} WE ARE ON WINDOWS!")
 
 	# More Windows Magic for atomics :: Legacy KEEP
 	IF (MSVC)
 		MESSAGE("${LOG_PREFIX} NO ITS MSVC...")
-		SET(CMAKE_C_STANDARD 17)
-		SET(CMAKE_C_STANDARD ${CMAKE_C_STANDARD} PARENT_SCOPE)
-		
-		ADD_COMPILE_OPTIONS(
-			$<$<C_COMPILER_ID:MSVC>:/experimental:c11atomics>
-			$<$<C_COMPILER_ID:MSVC>:/Zc:preprocessor>
-		)
 	ENDIF()
 ELSE()
 	MESSAGE("${LOG_PREFIX} WE ARE NOT ON WINDOWS!")
@@ -86,35 +57,34 @@ CHECK_LANGUAGE(ASM_NASM)
 
 # Lets use the new C++ as well
 IF (NO_CXX_COMPILER)
-	SET(CXX_ENABLED FALSE PARENT_SCOPE)
+	SET(CXX_ENABLED FALSE)
 ELSE()
 	MESSAGE("${LOG_PREFIX} C++ is enabled")
 
-	SET(CXX_ENABLED TRUE PARENT_SCOPE)
-	SET(CMAKE_CXX_STANDARD 23 PARENT_SCOPE)
-	SET(CMAKE_CXX_STANDARD_REQUIRED ON PARENT_SCOPE)
+	SET(CXX_ENABLED TRUE)
+	SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 ENDIF()
 
 IF(DEFINED CMAKE_ASM_NASM_COMPILER)
 	MESSAGE("${LOG_PREFIX} NASM found: ${CMAKE_ASM_NASM_COMPILER}")
-	SET(NASM_ENABLED FALSE PARENT_SCOPE)
-ELSE()
 	SET(NASM_ENABLED TRUE PARENT_SCOPE)
+ELSE()
 	MESSAGE(STATUS "${LOG_PREFIX} NASM not found")
+	SET(NASM_ENABLED FALSE PARENT_SCOPE)
 ENDIF()
 
 # checking if we have Fortran on the system
 IF(CMAKE_C_COMPILER_ID MATCHES "TinyCC")
 	MESSAGE(WARNING "${LOG_PREFIX} TCC Fortran turned off.")
 
-	SET(CXX_ENABLED FALSE PARENT_SCOPE)
-	SET(FORTRAN_ENABLED FALSE PARENT_SCOPE)
+	SET(CXX_ENABLED FALSE)
+	SET(FORTRAN_ENABLED FALSE)
 ELSEIF(CMAKE_Fortran_COMPILER)
 	MESSAGE(STATUS "${LOG_PREFIX} Fortran compiler found: ${CMAKE_Fortran_COMPILER}")
-	SET(FORTRAN_ENABLED TRUE PARENT_SCOPE)
+	SET(FORTRAN_ENABLED TRUE)
 ELSE()
 	MESSAGE(WARNING "${LOG_PREFIX} Fortran compiler NOT found. Falling back to C implementations.")
-	SET(FORTRAN_ENABLED FALSE PARENT_SCOPE)
+	SET(FORTRAN_ENABLED FALSE)
 ENDIF()
 
 SET(INCLUDE_PATHS "${CMAKE_SOURCE_DIR}/include/")
@@ -139,8 +109,6 @@ ELSEIF(WIN32)
 	LIST(APPEND INCLUDE_PATHS "${WIN_SYSROOT}/include/")
 	#LINK_DIRECTORIES(AFTER "${WIN_SYSROOT}/lib/")
 ENDIF()
-
-ENABLE_LANGS()
 
 IF(CXX_ENABLED)
 	ADD_COMPILE_DEFINITIONS(WH_USE_CXX=1)
@@ -173,6 +141,7 @@ INCLUDE(cmake/find_glfw3.cmake)
 INCLUDE(cmake/find_sdl3.cmake)
 INCLUDE(cmake/find_unwind.cmake)
 INCLUDE(cmake/find_vulkan.cmake)
+# TODO add gvoc
 MESSAGE("\n")
 
 # Legacy fallback
@@ -210,56 +179,8 @@ ENDIF()
 # ------------------------------------------------------------------------------------
 #  End of compiler definition section
 # ------------------------------------------------------------------------------------
-IF(CMAKE_C_COMPILER_ID STREQUAL "MSVC") # IF WINDOWS
-	add_compile_options(
-		# -Wall
-	)
-ELSE() # ELSE IF NOT WINDOWS
-	# If we are using the GNU compiler we can enable more flags
-	IF (CMAKE_C_COMPILER_ID STREQUAL "GNU" AND CMAKE_LANG STREQUAL "C")
-		add_compile_options(
-			-rdynamic
-			-Wformat-security
-			-pg
-		)
-	ENDIF()
-
-
-	add_compile_options(
-		-O0
-		-g
-		-ggdb
-
-		## Warnings
-		-Wall
-		-Wextra
-		-pedantic
-
-		# We are focusing on the more important warnings for now
-		-Wno-unused
-		-Wno-unused-parameter
-		-Wno-unused-variable
-		-Wno-unused-function
-		-Wno-unused-label
-		-Wno-missing-field-initializers
-		-Wno-c23-extensions
-	)
-ENDIF() # MSVC
-
 IF (WIN32)
-	TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE ntdll ${WH_LIBS})
-	
-	IF (MSVC)
-		TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
-			${MSVC_FLAGS}
-		)
-	ELSE()
-		TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
-			${NON_MSVC_FLAGS}
-			--target=x86_64-pc-windows-gnu
-			${COMPILER_O_LEVEL}
-		)
-	ENDIF()
+	SET(LIBS "ntdll")
 ELSE()
 	SET(LIBS "m" "dl" "atomic")
 
@@ -267,25 +188,63 @@ ELSE()
 	IF(CMAKE_SYSTEM_NAME STREQUAL "SunOS")
 		LIST(APPEND LIBS "socket" "nsl")
 	ENDIF()
-
-	IF(CMAKE_C_COMPILER_ID MATCHES "TinyCC")
-		MESSAGE("${LOG_PREFIX} TCC not gcov skipping it!")
-	ELSE()
-		IF(CMAKE_C_COMPILER_ID MATCHES "GNU")
-			LIST(APPEND NON_MSVC_FLAGS -Wno-missing-field-initializers)
-		ENDIF()
-
-		IF (NOT ${IS_ANDROID})
-			LIST(APPEND LIBS "gcov")
-		ENDIF()
-	ENDIF()
-
-	TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE ${LIBS} ${WH_LIBS})
-	TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
-		${NON_MSVC_FLAGS}
-		${COMPILER_O_LEVEL}
-	)
 ENDIF()
+
+
+TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE ${LIBS} ${WH_LIBS})
+
+# Setting the C and C++ version
+IF (MSVC)
+	TARGET_COMPILE_FEATURES(${APP_NAME} PRIVATE c_std_17)
+
+	IF(CXX_ENABLED)
+		 TARGET_COMPILE_FEATURES(${APP_NAME} PRIVATE cxx_std_17)
+	ENDIF()
+ELSE()
+	TARGET_COMPILE_FEATURES(${APP_NAME} PRIVATE c_std_23)
+
+	IF(CXX_ENABLED)
+		 TARGET_COMPILE_FEATURES(${APP_NAME} PRIVATE cxx_std_23)
+	ENDIF()
+ENDIF()
+
+# Compiler flags
+TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
+	# Common flags non windows
+	$<$<AND:$<COMPILE_LANGUAGE:C>,$<OR:$<C_COMPILER_ID:GNU>,$<C_COMPILER_ID:TinyCC>,$<C_COMPILER_ID:ZIG>,$<C_COMPILER_ID:Clang>>>:
+		-g
+		-ggdb
+		-Wall
+		-Wextra
+		-Wpedantic
+		-Wconversion
+		-Wshadow
+		-Wno-unused
+		-Wno-implicit-fallthrough
+		-Wno-unused-but-set-variable
+		-unused-parameter
+		-unused-variable
+		-Wno-unused-function
+		-Wno-unused-label
+		-Wno-missing-field-initializers
+		-Wno-c23-extensions
+	>
+
+	# GCC compiler flags
+	$<$<AND:$<COMPILE_LANGUAGE:C>,$<C_COMPILER_ID:GNU>>:
+		-rdynamic
+		-Wformat-security
+		-pg
+		-Wno-missing-field-initializers
+	>
+
+	# MSVC flags
+	$<$<OR:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>:
+		-W4
+		-experimental=c11atomics
+		-Zc=preprocessor
+	>
+)
 
 # Allows us to do line coverage testing
 IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" AND GENERATE_REPORT AND NOT ${IS_ANDROID})
