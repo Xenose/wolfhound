@@ -1,4 +1,4 @@
 
 
 def execute(sh, cmd, args):
-    sh.builder.gcc()
+    sh.builder.gcc(args)

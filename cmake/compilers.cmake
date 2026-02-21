@@ -1,0 +1,114 @@
+INCLUDE(CheckLanguage)
+
+SET(CMAKE_C_STANDARD 23)
+
+CHECK_LANGUAGE(ASM_NASM)
+CHECK_LANGUAGE(CXX)
+CHECK_LANGUAGE(Fortran)
+
+IF(CXX_ENABLED)
+	SET(CMAKE_CXX_STANDARD 23)
+	ADD_COMPILE_DEFINITIONS(WH_USE_CXX=1)
+	ENABLE_LANGUAGE(CXX)
+ENDIF()
+
+IF (WIN32)
+	MESSAGE("${LOG_PREFIX} WE ARE ON WINDOWS!")
+	LIST(APPEND WH_LIBS "ntdll")
+
+	# More Windows Magic for atomics :: Legacy KEEP
+	IF (MSVC)
+		MESSAGE("${LOG_PREFIX} NO ITS MSVC... falling back to c23-comp.h...")
+
+		SET(CMAKE_C_STANDARD 17)
+		SET(WIN_SYSROOT "C:/usr/msvc" CACHE PATH "Windows sysroot directory")
+		set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>$<$<NOT:$<CONFIG:Debug>>:>")
+
+		IF(CXX_ENABLED)
+			SET(CMAKE_CXX_STANDARD 17)
+			ADD_COMPILE_DEFINITIONS(WH_USE_CXX=1)
+		ENDIF()
+	ELSE() # This is likely Clang or TCC on Windows
+		MESSAGE("${LOG_PREFIX} NOT MSVC!")
+		SET(WIN_SYSROOT "C:/usr" CACHE PATH "Windows sysroot directory")
+
+		IF(CMAKE_C_COMPILER_ID MATCHES "Clang")
+			# Force LLVM Clang to use the GNU-style driver for C23 support
+			SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --target=x86_64-pc-windows-gnu")
+		ENDIF()
+	ENDIF()
+ELSE()
+	MESSAGE("${LOG_PREFIX} WE ARE NOT ON WINDOWS!")
+
+	IF (LINUX_MINGW_WIN)
+		SET(CMAKE_SYSTEM_NAME Windows)
+		SET(CMAKE_SYSTEM_PROCESSOR x86_64)
+
+		MESSAGE("\n\tWE ARE COMPILING FOR WINDOWS!")
+		MESSAGE(STATUS "-- Cross-compiling from Linux to Windows (MinGW)")
+
+		INCLUDE_DIRECTORIES(SYSTEM "${WINUX_SYSROOT}/include")
+		SET(CMAKE_LIBRARY_PATH "${CMAKE_LIBRARY_PATH};/opt/windows/lib")
+		SET(USE_FORTRAN OFF)
+
+		SET(WINUX_SYSROOT "/opt/windows/" CACHE PATH "MinGW cross-sysroot on Linux")
+	ELSE()
+		LIST(APPEND WH_LIBS "m" "dl" "atomic")
+
+		# Solaris-specific linking
+		IF(CMAKE_SYSTEM_NAME STREQUAL "SunOS")
+			LIST(APPEND WH_LIBS "socket" "nsl")
+		ENDIF()
+
+		# checking if we have Fortran on the system
+		IF(CMAKE_C_COMPILER_ID MATCHES "TinyCC")
+			MESSAGE(WARNING "${LOG_PREFIX} TCC -> Fortran turning off.")
+
+			SET(CXX_ENABLED FALSE)
+			SET(FORTRAN_ENABLED FALSE)
+		ELSEIF(CMAKE_Fortran_COMPILER)
+			MESSAGE(STATUS "${LOG_PREFIX} Fortran compiler found: ${CMAKE_Fortran_COMPILER}")
+
+			SET(FORTRAN_ENABLED TRUE)
+			ADD_COMPILE_DEFINITIONS(WH_USE_FORTRAN=1)
+		ELSE()
+			MESSAGE(WARNING "${LOG_PREFIX} Fortran compiler NOT found. Falling back to C implementations.")
+			SET(FORTRAN_ENABLED FALSE)
+		ENDIF()
+
+		IF (ANDROID OR CMAKE_SYSTEM_NAME STREQUAL "Android")
+			MESSAGE(STATUS "${LOG_PREFIX} Detected Android/Termux environment. Adding Termux prefix.")
+
+			SET(TERMUX_PREFIX "/data/data/com.termux/files/usr")
+			SET(IS_ANDROID TRUE)
+
+			LIST(APPEND CMAKE_PREFIX_PATH ${TERMUX_PREFIX})
+			LIST(APPEND CMAKE_INCLUDE_PATH "${TERMUX_PREFIX}/include")
+			LIST(APPEND CMAKE_LIBRARY_PATH "${TERMUX_PREFIX}/lib")
+		ENDIF()
+	ENDIF()
+ENDIF()
+
+IF(FORTRAN_ENABLED)
+	ENABLE_LANGUAGE(Fortran)
+ENDIF()
+
+IF(NASM_ENABLED)
+	ADD_COMPILE_DEFINITIONS(WH_USE_NASM=1)
+	ENABLE_LANGUAGE(ASM_NASM)
+ENDIF()
+
+MESSAGE("C standard set to ${CMAKE_C_STANDARD}")
+
+# TODO add gvoc
+
+#ELSEIF(WIN32)
+	# having the include same as Unix / Linux make more sense
+#	SET(CMAKE_LIBRARY_PATH "${CMAKE_LIBRARY_PATH};${WIN_SYSROOT}/lib")
+
+#	LIST(PREPEND CMAKE_PREFIX_PATH "${WIN_SYSROOT}")
+#	LIST(APPEND INCLUDE_PATHS "${WIN_SYSROOT}/include/")
+	#LINK_DIRECTORIES(AFTER "${WIN_SYSROOT}/lib/")
+#ENDIF()
+
+

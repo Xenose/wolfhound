@@ -1,4 +1,4 @@
 
 
 def execute(sh, cmd, args):
-    sh.builder.clang()
+    sh.builder.clang(args)

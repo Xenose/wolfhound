@@ -19,16 +19,20 @@ class builder_c:
             os.mkdir("build")
         pass
 
-    def clang(self):
-        self.set_build_system()
+    def clang(self, args):
+        a = self.parse_args(args)
+
+        self.set_build_system(a)
         self.set_compilers("clang", "clang", "clang++")
 
-    def gcc(self):
+    def gcc(self, args):
         if "nt" == os.name:
             print("gcc is unsupported on windows!")
             return
 
-        self.set_build_system()
+        a = self.parse_args(args)
+
+        self.set_build_system(a)
         self.set_compilers("gcc", "gcc", "g++")
 
     def icx(self):

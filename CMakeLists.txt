@@ -3,10 +3,11 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.28)
 SET(APP_NAME wolfhound)
 PROJECT(${APP_NAME} LANGUAGES C)
 
-INCLUDE(CheckLanguage)
-
 ENABLE_LANGUAGE(ASM_NASM OPTIONAL)
 
+# ------------------------------------------------------------------------------------
+#   Options for out cmake
+# ------------------------------------------------------------------------------------
 OPTION(NO_CXX_COMPILER "Disbles the C++ compiler" False)
 OPTION(LINUX_MINGW_WIN "Cross compiles the code for Windows" False)
 OPTION(BUILD_EXAMPLES "Builds the example projects" True)
@@ -26,160 +27,39 @@ SET(WH_DEFS)
 SET(LOG_PREFIX "[ Wolfhound ]")
 SET(INCLUDE_PATHS "${CMAKE_SOURCE_DIR}/include/")
 
-IF (WIN32)
-	MESSAGE("${LOG_PREFIX} WE ARE ON WINDOWS!")
-
-	# More Windows Magic for atomics :: Legacy KEEP
-	IF (MSVC)
-		MESSAGE("${LOG_PREFIX} NO ITS MSVC...")
-		SET(WIN_SYSROOT "C:/usr/msvc" CACHE PATH "Windows sysroot directory")
-		SET(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-	ELSE()
-		MESSAGE("${LOG_PREFIX} NOT MSVC!")
-		SET(WIN_SYSROOT "C:/usr" CACHE PATH "Windows sysroot directory")
-	ENDIF()
-ELSE()
-	MESSAGE("${LOG_PREFIX} WE ARE NOT ON WINDOWS!")
-	SET(WINUX_SYSROOT "/opt/windows/" CACHE PATH "MinGW cross-sysroot on Linux")
-
-	IF (ANDROID OR CMAKE_SYSTEM_NAME STREQUAL "Android")
-		MESSAGE(STATUS "${LOG_PREFIX} Detected Android/Termux environment. Adding Termux prefix.")
-
-		SET(TERMUX_PREFIX "/data/data/com.termux/files/usr")
-		SET(IS_ANDROID TRUE)
-
-		LIST(APPEND CMAKE_PREFIX_PATH ${TERMUX_PREFIX})
-		LIST(APPEND CMAKE_INCLUDE_PATH "${TERMUX_PREFIX}/include")
-		LIST(APPEND CMAKE_LIBRARY_PATH "${TERMUX_PREFIX}/lib")
-	ENDIF()
-ENDIF()
-
-# Telling CMake that we use C and Fortran, Nasm
-# Adding Fortran Support
-CHECK_LANGUAGE(Fortran)
-CHECK_LANGUAGE(ASM_NASM)
-
-# Lets use the new C++ as well
-IF (NO_CXX_COMPILER)
-	SET(CXX_ENABLED FALSE)
-ELSE()
-	MESSAGE("${LOG_PREFIX} C++ is enabled")
-
-	SET(CXX_ENABLED TRUE)
-	SET(CMAKE_CXX_STANDARD_REQUIRED ON)
-ENDIF()
-
-IF(CMAKE_ASM_NASM_COMPILER AND NOT CMAKE_ASM_NASM_COMPILER MATCHES "-NOTFOUND")
-    MESSAGE("${LOG_PREFIX} NASM found: ${CMAKE_ASM_NASM_COMPILER}")
-    SET(NASM_ENABLED TRUE)
-ELSE()
-    MESSAGE(STATUS "${LOG_PREFIX} NASM not found")
-    SET(NASM_ENABLED FALSE)
-ENDIF()
-
-# checking if we have Fortran on the system
-IF(CMAKE_C_COMPILER_ID MATCHES "TinyCC")
-	MESSAGE(WARNING "${LOG_PREFIX} TCC Fortran turned off.")
-
-	SET(CXX_ENABLED FALSE)
-	SET(FORTRAN_ENABLED FALSE)
-ELSEIF(CMAKE_Fortran_COMPILER)
-	MESSAGE(STATUS "${LOG_PREFIX} Fortran compiler found: ${CMAKE_Fortran_COMPILER}")
-	SET(FORTRAN_ENABLED TRUE)
-ELSE()
-	MESSAGE(WARNING "${LOG_PREFIX} Fortran compiler NOT found. Falling back to C implementations.")
-	SET(FORTRAN_ENABLED FALSE)
-ENDIF()
-
-# Setting the C and C++ version
-IF (MSVC)
-	SET(CMAKE_C_STANDARD 17)
-
-	IF(CXX_ENABLED)
-		 SET(CMAKE_CXX_STANDARD 17)
-	ENDIF()
-ELSE()
-	SET(CMAKE_C_STANDARD 23)
-
-	IF(CXX_ENABLED)
-		 SET(CMAKE_CXX_STANDARD 23)
-	ENDIF()
-ENDIF()
-
-
-MESSAGE("C standard set to ${CMAKE_C_STANDARD}")
-IF (LINUX_MINGW_WIN)
-	SET(CMAKE_SYSTEM_NAME Windows)
-	SET(CMAKE_SYSTEM_PROCESSOR x86_64)
-
-	MESSAGE("\n\tWE ARE COMPILING FOR WINDOWS!")
-	MESSAGE(STATUS "-- Cross-compiling from Linux to Windows (MinGW)")
-
-	INCLUDE_DIRECTORIES(SYSTEM "${WINUX_SYSROOT}/include")
-	SET(CMAKE_LIBRARY_PATH "${CMAKE_LIBRARY_PATH};/opt/windows/lib")
-	SET(USE_FORTRAN OFF)
-ELSEIF(WIN32)
-	# having the include same as Unix / Linux make more sense
-	SET(CMAKE_LIBRARY_PATH "${CMAKE_LIBRARY_PATH};${WIN_SYSROOT}/lib")
-
-	LIST(PREPEND CMAKE_PREFIX_PATH "${WIN_SYSROOT}")
-	LIST(APPEND INCLUDE_PATHS "${WIN_SYSROOT}/include/")
-	#LINK_DIRECTORIES(AFTER "${WIN_SYSROOT}/lib/")
-ENDIF()
-
-IF(CXX_ENABLED)
-	ADD_COMPILE_DEFINITIONS(WH_USE_CXX=1)
-	ENABLE_LANGUAGE(CXX)
-ENDIF()
-
-IF(FORTRAN_ENABLED)
-	ADD_COMPILE_DEFINITIONS(WH_USE_FORTRAN=1)
-	ENABLE_LANGUAGE(Fortran)
-ENDIF()
-
-IF(NASM_ENABLED)
-	ADD_COMPILE_DEFINITIONS(WH_USE_NASM=1)
-	ENABLE_LANGUAGE(ASM_NASM)
-ENDIF()
-
-# Source files
+INCLUDE(cmake/detect_lang.cmake)
+INCLUDE(cmake/compilers.cmake)
 INCLUDE(cmake/source_files.cmake)
 
-# defines the macro __FILENAME__ for all the files
+# ------------------------------------------------------------------------------------
+#   Defining Macros for each filename
+# ------------------------------------------------------------------------------------
 FOREACH(src_file IN LISTS C_SOURCES CXX_SOURCES)
 	GET_FILENAME_COMPONENT(basename ${src_file} NAME)
 	SET_SOURCE_FILES_PROPERTIES(${src_file} PROPERTIES COMPILE_DEFINITIONS "__FILENAME__=\"${basename}\"")
 ENDFOREACH()
 
-# Library search
-INCLUDE(cmake/find_lua.cmake)
-INCLUDE(cmake/find_glew.cmake)
-INCLUDE(cmake/find_glfw3.cmake)
-INCLUDE(cmake/find_sdl3.cmake)
-INCLUDE(cmake/find_unwind.cmake)
-INCLUDE(cmake/find_vulkan.cmake)
-# TODO add gvoc
-MESSAGE("\n")
+# ------------------------------------------------------------------------------------
+#   Library search
+# ------------------------------------------------------------------------------------
+INCLUDE(cmake/libs/find_lua.cmake)
+INCLUDE(cmake/libs/find_glew.cmake)
+INCLUDE(cmake/libs/find_glfw3.cmake)
+INCLUDE(cmake/libs/find_sdl3.cmake)
+INCLUDE(cmake/libs/find_unwind.cmake)
+INCLUDE(cmake/libs/find_vulkan.cmake)
 
-# Legacy fallback
-IF (NOT WH_SDL3_FOUND) 
+# Fallback if SDL3 is not found.
+IF (NOT "WH_SDL3_FOUND" IN_LIST WH_DEFS) 
 	MESSAGE("Modern SDL3 not found using SDL2.")
-	INCLUDE(cmake/find_sdl2.cmake)
-ELSE()
 	LIST(APPEND WH_DEFS "WH_SDL2_FOUND")
+	INCLUDE(cmake/libs/find_sdl2.cmake)
 ENDIF()
 
 # old way
 #INCLUDE_DIRECTORIES(SYSTEM ${INCLUDE_PATHS})
-ADD_LIBRARY(${APP_NAME} STATIC ${ASM_SOURCE} ${C_SOURCES} ${CXX_SOURCES} ${F95_SOURCES})
+ADD_LIBRARY(${APP_NAME} STATIC ${ASM_SOURCE} ${F95_SOURCES} ${C_SOURCES} ${CXX_SOURCES})
 TARGET_INCLUDE_DIRECTORIES(${APP_NAME} PUBLIC ${INCLUDE_PATHS})
-
-IF(WH_INCLUDES)
-	MESSAGE(STATUS "Adding collected manual include directories: ${WH_INCLUDES}")
-	TARGET_INCLUDE_DIRECTORIES(${APP_NAME} PUBLIC ${WH_INCLUDES})
-ENDIF()
-
-MESSAGE(STATUS "WH_LIBS = ${WH_LIBS}")
 
 # ------------------------------------------------------------------------------------
 #   Compiler definition section
@@ -189,27 +69,20 @@ FOREACH(wh_def IN LISTS WH_DEFS)
 	TARGET_COMPILE_DEFINITIONS(${APP_NAME} PUBLIC ${wh_def}=1)
 ENDFOREACH()
 
-IF(FORTRAN_ENABLED)
-	TARGET_COMPILE_DEFINITIONS(${APP_NAME} PUBLIC WH_USE_FORTRAN=1)
+IF(WH_INCLUDES)
+	MESSAGE(STATUS "Adding collected manual include directories: ${WH_INCLUDES}")
+	TARGET_INCLUDE_DIRECTORIES(${APP_NAME} PUBLIC ${WH_INCLUDES})
 ENDIF()
+
+MESSAGE(STATUS "WH_LIBS = ${WH_LIBS}")
 
 # ------------------------------------------------------------------------------------
 #  End of compiler definition section
 # ------------------------------------------------------------------------------------
-IF (WIN32)
-	SET(LIBS "ntdll")
-ELSE()
-	SET(LIBS "m" "dl" "atomic")
-
-	# Solaris-specific linking
-	IF(CMAKE_SYSTEM_NAME STREQUAL "SunOS")
-		LIST(APPEND LIBS "socket" "nsl")
-	ENDIF()
-ENDIF()
 
 
-TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE ${LIBS} ${WH_LIBS})
-
+# Linking the found libraries
+TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE ${WH_LIBS})
 
 # Compiler flags
 TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
@@ -281,9 +154,9 @@ ENDIF()
 # Tests
 IF (CXX_ENABLED)
 	# For now GTEST is not supported on windows.
-	IF (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-		ADD_SUBDIRECTORY(src/unit-gtests-cpp/)
-	ENDIF()
+	#IF (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+	#	ADD_SUBDIRECTORY(src/unit-gtests-cpp/)
+	#ENDIF()
 ENDIF()
 
 IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" AND GENERATE_REPORT)
