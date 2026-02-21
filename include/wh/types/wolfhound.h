@@ -8,7 +8,7 @@
 
 #include<wh/types/gameinfo.h>
 
-#if (!defined WH_SDL3_NOT_FOUND) && (!defined WH_SDL2_NOT_FOUND)
+#if (defined WH_SDL3_FOUND) && (defined WH_SDL2_FOUND)
 	#error SDL3 and SDL2 included at the same time.
 #endif
 

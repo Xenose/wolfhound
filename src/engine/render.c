@@ -1,11 +1,11 @@
 #include<wh/debug/logger.h>
 #include<wh/render.h>
 
-#ifndef WH_SDL2_NOT_FOUND
+#ifdef WH_SDL2_FOUND
 	#include<wh-backend/sdl2.h>
 #endif
 
-#ifndef WH_GLFW_NOT_FOUND
+#ifdef WH_GLFW_FOUND
 	#include<wh-backend/glfw3.h>
 #endif
 
@@ -19,7 +19,7 @@ extern void _wh_render_line_sdl3(_wh_render_line_params params);
 
 
 const char* _wh_support_vulkan() {
-#ifndef WH_VULKAN_NOT_FOUND
+#ifdef WH_VULKAN_FOUND
 	return "VULKAN ";
 #else
 	return "";
@@ -40,7 +40,7 @@ i8 _wh_render_init(_wh_render_init_params params) {
 go_window_retry:
 	switch(params.ins->graphics.mode_window) {
 		case WH_WINDOW_MODE_GLFW:
-#ifndef WH_GLFW_NOT_FOUND
+#ifdef WH_GLFW_FOUND
 			switch (params.ins->graphics.mode_graphics) {
 				case WH_GRAPHICS_MODE_SDL2:
 					wh_log_warning(("SDL2 graphics mode but backend set to GLFW3 switching window stack!"));
@@ -63,7 +63,7 @@ go_window_retry:
 #endif
 
 		case WH_WINDOW_MODE_SDL2:
-#ifndef WH_SDL2_NOT_FOUND
+#ifdef WH_SDL2_FOUND
 			_wh_window_create			= &_wh_window_create_sdl2;
 			_wh_window_get_size		= &_wh_window_get_size_sdl2;
 			_wh_event_pull				= &_wh_event_pull_sdl2;
@@ -74,7 +74,7 @@ go_window_retry:
 #endif
 
 		case WH_WINDOW_MODE_SDL3:
-#ifndef WH_SDL3_NOT_FOUND
+#ifdef WH_SDL3_FOUND
 			_wh_window_create			= &_wh_window_create_sdl3;
 			_wh_window_get_size		= &_wh_window_get_size_sdl3;
 			_wh_event_pull				= &_wh_event_pull_sdl3;
@@ -88,7 +88,7 @@ go_window_retry:
 go_graphics_retry:
 	switch(params.ins->graphics.mode_graphics) {
 		case WH_GRAPHICS_MODE_SDL2:
-#ifndef WH_SDL2_NOT_FOUND
+#ifdef WH_SDL2_FOUND
 			_wh_render_clear			= &_wh_render_clear_sdl2;
 			_wh_render_show			= &_wh_render_show_sdl2;
 			_wh_render_line			= &_wh_render_line_sdl2;
