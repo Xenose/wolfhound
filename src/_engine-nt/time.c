@@ -54,3 +54,13 @@ i64 _wnt_delay_execution(bool alertable, i64 delay_interval) {
 
    return NtDelayExecution(a, &di);
 }
+
+
+//NTSTATUS status = NtDelayExecution(true, &interval);
+i64 _wnt_delay_execution(bool a, i64* parm_out) {
+   LARGE_INTEGER interval = { 0 };
+   i64 out = NtDelayExecution(true, &interval);
+
+   *parm_out = interval.QuadPart;
+   return out;
+}
