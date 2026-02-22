@@ -1,10 +1,11 @@
 #include<wh-posix/unistd.h>
 #include<wh-posix/time.h>
+#include<_wh-nt/system.h>
 
 int getpagesize(void) {
-	SYSTEM_INFO si;
-	GetSystemInfo(&si);
-	return si.dwPageSize;
+	_wnt_system_info si;
+	_wnt_get_system_info(&si);
+	return si.page_size;
 }
 
 pid_t gettid(void) {

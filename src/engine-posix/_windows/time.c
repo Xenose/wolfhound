@@ -13,8 +13,8 @@ int clock_gettime(clockid_t clockid, struct timespec* tp) {
 	switch (clockid) {
 		case CLOCK_MONOTONIC_COARSE:
 		case CLOCK_MONOTONIC:
-			_wnt_query_performance_frequency(&(((i32*)&quad0)[0]), &(((i32*)&quad0)[1]));
-			_wnt_query_performance_counter(&(((i32*)&quad1)[0]), &(((i32*)&quad1)[1]));
+			_wnt_query_performance_frequency(&quad0);
+			_wnt_query_performance_counter(&quad1);
 
 			tp->tv_sec = quad1 / quad0;
 			tp->tv_nsec = (quad1 % quad0) * 1'000'000'000ULL / quad0;

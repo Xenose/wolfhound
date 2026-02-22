@@ -16,31 +16,31 @@ void _wnt_get_system_time_precise_as_file_time(wnt_filetime_s* out) {
    out->high_date_time = ft.dwHighDateTime;
 }
 
-i8 _wnt_query_performance_frequency(i32* low, i32* high) {
+i8 _wnt_query_performance_frequency(i64* quad) {
    LARGE_INTEGER out = { 0 };
 
    if (QueryPerformanceFrequency(&out)) {
-      *low = out.LowPart;
-      *high = out.HighPart;
+      ((i32*)quad)[0] = out.LowPart;
+      ((i32*)quad)[1] = out.HighPart;
       return 1;
    }
 
-   *low = 0;
-   *high = 0;
+   ((i32*)quad)[0] = 0;
+   ((i32*)quad)[1] = 0;
    return 0;
 }
 
-i8 _wnt_query_performance_counter(i32* low, i32* high) {
+i8 _wnt_query_performance_counter(i64* quad) {
    LARGE_INTEGER out = { 0 };
 
    if (QueryPerformanceCounter(&out)) {
-      *low = out.LowPart;
-      *high = out.HighPart;
+      ((i32*)quad)[0] = out.LowPart;
+      ((i32*)quad)[1] = out.HighPart;
       return 1;
    }
 
-   *low = 0;
-   *high = 0;
+   ((i32*)quad)[0] = 0;
+   ((i32*)quad)[1] = 0;
    return 0;
 }
 

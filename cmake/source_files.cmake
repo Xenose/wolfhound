@@ -86,6 +86,7 @@ SET(GLFW_SOURCES
 SET(NT_SOURCES
 	"src/_engine-nt/time.c"
 	"src/_engine-nt/utils.c"
+	"src/_engine-nt/system.c"
 )
 
 
