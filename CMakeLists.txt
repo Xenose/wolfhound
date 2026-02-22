@@ -80,8 +80,9 @@ MESSAGE(STATUS "WH_LIBS = ${WH_LIBS}")
 #  End of compiler definition section
 # ------------------------------------------------------------------------------------
 
+
 # Linking the found libraries
-TARGET_LINK_LIBRARIES(${APP_NAME} PUBLIC ${WH_LIBS})
+TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE ${WH_LIBS})
 
 # Compiler flags
 TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE

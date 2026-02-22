@@ -49,11 +49,11 @@ static i64 _wh_log_real_va(_wh_print_params print_params, _wh_log_params params,
 	#endif
 
 	i64 used = wh_print((
-		"[ %s ] $t :: \033[90m%s::%d::%s -->\033[0m ",
+		"[ %s ] $$t :: \033[90m%s::%d::%s -->\033[0m ",
 		2, _buffer, 8096, 0, WH_PRINT_NO_FLUSH),
 
 		params.level,
-		"%H:%M:%S",
+		//"%H:%M:%S",
 		params.file,
 		params.line,
 		params.func

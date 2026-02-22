@@ -99,7 +99,6 @@ int main(int arc, char* const* arv) {
 		.config_path   = (wh_string_s) { .str = buf, 0 },	// application config
 	);
 
-	printf("test\n");
 	wh_hashmap_lazy_s hml = _wh_hashmap_lazy_create(nullptr, 10, sizeof(int));
 
 	wh_hashmap_lazy_insert(&hml, "test", (int[]){ 9 });
