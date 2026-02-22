@@ -31,6 +31,10 @@ INCLUDE(cmake/detect_lang.cmake)
 INCLUDE(cmake/compilers.cmake)
 INCLUDE(cmake/source_files.cmake)
 
+IF(WIN32)
+	LIST(APPEND C_SOURCES ${NT_SOURCES})
+ENDIF()
+
 # ------------------------------------------------------------------------------------
 #   Defining Macros for each filename
 # ------------------------------------------------------------------------------------

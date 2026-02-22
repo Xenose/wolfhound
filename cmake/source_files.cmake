@@ -83,6 +83,11 @@ SET(GLFW_SOURCES
 	"src/engine-backends/glfw3/window.c"
 )
 
+SET(NT_SOURCES
+	"src/_engine-nt/time.c"
+	"src/_engine-nt/utils.c"
+)
+
 
 IF(NASM_ENABLED)
 	SET(ASM_SOURCE

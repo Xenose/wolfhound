@@ -1,42 +1,37 @@
 #include<wh-posix/time.h>
+#include<_wh-nt/time.h>
 
+int clock_gettime(clockid_t clockid, struct timespec* tp) {
+	wnt_filetime_s ft = { 0 };
+	u64 quad0 = 0;
+	u64 quad1 = 0;
 
-static wh_thread struct timespec _last_time = {0, 0};
-
-// TODO fix this so it works like the POSIX version.
-int clock_gettime(clockid_t clockid, struct timespec* tn) {
-	FILETIME ft = { 0 };
-	ULARGE_INTEGER uli = { 0 };
-
-	if (nullptr == tn) {
+	if (nullptr == tp) {
 		return -1;
 	}
-	
-	while (1) {
-		GetSystemTimePreciseAsFileTime(&ft);
 
-		uli.LowPart = ft.dwLowDateTime;
-		uli.HighPart = ft.dwHighDateTime;
+	switch (clockid) {
+		case CLOCK_MONOTONIC_COARSE:
+		case CLOCK_MONOTONIC:
+			_wnt_query_performance_frequency(&(((i32*)&quad0)[0]), &(((i32*)&quad0)[1]));
+			_wnt_query_performance_counter(&(((i32*)&quad1)[0]), &(((i32*)&quad1)[1]));
 
-		tn->tv_sec  = uli.QuadPart / 10'000'000ULL;
-		tn->tv_nsec = (uli.QuadPart % 10'000'000ULL) * 100;
+			tp->tv_sec = quad1 / quad0;
+			tp->tv_nsec = (quad1 % quad0) * 1'000'000'000ULL / quad0;
+			break;
 
-		// Ensure monotonicity
-		if (tn->tv_sec > _last_time.tv_sec ||
-			(tn->tv_sec == _last_time.tv_sec && tn->tv_nsec > _last_time.tv_nsec)) {
-			break; // time is strictly increasing, exit loop
-		}
+		case CLOCK_REALTIME:
+			_wnt_get_system_time_precise_as_file_time(&ft);
+			
+			((u32*)&quad0)[0] = ft.low_date_time;
+			((u32*)&quad0)[1] = ft.high_date_time;
 
-		// System time went backward or stayed the same → bump by 1 ns
-		tn->tv_sec  = _last_time.tv_sec;
-		tn->tv_nsec = _last_time.tv_nsec + 1;
+			quad0 -= 116444736000000000ULL;
 
-		if (tn->tv_nsec >= 1'000'000'000) {
-			tn->tv_sec += 1;
-			tn->tv_nsec -= 1'000'000'000;
-		}
+			tp->tv_sec  = quad0 / 10'000'000ULL;
+			tp->tv_nsec = (quad0 % 10'000'000ULL) * 100;
+			break;
 	}
-
-	_last_time = *tn;
+	
 	return 0;
 }
