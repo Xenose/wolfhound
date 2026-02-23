@@ -1,3 +1,3 @@
 
 def execute(sh, cmd, args):
-    sh.builder.tcc()
+    sh.builder.tcc(args)

@@ -35,8 +35,10 @@ class builder_c:
         self.set_build_system(a, "make")
         self.set_compilers("gcc", "gcc", "g++")
 
-    def icx(self):
-        self.set_build_system()
+    def icx(self, args):
+        a = self.parse_args(args)
+
+        self.set_build_system(a, "ninja")
         self.set_compilers("icx", "icx")
 
     def msvc(self, args):
@@ -49,16 +51,18 @@ class builder_c:
         self.set_build_system(a, "visual")
         self.set_compilers("msvc", "cl", "cl")
 
-    def tcc(self):
+    def tcc(self, args):
         if "nt" == os.name:
             print("TinyCC is unsupported on windows!")
             return
 
-        self.set_build_system()
+        a = self.parse_args(args)
+        self.set_build_system(a, "make")
         self.set_compilers("tcc", "tcc")
 
-    def zig(self):
-        self.set_build_system()
+    def zig(self, args):
+        a = self.parse_args(args)
+        self.set_build_system(a, "ninja")
         self.set_compilers("zig", "zig cc", "zig c++")
 
     def parse_args(self, args):

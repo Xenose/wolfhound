@@ -1,4 +1,4 @@
 
 
 def execute(sh, cmd, args):
-    sh.builder.icx()
+    sh.builder.icx(args)

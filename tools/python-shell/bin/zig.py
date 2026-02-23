@@ -1,4 +1,4 @@
 
 
 def execute(sh, cmd, args):
-    sh.builder.zig()
+    sh.builder.zig(args)
