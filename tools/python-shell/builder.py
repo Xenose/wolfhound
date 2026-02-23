@@ -4,6 +4,8 @@ import shutil
 import platform
 import argparse
 
+from common.utils import find_executable
+
 
 class builder_c:
     def __init__(self, state=None):
@@ -17,7 +19,9 @@ class builder_c:
 
         if not os.path.exists("build"):
             os.mkdir("build")
-        pass
+
+        if not os.path.exists("build/bin"):
+            os.mkdir("build/bin")
 
     def clang(self, args):
         a = self.parse_args(args)
@@ -141,8 +145,16 @@ class builder_c:
             self.platform
         ]
 
-    def create_links(output, dirs: []):
-        pass
+    def configure(self, path):
+        config = [
+            "cmake",
+            "-S", ".",
+            "-B", path,
+            "-G", self.build_system,
+        ]
+
+        config.extend(self.compilers())
+        subprocess.run(config, check=True)
 
     def build(self):
         if not self.is_ready():
@@ -179,15 +191,7 @@ class builder_c:
         os.makedirs(path, exist_ok=True)
 
         print("Configuring cmake...")
-        config = [
-            "cmake",
-            "-S", ".",
-            "-B", path,
-            "-G", self.build_system,
-        ]
-
-        config.extend(self.compilers())
-        subprocess.run(config, check=True)
+        self.configure(path)
 
         print("CMake building...")
         subprocess.run([
@@ -196,3 +200,10 @@ class builder_c:
             ],
             check=True
         )
+
+        for e in find_executable(f"build/{target}", ["CMakeFiles"]):
+            print(e)
+            link_name = os.path.basename(e)
+            link_name = link_name.replace(".EXE", "")
+            link_name = f"build/bin/{link_name}-{self.compiler}"
+            os.symlink(e, link_name)
