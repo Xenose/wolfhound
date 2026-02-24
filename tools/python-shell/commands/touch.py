@@ -16,6 +16,5 @@ def execute(cmd, args, session, state, prompt):
         # TODO update timestamp
         print("File exists...")
     else:
-        with open(a.PATH[0], "w") as fd:
+        with open(a.PATH[0], "w") as _:
             pass
-

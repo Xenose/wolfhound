@@ -19,6 +19,16 @@ def short(files, dirs, x):
         files.append(f"{x.name}")
 
 
+def complete():
+    return [
+        '-a',
+        '-l',
+        '-la',
+        '--all',
+        '--long'
+    ]
+
+
 def execute(sh, cmd, args):
     dirs = []
     files = []

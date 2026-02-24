@@ -18,15 +18,38 @@ class file_completer_c(Completer):
         self.dir = Path(dir)
 
     def get_completions(self, doc, c_event):
-        text = doc.text
+        text = doc.text_before_cursor.lstrip()
+        words = text.split()
 
-        for f in self.dir.glob("*.py"):
-            if f.name.startswith(text):
-                yield Completion(
-                    f.name.removesuffix(".py"),
-                    start_position=-len(text)
-                )
+        match (len(words) + text.count(' ')):
+            case 0:
+                # No input yet, complete all commands
+                for cmd_file in self.dir.glob("*.py"):
+                    cmd_name = cmd_file.stem
+                    yield Completion(cmd_name, start_position=0)
+            case 1:
+                # Completing the top-level command
+                last_word = words[-1]
 
+                for cmd_file in self.dir.glob("*.py"):
+                    cmd_name = cmd_file.stem
+                    if cmd_name.startswith(last_word):
+                        yield Completion(cmd_name, start_position=-len(last_word))
+            case _:
+                # Completing arguments
+                cmd = words[0]
+                args = words[1:]
+                last_word = args[-1] if args else ""
+
+                try:
+                    mod = importlib.import_module(f"commands.{cmd}")
+                except ImportError:
+                    return
+                if not hasattr(mod, "complete"):
+                    return
+                for flag in mod.complete():
+                    if flag.startswith(last_word):
+                        yield Completion(flag, start_position=-len(last_word))
 
 class shell_c:
     wolf_config = Path(".wolfhound", "state.json")
@@ -41,7 +64,7 @@ class shell_c:
 
         self.modules = []
         self.ps = PromptSession()
-        self.pc = file_completer_c(dir="tools/python-shell/bin")
+        self.pc = file_completer_c(dir="tools/python-shell/commands")
         self.dispatch("clear", None)
         self.dispatch("welcome", None)
         self.user = getpass.getuser()
@@ -54,20 +77,20 @@ class shell_c:
             print("No state found creating one")
             self.state = {}
 
-        self.builder = builder_c(self.state)
+        self.builder = builder_c(self.session["home"])
 
     def reload(self):
         for m in list(self.modules):
             sys.modules.pop(m.__name__, None)
 
         self.modules.clear()
-        self.builder = builder_c(self.state)
+        self.builder = builder_c(self.session["home"])
 
     def dispatch(self, cmd, args):
         mod = None
 
         try:
-            mod = importlib.import_module(f"bin.{cmd}")
+            mod = importlib.import_module(f"commands.{cmd}")
 
             if mod not in self.modules:
                 self.modules.append(mod)
@@ -86,9 +109,10 @@ class shell_c:
         current_dir = "/".join(os.getcwd().split(os.sep)[-3:]) or "/"
 
         return ANSI(
-            "\n{}@{}\n\033[32mwh-shell>\033[0m ".format(
+            "\n{}@{} --- [ mode : \033[34m{}\033[0m ]\n\033[32mwh-shell>\033[0m ".format(
                 self.user,
-                current_dir
+                current_dir,
+                self.builder.display_string(),
             )
         )
 

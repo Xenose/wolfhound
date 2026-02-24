@@ -8,7 +8,22 @@ from common.utils import find_executable
 
 
 class builder_c:
-    def __init__(self, state=None):
+    '''
+        This class handles the state of the build-shell's
+        build system setting compilers, architecture and
+        build system(make,ninja and etc...).
+
+        The goal is to have a fast and easy way to have
+        build being generated in independent folders and
+        linked into a single bin directory inside build.
+    '''
+
+    def __init__(self, home):
+        '''
+            Keywords Arguments:
+                home -- The home directory for the project.
+        '''
+        self.home = home
         self.arch = platform.machine()
         self.build_system = None
         self.compiler = None
@@ -24,12 +39,20 @@ class builder_c:
             os.mkdir("build/bin")
 
     def clang(self, args):
+        '''
+            Keywords Arguments:
+                args -- A argument list.
+        '''
         a = self.parse_args(args)
 
         self.set_build_system(a)
         self.set_compilers("clang", "clang", "clang++")
 
     def gcc(self, args):
+        '''
+            Keywords Arguments:
+                args -- A argument list.
+        '''
         if "nt" == os.name:
             print("gcc is unsupported on windows!")
             return
@@ -131,10 +154,31 @@ class builder_c:
         out.extend([f"-DCMAKE_C_COMPILER={self.cc}"])
 
         if self.cxx is not None:
-            print("No C++ compiler found skipping...")
             out.extend([f"-DCMAKE_CXX_COMPILER={self.cxx}"])
+        else:
+            print("No C++ compiler found skipping...")
 
         return out
+
+    def display_string(self):
+        p = self.platform
+        a = self.arch
+
+        if self.arch_target is not None:
+            if self.arch_target != self.arch:
+                a = self.arch_target
+                config_opt.extend(["-A", self.arch_target])
+
+        if self.platform_target is not None:
+            if self.platform_target != self.platform:
+                # Todo add cross compiling
+                pass
+
+        target = "{}-{}-{}-{}".format(
+            self.compiler, self.build_system, p, a
+        ).lower().replace(" ", "-")
+
+        return target
 
     def is_ready(self):
         return None not in [
@@ -145,7 +189,7 @@ class builder_c:
             self.platform
         ]
 
-    def configure(self, path):
+    def configure(self, path, config_opt):
         config = [
             "cmake",
             "-S", ".",
@@ -154,9 +198,13 @@ class builder_c:
         ]
 
         config.extend(self.compilers())
+        config.extend(config_opt)
+
         subprocess.run(config, check=True)
 
     def build(self):
+        config_opt = []
+
         if not self.is_ready():
             print("builder_c is not in a ready state!{}".format(
                 f"\nName:         {self.compiler}"
@@ -173,8 +221,8 @@ class builder_c:
 
         if self.arch_target is not None:
             if self.arch_target != self.arch:
-                # Todo add cross compiling
-                pass
+                a = self.arch_target
+                config_opt.extend(["-A", self.arch_target])
 
         if self.platform_target is not None:
             if self.platform_target != self.platform:
@@ -191,7 +239,7 @@ class builder_c:
         os.makedirs(path, exist_ok=True)
 
         print("Configuring cmake...")
-        self.configure(path)
+        self.configure(path, config_opt)
 
         print("CMake building...")
         subprocess.run([
@@ -202,8 +250,15 @@ class builder_c:
         )
 
         for e in find_executable(f"build/{target}", ["CMakeFiles"]):
-            print(e)
+            full_path = f"{self.home}/{e}"
+
             link_name = os.path.basename(e)
             link_name = link_name.replace(".EXE", "")
-            link_name = f"build/bin/{link_name}-{self.compiler}"
-            os.symlink(e, link_name)
+            link_name = f"build/bin/{link_name}-{p}-{self.compiler}-{a}-{self.build_system}"
+            link_name = link_name.lower().replace(" ", "_")
+
+            try:
+                os.symlink(full_path, link_name)
+                print(f"Link created: {full_path} --> {link_name}")
+            except FileExistsError:
+                print(f"Link exists : {full_path} --> {link_name}")
