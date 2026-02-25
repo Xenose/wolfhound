@@ -1,20 +1,64 @@
 # The Wolfhound Game Engine [ C23 ]
-*This code is IN the Rapid DEVelopment branch or 'INRDEV' for short, meaning that the code will change a lot and that after first release the commit history will be squashed.*
+**This code is IN the Rapid DEVelopment branch or 'INRDEV' 
+for short, meaning that the code will change a lot and that 
+after first release the commit history will be squashed.**
 
+Wolfhound is personal experiment for how far we can push the
+the C programming language without extensions, the goal is to
+have a stable engine around 2 to 3 year mark.
+
+
+## Building instructions
+**Need to be in the project root dir**
+```sh
+# Activates the python build shell.
+python3 tools/shell/python/main.py
+```
+
+### Commands ( NOT POSIX : Experimental )
+**For more info do --help**
+| Name        | Notes                                                                                   |
+| ----------- | --------------------------------------------------------------------------------------- |
+| build       | Create the build folder and compiles the software, uses cmake underneth.                |
+| cd          | Change the current directory.                                                           |
+| clang       | Set the shell state compiler to Clang.                                                  |
+| clear       | Clears the shell screen.                                                                |
+| dump-state  | Dumps the current state of the shell.                                                   |
+| exit        | Exits the shell.                                                                        |
+| gcc         | Set the shell state compiler to GGC.                                                    |
+| ls          | List a directories content.                                                             |
+| push_inrdev | On the inrdev branch allows automated pushing of code.                                  |
+| pwd         | Get the current working path.                                                           |
+| stats       | Uses Cloc to dump project status, might not work on Windows.                            |
+| tcc         | Set the shell state compiler to TCC.                                                    |
+
+### Manual build
+```sh
+cmake \
+   -S . \
+   -B "build/some_path" \
+   -DCMAKE_C_COMPILER="your_compiler" \
+   -DCMAKE_CXX_COMPILER="your_compiler"
+
+cmake --build "build/some_path"
+```
+
+[legacy_build.md](Legacy Build System)
+
+### Status of platforms
 | Platform        | Kernel  | Tested | Supported     | Description                             |
 | --------------- | ------- | ------ | ------------- | --------------------------------------- |
 | Arch Linux      | Linux   | YES    | UNSTABLE      | Primary development platform.           |
 | Fedora Linux    | Linux   | YES    | UNSTABLE      | Secondary development platform.         |
 | Alpine Linux    | Linux   | YES    | UNSTABLE      | Testing on Musl.                        |
 | Debian Linux    | Linux   | NO     | PLANNED       | Planned.                                |
-| Windows         | NT      | YES    | BROKEN        | Unstable might break at any second.     |
+| Windows         | NT      | YES    | UNSTABLE      | Unstable might break at any second.     |
 | Android(Termux) | Android | YES    | UNSTABLE      |                                         |
 | FreeBSD         | BSD     | YES    | UNSTABLE      |                                         |
 | OpenIndiana     | Solaris | YES    | UNSTABLE      |                                         |
 | Haiku           | Haiku   | NO     | PLANNED       |                                         |
 | Aros            | Amiga   | NO     | PLANNED       |                                         |
 | MacOS           | Darwin  | NO     | EXPERIMENTING | No Plans for full support.              |
-
 **Noted UNSTABLE means it can break and Linux is probably the most stable**
 
 ## Compilers
@@ -39,7 +83,7 @@
 ## Core Concepts
 ### Action Entity System
 The Action Entity System is based on DoD model while still some similarity to
-ECS, instead of logic being tided to a entity AES makes data subscribe to action
+ECS, instead of logic being tied to a entity AES makes data subscribe to action
 so the logic calls the data.
 
 In a ECS system :: Entity -> \[ Data, Logic \]
@@ -49,50 +93,15 @@ In AES system :: action(logic) -> Entity -> Data
 | Name                               | Status        | File                    | Notes                                                                        |
 | ---------------------------------- | ------------- | ----------------------- | ---------------------------------------------------------------------------  |
 | AES                                | Experimenting | N/A                     | DoD style entity system.                                                     |
-| print system                       | Finalizing    | Print.h                 | Print functionality with possbility for C++ hooks.                           |
-| Grabage collector                  | Finalizing    | Tracker.h               | Needs to move from linked list to hashmap.                                   |
-| Fixed point CPU math               | Theory        | N/A                     | Using fixed point math for positions on the CPU and floats on the GPU.       |
+| print system                       | Finalizing    | Print.h                 | Print functionality with possibility for C++ hooks.                          |
+| Garbage collector                  | Finalizing    | Tracker.h               | Needs to move from linked list to hashmap.                                   |
+| Fixed point CPU math               | Theory        | N/A                     | Using fixed point math for positions on the CPU and floats on the GPU, for this
+ engine fixed point means we set int value to 10 micrometers so imagine a dot at the 1mm |
 | SDF Mesh hybrid rendering          | Theory        | N/A                     | To save model size and allow faster transfer should look into SDF rendering. |
-| Lua command line and config parser | Needs cleanup | arg_parser.h / config.h | A bit rough and could need improvment.                                       |
+| Lua command line and config parser | Needs cleanup | arg_parser.h / config.h | A bit rough and could need improvement.                                      |
 | Generic render backend interface   | Indev         | render.h                | Allow use of sdl, glfw, vulkan, gl and etc instead of hardcoding backends.   |
 
-## Building instructions
-**Need to be in the project root dir**
-```sh
-# Activates the python build shell.
-python3 tools/shell/python/main.py
-```
 
-### Commands ( NOT POSIX : Experimental )
-**Fore more info do --help**
-| Name        | Notes                                                                                   |
-| ----------- | --------------------------------------------------------------------------------------- |
-| build       | Create the build folder and compiles the software, uses cmake underneth.                |
-| cd          | Change the current directory.                                                           |
-| clang       | Set the shell state compiler to Clang.                                                  |
-| clear       | Clears the shell screen.                                                                |
-| dump-state  | Dumps the current state of the shell.                                                   |
-| exit        | Exits the shell.                                                                        |
-| gcc         | Set the shell state compiler to GGC.                                                    |
-| ls          | List a directories content.                                                             |
-| push_inrdev | On the inrdev branch allows automated pushing of code.                                  |
-| pwd         | Get the current working path.                                                           |
-| stats       | Uses Cloc to dump project status, might not work on Windows.                            |
-| tcc         | Set the shell state compiler to TCC.                                                    |
-
-
-[legacy_build.md](Legacy Build System)
-
-### Manual build
-```sh
-cmake \
-   -S . \
-   -B "build/some_path" \
-   -DCMAKE_C_COMPILER="your_compiler" \
-   -DCMAKE_CXX_COMPILER="your_compiler"
-
-cmake --build "build/some_path"
-```
 
 ## Languages
 | Name        | Version | Use                                              |
@@ -104,7 +113,7 @@ cmake --build "build/some_path"
 | Shell       | N/A     | Tools.                                           |
 | Python      | 3       | Tools.                                           |
 | DOS Batch   | N/A     | Build tools.                                     |
-| Dockerfiles | N/A     | Temporary testing enviroments.                   |
+| Dockerfiles | N/A     | Temporary testing environments.                  |
 
 ## Libraries
 
