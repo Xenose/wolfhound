@@ -95,8 +95,7 @@ In AES system :: action(logic) -> Entity -> Data
 | AES                                | Experimenting | N/A                     | DoD style entity system.                                                     |
 | print system                       | Finalizing    | Print.h                 | Print functionality with possibility for C++ hooks.                          |
 | Garbage collector                  | Finalizing    | Tracker.h               | Needs to move from linked list to hashmap.                                   |
-| Fixed point CPU math               | Theory        | N/A                     | Using fixed point math for positions on the CPU and floats on the GPU, for this
- engine fixed point means we set int value to 10 micrometers so imagine a dot at the 1mm |
+| Fixed point CPU math               | Theory        | N/A                     | Using fixed point math for positions on the CPU and floats on the GPU, for this engine fixed point means we set int value to 10 micrometers so imagine a dot at the 1mm |
 | SDF Mesh hybrid rendering          | Theory        | N/A                     | To save model size and allow faster transfer should look into SDF rendering. |
 | Lua command line and config parser | Needs cleanup | arg_parser.h / config.h | A bit rough and could need improvement.                                      |
 | Generic render backend interface   | Indev         | render.h                | Allow use of sdl, glfw, vulkan, gl and etc instead of hardcoding backends.   |
