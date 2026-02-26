@@ -13,7 +13,7 @@
 #include<wh/string.h>
 #include<wh/wolfhound.h>
 
-#ifndef WH_VULKAN_FOUND
+#ifdef WH_VULKAN_FOUND
 	#include<wh-backend/vulkan.h>
 #endif
 

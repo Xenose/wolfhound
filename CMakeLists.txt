@@ -51,7 +51,10 @@ INCLUDE(cmake/libs/find_glew.cmake)
 INCLUDE(cmake/libs/find_glfw3.cmake)
 INCLUDE(cmake/libs/find_sdl3.cmake)
 INCLUDE(cmake/libs/find_unwind.cmake)
-INCLUDE(cmake/libs/find_vulkan.cmake)
+
+IF (NOT ANDROID OR NOT CMAKE_SYSTEM_NAME STREQUAL "Android")
+	INCLUDE(cmake/libs/find_vulkan.cmake)
+ENDIF()
 
 # Fallback if SDL3 is not found.
 IF (NOT "WH_SDL3_FOUND" IN_LIST WH_DEFS) 

@@ -1,7 +1,7 @@
 #include<errno.h>
 #include<wh/debug/error.h>
 
-#ifndef WH_VULKAN_NOT_FOUND
+#ifdef WH_VULKAN_FOUND
 	#include<vulkan/vulkan.h>
 #endif
 
@@ -48,7 +48,7 @@ const char* _wh_errno_str(_wh_errno_str_params params) {
 }
 
 const char* _wh_vk_status_str(_wh_vk_status_params params) {
-#ifndef WH_VULKAN_NOT_FOUND
+#ifdef WH_VULKAN_FOUND
 	switch (params.number) {
 		case VK_SUCCESS:																return "VK_SUCCESS";
 		case VK_NOT_READY:															return "VK_NOT_READY";

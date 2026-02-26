@@ -12,7 +12,7 @@
 	#error SDL3 and SDL2 included at the same time.
 #endif
 
-#ifndef WH_VULKAN_NOT_FOUND
+#ifdef WH_VULKAN_FOUND
 	#include<vulkan/vulkan.h>
 #endif
 
@@ -45,7 +45,7 @@ typedef struct {
 
 
 typedef struct {
-#ifndef WH_VULKAN_NOT_FOUND
+#ifdef WH_VULKAN_FOUND
 	struct_type			stype;
 	VkInstance			instance;
 	VkSurfaceKHR		surface;
