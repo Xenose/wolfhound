@@ -1,14 +1,33 @@
 import os
 import argparse
 
+if "nt" != os.name:
+    import pwd
+    import grp
+
 from prompt_toolkit import print_formatted_text, ANSI
 
 
 def long(files, dirs, x):
+    stat = x.stat()
+
+
+    if "nt" != os.name:
+        pw = pwd.getpwuid(stat.st_uid)
+        gr = grp.getgrgid(stat.st_gid)
+
+        user_name = pw.pw_name
+        group_name = gr.gr_name
+    else:
+        user_name = ""
+        group_name = ""
+
     if x.is_dir():
         dirs.append(f"\033[91m{x.name}\033[0m")
+    elif x.is_symlink():
+        files.append(f"\033[92m{x.name:30}\033[0m {user_name}:{group_name}")
     elif x.is_file():
-        files.append(f"{x.name}")
+        files.append(f"{x.name:30} {user_name}:{group_name} {stat.st_size}B")
 
 
 def short(files, dirs, x):
