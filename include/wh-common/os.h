@@ -16,6 +16,7 @@
 #define WH_SYS_SOLARIS	0x0800L
 
 #define WH_SYS_WINDOWS	0x1000L
+#define WH_SYS_BEOS		0x2000L
 
 #if defined(__linux__)
 	#define WH_SYSTEM_OS (WH_SYS_LINUX | WH_SYS_UNIX | WH_SYS_POSIX)
@@ -23,6 +24,8 @@
 	#define WH_SYSTEM_OS WH_SYS_WINDOWS
 #elif defined(__APPLE__) && defined(__MACH__)
 	#define WH_SYSTEM_OS (WH_SYS_MACOS | WH_SYS_UNIX | WH_SYS_POSIX)
+#elif defined(__HAIKU__) | defined(__BEOS__)
+	#define WH_SYSTEM_OS (WH_SYS_BEOS | WH_SYS_POSIX)
 #elif defined(__FreeBSD__)
 	#define WH_SYSTEM_OS (WH_SYS_FREEBSD | WH_SYS_BSD | WH_SYS_UNIX | WH_SYS_POSIX)
 #elif defined(__sun) || defined(__SVR4) || defined(__illumos__)
