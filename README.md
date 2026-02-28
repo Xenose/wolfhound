@@ -43,7 +43,7 @@ cmake \
 cmake --build "build/some_path"
 ```
 
-(Legacy Build System)[legacy_build.md]
+[Legacy Build System](markdown/legacy_build.md)
 
 ### Status of platforms
 | Platform        | Kernel  | Tested | Supported     | Description                             |
