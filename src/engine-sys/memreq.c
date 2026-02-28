@@ -3,7 +3,7 @@
 #include<wh-posix/unistd.h>
 #include<string.h>
 
-#ifdef __unix__
+#if (WH_SYSTEM&WH_SYS_POSIX)
 #include<errno.h>
 #include<sys/mman.h>
 
@@ -35,11 +35,9 @@ void _wh_sys_memrel(_wh_sys_memrel_params params) {
 	}
 }
 
-
-
-#elif defined(_WIN64)
+#elif (WH_SYSTEM&WH_SYS_WINDOWS)
 #include<wh-posix/windows.h>
-	
+
 void* _wh_sys_memreq(_wh_sys_memreq_params params) {
 	void* mem = nullptr;
 

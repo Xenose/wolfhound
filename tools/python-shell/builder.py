@@ -244,7 +244,7 @@ class builder_c:
         print("CMake building...")
         subprocess.run([
                 "cmake",
-                "--build", f"{path}",
+                "--build", f"{path}"
             ],
             check=True
         )
@@ -260,7 +260,12 @@ class builder_c:
             try:
                 os.symlink(full_path, link_name)
                 print(f"Link created: {full_path} --> {link_name}")
-                os.remove(f"{self.home}/compile_commands.json")
-                os.symlink(f"{self.home}/build/{target}/compile_commands.json", f"{self.home}/compile_commands.json")
             except FileExistsError:
                 print(f"Link exists : {full_path} --> {link_name}")
+
+            try:
+                os.remove(f"{self.home}/compile_commands.json")
+            except OSError:
+                pass
+
+            os.symlink(f"{self.home}/build/{target}/compile_commands.json", f"{self.home}/compile_commands.json")
