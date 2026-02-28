@@ -10,4 +10,6 @@
 	#include"_bsd/unistd.c"
 #elif (WH_SYSTEM&(WH_SYS_SOLARIS))
 	#include"_solaris/unistd.c"
+#elif (WH_SYSTEM&(WH_SYS_BEOS))
+	#include"_beos/unistd.c"
 #endif
