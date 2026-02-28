@@ -21,7 +21,7 @@ const char* _wh_errno_str(_wh_errno_str_params params) {
 		case ENOMEM: 		return" ENOMEM";
 		case EACCES: 		return" EACCES";
 		case EFAULT: 		return" EFAULT";
-#ifndef _WIN32
+#if !(WH_SYSTEM&(WH_SYS_BEOS|WH_SYS_WINDOWS))
 		case ENOTBLK:		return" ENOTBLK";
 #endif
 		case EBUSY: 		return" EBUSY";

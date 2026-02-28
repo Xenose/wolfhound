@@ -58,7 +58,11 @@ ELSE()
 
 		SET(WINUX_SYSROOT "/opt/windows/" CACHE PATH "MinGW cross-sysroot on Linux")
 	ELSE()
-		LIST(APPEND WH_LIBS "m" "dl" "atomic")
+		LIST(APPEND WH_LIBS "m" "atomic")
+
+		IF(NOT HAIKU)
+			LIST(APPEND WH_LIBS "dl")
+		ENDIF()
 
 		# Solaris-specific linking
 		IF(CMAKE_SYSTEM_NAME STREQUAL "SunOS")

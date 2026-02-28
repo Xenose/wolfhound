@@ -117,7 +117,8 @@ TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
 	$<$<AND:$<COMPILE_LANGUAGE:C>,$<C_COMPILER_ID:GNU>>:
 		-rdynamic
 		-Wformat-security
-		-pg
+		# Need to fix for haiku
+		# -pg
 		-Wno-missing-field-initializers
 	>
 

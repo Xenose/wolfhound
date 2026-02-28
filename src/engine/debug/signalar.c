@@ -4,7 +4,7 @@
 	#include"_unwind/signalar.c"
 #elif (WH_SYSTEM&WH_SYS_LINUX)
 	#include"_linux/signalar.c"
-#elif (WH_SYSTEM&WH_SYS_WINDOWS)
+#elif (WH_SYSTEM&(WH_SYS_WINDOWS|WH_SYS_BEOS))
 	#include"_windows/signalar.c"
 #else
 	#include"_posix/signalar.c"
