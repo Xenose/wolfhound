@@ -66,7 +66,7 @@ ENDIF()
 # Fallback if SDL3 is not found.
 IF (NOT "WH_SDL3_FOUND" IN_LIST WH_DEFS) 
 	MESSAGE("Modern SDL3 not found using SDL2.")
-	LIST(APPEND WH_DEFS "WH_SDL2_FOUND")
+	# LIST(APPEND WH_DEFS "WH_SDL2_FOUND")
 	INCLUDE(cmake/libs/find_sdl2.cmake)
 ENDIF()
 

@@ -121,7 +121,7 @@ class builder_c:
 
         parser.add_argument(
             "--no-sdl3",
-            action="store_false",
+            action="store_true",
             help="Set the architecture"
         )
 

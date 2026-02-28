@@ -1,7 +1,7 @@
 INCLUDE(${CMAKE_CURRENT_LIST_DIR}/find.cmake)
 
 WH_FIND_V2(
-	"sdl2"										# Name of the library
+	"SDL2"										# Name of the library
 	"sdl2;SDL2;libSDL2"						# Possible names on the system
 	"sdl2.h;SDL.h"								# Possible names of the headers
 	"sdl2;SDL2"									# Possible folder names

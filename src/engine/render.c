@@ -70,8 +70,13 @@ go_window_retry:
 			_wh_event_pull				= &_wh_event_pull_sdl2;
 			break;
 #else
-		params.ins->graphics.mode_window = WH_WINDOW_MODE_SDL3;
-		goto go_window_retry;
+		#ifdef WH_SDL3_FOUND
+			params.ins->graphics.mode_window = WH_WINDOW_MODE_SDL3;
+			goto go_window_retry;
+		#else
+			wh_log_critical(("Engine not compiled with SDL2!"));
+			return -1;
+		#endif
 #endif
 
 		case WH_WINDOW_MODE_SDL3:
@@ -81,8 +86,13 @@ go_window_retry:
 			_wh_event_pull				= &_wh_event_pull_sdl3;
 			break;
 #else
+	#ifdef WH_SDL2_FOUND
 		params.ins->graphics.mode_window = WH_WINDOW_MODE_SDL2;
 		goto go_window_retry;
+	#else
+		wh_log_critical(("Engine not compiled with SDL3!"));
+		return -1;
+	#endif
 #endif
 	}
 
