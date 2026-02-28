@@ -12,6 +12,9 @@ OPTION(NO_CXX_COMPILER "Disbles the C++ compiler" False)
 OPTION(LINUX_MINGW_WIN "Cross compiles the code for Windows" False)
 OPTION(BUILD_EXAMPLES "Builds the example projects" True)
 
+OPTION(NO_SDL3 "Disable SDL3" False)
+OPTION(NO_SDL2 "Disable SDL2" False)
+
 # We want to use Fortran 95 so we select it
 SET(CMAKE_Fortran_STANDARD 95)
 
@@ -49,7 +52,11 @@ ENDFOREACH()
 INCLUDE(cmake/libs/find_lua.cmake)
 INCLUDE(cmake/libs/find_glew.cmake)
 INCLUDE(cmake/libs/find_glfw3.cmake)
-INCLUDE(cmake/libs/find_sdl3.cmake)
+
+IF(NOT NO_SDL3)
+	INCLUDE(cmake/libs/find_sdl3.cmake)
+ENDIF()
+
 INCLUDE(cmake/libs/find_unwind.cmake)
 
 IF (NOT ANDROID OR NOT CMAKE_SYSTEM_NAME STREQUAL "Android")

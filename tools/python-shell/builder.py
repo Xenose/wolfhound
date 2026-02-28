@@ -112,6 +112,21 @@ class builder_c:
 
         return parser.parse_args(args)
 
+    def parse_args_build(self, args):
+        parser = argparse.ArgumentParser(
+            prog='build',
+            description='What the program does',
+            epilog='Text at the bottom of help'
+        )
+
+        parser.add_argument(
+            "--no-sdl3",
+            action="store_false",
+            help="Set the architecture"
+        )
+
+        return parser.parse_args(args)
+
     def set_build_system(self, args=None, dbs="ninja"):
         bs = args.build_system
 
@@ -167,7 +182,7 @@ class builder_c:
         if self.arch_target is not None:
             if self.arch_target != self.arch:
                 a = self.arch_target
-                config_opt.extend(["-A", self.arch_target])
+                # config_opt.extend(["-A", self.arch_target])
 
         if self.platform_target is not None:
             if self.platform_target != self.platform:
@@ -189,12 +204,13 @@ class builder_c:
             self.platform
         ]
 
-    def configure(self, path, config_opt):
+    def configure(self, path, args, config_opt):
         config = [
             "cmake",
             "-S", ".",
             "-B", path,
             "-G", self.build_system,
+            f"-DNO_SDL3={args.no_sdl3}"
         ]
 
         config.extend(self.compilers())
@@ -202,8 +218,9 @@ class builder_c:
 
         subprocess.run(config, check=True)
 
-    def build(self):
+    def build(self, args):
         config_opt = []
+        pa = self.parse_args_build(args)
 
         if not self.is_ready():
             print("builder_c is not in a ready state!{}".format(
@@ -239,7 +256,7 @@ class builder_c:
         os.makedirs(path, exist_ok=True)
 
         print("Configuring cmake...")
-        self.configure(path, config_opt)
+        self.configure(path, pa, config_opt)
 
         print("CMake building...")
         subprocess.run([
