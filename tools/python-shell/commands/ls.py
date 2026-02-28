@@ -11,7 +11,6 @@ from prompt_toolkit import print_formatted_text, ANSI
 def long(files, dirs, x):
     stat = x.stat()
 
-
     if "nt" != os.name:
         pw = pwd.getpwuid(stat.st_uid)
         gr = grp.getgrgid(stat.st_gid)
@@ -25,15 +24,17 @@ def long(files, dirs, x):
     if x.is_dir():
         dirs.append(f"\033[91m{x.name}\033[0m")
     elif x.is_symlink():
-        files.append(f"\033[92m{x.name:30}\033[0m {user_name}:{group_name}")
+        files.append(f"\033[92m{x.name:30}\033[0m {user_name}:{group_name:10}")
     elif x.is_file():
-        files.append(f"{x.name:30} {user_name}:{group_name} {stat.st_size}B")
+        files.append(f"{x.name:30} {user_name}:{group_name:10} {stat.st_size}")
 
 
 def short(files, dirs, x):
     if x.is_dir():
         # return f"\033[91m{x.name}\033[0m "
         dirs.append(f"\033[91m{x.name}\033[0m")
+    elif x.is_symlink():
+        files.append(f"\033[92m{x.name:30}\033[0m")
     elif x.is_file():
         files.append(f"{x.name}")
 
