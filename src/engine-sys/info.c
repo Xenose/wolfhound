@@ -67,4 +67,6 @@ i64 wh_sys_program_path(char* buffer, u64 buffer_size) {
 	return length;
 }
 
+#elif (WH_SYSTEM&WH_SYS_BEOS)
+	#include"_beos/info.c"
 #endif
