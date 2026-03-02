@@ -41,6 +41,29 @@
 	#define wh_thread __thread
 #endif
 
+// TCC atomic concept
+#define T* get_value(wh_thread_local_data* data) { \
+	void* tmp = nullptr; \
+	pid_t lt = getpid(); \
+	\
+	for (i64 i = 0; i < data.count; i++) {\
+		if (lt == data[i].thread_id) { \
+			return sizeof(pid_t) + data[i].data; \
+		} \
+	} \
+	\
+	tmp = realloc(data.data, (data.count + 1) * data.size); \
+
+	if (nullptr == tmp) {
+		assert("Failed to allocated thread local data");
+	}
+
+	data.data = data;
+	*((pid_t*)&data.data[data.count]) = lt;
+	++data.count;
+	return sizeof(pid_t) + data.data;
+}
+
 /* 
  * tcc does not implement <stdbool.h> or _Bool reliably 
  */
