@@ -34,7 +34,10 @@ class file_completer_c(Completer):
                 for cmd_file in self.dir.glob("*.py"):
                     cmd_name = cmd_file.stem
                     if cmd_name.startswith(last_word):
-                        yield Completion(cmd_name, start_position=-len(last_word))
+                        yield Completion(
+                            cmd_name,
+                            start_position=-len(last_word)
+                        )
             case _:
                 # Completing arguments
                 cmd = words[0]
@@ -47,9 +50,10 @@ class file_completer_c(Completer):
                     return
                 if not hasattr(mod, "complete"):
                     return
-                for flag in mod.complete():
+                for flag in mod.complete(last_word):
                     if flag.startswith(last_word):
                         yield Completion(flag, start_position=-len(last_word))
+
 
 class shell_c:
     wolf_config = Path(".wolfhound", "state.json")

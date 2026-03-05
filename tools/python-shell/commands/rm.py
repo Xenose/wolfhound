@@ -4,8 +4,9 @@ import argparse
 import datetime
 
 
-def complete():
+def complete(text):
     return [
+        "-f", "--force",
         "-r", "--recursive",
         "--trash",
     ]

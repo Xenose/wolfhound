@@ -1,5 +1,6 @@
 import os
 import argparse
+from pathlib import Path
 
 if "nt" != os.name:
     import pwd
@@ -39,14 +40,37 @@ def short(files, dirs, x):
         files.append(f"{x.name}")
 
 
-def complete():
-    return [
-        '-a',
-        '-l',
-        '-la',
-        '--all',
-        '--long'
-    ]
+def complete(text=None):
+    if text.startswith('-'):
+        return [
+            '-a',
+            '-l',
+            '-la',
+            '--all',
+            '--long'
+        ]
+
+    p = Path(text)
+
+    if text.endswith(os.sep):
+        parent = p
+        prefix = ''
+    else:
+        if p.parent.exists():
+            parent = p.parent
+        else:
+            parent = Path(".")
+
+        prefix = p.name
+
+    try:
+        return [
+            str(x) + ('/' if x.is_dir() else '')
+            for x in parent.iterdir()
+            if x.name.startswith(prefix)
+        ]
+    except FileNotFoundError:
+        return []
 
 
 def execute(sh, cmd, args):

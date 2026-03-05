@@ -125,6 +125,30 @@ class builder_c:
             help="Set the architecture"
         )
 
+        parser.add_argument(
+            "--no-sdl2",
+            action="store_true",
+            help="Set the architecture"
+        )
+
+        parser.add_argument(
+            "--no-glfw3",
+            action="store_true",
+            help="Set the architecture"
+        )
+
+        parser.add_argument(
+            "--no-vulkan",
+            action="store_true",
+            help="Set the architecture"
+        )
+
+        parser.add_argument(
+            "--no-glew",
+            action="store_true",
+            help="Set the architecture"
+        )
+
         return parser.parse_args(args)
 
     def set_build_system(self, args=None, dbs="ninja"):
@@ -210,7 +234,8 @@ class builder_c:
             "-S", ".",
             "-B", path,
             "-G", self.build_system,
-            f"-DNO_SDL3={args.no_sdl3}"
+            f"-DNO_SDL3={args.no_sdl3}",
+            f"-DNO_SDL3={args.no_sdl2}",
         ]
 
         config.extend(self.compilers())

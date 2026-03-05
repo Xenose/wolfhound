@@ -1,6 +1,6 @@
 
 
-def complete():
+def complete(text=None):
     return [
         '--arch',
         '--build-system'
