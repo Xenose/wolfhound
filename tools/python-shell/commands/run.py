@@ -19,7 +19,7 @@ def execute(sh, cmd, args):
     parser.add_argument('BIN', nargs=argparse.REMAINDER)
 
     a = parser.parse_args(args)
-    p = Path(sh.session["home"], "build", "bin", a.BIN[0])
+    p = Path(sh.session["home"], a.BIN[0])
 
     # Running the sub command
     pfd = subprocess.Popen(p, stdout=subprocess.PIPE)
