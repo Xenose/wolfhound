@@ -2,7 +2,12 @@ import os
 import argparse
 import subprocess
 
+from common.utils import path_complete
 from pathlib import Path
+
+
+def complete(text=None):
+    return path_complete(text)
 
 
 def execute(sh, cmd, args):

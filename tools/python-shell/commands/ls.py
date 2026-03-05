@@ -6,6 +6,7 @@ if "nt" != os.name:
     import pwd
     import grp
 
+from common.utils import path_complete
 from prompt_toolkit import print_formatted_text, ANSI
 
 
@@ -50,27 +51,7 @@ def complete(text=None):
             '--long'
         ]
 
-    p = Path(text)
-
-    if text.endswith(os.sep):
-        parent = p
-        prefix = ''
-    else:
-        if p.parent.exists():
-            parent = p.parent
-        else:
-            parent = Path(".")
-
-        prefix = p.name
-
-    try:
-        return [
-            str(x) + ('/' if x.is_dir() else '')
-            for x in parent.iterdir()
-            if x.name.startswith(prefix)
-        ]
-    except FileNotFoundError:
-        return []
+    return path_complete(text)
 
 
 def execute(sh, cmd, args):
