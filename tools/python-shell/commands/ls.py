@@ -1,6 +1,5 @@
 import os
 import argparse
-from pathlib import Path
 
 if "nt" != os.name:
     import pwd
@@ -36,7 +35,7 @@ def short(files, dirs, x):
         # return f"\033[91m{x.name}\033[0m "
         dirs.append(f"\033[91m{x.name}\033[0m")
     elif x.is_symlink():
-        files.append(f"\033[92m{x.name:30}\033[0m")
+        files.append(f"\033[92m{x.name}\033[0m")
     elif x.is_file():
         files.append(f"{x.name}")
 
@@ -80,10 +79,15 @@ def execute(sh, cmd, args):
     if 0 < len(a.PATH):
         path = a.PATH[0]
 
-    for x in os.scandir(path):
-        if x.name.startswith('.') and not a.all:
-            continue
+    if not os.path.isdir(path):
+        files = [path]
+    else:
+        for x in os.scandir(path):
+            if x.name.startswith('.') and not a.all:
+                continue
+            func(files, dirs, x)
 
-        func(files, dirs, x)
+    dirs.sort()
+    files.sort()
 
     print_formatted_text(ANSI(f"{sp.join(dirs + files)}"))

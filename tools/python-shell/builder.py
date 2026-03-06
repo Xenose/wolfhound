@@ -235,7 +235,7 @@ class builder_c:
             "-B", path,
             "-G", self.build_system,
             f"-DNO_SDL3={args.no_sdl3}",
-            f"-DNO_SDL3={args.no_sdl2}",
+            f"-DNO_SDL2={args.no_sdl2}",
         ]
 
         config.extend(self.compilers())
