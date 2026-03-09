@@ -33,6 +33,7 @@ class file_completer_c(Completer):
 
                 for cmd_file in self.dir.glob("*.py"):
                     cmd_name = cmd_file.stem
+
                     if cmd_name.startswith(last_word):
                         yield Completion(
                             cmd_name,

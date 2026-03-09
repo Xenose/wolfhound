@@ -50,7 +50,7 @@ def complete(text=None):
             '--long'
         ]
 
-    return path_complete(text)
+    return path_complete(text, only_dir=True)
 
 
 def execute(sh, cmd, args):

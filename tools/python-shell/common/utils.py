@@ -18,7 +18,7 @@ def find_executable(dir: Path, exclude: [] = []):
     return out
 
 
-def path_complete(dir):
+def path_complete(dir, only_dir=False):
     p = Path(dir)
 
     if dir.endswith(os.sep):
@@ -33,10 +33,16 @@ def path_complete(dir):
         prefix = p.name
 
     try:
-        return [
-            str(x) + ('/' if x.is_dir() else '')
-            for x in parent.iterdir()
-            if x.name.startswith(prefix)
-        ]
+        out = []
+
+        for x in parent.iterdir():
+            if x.is_dir():
+                out.append(f"{x}/")
+            else:
+                if only_dir:
+                    continue
+                out.append(f"{x}")
+
+        return out
     except FileNotFoundError:
         return []
