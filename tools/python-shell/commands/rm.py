@@ -2,6 +2,9 @@ import os
 import uuid
 import argparse
 import datetime
+import json
+
+from pathlib import Path
 
 from common.utils import path_complete
 from prompt_toolkit import print_formatted_text, ANSI
@@ -11,6 +14,7 @@ def complete(text):
         return [
             "-f", "--force",
             "-r", "--recursive",
+            "--restore",
             "--trash",
         ]
 
@@ -18,9 +22,9 @@ def complete(text):
 
 
 
-def add_record(filename):
+def add_record(filepath):
     return {
-        "filename": filename,
+        "filepath": filepath,
         "time": str(datetime.datetime.now()),
         "UUID": str(uuid.uuid4())
     }
@@ -41,8 +45,27 @@ def execute(sh, cmd, args):
     if 0 == len(a.PATH):
         return
 
-    if os.path.isdir(a.PATH[0]) and not a.recursive:
-        print(f"The given file is a directory for removing it use -r [ {a.PATH[0]}")
+    record_path = Path(".wolfhound", "trash.json")
+
+    if record_path.exists():
+        with open(record_path, "r") as fd:
+            record = json.loads(fd.read())
     else:
-        print(f"Removing {add_record(a.PATH[0])}")
-        pass
+        record = {
+            "items": []
+        }
+
+    for r in a.PATH:
+        path = Path(r)
+        filepath = str(path.absolute())
+
+        if path.is_dir() and not a.recursive:
+            print(f"The given file is a directory for removing it use -r [ {filepath}")
+            continue
+
+        record["items"].append(add_record(filepath))
+
+    print(record)
+    with open(record_path, "w") as fd:
+        json.dump(record, fd, indent=4)
+        fd.write("\n")
