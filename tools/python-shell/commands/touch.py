@@ -1,8 +1,9 @@
 import os
 import argparse
 
+from pathlib import Path
 
-def execute(cmd, args, session, state, prompt):
+def execute(sh, cmd, args):
     parser = argparse.ArgumentParser(
         prog='touch',
         description='',
@@ -11,10 +12,11 @@ def execute(cmd, args, session, state, prompt):
     parser.add_argument('PATH', nargs=argparse.REMAINDER)
 
     a = parser.parse_args(args)
+    path = Path(a.PATH[0])
 
-    if os.path.exists(a.PATH[0]):
+    if path.exists():
         # TODO update timestamp
         print("File exists...")
     else:
-        with open(a.PATH[0], "w") as _:
+        with open(path, "w") as _:
             pass

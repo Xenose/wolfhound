@@ -3,20 +3,26 @@ import uuid
 import argparse
 import datetime
 
+from common.utils import path_complete
+from prompt_toolkit import print_formatted_text, ANSI
 
 def complete(text):
-    return [
-        "-f", "--force",
-        "-r", "--recursive",
-        "--trash",
-    ]
+    if text.startswith('-'):
+        return [
+            "-f", "--force",
+            "-r", "--recursive",
+            "--trash",
+        ]
+
+    return path_complete(text)
+
 
 
 def add_record(filename):
     return {
         "filename": filename,
         "time": str(datetime.datetime.now()),
-        "UUID": uuid.uuid4()
+        "UUID": str(uuid.uuid4())
     }
 
 
