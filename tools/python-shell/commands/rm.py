@@ -9,6 +9,7 @@ from pathlib import Path
 from common.utils import path_complete
 from prompt_toolkit import print_formatted_text, ANSI
 
+
 def complete(text):
     if text.startswith('-'):
         return [
@@ -19,7 +20,6 @@ def complete(text):
         ]
 
     return path_complete(text)
-
 
 
 def add_record(filepath):
@@ -46,6 +46,10 @@ def execute(sh, cmd, args):
         return
 
     record_path = Path(".wolfhound", "trash.json")
+    trash_path = Path(".wolfhound", "trash")
+
+    if not trash_path.exists():
+        trash_path.mkdir(parents=True, exist_ok=True)
 
     if record_path.exists():
         with open(record_path, "r") as fd:
@@ -63,7 +67,9 @@ def execute(sh, cmd, args):
             print(f"The given file is a directory for removing it use -r [ {filepath}")
             continue
 
-        record["items"].append(add_record(filepath))
+        rec = add_record(filepath)
+        path.rename(Path(trash_path, rec["UUID"]))
+        record["items"].append(rec)
 
     print(record)
     with open(record_path, "w") as fd:
