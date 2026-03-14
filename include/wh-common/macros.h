@@ -17,6 +17,8 @@ WH_C()
 #define wh_ptr_add(_ptr_, _x_) ((void*)(((char*)_ptr_) + _x_))
 #define wh_ptr_sub(_ptr_, _x_) ((void*)(((char*)_ptr_) - _x_))
 
+#define wh_ptr_offset(_ptr_, _x_) ((void*)&(((u8*)_ptr_)[_x_]))
+
 #ifndef __FILENAME__
 	#define __FILENAME__ __FILE__
 #endif
@@ -40,11 +42,18 @@ WH_C()
 #define wh_for(_type_, _index_, _count_) for (_type_ _index_ = 0; (_index_) < (_count_); (_index_)++)
 
 #define WH_INT(_x_) (int[]){ _x_ }
+#define WH_UINT(_x_) (unsigned[]){ _x_ }
 
 #define WH_I8(_x_) (i8[]){ _x_ }
 #define WH_I16(_x_) (i16[]){ _x_ }
 #define WH_I32(_x_) (i32[]){ _x_ }
 #define WH_I64(_x_) (i64[]){ _x_ }
+
+#define WH_U8(_x_) (u8[]){ _x_ }
+#define WH_U16(_x_) (u16[]){ _x_ }
+#define WH_U32(_x_) (u32[]){ _x_ }
+#define WH_U64(_x_) (u64[]){ _x_ }
+
 
 WH_C_END()
 #endif /* _wh_header_common_macros_ */
