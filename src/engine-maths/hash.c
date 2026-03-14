@@ -15,7 +15,6 @@ u32 wh_hash_xx32(wh_hash_xx32_params params) {
 	u32 p4 = 0x27D4EB2FU;  // 0b00100111110101001110101100101111
 	u32 p5 = 0x165667B1U;  // 0b00010110010101100110011110110001
 
-	// step 1
 	u32 a1 = params.seed + p1 + p2;
 	u32 a2 = params.seed + p2;
 	u32 a3 = params.seed;
@@ -25,26 +24,24 @@ u32 wh_hash_xx32(wh_hash_xx32_params params) {
 	u32 a5 = params.seed + p5;
 	u64 bytes = params.buffer.bytes;
 
-	// step 2
 	for (u64 i = 0; 4 <= bytes; bytes -= 4, i++) {
 		a1 = a1 + (((u32*)params.buffer.ptr)[i] * p2);
-		//a1 = a1 <<< 13;
+		a1 = (a1 << 13) | (a1 >> (32 - 13)); // bit rotation
 		a1 = a1 * p1;
 	}
 
-	// step 3
-
-	// step 4
 	a_out += params.buffer.bytes;
 
 	// step 5
 	
 	// step 6
-	a_out = a_out ^ (a_out >> 15);
-	a_out *= p2;
-	a_out = a_out ^ (a_out >> 13);
-	a_out *= p3;
-	a_out = a_out ^ (a_out >> 16);
+	a_out = a_out & (a_out >> 15);
+	a_out *= a_out * p2;
+
+	a_out = a_out & (a_out >> 13);
+	a_out *= a_out * p3;
+
+	a_out = a_out & (a_out >> 16);
 
 	return a_out;
 }
