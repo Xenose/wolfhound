@@ -47,7 +47,7 @@ i64 wh_lz4_decode(wh_lz_params params) {
 	}
 
 	header.flg = *(u8*)wh_ptr_offset(in->ptr, 4);
-	header.db  = *(u8*)wh_ptr_offset(in->ptr, 5);
+	header.db  = *(u8*)wh_ptr_offset(in->ptr, 5) & 0x01110000;
 
 	// Checking LZ4 version
 	if (0x01000000 & ~header.flg) {
@@ -58,6 +58,10 @@ i64 wh_lz4_decode(wh_lz_params params) {
 	if (0x00001000 & header.flg) {
 		header.content_size = *(u64*)wh_ptr_offset(in->ptr, 6);
 		offset += 8;
+
+		if (out->bytes < header.content_size) {
+			goto go_error_exit;
+		}
 	}
 
 	if (0x00000100 & header.flg) {
