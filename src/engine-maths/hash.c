@@ -74,7 +74,7 @@ go_step_4:
 	a_out = a_out ^ (a_out >> 16);
 
 	return a_out;
-}
+} // _wh_hash_xx32
 
 i64 wh_hash_xx64() {
 	return 0;
