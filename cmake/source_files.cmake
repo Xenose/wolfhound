@@ -10,6 +10,7 @@ SET(C_SOURCES
 	"src/engine-data/hashmap.c"
 
 	"src/engine-maths/core.c"
+	"src/engine-maths/hash.c"
 	"src/engine-maths/memory.c"
 
 	"src/engine-sys/atomic_lock.c"
