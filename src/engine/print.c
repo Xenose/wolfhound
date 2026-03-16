@@ -96,7 +96,6 @@ static void _wh_print_fstr_slow(wh_print_data_s* d, char type, double value) {
 	int length = 0;
 
 	if (type == 'e' || type == 'E' || type == 'g' || type == 'G') {
-		length = snprintf(out, sizeof(out), "%.*c", precision, type);
 		length = snprintf(out, sizeof(out), type == 'e' ? "%.*e" : 
 						  type == 'E' ? "%.*E" : 
 						  type == 'g' ? "%.*g" : 

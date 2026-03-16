@@ -82,3 +82,4 @@ go_error_exit:
 i64 wh_lz77(wh_lz_params params) {
 	return 0;
 }
+
