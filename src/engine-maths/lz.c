@@ -78,8 +78,3 @@ i64 wh_lz4_decode(wh_lz_params params) {
 go_error_exit:
 	return -1;
 }
-
-i64 wh_lz77(wh_lz_params params) {
-	return 0;
-}
-

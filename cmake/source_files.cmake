@@ -108,5 +108,6 @@ IF (CXX_ENABLED)
 		"src/engine-cpp/print.cpp"
 		"src/engine-cpp/memory.cpp"
 		"src/engine-cpp/maths/core.cpp"
+		"src/engine-cpp/maths/hash.cpp"
 	)
 ENDIF()

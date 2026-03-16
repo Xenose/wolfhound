@@ -6,6 +6,7 @@
 namespace wh::maths::hash {
 
 extern u32 xx32(const wh_buffer_s& buffer, u32 seed);
+extern u32 xx32(const wh_buffer_s& buffer);
 
 }
 

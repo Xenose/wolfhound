@@ -9,6 +9,7 @@ INCLUDE_DIRECTORIES(SYSTEM "include/")
 ADD_EXECUTABLE(${PROJECT_NAME}
 	"src/print.cpp"
 	#"src/maths/core.c"
+	"src/maths/hash.cpp"
 	"src/memory.cpp"
 	#"src/print.c"
 	"src/maths.cpp"

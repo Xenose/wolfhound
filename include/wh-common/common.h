@@ -49,8 +49,8 @@ typedef struct {
 } wh_rgba_s;
 
 typedef struct {
-	u64 bytes;
 	void* ptr;
+	u64 bytes;
 } wh_buffer_s;
 
 

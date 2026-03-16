@@ -169,9 +169,9 @@ ENDIF()
 # Tests
 IF (CXX_ENABLED)
 	# For now GTEST is not supported on windows.
-	#IF (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-	#	ADD_SUBDIRECTORY(src/unit-gtests-cpp/)
-	#ENDIF()
+	IF (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+		ADD_SUBDIRECTORY(src/unit-gtests-cpp/)
+	ENDIF()
 ENDIF()
 
 IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" AND GENERATE_REPORT)
