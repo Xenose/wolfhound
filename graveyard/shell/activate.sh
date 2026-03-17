@@ -20,7 +20,7 @@ else
 	fi
 fi
 
-if [ -p "tools/shell/activate.sh" ]; then
+if [ -p "graveyard/shell/activate.sh" ]; then
 	echo "Not in the wolfhound directory ABORTING!"
 	return 1
 fi
@@ -38,7 +38,7 @@ fi
 #}
 
 # The tools foolder
-TP="/tools/shell/shell/"
+TP="/graveyard/shell/shell/"
 echo "Setting active directory to [ $WP ]"
 
 # Creating the wolfhound directory

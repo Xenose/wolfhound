@@ -1,7 +1,7 @@
 # floating some ideas
 
 $Global:PRP = Get-Location
-$Global:TP = "tools\shell\"
+$Global:TP = "graveyard\shell\"
 
 Write-Host "Activating Wolfhound PowerShell environment..."
 

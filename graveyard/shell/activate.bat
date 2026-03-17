@@ -1,7 +1,7 @@
 @ECHO OFF
 
 SET PRP=%cd%
-SET TP=tools\shell\
+SET TP=graveyard\shell\
 @ECHO Using path: %PRP%
 
 REM code

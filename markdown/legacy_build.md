@@ -2,18 +2,18 @@
 ### Linux [ POSIX SHELL, BASH, ZSH, DASH ]
 ```sh
 # Note ASH might not work
-. ./tools/cmake/activate.sh
+. ./graveyard/cmake/activate.sh
 ```
 
 ### Windows [ CMD ]
 ```cmd
-call tools\cmake\activate.bat
+call graveyard\cmake\activate.bat
 ```
 
 ### Windows [ Powershell Experimental ]
 ```ps1
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-. .\tools\shell\activate.ps1
+. .\graveyard\shell\activate.ps1
 ```
 
 ### Build
