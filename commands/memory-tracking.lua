@@ -11,9 +11,9 @@ else
 	if (nil ~= args) then
 		for index, value in ipairs(args) do
 			if "on" == value then
-				WH.config.flags.memory.tracking = false
-			elseif "off" == value then
 				WH.config.flags.memory.tracking = true
+			elseif "off" == value then
+				WH.config.flags.memory.tracking = false
 			end
 		end
 	end

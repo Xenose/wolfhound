@@ -1,8 +1,6 @@
 #ifndef _wh_memory_
 #define _wh_memory_
 
-#include<wh-sys/memory.h>
-
 #include<wh-common/common.h>
 #include<wh/types/memory.h>
 #include<wh/params/memory.h>

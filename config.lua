@@ -1,6 +1,6 @@
 
 
-WH.config.heap.size = 1999999
+-- WH.config.heap.size = 1999999
 
 -- logging flags
 WH.config.flags.log_debug		= true

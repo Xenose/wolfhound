@@ -40,11 +40,11 @@ void _wh_render_draw_pixel2(_wh_render_draw_pixel_params params) {
 }*/
 
 void _wh_render_show_sdl2(_wh_render_show_params params) {
-	SDL_RenderPresent(params.ins->graphics.sdl3.renderer);
+	SDL_RenderPresent(params.ins->graphics.sdl2.renderer);
 }
 
 void _wh_render_line_sdl2(_wh_render_line_params params) {
-	SDL_SetRenderDrawColor(params.ins->graphics.sdl3.renderer, params.color.r, params.color.g, params.color.b, params.color.a);
+	SDL_SetRenderDrawColor(params.ins->graphics.sdl2.renderer, params.color.r, params.color.g, params.color.b, params.color.a);
 
 	SDL_FPoint* points = (void*)params.data;
 	params.count /= 2;

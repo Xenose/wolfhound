@@ -80,7 +80,7 @@ extern i64 _wh_hash_simple(_wh_hash_simple_params params);
 			i16: WH_ABS_I16(x), \
 			i32: WH_ABS_I32(x), \
 			i64: WH_ABS_I64(x), \
-			i128: WH_ABS_I64(x), \
+			i128: WH_ABS_I128(x), \
 			u8: (x), \
 			u16: (x), \
 			u32: (x), \

@@ -461,16 +461,16 @@ i8 _wh_heap_delete(void) {
 
 void _wh_memory_tracking(_wh_memory_tracking_params params) {
 	if (0 == params.tracking_off) {
-		_wh_alloc	= &_wh_alloc_tracking;
-		_wh_realloc	= &_wh_realloc_tracking;
-		_wh_free		= &_wh_free_tracking;
-		
-		_wh_disown	= &_wh_disown_tracking;
-	} else {
 		_wh_alloc	= &_wh_alloc_no_tracking;
 		_wh_realloc	= &_wh_realloc_no_tracking;
 		_wh_free		= &_wh_free_no_tracking;
 
 		_wh_disown	= &_wh_disown_no_tracking;
+	} else {
+		_wh_alloc	= &_wh_alloc_tracking;
+		_wh_realloc	= &_wh_realloc_tracking;
+		_wh_free		= &_wh_free_tracking;
+		
+		_wh_disown	= &_wh_disown_tracking;
 	}
 }

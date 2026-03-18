@@ -14,7 +14,12 @@
 i8 _wh_conf_defaults(_wh_init_params* params, wh_config_s* config) {
 	memset(config, 0, sizeof(wh_config_s));
 
-	config->heap.size = 4096 < params->heap_size ? params->heap_size : WH_64MB;
+	config->heap.size =  params->heap_size;
+
+	if (4096 > config->heap.size) {
+		wh_log_warning(("Heap size too small setting to 64MB!"));
+		config->heap.size = WH_64MB;
+	}
 
 	config->flags.log_debug			= 1;
 	config->flags.log_info			= 1;
@@ -24,6 +29,8 @@ i8 _wh_conf_defaults(_wh_init_params* params, wh_config_s* config) {
 	config->flags.log_critical		= 1;
 	config->flags.log_alert			= 1;
 	config->flags.log_emergency	= 1;
+
+	config->flags.memory_tracking = true;
 
 	return 0;
 }
@@ -57,6 +64,8 @@ wh_config_s _wh_config_load(_wh_init_params* params, wh_config_s* config) {
 	lua_State* ls = nullptr;
 
 	wh_log_debug(("Starting new lua_State"));
+	_wh_conf_defaults(params, config);
+
 	ls = luaL_newstate();
 	_wh_lua_expose_api(ls);
 
@@ -80,7 +89,6 @@ wh_config_s _wh_config_load(_wh_init_params* params, wh_config_s* config) {
 	);
 
 	_wh_args_parser_init();
-	_wh_conf_defaults(params, config);
 	_config_lua_file(params, config, ls);
 	wh_args_parse(ls, params->args.count, params->args.ptr, config);
 
