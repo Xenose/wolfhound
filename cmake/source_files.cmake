@@ -92,6 +92,8 @@ SET(NT_SOURCES
 
 
 IF(NASM_ENABLED)
+	MESSAGE("${LOG_PREFIX} NASM soruces added!")
+
 	SET(ASM_SOURCE
 	)
 

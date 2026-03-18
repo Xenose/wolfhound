@@ -299,15 +299,16 @@ class builder_c:
             link_name = f"build/bin/{link_name}-{p}-{self.compiler}-{a}-{self.build_system}"
             link_name = link_name.lower().replace(" ", "_")
 
-            try:
-                os.symlink(full_path, link_name)
-                print(f"Link created: {full_path} --> {link_name}")
-            except FileExistsError:
-                print(f"Link exists : {full_path} --> {link_name}")
+            if os.name != os.name:
+                try:
+                    os.symlink(full_path, link_name)
+                    print(f"Link created: {full_path} --> {link_name}")
+                except FileExistsError:
+                    print(f"Link exists : {full_path} --> {link_name}")
 
-            try:
-                os.remove(f"{self.home}/compile_commands.json")
-            except OSError:
-                pass
+                try:
+                    os.remove(f"{self.home}/compile_commands.json")
+                except OSError:
+                    pass
 
-            os.symlink(f"{self.home}/build/{target}/compile_commands.json", f"{self.home}/compile_commands.json")
+                os.symlink(f"{self.home}/build/{target}/compile_commands.json", f"{self.home}/compile_commands.json")
