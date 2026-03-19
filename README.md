@@ -13,6 +13,12 @@ have a stable engine around 2 to 3 year mark.
 ```sh
 # Activates the python build shell.
 python3 tools/shell/python/main.py
+
+# Alternative to above on Linux, if ash is the shell you need to be in the root of the project.
+./tools/shell.sh
+
+clang
+build
 ```
 
 ### Commands ( NOT POSIX : Experimental )
@@ -69,9 +75,10 @@ cmake --build "build/some_path"
 | GCC    |         | 0x01 | WH_EPF(breaks)                                               | Main compiler outside Windows.            |
 | ICX    |         | 0x02 |                                                              | Testing as a 3rd tier 0x01 compiler       |
 | Zig    |         | 0x02 | Unknown                                                      | Testing viability.                        |
-| TCC    |         | 0x03 | No thread local, No 128 bit integers.                        |                                           |
+| TCC    |         | 0x03 | No thread local, No 128 bit integers.                        | Fast very fast.                           |
 | MSVC   |         | 0x03 | No 128 bit integers.                                         | C++ compiler masking as a C compiler...   |
 | MinGW  |         | 0x03 | A pain to setup.                                             |                                           |
+| Kefir  | 0.5.0   | 0x03 | No 128 bit intefers.                                         |                                           |
 
 **Tiers**
 * Tier 0x01 :: Main compilers and used for release builds.

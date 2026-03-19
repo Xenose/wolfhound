@@ -17,7 +17,7 @@
  * | i128     | int128_t   |                                      |
  */
 
-#if defined(_MSC_VER) || defined(__TINYC__)
+#if defined(_MSC_VER) || defined(__TINYC__) || defined(__KEFIR__)
 	typedef int64_t	int128_t;
 	typedef uint64_t	uint128_t;
 #else

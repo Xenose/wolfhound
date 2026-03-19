@@ -70,7 +70,7 @@ ELSE()
 		ENDIF()
 
 		# checking if we have Fortran on the system
-		IF(CMAKE_C_COMPILER_ID MATCHES "TinyCC")
+		IF(CMAKE_C_COMPILER_ID MATCHES "TinyCC" OR COMPILER_KEFIR)
 			MESSAGE(WARNING "${LOG_PREFIX} TCC -> Fortran turning off.")
 
 			SET(CXX_ENABLED FALSE)

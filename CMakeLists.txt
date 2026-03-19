@@ -15,6 +15,8 @@ OPTION(BUILD_EXAMPLES "Builds the example projects" True)
 OPTION(NO_SDL3 "Disable SDL3" False)
 OPTION(NO_SDL2 "Disable SDL2" False)
 
+OPTION(COMPILER_KEFIR "Kefir doesn't have a CMAKE ID, so this is a work around." False)
+
 # We want to use Fortran 95 so we select it
 SET(CMAKE_Fortran_STANDARD 95)
 
@@ -77,6 +79,14 @@ TARGET_INCLUDE_DIRECTORIES(${APP_NAME} PUBLIC ${INCLUDE_PATHS})
 # ------------------------------------------------------------------------------------
 #   Compiler definition section
 # ------------------------------------------------------------------------------------
+IF(COMPILER_KEFIR)
+	MESSAGE(STATUS "Compiler set to Kefir")
+
+	# Manually forcing the ID here allows you to use $<C_COMPILER_ID:Kefir> later
+	SET(CMAKE_C_COMPILER_ID "Kefir" CACHE STRING "Compiler ID" FORCE)
+	TARGET_COMPILE_DEFINITIONS(${APP_NAME} PUBLIC __KEFIR__=1)
+ENDIF()
+
 FOREACH(wh_def IN LISTS WH_DEFS)
 	MESSAGE("Defining ${wh_def}")
 	TARGET_COMPILE_DEFINITIONS(${APP_NAME} PUBLIC ${wh_def}=1)

@@ -4,19 +4,21 @@
 #define WH_SYS_UNIX		0x01L
 #define WH_SYS_POSIX		0x02L
 #define WH_SYS_BSD		0x04L 
-#define WH_SYS_GCC		0x08L
-#define WH_SYS_CLANG		0x10L
-#define WH_SYS_MSVC		0x20L
-#define WH_SYS_MINGW		0x40L
-#define WH_SYS_TCC		0x80L
 
-#define WH_SYS_LINUX		0x0100L
-#define WH_SYS_FREEBSD	0x0200L
-#define WH_SYS_MACOS		0x0400L
-#define WH_SYS_SOLARIS	0x0800L
+#define WH_SYS_GCC		0x008L
+#define WH_SYS_CLANG		0x010L
+#define WH_SYS_MSVC		0x020L
+#define WH_SYS_MINGW		0x040L
+#define WH_SYS_TCC		0x080L
+#define WH_SYS_KEFIR		0x100L
 
-#define WH_SYS_WINDOWS	0x1000L
-#define WH_SYS_BEOS		0x2000L
+#define WH_SYS_LINUX		0x0200L
+#define WH_SYS_FREEBSD	0x0400L
+#define WH_SYS_MACOS		0x0800L
+#define WH_SYS_SOLARIS	0x1000L
+
+#define WH_SYS_WINDOWS	0x2000L
+#define WH_SYS_BEOS		0x4000L
 
 #if defined(__linux__)
 	#define WH_SYSTEM_OS (WH_SYS_LINUX | WH_SYS_UNIX | WH_SYS_POSIX)
@@ -40,6 +42,8 @@
 
 #ifdef __clang__
 	#define WH_SYSTEM (WH_SYSTEM_OS | WH_SYS_CLANG)
+#elif defined(__KEFIR__)
+	#define WH_SYSTEM (WH_SYSTEM_OS | WH_SYS_KEFIR)
 #elif defined(__TINYC__)
 	#define WH_SYSTEM (WH_SYSTEM_OS | WH_SYS_TCC)
 #elif defined(__MINGW32__)

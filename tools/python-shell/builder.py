@@ -87,6 +87,12 @@ class builder_c:
         self.set_build_system(a, "make")
         self.set_compilers("tcc", "tcc")
 
+    def kefir(self, args):
+        a = self.parse_args(args)
+
+        self.set_build_system(a, "make")
+        self.set_compilers("kefir", "kefir")
+
     def zig(self, args):
         a = self.parse_args(args)
         self.set_build_system(a, "ninja")
@@ -191,6 +197,9 @@ class builder_c:
         out = []
 
         out.extend([f"-DCMAKE_C_COMPILER={self.cc}"])
+
+        if "kefir" in self.compiler:
+            out.extend(["-DCOMPILER_KEFIR=true"])
 
         if self.cxx is not None:
             out.extend([f"-DCMAKE_CXX_COMPILER={self.cxx}"])
@@ -299,7 +308,7 @@ class builder_c:
             link_name = f"build/bin/{link_name}-{p}-{self.compiler}-{a}-{self.build_system}"
             link_name = link_name.lower().replace(" ", "_")
 
-            if os.name != os.name:
+            if "nt" != os.name:
                 try:
                     os.symlink(full_path, link_name)
                     print(f"Link created: {full_path} --> {link_name}")
