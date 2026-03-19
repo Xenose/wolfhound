@@ -78,7 +78,7 @@ cmake --build "build/some_path"
 | TCC    |         | 0x03 | No thread local, No 128 bit integers.                        | Fast very fast.                           |
 | MSVC   |         | 0x03 | No 128 bit integers.                                         | C++ compiler masking as a C compiler...   |
 | MinGW  |         | 0x03 | A pain to setup.                                             |                                           |
-| Kefir  | 0.5.0   | 0x03 | No 128 bit intefers.                                         |                                           |
+| Kefir  | 0.5.0   | 0x03 | No 128 bit integers.                                         |                                           |
 
 **Tiers**
 * Tier 0x01 :: Main compilers and used for release builds.
@@ -144,11 +144,11 @@ In AES system :: action(logic) -> Entity -> Data
 
 |  Language       | File Count | Lines of Code | Percentage |
 | --------------- | ---------- | ------------- | ---------- |
-| C               | 205        | 7379          | 74.28%     |
-| Python          | 31         | 924           | 9.30%      |
-| CMake           | 24         | 556           | 5.60%      |
-| C++             | 20         | 495           | 4.98%      |
-| Markdown        | 4          | 234           | 2.36%      |
+| C               | 205        | 7382          | 74.11%     |
+| Python          | 32         | 937           | 9.41%      |
+| CMake           | 24         | 562           | 5.64%      |
+| C++             | 20         | 495           | 4.97%      |
+| Markdown        | 4          | 239           | 2.40%      |
 | Lua             | 13         | 173           | 1.74%      |
 | Dockerfile      | 4          | 64            | 0.64%      |
 | Bourne Shell    | 4          | 50            | 0.50%      |
@@ -156,7 +156,7 @@ In AES system :: action(logic) -> Entity -> Data
 | GLSL            | 1          | 13            | 0.13%      |
 | Assembly        | 2          | 11            | 0.11%      |
 | INI             | 1          | 3             | 0.03%      |
-| Summary         | 310        | 9934          | 100.00%    |
+| Summary         | 311        | 9961          | 100.00%    |
 
 <!--python-stats-end-->
 

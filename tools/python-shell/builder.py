@@ -191,7 +191,8 @@ class builder_c:
         if cxx is not None:
             self.cxx = shutil.which(cxx)
 
-        print(f"compiler set to [ {self.cc} ] build system [ {self.build_system} ]")
+        print("compiler set to [ {} ] build system [ {} ]".format(
+            self.cc, self.build_system))
 
     def compilers(self):
         out = []
