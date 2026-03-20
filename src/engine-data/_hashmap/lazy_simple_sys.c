@@ -6,6 +6,13 @@
 #include<wh/debug/logger.h>
 #include<wh-maths/core.h>
 
+/*
+ * Lazy hashmap is designed to be a collision free hashmap,
+ * meaning on collision we resize this might not be the best
+ * in all cases but very useful in some cases.
+ *
+ * Look up speed o(1), realloc speed o(n).
+ */
 static void* _reallocate_lazy_simple_sys(wh_hashmap_s* map) {
 	wh_hashmap_slot_string_s* slots = 0; 
 
@@ -52,5 +59,39 @@ go_error_exit:
 
 static i8 _insert_lazy_simple_sys(wh_hashmap_s* map, void* key, void* value) {
 	i64 hash = wh_hash_simple(key, map->slot_count);
+	wh_hashmap_slot_string_s* slots = map->slots;
+
+	for (u32 i = 0; i < 3 && nullptr != slots[hash].key; i++) {
+		_reallocate_lazy_simple_sys(map);
+		hash = wh_hash_simple(key, map->slot_count);
+	}
+
+	if (nullptr != slots[hash].key) {
+		goto go_error_exit;
+	}
+
+	slots[hash].key = key;
+	memcpy(slots[hash].data, value, map->type_size);
+
+	return 0;
+go_error_exit:
+	return -1;
+}
+
+static i8 _delete_lazy_simple_sys(wh_hashmap_s* map, void* key) {
+	i64 hash = wh_hash_simple(key, map->slot_count);
+	wh_hashmap_slot_string_s* slots = map->slots;
+	
+	slots[hash].key = nullptr;
+	return 0;
+}
+
+static void* _get_lazy_simple_sys(wh_hashmap_s* map, void* key) {
+	i64 hash = wh_hash_simple(key, map->slot_count);
+
+	return nullptr;
+}
+
+i8 _wh_hashmap_foreach(wh_hashmap_s* map) {
 	return 0;
 }

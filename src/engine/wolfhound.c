@@ -39,8 +39,7 @@ static i8 _wh_init_critical(_wh_init_params* params) {
 		goto go_error_exit;
 	}
 
-	// we need to copy the instance from the stack to the
-	// heap.
+	// we need to copy the instance from the stack to the heap.
 	memcpy(params->ins[0], &tmp, sizeof(wh_instance_s));
 	memcpy(&params->ins[0]->config, &params->config, sizeof(wh_config_s));
 
@@ -50,8 +49,6 @@ static i8 _wh_init_critical(_wh_init_params* params) {
 	params->grap->mode_window = params->mode_window;
 	params->grap->mode_graphics = params->mode_graphics;
 
-	// Unused remove
-	//wh_log_init(params->mode_graphics);
 	wh_log_info(("Done loading critical section!"));
 
 	return 0;
