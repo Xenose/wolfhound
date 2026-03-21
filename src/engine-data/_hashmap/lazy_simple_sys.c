@@ -92,6 +92,6 @@ static void* _get_lazy_simple_sys(wh_hashmap_s* map, void* key) {
 	return nullptr;
 }
 
-i8 _wh_hashmap_foreach(wh_hashmap_s* map) {
+i8 _wh_lazy_simple_foreach(wh_hashmap_s* map) {
 	return 0;
 }
