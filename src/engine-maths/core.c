@@ -41,15 +41,10 @@ u64 _wh_uintpos(_wh_uintpos_params params) {
 }
 
 i64 _wh_intpos(_wh_intpos_params params) {
-#ifdef WH_USE_FORTRAN
-	return _wh_fortran_intpos64(params.base, params.value);
-#else
 	return _wh_c_intpos(params);
-#endif
 }
 
 i128 _wh_intpos128(_wh_intpos128_params params) {
-	// TODO improve the C code
 	i128 out = 0;
 
 	if (0 == params.base) {
