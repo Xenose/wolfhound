@@ -110,16 +110,16 @@ In AES system :: action(logic) -> Entity -> Data
 
 
 ## Languages
-| Name        | Version | Use                                              |
-| ----------- | ------- | ------------------------------------------------ |
-| C           | 23      | Engine core.                                     |
-| Fortran     | 95      | Optional maths functions.                        |
-| C++         | 23      | C++ wrapper for the C code and gtesting.         |
-| Lua         | N/A     | Configuration, Command Line, data.               |
-| Shell       | N/A     | Tools.                                           |
-| Python      | 3       | Tools.                                           |
-| DOS Batch   | N/A     | Build tools.                                     |
-| Dockerfiles | N/A     | Temporary testing environments.                  |
+| Name        | Version | Use                                                     |
+| ----------- | ------- | ------------------------------------------------------- |
+| C           | 23      | Engine core.                                            |
+| Fortran     | 95      | Optional maths functions(dropped as no unsigned types). |
+| C++         | 23      | C++ wrapper for the C code and gtesting.                |
+| Lua         | N/A     | Configuration, Command Line, data.                      |
+| Shell       | N/A     | Tools.                                                  |
+| Python      | 3       | Tools.                                                  |
+| DOS Batch   | N/A     | Build tools.                                            |
+| Dockerfiles | N/A     | Temporary testing environments.                         |
 
 ## Libraries
 
@@ -144,19 +144,18 @@ In AES system :: action(logic) -> Entity -> Data
 
 |  Language       | File Count | Lines of Code | Percentage |
 | --------------- | ---------- | ------------- | ---------- |
-| C               | 205        | 7407          | 74.17%     |
-| Python          | 32         | 938           | 9.39%      |
-| CMake           | 24         | 562           | 5.63%      |
-| C++             | 20         | 495           | 4.96%      |
-| Markdown        | 4          | 239           | 2.39%      |
-| Lua             | 13         | 173           | 1.73%      |
+| C               | 205        | 7403          | 74.48%     |
+| Python          | 32         | 938           | 9.44%      |
+| CMake           | 24         | 550           | 5.53%      |
+| C++             | 20         | 495           | 4.98%      |
+| Markdown        | 4          | 239           | 2.40%      |
+| Lua             | 13         | 173           | 1.74%      |
 | Dockerfile      | 4          | 64            | 0.64%      |
 | Bourne Shell    | 4          | 50            | 0.50%      |
-| Fortran 95      | 1          | 32            | 0.32%      |
 | GLSL            | 1          | 13            | 0.13%      |
 | Assembly        | 2          | 11            | 0.11%      |
 | INI             | 1          | 3             | 0.03%      |
-| Summary         | 311        | 9987          | 100.00%    |
+| Summary         | 310        | 9939          | 100.00%    |
 
 <!--python-stats-end-->
 
