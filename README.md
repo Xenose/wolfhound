@@ -62,7 +62,7 @@ cmake --build "build/some_path"
 | Android(Termux) | Android | YES    | UNSTABLE      |                                         |
 | FreeBSD         | BSD     | YES    | UNSTABLE      |                                         |
 | OpenIndiana     | Solaris | YES    | UNSTABLE      |                                         |
-| Haiku           | Haiku   | NO     | PLANNED       |                                         |
+| Haiku           | Haiku   | NO     | UNSTABLE      |                                         |
 | Aros            | Amiga   | NO     | PLANNED       |                                         |
 | MacOS           | Darwin  | NO     | EXPERIMENTING | No Plans for full support.              |
 **Noted UNSTABLE means it can break and Linux is probably the most stable**
