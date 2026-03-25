@@ -170,4 +170,5 @@ In AES system :: action(logic) -> Entity -> Data
 | FreeBSD      | X64          | I5 6300u      | 32GB | N/A            | T470                               |
 | Windows 11   | X64          | Ryzen 2200g   | 16GB | Radeon WX6100  |                                    |
 | OpenIndiana  | X64          | VM            | N/A  | N/A            | Hard to test on physical machines. |
+| Haiku        | X64          | I3-2120T      | 16GB | N/A            | ThinkCenter                        |
 
