@@ -10,7 +10,7 @@ static void* (*_reallocate[])(wh_hashmap_s* map) = {
 
 static i8 (*_delete[])(wh_hashmap_s* map, void* value) = {
 	nullptr,
-	nullptr,
+	_delete_lazy_simple_sys,
 };
 
 static i8 (*_insert[])(wh_hashmap_s* map, void* key, void* value) = {
@@ -20,7 +20,7 @@ static i8 (*_insert[])(wh_hashmap_s* map, void* key, void* value) = {
 
 static void* (*_get[])(wh_hashmap_s* map, void* key) = {
 	nullptr,
-	nullptr,
+	_get_lazy_simple_sys,
 };
 
 void* _wh_hashmap_search(wh_hashmap_s* map, void* value) {
