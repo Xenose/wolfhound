@@ -7,7 +7,8 @@
 #include<wh/lua/api/maths.h>
 
 i8 _wh_lua_expose_api(lua_State* ls) {
-	luaL_openlibs(ls);
+	// TODO look into why this is broken
+	// luaL_openlibs(ls);
 
 	wh_lua_add_values(
 		ls,

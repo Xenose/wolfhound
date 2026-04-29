@@ -56,13 +56,15 @@ typedef struct {
 
 extern wh_hashmap_s _wh_hashmap_init(_wh_hashmap_init_params params);
 
+extern i8 _wh_hashmap_insert(wh_hashmap_s* map, void* key, void* value);
+
 #define wh_hashmap_init()
 #define wh_hashmap_clear()
 #define wh_hashmap_resize()
 #define wh_hashmap_destroy()
 
 #define wh_hashmap_remove()
-#define wh_hashmap_insert()
+#define wh_hashmap_insert() _wh_hashmap_insert(wh_hashmap_s* map, void* key, void* value)
 #define wh_hashmap_get()
 
 #define wh_hashmap_foreach()

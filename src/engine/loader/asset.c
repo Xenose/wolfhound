@@ -19,7 +19,7 @@ i64 _wh_assets_load_inner(lua_State* ls, const char* path) {
 	char p[1024] = { 0 };
 	wh_dir_s dir = wh_read_dir(nullptr, path);
 
-	wh_for(i64, i, dir.count) {
+	wh_for(u64, i, dir.count) {
 		wh_asset_s asset = { 0 };
 		wh_print(("%s\n"), dir.entries[i].name);
 
@@ -71,7 +71,6 @@ go_error_exit:
 }
 i64 _wh_assets_load(const char* path) {
 	lua_State* ls = luaL_newstate();
-	luaL_openlibs(ls);
 	
 	_wh_lua_expose_api(ls);
 	_wh_assets_load_inner(ls, path);
