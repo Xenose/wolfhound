@@ -28,8 +28,8 @@ void* _wh_hashmap_search(wh_hashmap_s* map, void* value) {
 	return nullptr;
 }
 
-i8 _wh_hashmap_insert(wh_hashmap_s* map, void* key, void* value) {
-	i64 func_index = map->stype - WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_WOLF;
+i8 _wh_hashmap_insert(_wh_hashmap_insert_params params) {
+	i64 func_index = params.map->stype - WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_WOLF;
 	return _insert[func_index](map, key, value);
 }
 

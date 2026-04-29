@@ -54,9 +54,15 @@ typedef struct {
 	u64 init_size;
 } _wh_hashmap_init_params;
 
+typedef struct {
+	wh_hashmap_s* map;
+	void* key;
+	void* value;
+} _wh_hashmap_insert_params;
+
 extern wh_hashmap_s _wh_hashmap_init(_wh_hashmap_init_params params);
 
-extern i8 _wh_hashmap_insert(wh_hashmap_s* map, void* key, void* value);
+extern i8 _wh_hashmap_insert(_wh_hashmap_insert_params params);
 
 #define wh_hashmap_init()
 #define wh_hashmap_clear()
@@ -64,7 +70,7 @@ extern i8 _wh_hashmap_insert(wh_hashmap_s* map, void* key, void* value);
 #define wh_hashmap_destroy()
 
 #define wh_hashmap_remove()
-#define wh_hashmap_insert() _wh_hashmap_insert(wh_hashmap_s* map, void* key, void* value)
+#define wh_hashmap_insert(...) _wh_hashmap_insert((_wh_hashmap_insert_params){ __VA_ARGS__ })
 #define wh_hashmap_get()
 
 #define wh_hashmap_foreach()

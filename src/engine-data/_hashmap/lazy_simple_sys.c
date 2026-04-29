@@ -57,21 +57,21 @@ go_error_exit:
 	return nullptr;
 }
 
-static i8 _insert_lazy_simple_sys(wh_hashmap_s* map, void* key, void* value) {
-	i64 hash = wh_hash_simple(key, map->slot_count);
-	wh_hashmap_slot_string_s* slots = map->slots;
+static i8 _insert_lazy_simple_sys(_wh_hashmap_insert_params* params) {
+	i64 hash = wh_hash_simple(params->key, (i64)params->map->slot_count);
+	wh_hashmap_slot_string_s* slots = params->map->slots;
 
 	for (u32 i = 0; i < 3 && nullptr != slots[hash].key; i++) {
-		_reallocate_lazy_simple_sys(map);
-		hash = wh_hash_simple(key, map->slot_count);
+		_reallocate_lazy_simple_sys(params->map);
+		hash = wh_hash_simple(params->key, (i64)params->map->slot_count);
 	}
 
 	if (nullptr != slots[hash].key) {
 		goto go_error_exit;
 	}
 
-	slots[hash].key = key;
-	memcpy(slots[hash].data, value, map->type_size);
+	slots[hash].key = params->key;
+	memcpy(slots[hash].data, params->value, params->map->type_size);
 
 	return 0;
 go_error_exit:
@@ -79,7 +79,7 @@ go_error_exit:
 }
 
 static i8 _delete_lazy_simple_sys(wh_hashmap_s* map, void* key) {
-	i64 hash = wh_hash_simple(key, map->slot_count);
+	i64 hash = wh_hash_simple(key, (i64)map->slot_count);
 	wh_hashmap_slot_string_s* slots = map->slots;
 	
 	slots[hash].key = nullptr;
@@ -87,7 +87,7 @@ static i8 _delete_lazy_simple_sys(wh_hashmap_s* map, void* key) {
 }
 
 static void* _get_lazy_simple_sys(wh_hashmap_s* map, void* key) {
-	i64 hash = wh_hash_simple(key, map->slot_count);
+	i64 hash = wh_hash_simple(key, (i64)map->slot_count);
 
 	return nullptr;
 }
