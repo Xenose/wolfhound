@@ -49,6 +49,7 @@ rules.ninja
 **.obsidian/
 vgcore.*
 perf.data
+perf.data.old
 
 # Ignore by-product directories
 **/CMakeFiles/
