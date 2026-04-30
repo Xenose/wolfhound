@@ -61,6 +61,10 @@ static i8 _insert_lazy_simple_sys(_wh_hashmap_insert_params* params) {
 	i64 hash = wh_hash_simple(params->key, (i64)params->map->slot_count);
 	wh_hashmap_slot_string_s* slots = params->map->slots;
 
+	if (nullptr == slots) {
+		_reallocate_lazy_simple_sys(params->map);
+	}
+
 	for (u32 i = 0; i < 3 && nullptr != slots[hash].key; i++) {
 		_reallocate_lazy_simple_sys(params->map);
 		hash = wh_hash_simple(params->key, (i64)params->map->slot_count);
