@@ -7,5 +7,7 @@ int main(int arc, char* const* arv) {
 
 	wh_signalar_init(arv[0]);
 
+	wh_hashmap_insert(&l, "test", WH_INT(10));
+
 	return 0;
 }

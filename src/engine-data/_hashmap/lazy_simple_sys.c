@@ -65,6 +65,7 @@ static i8 _insert_lazy_simple_sys(_wh_hashmap_insert_params* params) {
 		_reallocate_lazy_simple_sys(params->map);
 		hash = wh_hash_simple(params->key, (i64)params->map->slot_count);
 	}
+	wh_log_error(("Hello!"));
 
 	if (nullptr != slots[hash].key) {
 		goto go_error_exit;
