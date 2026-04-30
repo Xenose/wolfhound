@@ -14,13 +14,13 @@
  * Look up speed o(1), realloc speed o(n).
  */
 static void* _reallocate_lazy_simple_sys(wh_hashmap_s* map) {
-	wh_hashmap_slot_string_s* slots = 0; 
+	wh_hashmap_slot_string_s* slots = nullptr; 
+	wh_hashmap_slot_string_s* new_slots = nullptr;
 
 	u64 hash_index = 0;
 	u64 mem_needed = 0;
 	u64 new_alloc_size = 0;
 	u64 new_slot_count = 0;
-	wh_hashmap_slot_string_s* new_slots = nullptr;
 
 go_retry_resize:
 	// Calculating the needed memory and aligning it to page size and the new slot count.
@@ -53,30 +53,36 @@ go_retry_resize:
 		}
 	}
 
+	map->slots = new_slots;
+	map->slot_count = new_slot_count;
+	wh_log_debug(("New allocation assigned! [ %u ] [ %i ]"), map->slots, map->slot_count);
 go_error_exit:
 	return nullptr;
 }
 
 static i8 _insert_lazy_simple_sys(_wh_hashmap_insert_params* params) {
-	i64 hash = wh_hash_simple(params->key, (i64)params->map->slot_count);
+	i64 hash = 0;
 	wh_hashmap_slot_string_s* slots = params->map->slots;
 
 	if (nullptr == slots) {
 		_reallocate_lazy_simple_sys(params->map);
+		slots = params->map->slots;
 	}
+
+	hash = wh_hash_simple(params->key, (i64)params->map->slot_count);
 
 	for (u32 i = 0; i < 3 && nullptr != slots[hash].key; i++) {
 		_reallocate_lazy_simple_sys(params->map);
 		hash = wh_hash_simple(params->key, (i64)params->map->slot_count);
 	}
-	wh_log_error(("Hello!"));
 
 	if (nullptr != slots[hash].key) {
 		goto go_error_exit;
 	}
 
 	slots[hash].key = params->key;
-	memcpy(slots[hash].data, params->value, params->map->type_size);
+	wh_log_debug(("New allocation assigned! [ %u ] [ hash : %i ] [ count : %i ]"), slots, hash, params->map->slot_count);
+	memcpy(&slots[hash], params->value, params->map->type_size);
 
 	return 0;
 go_error_exit:
