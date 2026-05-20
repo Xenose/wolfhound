@@ -99,8 +99,9 @@ static i8 _delete_lazy_simple_sys(wh_hashmap_s* map, void* key) {
 
 static void* _get_lazy_simple_sys(wh_hashmap_s* map, void* key) {
 	i64 hash = wh_hash_simple(key, (i64)map->slot_count);
+	wh_hashmap_slot_string_s* slots = map->slots;
 
-	return nullptr;
+	return &slots[hash].data;
 }
 
 i8 _wh_lazy_simple_foreach(wh_hashmap_s* map) {
