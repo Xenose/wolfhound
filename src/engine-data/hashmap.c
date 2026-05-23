@@ -23,6 +23,11 @@ static void* (*_get[])(wh_hashmap_s* map, void* key) = {
 	_get_lazy_simple_sys,
 };
 
+static i8 (*_foreach[])(wh_hashmap_s* map, void (*func)(void* value)) = {
+	nullptr,
+	_wh_lazy_simple_foreach,
+};
+
 void* _wh_hashmap_search(wh_hashmap_s* map, void* value) {
 	i64 func_index = map->stype - WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_WOLF;
 	return nullptr;
@@ -43,9 +48,10 @@ void* _wh_hashmap_delete(wh_hashmap_s* map, void* key) {
 	return nullptr;
 }
 
-void* _wh_hashmap_foreach(wh_hashmap_s* map) {
+i8 _wh_hashmap_foreach(wh_hashmap_s* map, void (*func)(void* value)) {
 	i64 func_index = map->stype - WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_WOLF;
-	return nullptr;
+	wh_print(("hello!\n"));
+	return _foreach[func_index](map, func);
 }
 
 wh_hashmap_s _wh_hashmap_init(_wh_hashmap_init_params params) {

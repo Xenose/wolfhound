@@ -2,6 +2,10 @@
 #include<wh/debug/logger.h>
 #include<wh/debug/signalar.h>
 
+void hash_foreach(void* value) {
+	wh_log_debug(("--> %i"), *((int*)value));
+}
+
 int main(int arc, char* const* arv) {
 	wh_hashmap_s l = wh_hashmap_init_mmap_lazy(sizeof(int));
 
@@ -16,6 +20,8 @@ int main(int arc, char* const* arv) {
 	wh_log_debug(("%i"), *(int*)wh_hashmap_get(&l, "test"));
 	wh_log_debug(("%i"), *(int*)wh_hashmap_get(&l, "test2"));
 	wh_log_debug(("%i"), *(int*)wh_hashmap_get(&l, "test3"));
-	wh_log_debug(("%i"), *(int*)wh_hashmap_get(&l, "test4"));
+	wh_log_debug(("%i\n"), *(int*)wh_hashmap_get(&l, "test4"));
+
+	_wh_hashmap_foreach(&l, &hash_foreach);
 	return 0;
 }

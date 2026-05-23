@@ -70,6 +70,7 @@ extern wh_hashmap_s _wh_hashmap_init(_wh_hashmap_init_params params);
 
 extern i8 _wh_hashmap_insert(_wh_hashmap_insert_params params);
 extern void* _wh_hashmap_get(_wh_hashmap_get_params params);
+extern i8 _wh_hashmap_foreach(wh_hashmap_s* map, void (*func)(void* value));
 
 #define wh_hashmap_init()
 #define wh_hashmap_clear()

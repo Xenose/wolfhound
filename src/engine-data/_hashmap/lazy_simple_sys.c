@@ -104,6 +104,14 @@ static void* _get_lazy_simple_sys(wh_hashmap_s* map, void* key) {
 	return &slots[hash].data;
 }
 
-i8 _wh_lazy_simple_foreach(wh_hashmap_s* map) {
+i8 _wh_lazy_simple_foreach(wh_hashmap_s* map, void (*func)(void* value)) {
+	wh_hashmap_slot_string_s* slots = map->slots;
+
+	for (u64 i = 0; i < map->slot_count; i++) {
+		if (nullptr != slots[i].key) {
+			func(&slots[i].data);
+		}
+	}
+
 	return 0;
 }
