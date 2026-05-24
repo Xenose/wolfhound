@@ -1,3 +1,4 @@
+import os
 import argparse
 import subprocess
 
@@ -15,10 +16,12 @@ def execute(sh, cmd, args):
         description='runs one of the compiled executables.',
         epilog='Text')
 
+    path = os.getcwd()
+
     parser.add_argument('BIN', nargs=argparse.REMAINDER)
 
     a = parser.parse_args(args)
-    p = Path(sh.session["home"], a.BIN[0])
+    p = Path(sh.session["home"], path, a.BIN[0])
 
     # Running the sub command
     pfd = subprocess.Popen(p, stdout=subprocess.PIPE)

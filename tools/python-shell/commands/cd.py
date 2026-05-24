@@ -4,6 +4,7 @@ import argparse
 from pathlib import Path
 from common.utils import path_complete
 
+
 def complete(text=None):
     if text.startswith('-'):
         return [
@@ -28,7 +29,7 @@ def execute(sh, cmd, args):
         print(f"cd: not a directory: {path}")
         return
 
-    if 0 < len(path):
+    if 0 < len(path.name):
         os.chdir(path)
     else:
         os.chdir(sh.session["home"])
