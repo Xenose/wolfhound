@@ -25,9 +25,9 @@ def long(files, dirs, x):
     if x.is_dir():
         dirs.append(f"\033[91m{x.name}\033[0m")
     elif x.is_symlink():
-        files.append(f"\033[92m{x.name:30}\033[0m {user_name}:{group_name:10}")
+        files.append(f"\033[92m{x.name:50}\033[0m {user_name}::{group_name:10}")
     elif x.is_file():
-        files.append(f"{x.name:30} {user_name}:{group_name:10} {stat.st_size}")
+        files.append(f"{x.name:50} {user_name}::{group_name:10} {stat.st_size}")
 
 
 def short(files, dirs, x):

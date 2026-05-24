@@ -69,7 +69,10 @@ class shell_c:
 
         self.modules = []
         self.ps = PromptSession()
-        self.pc = file_completer_c(dir="tools/python-shell/commands")
+        self.pc = file_completer_c(
+            dir=f"{self.session["home"]}/tools/python-shell/commands"
+        )
+
         self.dispatch("clear", None)
         self.dispatch("welcome", None)
         self.user = getpass.getuser()

@@ -241,7 +241,7 @@ class builder_c:
     def configure(self, path, args, config_opt):
         config = [
             "cmake",
-            "-S", ".",
+            "-S", f"{self.home}",
             "-B", path,
             "-G", self.build_system,
             f"-DNO_SDL3={args.no_sdl3}",
@@ -285,7 +285,7 @@ class builder_c:
             self.compiler, self.build_system, p, a
         ).lower().replace(" ", "-")
 
-        path = f"build/{target}"
+        path = f"{self.home}/build/{target}"
 
         print("Setting up temporary enviroment...")
         os.makedirs(path, exist_ok=True)
@@ -301,7 +301,7 @@ class builder_c:
             check=True
         )
 
-        for e in find_executable(f"build/{target}", ["CMakeFiles"]):
+        for e in find_executable(f"{self.home}/build/{target}", ["CMakeFiles"]):
             full_path = f"{self.home}/{e}"
 
             link_name = os.path.basename(e)

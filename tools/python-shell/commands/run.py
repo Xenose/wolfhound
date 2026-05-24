@@ -11,12 +11,11 @@ def complete(text=None):
 
 
 def execute(sh, cmd, args):
+    path = os.getcwd()
     parser = argparse.ArgumentParser(
         prog='run',
         description='runs one of the compiled executables.',
         epilog='Text')
-
-    path = os.getcwd()
 
     parser.add_argument('BIN', nargs=argparse.REMAINDER)
 
