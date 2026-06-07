@@ -23,5 +23,5 @@ def execute(sh, cmd, args):
     p = Path(sh.session["home"], path, a.BIN[0])
 
     # Running the sub command
-    pfd = subprocess.Popen(p, stdout=subprocess.PIPE)
-    pfd.wait()
+    # TODO :: Improve this is a hack to pass flags
+    _ = subprocess.run([str(p)] + a.BIN[1:], stdout=subprocess.PIPE)
