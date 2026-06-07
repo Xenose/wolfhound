@@ -16,11 +16,18 @@ int main(int arc, char* const* arv) {
 	wh_hashmap_insert(&l, "test2", WH_INT(15));
 	wh_hashmap_insert(&l, "test3", WH_INT(30));
 	wh_hashmap_insert(&l, "test4", WH_INT(35));
+	wh_hashmap_insert(&l, "test5", WH_INT(15));
+	wh_hashmap_insert(&l, "test6", WH_INT(30));
+	wh_hashmap_insert(&l, "test7", WH_INT(35));
 
 	wh_log_debug(("%i"), *(int*)wh_hashmap_get(&l, "test"));
 	wh_log_debug(("%i"), *(int*)wh_hashmap_get(&l, "test2"));
 	wh_log_debug(("%i"), *(int*)wh_hashmap_get(&l, "test3"));
-	wh_log_debug(("%i\n"), *(int*)wh_hashmap_get(&l, "test4"));
+	wh_log_debug(("%i"), *(int*)wh_hashmap_get(&l, "test4"));
+	wh_log_debug(("%i"), *(int*)wh_hashmap_get(&l, "test5"));
+	wh_log_debug(("%i"), *(int*)wh_hashmap_get(&l, "test6"));
+	wh_log_debug(("%i\n"), *(int*)wh_hashmap_get(&l, "test7"));
+
 
 	_wh_hashmap_foreach(&l, &hash_foreach);
 	return 0;

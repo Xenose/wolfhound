@@ -3,6 +3,8 @@
 #include<wh-sys/memory.h>
 #include<wh-data/list.h>
 
+#include<wh-data/hashmap.h>
+
 #include<stdlib.h>
 // Linked list tracking
 

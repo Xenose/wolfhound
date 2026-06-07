@@ -81,7 +81,7 @@ static i8 _insert_lazy_simple_sys(_wh_hashmap_insert_params* params) {
 	}
 
 	slots[hash].key = params->key;
-	wh_log_debug(("New allocation assigned! [ %u ] [ hash : %i ] [ count : %i ]"), slots, hash, params->map->slot_count);
+	wh_log_debug(("New allocation assigned! [ %u ] [ hash : %i ] [ count : %i ]"), &slots[hash], hash, params->map->slot_count);
 	memcpy(&slots[hash], params->value, params->map->type_size);
 
 	return 0;
