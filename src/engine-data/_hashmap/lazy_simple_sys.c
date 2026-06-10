@@ -24,10 +24,11 @@ static void* _reallocate_lazy_simple_sys(wh_hashmap_s* map) {
 
 go_retry_resize:
 	// Calculating the needed memory and aligning it to page size and the new slot count.
-	mem_needed = (map->resize_size + 1) * (map->type_size * sizeof(wh_hashmap_slot_string_s));
+	mem_needed = ((++map->resize_size) * (map->type_size * sizeof(wh_hashmap_slot_string_s)));
 	new_alloc_size = (u64)wh_align((i64)mem_needed, getpagesize());
 	new_slot_count = new_alloc_size / (map->type_size * sizeof(wh_hashmap_slot_string_s));
 
+	wh_log_debug(("Slot count %i [ %i -> %i ]"), new_slot_count, map->slot_count, new_slot_count);
 	// Requesting the OS for memory.
 	new_slots = wh_sys_memreq(new_alloc_size);
 
@@ -40,15 +41,15 @@ go_retry_resize:
 	memset(new_slots, 0, new_alloc_size);
 
 	wh_for(u64, i, map->slot_count) {
-		if (nullptr != slots[i].data) {
+		if (nullptr != slots[i].key) {
 			hash_index = (u64)wh_hash_simple(slots[i].key, (i64)new_slot_count);
 
-			if (nullptr == new_slots[hash_index].data) {
+			if (nullptr != new_slots[hash_index].key) {
 				wh_sys_memrel(new_slots, new_alloc_size);
 				goto go_retry_resize;
 			}
 
-			new_slots[hash_index].data = slots[i].data;
+			memcpy(&new_slots[hash_index].data, &slots[i].data, map->type_size);
 			new_slots[hash_index].key = slots[i].key;
 		}
 	}
@@ -56,6 +57,8 @@ go_retry_resize:
 	map->slots = new_slots;
 	map->slot_count = new_slot_count;
 	wh_log_debug(("New allocation assigned! [ %u ] [ %i ]"), map->slots, map->slot_count);
+	
+	return map->slots;
 go_error_exit:
 	return nullptr;
 }
@@ -78,8 +81,13 @@ static i8 _insert_lazy_simple_sys(_wh_hashmap_insert_params* params) {
 	}
 
 	for (u32 i = 0; i < 3 && nullptr != slots[hash].key; i++) {
-		_reallocate_lazy_simple_sys(params->map);
-		hash = wh_hash_simple(params->key, (i64)params->map->slot_count);
+		wh_log_debug(("Hashmap size to small resizing!"));
+
+		if (nullptr != _reallocate_lazy_simple_sys(params->map)) {
+			slots = params->map->slots;
+			hash = wh_hash_simple(params->key, (i64)params->map->slot_count);
+			break;
+		}
 	}
 
 	if (nullptr != slots[hash].key) {
