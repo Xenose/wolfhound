@@ -18,19 +18,16 @@ static void* _reallocate_lazy_simple_sys(wh_hashmap_s* map) {
 	wh_hashmap_slot_string_s* new_slots = nullptr;
 
 	u64 hash_index = 0;
-	u64 mem_needed = 0;
-	u64 new_alloc_size = 0;
 	u64 new_slot_count = 0;
 
 go_retry_resize:
 	// Calculating the needed memory and aligning it to page size and the new slot count.
-	mem_needed = ((++map->resize_size) * (map->type_size * sizeof(wh_hashmap_slot_string_s)));
-	new_alloc_size = (u64)wh_align((i64)mem_needed, getpagesize());
-	new_slot_count = new_alloc_size / (map->type_size * sizeof(wh_hashmap_slot_string_s));
+	map->resize_size = (u64)wh_align((i64)map->resize_size + 1, getpagesize());
+	new_slot_count = map->resize_size / (map->type_size * sizeof(wh_hashmap_slot_string_s));
 
 	wh_log_debug(("Slot count %i [ %i -> %i ]"), new_slot_count, map->slot_count, new_slot_count);
 	// Requesting the OS for memory.
-	new_slots = wh_sys_memreq(new_alloc_size);
+	new_slots = wh_sys_memreq(map->resize_size);
 
 	if (nullptr == new_slots) {
 		wh_log_critical(("Failed to allocated memory from the system!"));
@@ -38,19 +35,20 @@ go_retry_resize:
 	}
 
 	slots = map->slots;
-	memset(new_slots, 0, new_alloc_size);
+	memset(new_slots, 0, map->resize_size);
 
 	wh_for(u64, i, map->slot_count) {
 		if (nullptr != slots[i].key) {
 			hash_index = (u64)wh_hash_simple(slots[i].key, (i64)new_slot_count);
 
 			if (nullptr != new_slots[hash_index].key) {
-				wh_sys_memrel(new_slots, new_alloc_size);
+				wh_sys_memrel(new_slots, map->resize_size);
 				goto go_retry_resize;
 			}
 
 			memcpy(&new_slots[hash_index].data, &slots[i].data, map->type_size);
 			new_slots[hash_index].key = slots[i].key;
+			wh_log_debug(("--> Rehased postions [ %u ] [ %i ]"), hash_index, new_slots[hash_index].data);
 		}
 	}
 
