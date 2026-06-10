@@ -13,6 +13,7 @@ int main(int arc, char* const* arv) {
 
 	// TODO fix items with the same id
 	wh_hashmap_insert(&l, "test", WH_INT(10));
+	wh_hashmap_insert(&l, "test", WH_INT(10));
 	wh_hashmap_insert(&l, "test2", WH_INT(15));
 	wh_hashmap_insert(&l, "test3", WH_INT(30));
 	wh_hashmap_insert(&l, "test4", WH_INT(35));

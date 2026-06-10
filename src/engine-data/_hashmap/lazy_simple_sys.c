@@ -71,6 +71,12 @@ static i8 _insert_lazy_simple_sys(_wh_hashmap_insert_params* params) {
 
 	hash = wh_hash_simple(params->key, (i64)params->map->slot_count);
 
+	if (nullptr == slots[hash].key ? 0 : !strcmp(params->key, slots[hash].key)) {
+		wh_log_error(("Inputed key and existing key is the same [ %s -> %s ]"),
+			params->key, slots[hash].key);
+		goto go_error_exit;
+	}
+
 	for (u32 i = 0; i < 3 && nullptr != slots[hash].key; i++) {
 		_reallocate_lazy_simple_sys(params->map);
 		hash = wh_hash_simple(params->key, (i64)params->map->slot_count);
@@ -87,6 +93,10 @@ static i8 _insert_lazy_simple_sys(_wh_hashmap_insert_params* params) {
 	return 0;
 go_error_exit:
 	return -1;
+}
+
+static i8 _insert_lazy_simple_sys_strig(_wh_hashmap_insert_params params) {
+	//return _insert_lazy_simple_sys(&params, hash);
 }
 
 static i8 _delete_lazy_simple_sys(wh_hashmap_s* map, void* key) {
