@@ -6,7 +6,6 @@
 // Constant key hashmap
 // needs to live for the scope of the hashmap
 typedef struct {
-	void* data;
 	char* key;
 } wh_hashmap_slot_string_s;
 
