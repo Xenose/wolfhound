@@ -18,13 +18,21 @@ typedef struct {
 
 //static _wh_heap_list_s _list = { 0 };
 
-extern void* _wh_alloc_no_tracking(_wh_mem_alloc_params params);
+/* extern void* _wh_alloc_no_tracking(_wh_mem_alloc_params params);
 extern void _wh_free_no_tracking(_wh_mem_free_params params);
 extern void* _wh_realloc_no_tracking(_wh_mem_realloc_params params);
 
 static wh_list_s _list = {
 	.stype = WH_STRUCT_TYPE_LLIST_STD_DOUBLE,
 	.type_size = sizeof(_wh_heap_ptr_pair_s),
+}; */
+
+// need pointer version
+static wh_hashmap_s _map = {
+	.stype = WH_STRUCT_TYPE_HASHMAP_LAZY_PTR_SYS,
+	.slots = nullptr,
+	.type_size = sizeof(_wh_heap_ptr_pair_s),
+	.resize_size = 8096,
 };
 
 bool _wh_track_search(void* entry_in, void* ptr_in) {
@@ -53,10 +61,15 @@ void _wh_tracker_insert(void* owner, void* ptr, wh_heap_header_s* heap, u64 line
 	}
 
 	wh_log_info(("Inserting node for %u owner %u"), ptr, owner);
-	entry = wh_list_search_func(&_list, ptr, &_wh_track_search);
+
+	if (nullptr == _map.slots) {
+		entry = wh_hashmap_get(&_map, ptr);
+		goto go_skip;
+	}
 
 	if (nullptr == entry) {
-		wh_log_debug(("New pointer entry added!"));
+go_skip:
+		wh_log_debug(("New pointer entry added! ptr : %u"), ptr);
 
 		_wh_heap_ptr_pair_s tmp = {
 			.ptr = ptr,
@@ -72,10 +85,10 @@ void _wh_tracker_insert(void* owner, void* ptr, wh_heap_header_s* heap, u64 line
 			tmp.owners[0] = owner;
 		}
 
-		wh_list_push_back(&_list, &tmp);
-		entry = wh_list_search_func(&_list, ptr, &_wh_track_search);
+		wh_hashmap_insert(&_map, ptr, &tmp);
+		entry = wh_hashmap_get(&_map, ptr);
 	} else {
-		entry = wh_list_data(&_list, entry);
+		entry = wh_hashmap_get(&_map, ptr);
 
 		void** tmp = realloc(entry->owners, sizeof(void*) * (entry->owner_count + 1));
 		wh_log_debug(("The owner count is %u"), entry->owner_count);
@@ -106,7 +119,8 @@ void _wh_tracker_remove(void* owner, void* ptr) {
 	}
 
 	wh_log_info(("Removing node for %u owner %u"), ptr, owner);
-	entry = wh_list_data(&_list, wh_list_search_func(&_list, ptr, &_wh_track_search, &index));
+	//entry = wh_list_data(&_list, wh_list_search_func(&_list, ptr, &_wh_track_search, &index));
+	entry = wh_hashmap_get(&_map, ptr);
 
 	wh_log_info(("Node memory is $m"), entry, sizeof(_wh_heap_ptr_pair_s));
 
@@ -128,7 +142,7 @@ void _wh_tracker_remove(void* owner, void* ptr) {
 	}
 }
 
-void _wh_mem_scan_for_each(void* node, u64 index) {
+void _wh_mem_scan_for_each(void* node) {
 	bool clean_up = false;
 	_wh_heap_ptr_pair_s* entry = node;
 
@@ -158,7 +172,8 @@ void _wh_mem_scan_for_each(void* node, u64 index) {
 
 i64 _wh_mem_scan(void) {
 	i64 count = 0;
-	wh_list_for_each(&_list, &_wh_mem_scan_for_each);
+	//wh_list_for_each(&_list, &_wh_mem_scan_for_each);
+	_wh_hashmap_foreach(&_map, &_wh_mem_scan_for_each);
 
 	//usleep(100);
 	return count;
