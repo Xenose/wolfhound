@@ -8,14 +8,18 @@
 
 
 static i64 _lazy_simple_hash(i64 type, void* key, i64 slot_count) {
+	i64 hash = -1;
+	
 	switch (type) {
 		case WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_SYS:
-			return wh_hash_simple(key, slot_count);
+			hash = wh_hash_simple(key, slot_count);
+			break;
 		case WH_STRUCT_TYPE_HASHMAP_LAZY_PTR_SYS:
-			return wh_hash_simple(key, slot_count, sizeof(void*));
+			hash = wh_hash_simple((void*)&key, slot_count, sizeof(void*));
+			break;
 	}
 
-	return -1;
+	return hash;
 }
 
 static void* _lazy_simple_key_set(void* slots, void* key, i64 type) {
