@@ -73,11 +73,11 @@ i64 _wh_intpow(_wh_intpow_params params) {
 i64 _wh_hash_simple(_wh_hash_simple_params params) {
 	i64 key = -1;
 
-	if (NULL == params.str || 0 >= params.limit) {
+	if (nullptr == params.str || 0 > params.limit) {
 		goto go_error_exit;
 	}
 
-	if (0 >= params.length) {
+	if (0 == params.length) {
 		params.length = strlen(params.str);
 	}
 

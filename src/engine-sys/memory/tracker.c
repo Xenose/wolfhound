@@ -62,7 +62,7 @@ void _wh_tracker_insert(void* owner, void* ptr, wh_heap_header_s* heap, u64 line
 
 	wh_log_info(("Inserting node for %u owner %u"), ptr, owner);
 
-	if (nullptr == _map.slots) {
+	if (nullptr != _map.slots) {
 		entry = wh_hashmap_get(&_map, ptr);
 		goto go_skip;
 	}

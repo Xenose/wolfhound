@@ -18,13 +18,15 @@ static i64 _lazy_simple_hash(i64 type, void* key, i64 slot_count) {
 	return -1;
 }
 
-static void _lazy_simple_key_set(void* slots, void* key, i64 type) {
+static void* _lazy_simple_key_set(void* slots, void* key, i64 type) {
 	switch (type) {
 		case WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_SYS:
-			((wh_hashmap_slot_string_s*)slots)->key = key;
+			return ((wh_hashmap_slot_string_s*)slots)->key = key;
 		case WH_STRUCT_TYPE_HASHMAP_LAZY_PTR_SYS:
-			((wh_hashmap_slot_ptr_s*)slots)->key = key;
+			return ((wh_hashmap_slot_ptr_s*)slots)->key = key;
 	}
+
+	return nullptr;
 }
 
 static void* _lazy_simple_key_get(void* slots, i64 type) {
@@ -58,14 +60,16 @@ go_exit:
 
 static i8 _lazy_simple_hash_copy(wh_hashmap_s* map, void* slots, u64 bytes, i64 slot_count, u64 resize_size) {
 	u64 index = 0;
-	void* src;
-	void* dst;
-	void* src_key;
-	void* dst_key;
+	void* src = nullptr;
+	void* dst = nullptr;
+	void* src_key = nullptr;
+	void* dst_key = nullptr;
 
 	wh_for(u64, i, map->slot_count) {
 		src = wh_ptr_offset(map->slots, i * bytes);
 		src_key = _lazy_simple_key_get(src, map->stype);
+
+		wh_log_debug(("Hello!"));
 
 		if (nullptr != src_key) {
 			index = (u64)_lazy_simple_hash(map->stype, src_key, (i64)slot_count);
@@ -146,6 +150,12 @@ static i8 _insert_lazy_simple_sys(_wh_hashmap_insert_params* params) {
 	}
 
 	hash = _lazy_simple_hash(params->map->stype, params->key, (i64)params->map->slot_count);
+
+	if (-1 == hash) {
+		wh_log_error(("Hash is negative! stype [ %i ]"), params->map->stype);
+		goto go_error_exit;
+	}
+
 	dst = wh_ptr_offset(slots, (u64)hash * bytes);
 	src_key = ((wh_hashmap_slot_string_s*)wh_ptr_offset(slots, (u64)hash * bytes))->key;
 
