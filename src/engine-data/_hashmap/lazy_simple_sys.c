@@ -73,12 +73,10 @@ static i8 _lazy_simple_hash_copy(wh_hashmap_s* map, void* slots, u64 bytes, i64 
 		src = wh_ptr_offset(map->slots, i * bytes);
 		src_key = _lazy_simple_key_get(src, map->stype);
 
-		wh_log_debug(("Hello!"));
-
 		if (nullptr != src_key) {
 			index = (u64)_lazy_simple_hash(map->stype, src_key, (i64)slot_count);
 
-			dst = wh_ptr_offset(dst, index * bytes);
+			dst = wh_ptr_offset(slots, index * bytes);
 			dst_key = _lazy_simple_key_get(dst, map->stype);
 
 			if (nullptr != dst_key) {
@@ -117,7 +115,6 @@ go_retry_resize:
 	resize_size = (u64)wh_align((i64)resize_size + 1, getpagesize());
 	new_slot_count = resize_size / (map->type_size + sizeof(wh_hashmap_slot_string_s));
 
-	wh_log_debug(("Slot count %i [ %i -> %i ]"), new_slot_count, map->slot_count, new_slot_count);
 	// Requesting the OS for memory.
 	new_slots = wh_sys_memreq(resize_size);
 
