@@ -116,14 +116,14 @@ i8 _wh_config_lua_expose(_wh_config_lua_expose_params params) {
 		(const char*[]) { "TEST", nullptr }, WH_TYPE_I64, 42,
 
 		(const char*[]) { "WH", "config", "flags", "dryrun", nullptr },			WH_TYPE_BOOL, config->flags.dryrun,
-		(const char*[]) { "WH", "config", "flgas", "log_debug", nullptr},			WH_TYPE_BOOL, config->flags.log_debug,
-		(const char*[]) { "WH", "config", "flgas", "log_info", nullptr},			WH_TYPE_BOOL, config->flags.log_info,
-		(const char*[]) { "WH", "config", "flgas", "log_notice", nullptr},		WH_TYPE_BOOL, config->flags.log_notice,
-		(const char*[]) { "WH", "config", "flgas", "log_warning", nullptr},		WH_TYPE_BOOL, config->flags.log_warning,
-		(const char*[]) { "WH", "config", "flgas", "log_error", nullptr},			WH_TYPE_BOOL, config->flags.log_error,
-		(const char*[]) { "WH", "config", "flgas", "log_critical", nullptr},		WH_TYPE_BOOL, config->flags.log_critical,
-		(const char*[]) { "WH", "config", "flgas", "log_alert", nullptr},			WH_TYPE_BOOL, config->flags.log_alert,
-		(const char*[]) { "WH", "config", "flgas", "log_emergency", nullptr},	WH_TYPE_BOOL, config->flags.log_emergency
+		(const char*[]) { "WH", "config", "flags", "log_debug", nullptr},			WH_TYPE_BOOL, config->flags.log_debug,
+		(const char*[]) { "WH", "config", "flags", "log_info", nullptr},			WH_TYPE_BOOL, config->flags.log_info,
+		(const char*[]) { "WH", "config", "flags", "log_notice", nullptr},		WH_TYPE_BOOL, config->flags.log_notice,
+		(const char*[]) { "WH", "config", "flags", "log_warning", nullptr},		WH_TYPE_BOOL, config->flags.log_warning,
+		(const char*[]) { "WH", "config", "flags", "log_error", nullptr},			WH_TYPE_BOOL, config->flags.log_error,
+		(const char*[]) { "WH", "config", "flags", "log_critical", nullptr},		WH_TYPE_BOOL, config->flags.log_critical,
+		(const char*[]) { "WH", "config", "flags", "log_alert", nullptr},			WH_TYPE_BOOL, config->flags.log_alert,
+		(const char*[]) { "WH", "config", "flags", "log_emergency", nullptr},	WH_TYPE_BOOL, config->flags.log_emergency
 	);
 
 
