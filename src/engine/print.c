@@ -4,6 +4,7 @@
 #include<stdio.h>
 #include<errno.h>
 
+#include<wh-data/hashmap.h>
 #include<wh-maths/core.h>
 #include<wh-posix/stdatomic.h>
 #include<wh-posix/string.h>
@@ -16,28 +17,19 @@
 #include<wh/print.h>
 
 // =======================================================================================================
-// Struct declerations 
-// =======================================================================================================
-typedef struct {
-	char key[32];
-	i64 (*func)(wh_print_data_s* data, void* ptr);
-} _hw_print_func;
-
-typedef struct {
-	wh_atomic_lock_s lock;
-	u64 count;
-	u64 slots;
-	_hw_print_func* table;
-} _hw_print_func_table;
-
-// =======================================================================================================
 // Globals
 // =======================================================================================================
 #if !(WH_SYSTEM&WH_SYS_TCC)
 	static wh_thread char _buffer[8096];
 #endif
 
-static _hw_print_func_table _wh_func_table = { 0 };
+// i64 (*func)(wh_print_data_s* data, void* ptr);
+static wh_hashmap_s _map = {
+	.stype = WH_STRUCT_TYPE_HASHMAP_LAZY_PTR_SYS,
+	.slots = nullptr,
+	.type_size = sizeof(void*),
+	.resize_size = 8096,
+};
 
 // =======================================================================================================
 // pre defining
@@ -48,33 +40,17 @@ static void _wh_print_format(wh_print_data_s* data, va_list list);
 // private function start
 // =======================================================================================================
 static void _wh_print_call_func(wh_print_data_s* data, void* ptr, char* key_start, char* key_end) {
-	i64 (*func)(wh_print_data_s* data, void* ptr) = nullptr;
-	i64 key = 0;
-
-	if (nullptr == key_end) {
-		goto go_error_exit_no_end_key;
-	}
-
-	--key_end;
-	wh_spinlock_v3(&_wh_func_table.lock) {
-		key = wh_hash_simple(key_start, (i64)_wh_func_table.slots, (u64)(key_end - key_start));
-
-		if (-1 == key) {
-			wh_unlock(&_wh_func_table.lock);
-			goto go_error_exit;
-		}
-
-		func = _wh_func_table.table[key].func;
-	}
+	i64 (*func)(wh_print_data_s* data, void* ptr) = (i64(*)(wh_print_data_s*, void*))wh_hashmap_get(&_map, key_start);
 
 	if (nullptr != func) {
 		func(data, ptr);
 	}
 
-go_error_exit:
 	data->format = key_end + 2;
-go_error_exit_no_end_key:
-	return;
+}
+
+void _wh_print_add_func(_wh_print_add_func_params params) {
+	wh_hashmap_insert(&_map, (void*)params.key,  (void*)params.func);
 }
 
 static void _wh_print_cpychar(wh_print_data_s* d, char c) {
@@ -632,30 +608,3 @@ i64 _wh_print(_wh_print_params params, ...) {
 	return ret;
 }
 
-void _wh_print_add_func(_wh_print_add_func_params params) {
-	i64 key = 0;
-
-	wh_spinlock_v3(&_wh_func_table.lock){
-		if (0 == _wh_func_table.slots) {
-			_wh_func_table.table = wh_sys_memreq(sizeof(_hw_print_func) * 16);
-			_wh_func_table.slots = 16;
-		}
-
-		if (nullptr == _wh_func_table.table) {
-			// TODO handle error
-			return;
-		}
-		
-		key = wh_hash_simple(params.key, (u32)_wh_func_table.slots);
-
-		if (nullptr != params.func) {
-			if (nullptr != _wh_func_table.table[key].func) {
-				// TODO resize array and handle moving of pointer
-				key = wh_hash_simple(params.key, (u32)_wh_func_table.slots);
-			}
-
-			_wh_func_table.table[key] = (_hw_print_func) { .func = params.func };
-			_wh_func_table.count += 1;
-		}
-	}
-}
