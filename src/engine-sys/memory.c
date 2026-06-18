@@ -1,7 +1,5 @@
-#include<stdlib.h>
 #include<string.h>
 #include<errno.h>
-
 
 // my stuff
 #include<wh-maths/core.h>
@@ -15,20 +13,22 @@
 #include<wh/memory/arena.h>
 #include<wh/memory/freelist.h>
 
+#include<wh-data/hashmap.h>
+
 // hashmap
 typedef struct {
 	wh_heap_header_s* header;
 	const char* name;
 } _wh_heap_entry_s;
 
-typedef struct {
-	wh_atomic_lock_s lock;
-	u64 count;
-	u64 used;
-	_wh_heap_entry_s* entries;
-} _wh_heap_table_s;
+static wh_hashmap_s _map = {
+	.stype = WH_STRUCT_TYPE_HASHMAP_LAZY_PTR_SYS,
+	.slots = nullptr,
+	.type_size = sizeof(_wh_heap_entry_s),
+	.resize_size = 4096,
+};
 
-static _wh_heap_table_s _table = { 0 };
+//static _wh_heap_table_s _table = { 0 };
 
 // the global main heap
 static wh_heap_header_s* _heap_main;
@@ -53,101 +53,12 @@ void (*_wh_disown)(_wh_mem_free_params params) = &_wh_disown_tracking;
  *
  */
 wh_heap_header_s* wh_heap_insert(const char* name, wh_heap_header_s* header) {
-	i64 hash = 0;
-	u64 retry = 0;
-	u64 page_size = 0;
-	_wh_heap_entry_s* entry = nullptr;
-
-	wh_log_debug(("Inserting new entry named [ %s ]"), name);
-
-	wh_spinlock_v3(&_table.lock) {
-		if (_table.used >= _table.count) {
-		go_realloc:
-			wh_log_debug(("Expanding table"));
-			_wh_heap_entry_s* new_entries = nullptr;
-
-			if (3 <= retry++) {
-				wh_log_critical(("Failed to realloc hashmap table!"));
-				wh_unlock(&_table.lock);
-				goto go_error_exit;
-			}
-
-			page_size += (u64)getpagesize();
-
-			u64 new_size = (_table.count * sizeof(_wh_heap_entry_s)) + page_size;
-			u64 new_count = new_size / sizeof(_wh_heap_entry_s);
-
-			new_entries = wh_sys_memreq(new_size);
-
-			wh_log_notice(("New memory for hashmap allocated! new size [ %u ] : old size [ %u ]"), new_size, _table.count * sizeof(_wh_heap_entry_s));
-
-			wh_for (u64, i, _table.count) {
-				i64 old_hash = 0;
-				i64 new_hash = 0;
-
-				if (nullptr == _table.entries[i].name) {
-					new_entries[new_hash] = (_wh_heap_entry_s){ 0 };
-					continue;
-				}
-				
-				old_hash = wh_hash_simple(_table.entries[i].name, (i64)_table.count);
-				new_hash = wh_hash_simple(_table.entries[i].name, (i64)new_count);
-
-				if (nullptr != new_entries[new_hash].header) {
-					wh_log_critical(("Collision detected for [ %9s ] and [ %9s ]!"), entry->name, name);
-					goto go_realloc;
-				}
-
-				if (nullptr != _table.entries[old_hash].header) {
-					new_entries[new_hash] = _table.entries[old_hash];
-				}
-			}
-
-			if (nullptr != _table.entries) {
-				wh_sys_memrel(_table.entries);
-			}
-
-			_table.entries = new_entries;
-			_table.count = new_count;
-		}
-
-		hash = wh_hash_simple(name, (i64)_table.count);
-		entry = &_table.entries[hash];
-
-		if (nullptr != entry->name) {
-			wh_log_critical(("Collision detected for [ %9s ] and [ %9s ]!"), entry->name, name);
-			goto go_realloc;
-		}
-
-		entry->name = name;
-		entry->header = header;
-		++_table.used;
-	}
-
+	wh_hashmap_insert(&_map, (void*)name, &header);
 	return header;
-go_error_exit:
-	return nullptr;
 }
 
 wh_heap_header_s* wh_heap_get(const char* name) {
-	wh_heap_header_s* header = nullptr;
-	_wh_heap_entry_s* entry = nullptr;
-	i64 hash = 0;
-
-go_redo:
-	hash = wh_hash_simple(name, (i64)_table.count);
-	entry = &_table.entries[hash];
-
-	if (nullptr == entry->header) {
-		goto go_error_exit;
-	}
-
-	if (hash != wh_hash_simple(name, (i64)_table.count)) {
-		goto go_redo;
-	}
-
-	header = entry->header;
-go_error_exit:
+	wh_heap_header_s* header = wh_hashmap_get(&_map, (void*)name);
 	return header;
 }
 
@@ -286,48 +197,6 @@ void _wh_disown_tracking(_wh_mem_free_params params) {
 void _wh_disown_no_tracking(_wh_mem_free_params params) {
 }
 
-WH_DEPRECATED("DON'T USE THIS FUNCTION!")
-void* _wh_mem(_wh_mem_params params) {
-	void* ptr = nullptr;
-
-	if (0 == params.bytes) {
-		if (nullptr != params.ptr) {
-			if (WH_MEM_ZERO == params.flags) {
-				memset(params.ptr, 0, params.bytes);
-			}
-
-			//atomic_fetch_sub(&_heap_main->ptr_count, 1);
-			free(params.ptr);
-		}
-
-		goto go_exit;
-	}
-
-	if (nullptr == params.ptr) {
-		ptr = malloc(params.bytes);
-	} else {
-		ptr = realloc(params.ptr, params.bytes);
-	}
-
-	if (nullptr == ptr) {
-		goto go_failure_exit;
-	}
-
-	if (nullptr == params.ptr) {
-		//atomic_fetch_add(&_heap_main->ptr_count, 1);
-	}
-
-	if (WH_MEM_ZERO == params.flags) {
-		memset(ptr, 0, params.bytes);
-	}
-
-go_failure_exit:
-go_exit:
-	return ptr;
-}
-
-
-
 /*
  * Debug functions
  *
@@ -336,10 +205,13 @@ int32_t wh_mem_leak_count(void) {
 	return 0;//atomic_load(&_heap_main->ptr_count);
 }
 
+void _wh_heap_print_table_for_each(void* data) {
+	_wh_heap_entry_s* i = data;
+	wh_print(("Table entry [ name : %9s ] [ pointer : %u ]\n"), i->name, i->header);
+}
+
 void wh_heap_print_table(void) {
-	wh_for (u64, i, _table.count) {
-		wh_print(("Table entry [ index : %i ] [ name : %9s ] [ pointer : %u ]\n"), i, _table.entries[i].name ,_table.entries[i].header);
-	}
+	_wh_hashmap_foreach(&_map, &_wh_heap_print_table_for_each);
 }
 
 void _wh_heap_print(_wh_heap_print_params params) {
