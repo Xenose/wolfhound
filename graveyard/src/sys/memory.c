@@ -14,8 +14,6 @@
 #include<wh/memory/arena.h>
 #include<wh/memory/freelist.h>
 
-
-
 WH_DEPRECATED("DON'T USE THIS FUNCTION!")
 void* _wh_mem(_wh_mem_params params) {
 	void* ptr = nullptr;
