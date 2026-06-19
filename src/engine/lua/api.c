@@ -7,20 +7,23 @@
 #include<wh/lua/api/maths.h>
 
 static void _lua_open_libs(lua_State* ls) {
+
+#if LUA_VERSION_NUM < 505
 	luaopen_base(ls);             /* opens the basic library */
 	luaopen_table(ls);            /* opens the table library */
 	luaopen_io(ls);               /* opens the I/O library */
 	luaopen_string(ls);           /* opens the string lib. */
 	luaopen_math(ls);             /* opens the math lib. */
-}
-
-i8 _wh_lua_expose_api(lua_State* ls) {
-	// TODO look into why this is broken
-#if LUA_VERSION_NUM < 505
-	_lua_open_libs(ls);
 #else
 	luaL_openlibs(ls);
 #endif
+
+}
+
+i8 _wh_lua_expose_api(lua_State* ls) {
+	// Looks like luaL_openlibs is deprecated,
+	// this is a work around for it.
+	_lua_open_libs(ls);
 
 	wh_lua_add_values(
 		ls,
