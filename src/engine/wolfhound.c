@@ -59,23 +59,11 @@ go_error_exit:
 /* [MD_DOC]
  */
 wh_instance_s* _wh_init(_wh_init_params params) {
-	#ifdef __clang__
-		wh_log_debug(("Compiler used clang"));
-	#elif defined(__GNUC__)
-		wh_log_debug(("Compiler used gcc"));
-	#elif defined(_MSC_VER)
-		wh_log_debug(("Compiler used msvc... why..."));
-	#endif
-
 	// Critical functions that need to be loaded first
 	if (-1 == _wh_init_critical(&params)) {
 		wh_log_emergency(("Failed to init cirtical section"));
 		goto go_error_exit;
 	}
-	
-	//if (1) {
-	//	_wh_run_utests("tests/lua");
-	//}
 
 	// basic data init
 	params.ins[0]->stype = WH_STRUCT_TYPE_INSTANCE;

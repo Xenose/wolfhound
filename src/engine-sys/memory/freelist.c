@@ -132,12 +132,18 @@ void _wh_mem_free_freelist(_wh_mem_free_params* params) {
 	i64 error = 0;
 	wh_heap_node_s* node = params->heap->freelist.nodes;
 
+	if (nullptr == params->ptr) {
+		wh_log_error(("trying to free nullptr"));
+		goto go_error_exit;
+	}
+
 	if (nullptr == node) {
 		error = WH_ERROR_NO_MEMORY;
 		goto go_error_exit;
 	}
 
 	while (node->data != params->ptr) {
+
 		if (nullptr == node->next) {
 			wh_log_error(("Failed to find pointer next pointer is NULL"));
 			goto go_error_exit;

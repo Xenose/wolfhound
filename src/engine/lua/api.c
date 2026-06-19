@@ -7,7 +7,6 @@
 #include<wh/lua/api/maths.h>
 
 static void _lua_open_libs(lua_State* ls) {
-
 #if LUA_VERSION_NUM < 505
 	luaopen_base(ls);             /* opens the basic library */
 	luaopen_table(ls);            /* opens the table library */
@@ -17,7 +16,6 @@ static void _lua_open_libs(lua_State* ls) {
 #else
 	luaL_openlibs(ls);
 #endif
-
 }
 
 i8 _wh_lua_expose_api(lua_State* ls) {

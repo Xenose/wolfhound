@@ -119,7 +119,6 @@ void _wh_tracker_remove(void* owner, void* ptr) {
 	}
 
 	wh_log_info(("Removing node for %u owner %u"), ptr, owner);
-	//entry = wh_list_data(&_list, wh_list_search_func(&_list, ptr, &_wh_track_search, &index));
 	entry = wh_hashmap_get(&_map, ptr);
 
 	wh_log_info(("Node memory is $m"), entry, sizeof(_wh_heap_ptr_pair_s));
