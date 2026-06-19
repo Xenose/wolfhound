@@ -99,7 +99,7 @@ int main(int arc, char* const* arv) {
 		.config_path   = (wh_string_s) { .str = buf, 0 },	// application config
 	);
 
-	wh_hashmap_lazy_s hml = _wh_hashmap_lazy_create(nullptr, 10, sizeof(int));
+	/*wh_hashmap_lazy_s hml = _wh_hashmap_lazy_create(nullptr, 10, sizeof(int));
 
 	wh_hashmap_lazy_insert(&hml, "test", (int[]){ 9 });
 	wh_hashmap_lazy_insert(&hml, "test_from_me", (int[]){ 19 });
@@ -111,7 +111,7 @@ int main(int arc, char* const* arv) {
 	printf("Value is [ %i ]\n", *wh_hashmap_lazy_get(int*, &hml, "test_from_me"));
 	printf("Value is [ %i ]\n", *wh_hashmap_lazy_get(int*, &hml, "test2"));
 	printf("Value is [ %i ]\n", *wh_hashmap_lazy_get(int*, &hml, "test3"));
-	printf("Value is [ %i ]\n", *wh_hashmap_lazy_get(int*, &hml, "test444"));
+	printf("Value is [ %i ]\n", *wh_hashmap_lazy_get(int*, &hml, "test444"));*/
 
 
 	//wh_list_s test_list = wh_dlist_init_memreq(int);

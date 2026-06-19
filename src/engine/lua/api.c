@@ -6,9 +6,21 @@
 #include<wh/lua/api/filesystem.h>
 #include<wh/lua/api/maths.h>
 
+static void _lua_open_libs(lua_State* ls) {
+	luaopen_base(ls);             /* opens the basic library */
+	luaopen_table(ls);            /* opens the table library */
+	luaopen_io(ls);               /* opens the I/O library */
+	luaopen_string(ls);           /* opens the string lib. */
+	luaopen_math(ls);             /* opens the math lib. */
+}
+
 i8 _wh_lua_expose_api(lua_State* ls) {
 	// TODO look into why this is broken
-	// luaL_openlibs(ls);
+#if LUA_VERSION_NUM < 505
+	_lua_open_libs(ls);
+#else
+	luaL_openlibs(ls);
+#endif
 
 	wh_lua_add_values(
 		ls,

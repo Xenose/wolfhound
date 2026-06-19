@@ -34,4 +34,8 @@ def execute(sh, cmd, args):
 
     if a.time:
         exec_time = time.perf_counter_ns() - exec_time
-        print("ns {}".format(exec_time))
+
+        ms = int(exec_time * 0.000001)
+        ns = int(exec_time - (ms / 0.000001))
+
+        print("ms {} ns {}".format(ms, ns))
