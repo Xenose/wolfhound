@@ -58,7 +58,3 @@ i64 _wh_args_parse(_wh_args_parse_params params) {
 
 	return 0;
 }
-
-i64 _wh_args_parser_init(void) {
-	return 0;
-}

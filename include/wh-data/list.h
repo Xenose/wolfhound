@@ -100,7 +100,6 @@ extern void* _wh_list_data(_wh_list_data_params params);
 extern wh_list_s _wh_list_init(i64 list_type, _wh_list_init_params params);
 
 #define wh_dlist_init_memreq(...) _wh_list_init(WH_STRUCT_TYPE_LLIST_SYS_DOUBLE, (_wh_list_init_params) { __VA_ARGS__ })
-
 #define wh_dlist_init_stdlib(...) _wh_list_init(WH_STRUCT_TYPE_LLIST_STD_DOUBLE, (_wh_list_init_params) { __VA_ARGS__ }) 
 
 #define wh_list_get(_type_, ...) (_type_*)_wh_list_get((_wh_list_get_params) { __VA_ARGS__ })

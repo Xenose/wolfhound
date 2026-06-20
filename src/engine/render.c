@@ -30,8 +30,6 @@ void (*_wh_render_line)(_wh_render_line_params params)				= nullptr;
 
 i8 _wh_render_init(_wh_render_init_params params) {
 	wh_log_info(("Init graphics stack"));
-
-
 go_window_retry:
 	switch(params.ins->graphics.mode_window) {
 		case WH_WINDOW_MODE_GLFW:

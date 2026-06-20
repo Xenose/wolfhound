@@ -88,7 +88,6 @@ wh_config_s _wh_config_load(_wh_init_params* params, wh_config_s* config) {
 		(const char*[]) { "WH", "config", "flags", "log_emergency",			nullptr },				WH_TYPE_BOOL, config->flags.log_emergency
 	);
 
-	_wh_args_parser_init();
 	_config_lua_file(params, config, ls);
 	wh_args_parse(ls, params->args.count, params->args.ptr, config);
 
