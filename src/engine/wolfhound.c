@@ -25,7 +25,6 @@ static void _wh_fixed_update_dummy(wh_instance_s* ins) {
 
 static i8 _wh_init_critical(_wh_init_params* params) {
 	wh_instance_s tmp = { 0 };
-	wh_print(("Hello\n"));
 
 	wh_signalar_init(params->args.ptr[0]);
 	params->config = _wh_config_load(params, &params->config);
