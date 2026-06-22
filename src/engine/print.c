@@ -253,21 +253,21 @@ static void _wh_print_memory(wh_print_data_s* data, u8* ptr, int bytes) {
 	++data->format;
 }
 
-static void _wh_print_time(wh_print_data_s* data, va_list list) {
+static void _wh_print_time(wh_print_data_s* data, char* const format) {
 	i64 written = 0;
 	struct tm* tm = nullptr;
 	char buffer[256] = { 0 };
-	char* format = va_arg(list, char*);
 	u64 length = 0;
 	time_t t = time(NULL);
 
 	tm = localtime(&t);
-	strftime(buffer, sizeof(buffer), format, tm);
-
-	printf("time buffer has [ %s ]\n", buffer);
-
-	length = strlen(buffer);
+	length = strftime(buffer, 255, format, tm);
 	written = wh_print_buffer_check(data, (u64)length);
+
+	if (-1 == written) {
+		return;
+	}
+
 	memcpy(data->buffer, buffer, length);
 
 	data->buffer += length;
@@ -362,8 +362,8 @@ go_loop:
 					tmp = va_arg(list, char*);
 					_wh_print_cpystr(data, tmp, va_arg(list, i64));
 					break;
-				case 't': // time with format $t[]
-					_wh_print_time(data, list);
+				case 't': // time with format $t
+					_wh_print_time(data, va_arg(list, char*));
 					break;
 				case 'v': // vk result
 					_wh_print_cpystr(data, (char*)wh_vk_status_str(va_arg(list, i64)), 0);
