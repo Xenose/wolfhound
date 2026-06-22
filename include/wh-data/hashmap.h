@@ -41,10 +41,16 @@ typedef struct {
 	i64 key;
 } wh_hashmap_slot_i64_s;
 
+typedef struct {
+	void* data;
+} wh_hashmap_destructor_s;
+
 // Data container struct
 typedef struct {
 	struct_type stype;
 	void* slots;
+
+	void* (*destructor)(wh_hashmap_destructor_s* entry);
 
 	u64 type_size;
 	u64 slot_count;
@@ -68,9 +74,15 @@ typedef struct {
 	const char* key;
 } _wh_hashmap_get_params;
 
+typedef struct {
+	wh_hashmap_s* map;
+	const char* key;
+} _wh_hashmap_delete_params;
+
 
 extern wh_hashmap_s _wh_hashmap_init(_wh_hashmap_init_params params);
 
+extern i8 _wh_hashmap_delete(_wh_hashmap_delete_params params);
 extern i8 _wh_hashmap_insert(_wh_hashmap_insert_params params);
 extern void* _wh_hashmap_get(_wh_hashmap_get_params params);
 extern i8 _wh_hashmap_foreach(wh_hashmap_s* map, void (*func)(void* value));
@@ -80,7 +92,7 @@ extern i8 _wh_hashmap_foreach(wh_hashmap_s* map, void (*func)(void* value));
 #define wh_hashmap_resize()
 #define wh_hashmap_destroy()
 
-#define wh_hashmap_remove()
+#define wh_hashmap_delete(...) _wh_hashmap_delete((_wh_hashmap_delete_params){ __VA_ARGS__ })
 #define wh_hashmap_insert(...) _wh_hashmap_insert((_wh_hashmap_insert_params){ __VA_ARGS__ })
 #define wh_hashmap_get(...) _wh_hashmap_get((_wh_hashmap_get_params){ __VA_ARGS__ })
 

@@ -196,10 +196,18 @@ static i8 _insert_lazy_simple_sys_strig(_wh_hashmap_insert_params params) {
 }
 
 static i8 _delete_lazy_simple_sys(wh_hashmap_s* map, void* key) {
-	i64 hash = _lazy_simple_hash(map->stype, key, (i64)map->slot_count);
-	wh_hashmap_slot_string_s* slots = map->slots;
-	
-	slots[hash].key = nullptr;
+	u64 index = (u64)_lazy_simple_hash(map->stype, key, (i64)map->slot_count);
+	wh_hashmap_slot_string_s* slot = wh_ptr_offset(map->slots, index * (sizeof(wh_hashmap_slot_string_s) + map->type_size));
+
+	wh_hashmap_destructor_s entry = {
+		.data = wh_ptr_offset(slot, sizeof(wh_hashmap_slot_string_s)),
+	};
+
+	if (nullptr != map->destructor) {
+		map->destructor(&entry);
+	}
+
+	slot->key = nullptr;
 	return 0;
 }
 

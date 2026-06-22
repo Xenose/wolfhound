@@ -264,6 +264,8 @@ static void _wh_print_time(wh_print_data_s* data, va_list list) {
 	tm = localtime(&t);
 	strftime(buffer, sizeof(buffer), format, tm);
 
+	printf("time buffer has [ %s ]\n", buffer);
+
 	length = strlen(buffer);
 	written = wh_print_buffer_check(data, (u64)length);
 	memcpy(data->buffer, buffer, length);

@@ -6,6 +6,9 @@
 #include<wh-data/hashmap.h>
 
 #include<stdlib.h>
+
+void* _wh_tracker_destructor(wh_hashmap_destructor_s* entry);
+
 // Linked list tracking
 
 typedef struct {
@@ -16,24 +19,26 @@ typedef struct {
 	const char* file;
 } _wh_heap_ptr_pair_s;
 
-//static _wh_heap_list_s _list = { 0 };
-
-/* extern void* _wh_alloc_no_tracking(_wh_mem_alloc_params params);
-extern void _wh_free_no_tracking(_wh_mem_free_params params);
-extern void* _wh_realloc_no_tracking(_wh_mem_realloc_params params);
-
-static wh_list_s _list = {
-	.stype = WH_STRUCT_TYPE_LLIST_STD_DOUBLE,
-	.type_size = sizeof(_wh_heap_ptr_pair_s),
-}; */
-
 // need pointer version
 static wh_hashmap_s _map = {
 	.stype = WH_STRUCT_TYPE_HASHMAP_LAZY_PTR_SYS,
 	.slots = nullptr,
+
+	.destructor = _wh_tracker_destructor,
+
 	.type_size = sizeof(_wh_heap_ptr_pair_s),
 	.resize_size = 8096,
 };
+
+void* _wh_tracker_destructor(wh_hashmap_destructor_s* entry) {
+	_wh_heap_ptr_pair_s* e = entry->data;
+
+	if (!!e->owner_count) {
+		free(e->owners);
+	}
+
+	return nullptr;
+}
 
 bool _wh_track_search(void* entry_in, void* ptr_in) {
 	_wh_heap_ptr_pair_s* entry = entry_in;
@@ -165,15 +170,13 @@ void _wh_mem_scan_for_each(void* node) {
 
 	if (0 == entry->owner_count) {
 		wh_log_error(("LEAK FOUND! freeing... ptr : [ %p ]"), entry->ptr);
+		wh_hashmap_delete(&_map, entry->ptr);
 		//wh_free(->heap, current->ptr, nullptr);
 	}
 }
 
 i64 _wh_mem_scan(void) {
 	i64 count = 0;
-	//wh_list_for_each(&_list, &_wh_mem_scan_for_each);
 	_wh_hashmap_foreach(&_map, &_wh_mem_scan_for_each);
-
-	//usleep(100);
 	return count;
 }

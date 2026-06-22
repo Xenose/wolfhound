@@ -55,9 +55,9 @@ void* _wh_hashmap_get(_wh_hashmap_get_params params) {
 	return _funcs[func_index].get(params.map, (void*)params.key);
 }
 
-void* _wh_hashmap_delete(wh_hashmap_s* map, void* key) {
-	i64 func_index = map->stype - WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_WOLF;
-	return nullptr;
+i8 _wh_hashmap_delete(_wh_hashmap_delete_params params) {
+	i64 func_index = params.map->stype - WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_WOLF;
+	return _funcs[func_index].delete(params.map, (void*)params.key);
 }
 
 i8 _wh_hashmap_foreach(wh_hashmap_s* map, void (*func)(void* value)) {
