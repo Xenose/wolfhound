@@ -31,6 +31,7 @@ SET(C_SOURCES
 	"src/engine-posix/string.c"
 	"src/engine-posix/time.c"
 	"src/engine-posix/unistd.c"
+	"src/engine-posix/signal.c"
 
 	"src/engine/debug/exceptions.c"
 	"src/engine/arg_parser.c"

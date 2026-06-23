@@ -16,7 +16,7 @@
 #define SA_BIDEFER   0x0040
 
 enum {
-   SiGABRT = 9000,
+   SIGABRT = 9000,
    SIGALRM,
    SIGBUS,
    SIGCHLD,
@@ -73,6 +73,13 @@ struct sigaction {
    int sa_flags;
    void(* sa_sigaction)(int, siginfo_t*, void*);
 };
+
+typedef struct {
+   void*    ss_op; // stack base or pointer
+   size_t   ss_size; // stack size
+   int      ss_flags; // flags
+} stack_t;
+
 
 extern int sigaction(int sig, const struct sigaction* restrict act, struct sigaction* restrict oact);
 

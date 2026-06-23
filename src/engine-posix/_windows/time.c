@@ -1,6 +1,5 @@
 #include<wh-posix/time.h>
-
-#include<windows.h>
+#include<wh-posix/windows.h>
 
 int clock_gettime(clockid_t clockid, struct timespec* tp) {
 	FILETIME ft = { 0 };
