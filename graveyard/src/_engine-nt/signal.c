@@ -18,7 +18,7 @@ void _wnt_queue_user_apc() {
 void* _wnt_add_vectored_exception_handler(unsigned long first, long (*func)(_wnt_exception_pointers_s*)) {
    EXCEPTION_POINTERS ep = {
       .ContextRecord = (EXCEPTION_RECORD){
-         .ExceptionAddress   
+         .ExceptionAddress = 
       },
    };
    return AddVectoredContinueHandler(first, &ep)

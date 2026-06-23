@@ -14,8 +14,6 @@ ENDIF()
 
 IF (WIN32)
 	MESSAGE("${LOG_PREFIX} WE ARE ON WINDOWS!")
-	LIST(APPEND WH_LIBS "ntdll")
-
 	# More Windows Magic for atomics :: Legacy KEEP
 	IF (MSVC)
 		MESSAGE("${LOG_PREFIX} NO ITS MSVC... falling back to c23-comp.h...")

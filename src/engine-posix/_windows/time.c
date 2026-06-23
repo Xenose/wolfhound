@@ -1,10 +1,14 @@
 #include<wh-posix/time.h>
-#include<_wh-nt/time.h>
+
+#include<windows.h>
 
 int clock_gettime(clockid_t clockid, struct timespec* tp) {
-	wnt_filetime_s ft = { 0 };
-	u64 quad0 = 0;
-	u64 quad1 = 0;
+	FILETIME ft = { 0 };
+	LARGE_INTEGER q0;
+	LARGE_INTEGER q1;
+	
+	//u64 quad0 = 0;
+	//u64 quad1 = 0;
 
 	if (nullptr == tp) {
 		return -1;
@@ -13,23 +17,23 @@ int clock_gettime(clockid_t clockid, struct timespec* tp) {
 	switch (clockid) {
 		case CLOCK_MONOTONIC_COARSE:
 		case CLOCK_MONOTONIC:
-			_wnt_query_performance_frequency(&quad0);
-			_wnt_query_performance_counter(&quad1);
+			QueryPerformanceFrequency(&q0); // <== TODO cache this
+			QueryPerformanceCounter(&q1);
 
-			tp->tv_sec = quad1 / quad0;
-			tp->tv_nsec = (quad1 % quad0) * 1'000'000'000ULL / quad0;
+			tp->tv_sec = q1.QuadPart / q0.QuadPart;
+			tp->tv_nsec = (q1.QuadPart % q0.QuadPart) * 1'000'000'000ULL / q0.QuadPart;
 			break;
 
 		case CLOCK_REALTIME:
-			_wnt_get_system_time_precise_as_file_time(&ft);
+			GetSystemTimePreciseAsFileTime(&ft);
 			
-			((u32*)&quad0)[0] = ft.low_date_time;
-			((u32*)&quad0)[1] = ft.high_date_time;
+			q0.LowPart = ft.dwLowDateTime;
+			q0.HighPart = ft.dwHighDateTime;
 
-			quad0 -= 116444736000000000ULL;
+			q0.QuadPart -= 116444736000000000ULL;
 
-			tp->tv_sec  = quad0 / 10'000'000ULL;
-			tp->tv_nsec = (quad0 % 10'000'000ULL) * 100;
+			tp->tv_sec  = q0.QuadPart / 10'000'000ULL;
+			tp->tv_nsec = (q0.QuadPart % 10'000'000ULL) * 100;
 			break;
 	}
 	

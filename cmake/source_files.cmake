@@ -84,13 +84,6 @@ SET(GLFW_SOURCES
 	"src/engine-backends/glfw3/window.c"
 )
 
-SET(NT_SOURCES
-	"src/_engine-nt/time.c"
-	"src/_engine-nt/utils.c"
-	"src/_engine-nt/system.c"
-)
-
-
 IF(NASM_ENABLED)
 	MESSAGE("${LOG_PREFIX} NASM soruces added!")
 
