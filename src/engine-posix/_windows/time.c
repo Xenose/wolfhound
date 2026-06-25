@@ -6,9 +6,6 @@ int clock_gettime(clockid_t clockid, struct timespec* tp) {
 	LARGE_INTEGER q0;
 	LARGE_INTEGER q1;
 	
-	//u64 quad0 = 0;
-	//u64 quad1 = 0;
-
 	if (nullptr == tp) {
 		return -1;
 	}

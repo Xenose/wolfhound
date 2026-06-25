@@ -3,6 +3,35 @@
 
 #include<windows.h>
 
+enum {
+	_NT_FREE_E,
+	_NT_STD_E,
+	_NT_HANDLE_E,
+};
+
+typedef struct {
+	int value;
+} _nt_std_s;
+
+typedef struct {
+	HANDLE value;
+} _nt_handle_s;
+
+typedef struct {
+	int type;
+
+	union {
+		_nt_std_s std;
+		_nt_handle_s handle;
+	};
+} _nt_fd_s;
+
+_nt_fd_s _table[1024] = {
+	{ _NT_STD_E, .std.value = 0 },
+	{ _NT_STD_E, .std.value = 1 },
+	{ _NT_STD_E, .std.value = 2 },
+};
+
 int getpagesize(void) {
 	SYSTEM_INFO si;
 	GetSystemInfo(&si);
@@ -54,4 +83,54 @@ int sleep(unsigned int seconds) {
 
 	clock_gettime(CLOCK_MONOTONIC, &end);
 	return (seconds - (end.tv_sec - start.tv_sec));
+}
+
+int access(const char* path, int amode) {
+	WIN32_FILE_ATTRIBUTE_DATA attrib = { 0 };
+	char _path[MAX_PATH] = { 0 };
+
+	if (0 == amode) {
+		errno = EINVAL;
+		goto go_error;
+	}
+
+	if (MAX_PATH < strnlen(path, MAX_PATH + 1)) {
+		errno = ENAMETOOLONG;
+		goto go_error;
+	}
+
+	for (int i = 0; '\0' != path[i]; i++) {
+		switch (path[i]) {
+			case '/':
+				_path[i] = '\\';
+				continue;
+			default: 
+				_path[i] = path[i];
+				continue;
+		}
+	}
+
+	if (!GetFileAttributesExA(_path, GetFileExMaxInfoLevel, &attrib)) {
+		DWORD error = GetLastError();		
+		goto go_error;
+	}
+
+	if (F_OK & amode) {
+
+	} else {
+		if (W_OK & amode) {
+			if (FILE_ATTRIBUTE_READONLY & attrib.dwFileAttributes) {
+				errno = EROFS;
+				goto go_error;
+			}
+		}
+	}
+
+	return 0;
+go_error:
+	return -1;
+}
+
+int open(const char* path, int flags, mode_t mode) {
+
 }

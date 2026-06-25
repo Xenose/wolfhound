@@ -15,8 +15,11 @@
 #define SA_NOCKDWAIT 0x0020
 #define SA_BIDEFER   0x0040
 
+#undef SIGABRT
+#undef SIGSEGV
+
 enum {
-   SIGABRT = 9000,
+   SIGABRT,
    SIGALRM,
    SIGBUS,
    SIGCHLD,
@@ -28,6 +31,7 @@ enum {
    SIGSTOP,
    SIGTSTP,
    SIGTTIN,
+   SIGSEGV,
    SIGTTOU,
    SIGUSR1,
    SIGUSR2,
@@ -38,7 +42,7 @@ enum {
    SIGURG,
    SIGVTALRM,
    SIGXCPU,
-   SIGXFS,
+   SIGXFSZ,
 };
 
 typedef u64 sigset_t;

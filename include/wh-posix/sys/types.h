@@ -8,7 +8,9 @@ WH_C()
 #if (WH_SYSTEM&WH_SYS_WINDOWS)
 	typedef i64 pid_t;
 	typedef i64 uid_t;
+	typedef i64 off_t;
 	typedef int useconds_t;
+	typedef int mode_t;
 #endif
 
 WH_C_END()
