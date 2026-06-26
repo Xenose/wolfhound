@@ -86,43 +86,34 @@ int sleep(unsigned int seconds) {
 }
 
 int access(const char* path, int amode) {
+	int length = strnlen(path, MAX_PATH + 1);
 	WIN32_FILE_ATTRIBUTE_DATA attrib = { 0 };
-	char _path[MAX_PATH] = { 0 };
 
-	if (0 == amode) {
-		errno = EINVAL;
-		goto go_error;
-	}
-
-	if (MAX_PATH < strnlen(path, MAX_PATH + 1)) {
+	if (MAX_PATH < length) {
 		errno = ENAMETOOLONG;
 		goto go_error;
 	}
 
-	for (int i = 0; '\0' != path[i]; i++) {
-		switch (path[i]) {
-			case '/':
-				_path[i] = '\\';
-				continue;
-			default: 
-				_path[i] = path[i];
-				continue;
+	if (!GetFileAttributesExA(path, GetFileExInfoStandard, &attrib)) {
+		DWORD error = GetLastError();
+		
+		switch(error) {
+			case ERROR_FILE_NOT_FOUND:
+				errno = EACCES;
+				break;
 		}
-	}
 
-	if (!GetFileAttributesExA(_path, GetFileExMaxInfoLevel, &attrib)) {
-		DWORD error = GetLastError();		
 		goto go_error;
 	}
 
-	if (F_OK & amode) {
+	if (F_OK == amode) {
 
 	} else {
 		if (W_OK & amode) {
-			if (FILE_ATTRIBUTE_READONLY & attrib.dwFileAttributes) {
+			/*if (FILE_ATTRIBUTE_READONLY & attrib.dwFileAttributes) {
 				errno = EROFS;
 				goto go_error;
-			}
+			}*/
 		}
 	}
 

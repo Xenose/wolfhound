@@ -9,10 +9,10 @@
 #elif (WH_SYSTEM&WH_SYS_WINDOWS)
 	#include<wh-posix/windows.h>
 
-	#define F_OK 0x0001
-	#define R_OK 0x0002
-	#define W_OK 0x0004
-	#define X_OK 0x0008
+	#define F_OK 0x0000
+	#define R_OK 0x0001
+	#define W_OK 0x0002
+	#define X_OK 0x0004
 
 	#define write _write
 
