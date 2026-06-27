@@ -143,7 +143,6 @@ void _wh_mem_free_freelist(_wh_mem_free_params* params) {
 	}
 
 	while (node->data != params->ptr) {
-
 		if (nullptr == node->next) {
 			wh_log_error(("Failed to find pointer next pointer is NULL"));
 			goto go_error_exit;

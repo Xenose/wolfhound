@@ -1,4 +1,3 @@
-#include<wh-sys/filesystem.h>
 #include<wh-sys/file.h>
 #include<wh/loader/asset.h>
 #include<wh/print.h>
@@ -8,20 +7,23 @@
 #include<wh/string.h>
 
 #include<wh-headers/lua.h>
+#include<wh-posix/dirent.h>
+
+#include<wh-sys/filesystem.h>
 
 typedef struct {
 	struct_type stype;
 	wh_string_s name;
 } wh_asset_s;
 
-i64 _wh_assets_load_inner(lua_State* ls, const char* path) {
+/* i64 _wh_assets_load_inner(lua_State* ls, const char* path) {
 	wh_file_s file = { 0 };
 	char p[1024] = { 0 };
 	wh_dir_s dir = wh_read_dir(nullptr, path);
 
 	wh_for(u64, i, dir.count) {
 		wh_asset_s asset = { 0 };
-		wh_print(("%s\n"), dir.entries[i].name);
+		wh_log_debug(("Loading asset: %s"), dir.entries[i].name);
 
 		switch(dir.entries[i].type) {
 			case WH_FSYS_DIR:
@@ -68,10 +70,33 @@ i64 _wh_assets_load_inner(lua_State* ls, const char* path) {
 go_error_exit:
 	wh_dir_destroy(nullptr, &dir);
 	return 0;
+} */
+
+
+i64 _wh_assets_load_inner(lua_State* ls, const char* path) {
+	i64 rc = 0;
+	DIR* dir = nullptr;
+
+	if (nullptr == (dir = opendir(path))) {
+		wh_log_error(("Failed to load asset path: %s"), path);
+		goto go_error_exit;
+	}
+	
+	for (struct dirent* entry = readdir(dir); nullptr != entry; entry = readdir(dir)) {
+		wh_log_debug(("Name: %s"), entry->d_name);
+		switch (entry->d_ino) {
+		}
+	}
+
+	closedir(dir);
+go_error_exit:
+	return 0;
 }
+
 i64 _wh_assets_load(const char* path) {
 	lua_State* ls = luaL_newstate();
-	
+
+	wh_log_debug(("Loading game assets Lua state"));
 	_wh_lua_expose_api(ls);
 	_wh_assets_load_inner(ls, path);
 

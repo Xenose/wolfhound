@@ -97,7 +97,7 @@ go_error_exit:
 
 
 void wh_dir_destroy(wh_heap_header_s* heap, wh_dir_s* dir) {
-	wh_free(heap, dir->entries, &dir->entries);
+	//wh_free(heap, dir->entries, &dir->entries);
 }
 
 #else

@@ -49,7 +49,6 @@ static i8 _wh_init_critical(_wh_init_params* params) {
 	params->grap->mode_graphics = params->mode_graphics;
 
 	wh_log_info(("Done loading critical section!"));
-
 	return 0;
 go_error_exit:
 	return -1;
@@ -70,7 +69,8 @@ wh_instance_s* _wh_init(_wh_init_params params) {
 	params.ins[0]->app_info.engine = (wh_string_s){ .str = "wolfhound", .length = 9 };
 
 	// loading assets
-	_wh_assets_load("./resources");
+	wh_log_debug(("Loading game assets!"));
+	_wh_assets_load("./resources"); // TODO :: this need a system overhaul
 
 	wh_log_debug(("Started graphics section!"));
 	if (-1 == wh_render_init(params.ins[0])) {
@@ -83,8 +83,8 @@ wh_instance_s* _wh_init(_wh_init_params params) {
 	if (-1 == wh_window_create(params.ins[0], 1920, 1080, (wh_string_s){ .str = "hello" })) {
 		goto go_error_exit;
 	}
-	wh_log_debug(("Graphics section over!"));
 
+	wh_log_debug(("Graphics section over!"));
 	return params.ins[0];
 go_error_exit:
 	wh_end(params.ins[0]);
