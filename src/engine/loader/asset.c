@@ -6,6 +6,7 @@
 #include<wh/lua/api.h>
 #include<wh/string.h>
 
+#include<wh-posix/string.h>
 #include<wh-headers/lua.h>
 #include<wh-posix/dirent.h>
 
@@ -76,16 +77,33 @@ go_error_exit:
 i64 _wh_assets_load_inner(lua_State* ls, const char* path) {
 	i64 rc = 0;
 	DIR* dir = nullptr;
+	char _path[256] = { 0 };
+	u64 _path_length = 0;
+
+	if (nullptr == path) {
+		goto go_error_exit;
+	}
 
 	if (nullptr == (dir = opendir(path))) {
 		wh_log_error(("Failed to load asset path: %s"), path);
 		goto go_error_exit;
 	}
-	
+
+	_path_length = strlen(path);
+
 	for (struct dirent* entry = readdir(dir); nullptr != entry; entry = readdir(dir)) {
-		wh_log_debug(("Name: %s"), entry->d_name);
-		switch (entry->d_ino) {
+		if (!strcmp("..", entry->d_name)) {
+			continue;
 		}
+
+		if (!strcmp(".", entry->d_name)) {
+			continue;
+		}
+
+		memcpy(_path, path, _path_length);
+		wh_strcat((_path, 255, _path_length), "/", entry->d_name);
+		wh_log_debug(("Name: %s"), _path);
+
 	}
 
 	closedir(dir);
