@@ -2,6 +2,7 @@ import os
 import argparse
 
 from pathlib import Path
+from common.params import params_c
 from common.utils import path_complete
 
 
@@ -13,7 +14,7 @@ def complete(text=None):
     return path_complete(text, only_dir=True)
 
 
-def execute(sh, cmd, args):
+def execute(params: params_c):
     parser = argparse.ArgumentParser(
         prog='cd',
         description='change the current working directory',
@@ -21,7 +22,7 @@ def execute(sh, cmd, args):
 
     parser.add_argument('PATH', nargs=argparse.REMAINDER)
 
-    a = parser.parse_args(args)
+    a = parser.parse_args(params.args)
 
     path = Path(a.PATH[0])
 
@@ -32,5 +33,5 @@ def execute(sh, cmd, args):
     if 0 < len(path.name):
         os.chdir(path)
     else:
-        os.chdir(sh.session["home"])
+        os.chdir(params.sh.session["home"])
     # subprocess.run("cd", shell=True)

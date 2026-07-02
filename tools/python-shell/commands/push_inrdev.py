@@ -1,8 +1,10 @@
 import git
 
+from common.params import params_c
 
-def execute(sh, cmd, args):
-    repo = git.Repo(sh.session["home"])
+
+def execute(params: params_c):
+    repo = git.Repo(params.sh.session["home"])
     branch = repo.active_branch
 
     print("\n")

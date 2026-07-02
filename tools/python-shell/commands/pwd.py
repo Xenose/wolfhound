@@ -1,5 +1,7 @@
 import os
 
+from common.params import params_c
 
-def execute(sh, cmd, args):
+
+def execute(params: params_c):
     print(f"{os.getcwd()}")

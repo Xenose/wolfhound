@@ -1,6 +1,8 @@
 
+from common.params import params_c
 
-def execute(sh, cmd, args):
+
+def execute(params: params_c):
     welcome = """
        Welcome to wolfhound shell, this shell
        is designed to be familiar but its not

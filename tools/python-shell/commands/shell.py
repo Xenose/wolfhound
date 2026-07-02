@@ -1,5 +1,7 @@
 import subprocess
 
+from common.params import params_c
 
-def execute(cmd, args, session, state, prompt):
-    subprocess.run(args, check=False)
+
+def execute(params: params_c):
+    subprocess.run(params.args, check=False)

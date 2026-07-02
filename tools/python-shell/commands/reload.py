@@ -1,4 +1,6 @@
 
+from common.params import params_c
 
-def execute(sh, cmd, args):
-    sh.reload()
+
+def execute(params: params_c):
+    params.sh.reload()

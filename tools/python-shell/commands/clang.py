@@ -1,4 +1,7 @@
 
+from common.params import params_c
+
+
 def complete(text=None):
     return [
         '--arch',
@@ -6,5 +9,5 @@ def complete(text=None):
     ]
 
 
-def execute(sh, cmd, args):
-    sh.builder.clang(args)
+def execute(params: params_c):
+    params.sh.builder.clang(params.args)

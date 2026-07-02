@@ -1,4 +1,6 @@
 
+from common.params import params_c
 
-def execute(sh, cmd, args):
-    sh.builder.icx(args)
+
+def execute(params: params_c):
+    params.sh.builder.icx(params.args)

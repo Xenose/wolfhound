@@ -1,4 +1,6 @@
 
+from common.params import params_c
 
-def execute(sh, cmd, args):
-    sh.session["exit"] = True
+
+def execute(params: params_c):
+    params.sh.session["exit"] = True

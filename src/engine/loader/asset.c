@@ -6,9 +6,14 @@
 #include<wh/lua/api.h>
 #include<wh/string.h>
 
-#include<wh-posix/string.h>
 #include<wh-headers/lua.h>
+
+#include<wh-posix/errno.h>
+#include<wh-posix/fcntl.h>
+#include<wh-posix/string.h>
 #include<wh-posix/dirent.h>
+#include<wh-posix/sys/stat.h>
+
 
 #include<wh-sys/filesystem.h>
 
@@ -79,6 +84,7 @@ i64 _wh_assets_load_inner(lua_State* ls, const char* path) {
 	DIR* dir = nullptr;
 	char _path[256] = { 0 };
 	u64 _path_length = 0;
+	struct stat st = { 0 };
 
 	if (nullptr == path) {
 		goto go_error_exit;
@@ -104,8 +110,27 @@ i64 _wh_assets_load_inner(lua_State* ls, const char* path) {
 		wh_strcat((_path, 255, _path_length), "/", entry->d_name);
 		wh_log_debug(("Name: %s"), _path);
 
+		if (0 != lstat(_path, &st)) {
+			wh_log_error(("Failed to read stats for [ $n ]"), errno);
+			memset(_path, 0, 256);
+			continue;
+		}
+
+		if (st.st_mode & S_IFDIR) {
+				wh_log_debug(("Found a dir [ %s ]!"), _path);
+				_wh_assets_load_inner(ls, _path);
+		} else if (st.st_mode & S_IFREG) {
+				wh_log_debug(("Found a file!"));
+				// TODO
+				// Here once we have a gameobject format defined
+				// we will use lua to populate it and define the
+				// data blocks
+		}
+
+		memset(_path, 0, 256);
 	}
 
+go_error_close_dir_exit:
 	closedir(dir);
 go_error_exit:
 	return 0;

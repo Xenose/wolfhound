@@ -1,4 +1,6 @@
 
+from common.params import params_c
+
 
 def complete(text=None):
     return [
@@ -7,5 +9,5 @@ def complete(text=None):
     ]
 
 
-def execute(sh, cmd, args):
-    sh.builder.zig(args)
+def execute(params: params_c):
+    params.sh.builder.zig(params.args)

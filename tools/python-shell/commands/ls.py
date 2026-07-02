@@ -6,6 +6,7 @@ if "nt" != os.name:
     import grp
 
 from common.utils import path_complete
+from common.params import params_c
 from prompt_toolkit import print_formatted_text, ANSI
 
 
@@ -25,9 +26,11 @@ def long(files, dirs, x):
     if x.is_dir():
         dirs.append(f"\033[91m{x.name}\033[0m")
     elif x.is_symlink():
-        files.append(f"\033[92m{x.name:50}\033[0m {user_name}::{group_name:10}")
+        files.append(
+            f"\033[92m{x.name:50}\033[0m {user_name}::{group_name:10}")
     elif x.is_file():
-        files.append(f"{x.name:50} {user_name}::{group_name:10} {stat.st_size}")
+        files.append(
+            f"{x.name:50} {user_name}::{group_name:10} {stat.st_size}")
 
 
 def short(files, dirs, x):
@@ -53,7 +56,7 @@ def complete(text=None):
     return path_complete(text)
 
 
-def execute(sh, cmd, args):
+def execute(params: params_c):
     dirs = []
     files = []
     path = '.'
@@ -67,7 +70,7 @@ def execute(sh, cmd, args):
     parser.add_argument("-a", "--all", action='store_true', help="list view")
     parser.add_argument('PATH', nargs=argparse.REMAINDER)
 
-    a = parser.parse_args(args)
+    a = parser.parse_args(params.args)
 
     if a.long:
         sp = '\n'

@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from common.utils import path_complete
+from common.params import params_c
 from prompt_toolkit import print_formatted_text, ANSI
 
 
@@ -30,7 +31,7 @@ def add_record(filepath):
     }
 
 
-def execute(sh, cmd, args):
+def execute(params: params_c):
     parser = argparse.ArgumentParser(
         prog='ls',
         description='list the items in a directory',
@@ -40,7 +41,7 @@ def execute(sh, cmd, args):
     parser.add_argument("--trash", action='store_true', help="list view")
     parser.add_argument('PATH', nargs=argparse.REMAINDER)
 
-    a = parser.parse_args(args)
+    a = parser.parse_args(params.args)
 
     if 0 == len(a.PATH):
         return

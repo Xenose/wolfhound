@@ -1,8 +1,10 @@
 import os
 import subprocess
 
+from common.params import params_c
 
-def execute(cmd, args, session, state, prompt):
+
+def execute(params: params_c):
     exlude_dirs = "build"
 
     match os.name:

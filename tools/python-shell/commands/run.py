@@ -4,6 +4,7 @@ import subprocess
 import time
 
 from common.utils import path_complete
+from common.params import params_c
 from pathlib import Path
 
 
@@ -11,7 +12,7 @@ def complete(text=None):
     return path_complete(text)
 
 
-def execute(sh, cmd, args):
+def execute(params: params_c):
     path = os.getcwd()
     parser = argparse.ArgumentParser(
         prog='run',
@@ -21,8 +22,8 @@ def execute(sh, cmd, args):
     parser.add_argument('BIN', nargs=argparse.REMAINDER)
     parser.add_argument("-t", "--time", action='store_true', help="list view")
 
-    a = parser.parse_args(args)
-    p = Path(sh.session["home"], path, a.BIN[0])
+    a = parser.parse_args(params.args)
+    p = Path(params.sh.session["home"], path, a.BIN[0])
 
     # Running the sub command
     # TODO :: Improve this is a hack to pass flags

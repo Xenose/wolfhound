@@ -10,6 +10,7 @@ from prompt_toolkit import PromptSession, ANSI
 from prompt_toolkit.completion import Completer, Completion
 from pathlib import Path
 
+from common.params import params_c
 from builder import builder_c
 
 
@@ -96,6 +97,11 @@ class shell_c:
 
     def dispatch(self, cmd, args):
         mod = None
+        params = params_c()
+
+        params.sh = self
+        params.cmd = cmd
+        params.args = args
 
         try:
             mod = importlib.import_module(f"commands.{cmd}")
@@ -111,7 +117,7 @@ class shell_c:
             print(f"{cmd}: invalid command module")
             return
 
-        mod.execute(self, cmd, args)
+        mod.execute(params)
 
     def line(self):
         current_dir = "/".join(os.getcwd().split(os.sep)[-3:]) or "/"

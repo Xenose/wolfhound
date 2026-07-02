@@ -5,8 +5,10 @@ import argparse
 import platform
 from pathlib import Path
 
+from common.params import params_c
 
-def execute(sh, cmd, args):
+
+def execute(params: params_c):
     os_name = platform.system().lower()
 
     if "linux" != os_name:
@@ -21,10 +23,11 @@ def execute(sh, cmd, args):
     parser.add_argument('--fresh', default=False)
     parser.add_argument('NAME', nargs=argparse.REMAINDER)
 
-    a = parser.parse_args(args)
+    a = parser.parse_args(params.args)
+
     # Container Image Path
     cip = Path(
-        sh.session["home"],
+        params.sh.session["home"],
         "tools",
         "docker",
         f"{a.NAME[0]}.dockerfile"
@@ -39,7 +42,7 @@ def execute(sh, cmd, args):
             "build",
             "-t", f"test_image_{a.NAME[0]}",
             "-f", cip,
-            f"{sh.session["home"]}"
+            f"{params.sh.session["home"]}"
         ])
 # docker run --gpus all --rm -it -v "$PWD":/wolfhound "test_image_wolfhound"
 # docker rmi "test_image_wolfhound"
@@ -49,7 +52,7 @@ def execute(sh, cmd, args):
             "run",
             "--rm",  # Remove the image
             "-it",   # Sets the shell to be interactive
-            "-v", f"{sh.session["home"]}:/project",
+            "-v", f"{params.sh.session["home"]}:/project",
             f"test_image_{a.NAME[0]}"
         ])
     else:

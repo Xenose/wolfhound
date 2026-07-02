@@ -2,8 +2,10 @@ import os
 import argparse
 
 from pathlib import Path
+from common.params import params_c
 
-def execute(sh, cmd, args):
+
+def execute(params: params_c):
     parser = argparse.ArgumentParser(
         prog='touch',
         description='',
@@ -11,7 +13,7 @@ def execute(sh, cmd, args):
 
     parser.add_argument('PATH', nargs=argparse.REMAINDER)
 
-    a = parser.parse_args(args)
+    a = parser.parse_args(params.args)
     path = Path(a.PATH[0])
 
     if path.exists():

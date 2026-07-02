@@ -3,13 +3,14 @@ import argparse
 import pyperclip
 
 from common.utils import path_complete
+from common.params import params_c
 
 
 def complete(text=None):
     return path_complete(text)
 
 
-def execute(sh, cmd, args):
+def execute(params: params_c):
     print("Copying...")
 
     text = ""
@@ -21,7 +22,7 @@ def execute(sh, cmd, args):
 
     parser.add_argument('FILES', nargs=argparse.REMAINDER)
 
-    a = parser.parse_args(args)
+    a = parser.parse_args(params.args)
 
     for f in a.FILES:
         with open(f) as fd:
