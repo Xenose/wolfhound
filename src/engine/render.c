@@ -131,3 +131,7 @@ go_graphics_retry:
 go_error_exit:
 	return -1;
 }
+
+void _wh_event_subscribe(int key, void (*func)(wh_event_s*)) {
+	_wh_event_keys[key] = func;
+}

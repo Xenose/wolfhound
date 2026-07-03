@@ -76,6 +76,8 @@ extern void (*_wh_render_clear)(_wh_render_clear_params params);
 extern void (*_wh_render_show)(_wh_render_show_params params);
 extern void (*_wh_render_line)(_wh_render_line_params params);
 
+extern void _wh_event_subscribe(int key, void (*func)(wh_event_s*));
+
 extern i8 _wh_render_init(_wh_render_init_params params);
 
 /* [MD_DOC]

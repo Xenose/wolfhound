@@ -27,10 +27,10 @@ void _wh_event_pull_sdl3(_wh_event_pull_params params) {
 
 	switch (event.type) {
 		case SDL_EVENT_KEY_DOWN:
-			wh_log_debug(("Key -> %i"), event.key.key);
+			wh_log_debug(("Key -> %i"), event.key.scancode);
 
-			if (nullptr != _wh_event_keys[event.key.key]) {
-				_wh_event_keys[event.key.key](&e);
+			if (nullptr != _wh_event_keys[event.key.scancode]) {
+				_wh_event_keys[event.key.scancode](&e);
 			} 
 			break;
 

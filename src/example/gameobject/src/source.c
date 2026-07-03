@@ -7,6 +7,7 @@
 #include<wh/string.h>
 #include<wh/wolfhound.h>
 #include<wh/debug/logger.h>
+#include<wh/render.h>
 
 void update(wh_instance_s* ins) {
 }
@@ -28,6 +29,10 @@ i8 action_collision(wh_instance_s* ins, wh_action_s* action) {
 
 i8 action_health_gen(wh_instance_s* ins, wh_action_s* action) {
 	return 0;
+}
+
+void key_escape(wh_event_s* e) {
+	wh_log_info(("Hello!"));
 }
 
 int main(int arc, char* const* arv) {
@@ -63,6 +68,8 @@ int main(int arc, char* const* arv) {
 	wh_action_subscribe(ins, wolf, gid);
 	wh_action_subscribe(ins, wolf, cid);
 	wh_action_subscribe(ins, wolf, hgid);
+
+	_wh_event_subscribe(41, &key_escape);
 
 	wh_loop(ins, &update, &fixed_update);
 
