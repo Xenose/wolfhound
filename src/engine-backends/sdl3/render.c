@@ -21,10 +21,19 @@ void _wh_render_clear_sdl3(_wh_render_clear_params params) {
 }
 
 void _wh_event_pull_sdl3(_wh_event_pull_params params) {
+	wh_event_s e = { 0 };
 	SDL_Event event = { 0 };
 	SDL_PollEvent(&event);
 
 	switch (event.type) {
+		case SDL_EVENT_KEY_DOWN:
+			wh_log_debug(("Key -> %i"), event.key.key);
+
+			if (nullptr != _wh_event_keys[event.key.key]) {
+				_wh_event_keys[event.key.key](&e);
+			} 
+			break;
+
 		case SDL_EVENT_QUIT:
 			params.event->code = WH_EVENT_WINDOW_CLOSE;
 			break;
@@ -53,3 +62,4 @@ void _wh_render_line_sdl3(_wh_render_line_params params) {
 		wh_log_error(("Failed to render line! [ %s ]"), SDL_GetError());
 	}
 }
+

@@ -31,11 +31,10 @@ i8 action_health_gen(wh_instance_s* ins, wh_action_s* action) {
 }
 
 int main(int arc, char* const* arv) {
-	wh_log_info(("Starting GameObject Demo!"));
-
 	char buf[256] = { 0 };
 	wh_instance_s* ins = { 0 };
 
+	wh_log_info(("Starting GameObject Demo!"));
 	wh_sys_program_path(buf, 255);
 	wh_strcat((buf, 256, strlen(buf)), "config.lua");
 
@@ -43,18 +42,23 @@ int main(int arc, char* const* arv) {
 		&ins,
 		(wh_args_s){ 0, arc, arv },										// command line arguments
 		(wh_string_s){ .str = "gameobject", .length = 11},			// application name
+		.mode_window = WH_WINDOW_MODE_SDL3,
 		.mode_graphics = WH_GRAPHICS_MODE_SDL3,
 		.config_path = (wh_string_s){ .str = buf, 0 },				// application config
 	);
 
+	// Setting the limits of Actions and Entities
 	wh_action_init(ins, 100);
 	wh_entity_init(ins, 100);
 
+	// Gravity Action ID
 	u64 gid = wh_action_register(ins, &action_gravity);
+	// Collision Action ID
 	u64 cid = wh_action_register(ins, &action_collision);
+	// Health Gen Action ID
 	u64 hgid = wh_action_register(ins, &action_health_gen);
 
-	u64 wolf = wh_entity_create(ins, (wh_string_s){ .str = "wolf", .length = 5}, nullptr);
+	u64 wolf = wh_entity_create(ins, (wh_string_s){ .str = "wolf", .length = 5 }, nullptr);
 
 	wh_action_subscribe(ins, wolf, gid);
 	wh_action_subscribe(ins, wolf, cid);

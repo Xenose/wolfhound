@@ -11,6 +11,7 @@ enum {
 };
 
 typedef struct {
+	wh_struct stype;
 	u64 code;
 } wh_event_s;
 
@@ -63,6 +64,9 @@ typedef struct {
 typedef struct {
 	wh_instance_s* ins;
 } _wh_render_init_params;
+
+
+extern void (*_wh_event_keys[8096])(wh_event_s* e);
 
 extern i8 (*_wh_window_create)(_wh_window_create_params params);
 extern void (*_wh_window_get_size)(_wh_window_get_size_params params);

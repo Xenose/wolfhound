@@ -78,7 +78,6 @@ go_error_exit:
 	return 0;
 } */
 
-
 i64 _wh_assets_load_inner(lua_State* ls, const char* path) {
 	i64 rc = 0;
 	DIR* dir = nullptr;

@@ -21,12 +21,18 @@ const char* _wh_support_vulkan() {
 #endif
 }
 
+void (*_wh_event_keys[8096])(wh_event_s* e) = {
+	nullptr
+};
+
 i8 (*_wh_window_create)(_wh_window_create_params params)				= nullptr;
 void (*_wh_window_get_size)(_wh_window_get_size_params params)		= nullptr;
-void (*_wh_event_pull)(_wh_event_pull_params params)					= nullptr;
+
 void (*_wh_render_clear)(_wh_render_clear_params params)				= nullptr;
 void (*_wh_render_show)(_wh_render_show_params params)				= nullptr;
 void (*_wh_render_line)(_wh_render_line_params params)				= nullptr;
+
+void (*_wh_event_pull)(_wh_event_pull_params params)					= nullptr;
 
 i8 _wh_render_init(_wh_render_init_params params) {
 	wh_log_info(("Init graphics stack"));
