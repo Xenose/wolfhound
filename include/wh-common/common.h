@@ -53,6 +53,11 @@ typedef struct {
 	u64 bytes;
 } wh_buffer_s;
 
+typedef struct {
+	void* ptr;
+	u64 size;
+	u64 free;
+} wh_sysmem_s;
 
 typedef struct {
 	struct_type stype;

@@ -8,6 +8,7 @@ ENDIF()
 SET(C_SOURCES
 	"src/engine-data/list.c"
 	"src/engine-data/hashmap.c"
+	"src/engine-data/dynamic_array.c"
 
 	"src/engine-maths/core.c"
 	"src/engine-maths/hash.c"

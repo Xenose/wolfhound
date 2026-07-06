@@ -1,8 +1,8 @@
 
 print("Hello from test asset!")
 
-NAME = "test"
-WH.asset.type = WH_STRUCT_TYPE_IMG_PNG
+-- NAME = "test"
+-- WH.asset.type = WH_STRUCT_TYPE_IMG_PNG
 -- TEXTURE = "test.png"
 -- RENDERER = "line"
 

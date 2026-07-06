@@ -22,62 +22,6 @@ typedef struct {
 	wh_string_s name;
 } wh_asset_s;
 
-/* i64 _wh_assets_load_inner(lua_State* ls, const char* path) {
-	wh_file_s file = { 0 };
-	char p[1024] = { 0 };
-	wh_dir_s dir = wh_read_dir(nullptr, path);
-
-	wh_for(u64, i, dir.count) {
-		wh_asset_s asset = { 0 };
-		wh_log_debug(("Loading asset: %s"), dir.entries[i].name);
-
-		switch(dir.entries[i].type) {
-			case WH_FSYS_DIR:
-				wh_strcat((p, 1023), path, "/", dir.entries[i].name);
-				_wh_assets_load(p);
-				break;
-			case WH_FSYS_FILE:
-				wh_strcat((p, 1024), path, "/", dir.entries[i].name);
-
-				wh_log_debug(("Loading asset [ %s ]"), p);
-				file = wh_file_load(p);
-
-				if (0 == file.length) {
-					wh_log_warning(("No file fund at [ %s ]"), path);
-					continue;
-				}
-
-				wh_lua_add_values(
-					ls,
-					(const char*[]) { "WH", "asset", "type", nullptr }, WH_TYPE_I64, asset.stype
-				);
-
-				// Here we load the string and use lua_pcall for run the code
-				if (LUA_OK == luaL_loadstring(ls, file.str)) {
-					if (LUA_OK == lua_pcall(ls, 0, 0, 0)) {
-						// If it was executed successfully we 
-						// remove the code from the stack
-						lua_pop(ls, lua_gettop(ls));
-					}
-				}
-
-				wh_lua_get_values(
-					ls,
-					(const char*[]) { "WH", "asset", "type", nullptr }, WH_TYPE_I64, &asset.stype
-				);
-
-				wh_log_debug(("Asset type set to $F"), asset.stype);
-
-				wh_file_unload(file);
-				break;
-		}
-	}
-
-go_error_exit:
-	wh_dir_destroy(nullptr, &dir);
-	return 0;
-} */
-
 i64 _wh_assets_load_inner(lua_State* ls, const char* path) {
 	i64 rc = 0;
 	DIR* dir = nullptr;
@@ -86,6 +30,7 @@ i64 _wh_assets_load_inner(lua_State* ls, const char* path) {
 	struct stat st = { 0 };
 
 	if (nullptr == path) {
+		wh_log_warning(("Provided asset path is NULL!"));
 		goto go_error_exit;
 	}
 
@@ -120,10 +65,21 @@ i64 _wh_assets_load_inner(lua_State* ls, const char* path) {
 				_wh_assets_load_inner(ls, _path);
 		} else if (st.st_mode & S_IFREG) {
 				wh_log_debug(("Found a file!"));
+				wh_file_s file = wh_file_load(_path);
 				// TODO
 				// Here once we have a gameobject format defined
 				// we will use lua to populate it and define the
 				// data blocks
+
+				if (nullptr != file.ptr) {
+					if (LUA_OK != luaL_dostring(ls, file.str)) {
+						const char *error_msg = lua_tostring(ls, -1);
+						wh_log_warning(("Lua error: %s"), error_msg);
+						lua_pop(ls, 1); // remove error message from stack
+					}
+
+					wh_file_unload(file);
+				}
 		}
 
 		memset(_path, 0, 256);
