@@ -30,4 +30,15 @@ if [ ! -f "${WP}/tools/shell.sh" ]; then
 fi
 
 cd "${WP}"
+
+if [ ! -d .venv ]; then
+    python3 -m venv .venv
+else
+    echo "Using existing virtual environment"
+fi
+
+# Using posix source over source for alpine and termux
+. .venv/bin/activate
+
+pip3 install prompt-toolkit
 python3 "$WP/tools/python-shell/main.py"

@@ -9,6 +9,7 @@ docs/
 __pycache__/
 *.pyc
 .pyre/
+.venv/
 
 # Wolfhound files
 .target
