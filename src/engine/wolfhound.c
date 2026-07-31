@@ -64,9 +64,9 @@ wh_instance_s* _wh_init(_wh_init_params params) {
 	}
 
 	// basic data init
-	params.ins[0]->stype = WH_STRUCT_TYPE_INSTANCE;
-	params.ins[0]->app_info.name = params.app_name;
-	params.ins[0]->app_info.engine = (wh_string_s){ .str = "wolfhound", .length = 9 };
+	(*params.ins)->stype = WH_STRUCT_TYPE_INSTANCE;
+	(*params.ins)->app_info.name = params.app_name;
+	(*params.ins)->app_info.engine = (wh_string_s){ .str = "wolfhound", .length = 9 };
 
 	// loading assets
 	wh_log_debug(("Loading game assets!"));

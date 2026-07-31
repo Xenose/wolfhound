@@ -1,5 +1,5 @@
 # The Wolfhound Game Engine [ C23 ]
-**This code is IN the Rapid DEVelopment branch or 'INRDEV' 
+**This code is 'IN the Rapid DEVelopment' branch or 'INRDEV' 
 for short, meaning that the code will change a lot and that 
 after first release the commit history will be squashed.**
 
@@ -165,10 +165,10 @@ In AES system :: action(logic) -> Entity -> Data
 | ------------ | ------------ | ------------- | ---- | -------------- | ---------------------------------- |
 | Alpine Linux | X64          | Pentium D 820 | 8GB  | Radeon HD 6950 |                                    |
 | Android      | AArch64      | T616          | 8GB  | N/A            | Compiled using Termux.             |
-| Arch Linux   | X64          | Ryzen 3900x   | 64GB | RX6800xt       |                                    |
+| Arch Linux   | X64          | Ryzen 5900x   | 64GB | RX6800xt       |                                    |
 | Arch Linux   | X64          | Ryzen 4650u   | 16GB | N/A            | X13 Gen 1 ThinkPad.                |
 | FreeBSD      | X64          | I5 6300u      | 32GB | N/A            | T470                               |
-| Windows 11   | X64          | Ryzen 2200g   | 16GB | Radeon WX6100  |                                    |
+| Windows 11   | X64          | Ryzen 2700g   | 16GB | Radeon WX6100  |                                    |
 | OpenIndiana  | X64          | VM            | N/A  | N/A            | Hard to test on physical machines. |
 | Haiku        | X64          | I3-2120T      | 16GB | N/A            | ThinkCenter                        |
 
