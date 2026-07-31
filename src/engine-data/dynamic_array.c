@@ -3,23 +3,23 @@
 #include"_dynamic_array/dynamic_array_std.c"
 
 typedef struct {
-	void (*init)(_wh_darray_init_params* params);
+    void (*init)(_wh_darray_init_params* params);
 } _map_func;
 
 static _map_func _funcs[] = {
-	{},
-	{},
-	{
-		.init = _wh_darray_init_std,
-	},
+    {},
+    {},
+    {
+        .init = _wh_darray_init_std,
+    },
 };
 
 void _wh_darray_init(_wh_darray_init_params params) {
-	u64 fi = 0; // function index
+    u64 fi = 0; // function index
 
-	fi = ((u64)params.stype) - WH_STRUCT_TYPE_LLIST_SINGLE;
+    fi = ((u64)params.stype) - WH_STRUCT_TYPE_LLIST_SINGLE;
 
-	_funcs[fi].init(&params);
+    _funcs[fi].init(&params);
 }
 
 void _wh_darray_insert(_wh_darray_insert_params params) {
