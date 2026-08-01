@@ -1,110 +1,111 @@
 
 IF(FORTRAN_ENABLED)
-	SET(F95_SOURCES
-		"src/engine-maths/core.f95"
-	)
+    SET(F95_SOURCES
+        "src/engine-maths/core.f95"
+    )
 ENDIF()
 
 SET(C_SOURCES
-	"src/engine-data/list.c"
-	"src/engine-data/hashmap.c"
-	"src/engine-data/dynamic_array.c"
+    "src/engine-data/list.c"
+    "src/engine-data/hashmap.c"
+    "src/engine-data/dynamic_array.c"
 
-	"src/engine-maths/core.c"
-	"src/engine-maths/hash.c"
-	"src/engine-maths/memory.c"
+    "src/engine-maths/core.c"
+    "src/engine-maths/hash.c"
+    "src/engine-maths/memory.c"
 
-	"src/engine-sys/atomic_lock.c"
-	"src/engine-sys/file.c"
-	"src/engine-sys/filesystem.c"
-	"src/engine-sys/info.c"
-	"src/engine-sys/library.c"
-	"src/engine-sys/memory.c"
-	"src/engine-sys/memory/arena.c"
-	"src/engine-sys/memory/core.c"
-	"src/engine-sys/memory/freelist.c"
-	"src/engine-sys/memory/tracker.c"
-	"src/engine-sys/memreq.c"
-	"src/engine-sys/socket.c"
+    "src/engine-sys/atomic_lock.c"
+    "src/engine-sys/file.c"
+    "src/engine-sys/filesystem.c"
+    "src/engine-sys/foreman.c"
+    "src/engine-sys/info.c"
+    "src/engine-sys/library.c"
+    "src/engine-sys/memory.c"
+    "src/engine-sys/memory/arena.c"
+    "src/engine-sys/memory/core.c"
+    "src/engine-sys/memory/freelist.c"
+    "src/engine-sys/memory/tracker.c"
+    "src/engine-sys/memreq.c"
+    "src/engine-sys/socket.c"
 
-	"src/engine-testing/unite.c"
+    "src/engine-testing/unite.c"
 
-	"src/engine-posix/string.c"
-	"src/engine-posix/time.c"
-	"src/engine-posix/unistd.c"
-	"src/engine-posix/signal.c"
+    "src/engine-posix/string.c"
+    "src/engine-posix/time.c"
+    "src/engine-posix/unistd.c"
+    "src/engine-posix/signal.c"
 
-	"src/engine/debug/exceptions.c"
-	"src/engine/arg_parser.c"
-	"src/engine/config.c"
-	"src/engine/convert.c"
-	"src/engine/data/hashmap_lazy.c"
-	"src/engine/debug/benchmark.c"
-	"src/engine/debug/error.c"
-	"src/engine/debug/logger.c"
-	"src/engine/debug/signalar.c"
-	"src/engine/game/actions.c"
-	"src/engine/game/entity.c"
-	"src/engine/game/loader.c"
-	"src/engine/images/loader.c"
-	"src/engine/loader/asset.c"
-	"src/engine/lua/api.c"
-	"src/engine/lua/api/file.c"
-	"src/engine/lua/api/filesystem.c"
-	"src/engine/lua/api/maths.c"
-	"src/engine/lua/config.c"
-	"src/engine/lua/helpers.c"
-	"src/engine/print.c"
-	"src/engine/render.c"
-	"src/engine/string.c"
-	"src/engine/window.c"
-	"src/engine/wolfhound.c"
+    "src/engine/debug/exceptions.c"
+    "src/engine/arg_parser.c"
+    "src/engine/config.c"
+    "src/engine/convert.c"
+    "src/engine/data/hashmap_lazy.c"
+    "src/engine/debug/benchmark.c"
+    "src/engine/debug/error.c"
+    "src/engine/debug/logger.c"
+    "src/engine/debug/signalar.c"
+    "src/engine/game/actions.c"
+    "src/engine/game/entity.c"
+    "src/engine/game/loader.c"
+    "src/engine/images/loader.c"
+    "src/engine/loader/asset.c"
+    "src/engine/lua/api.c"
+    "src/engine/lua/api/file.c"
+    "src/engine/lua/api/filesystem.c"
+    "src/engine/lua/api/maths.c"
+    "src/engine/lua/config.c"
+    "src/engine/lua/helpers.c"
+    "src/engine/print.c"
+    "src/engine/render.c"
+    "src/engine/string.c"
+    "src/engine/window.c"
+    "src/engine/wolfhound.c"
 )
 
 SET(VULKAN_SOURCES
-	"src/engine-backends/vulkan/vulkan.c"
+    "src/engine-backends/vulkan/vulkan.c"
 )
 
 SET(RAYLIB_SOURCES
-	"src/engine-backends/raylib/debug.c"
-	"src/engine-backends/raylib/render.c"
-	"src/engine-backends/raylib/window.c"
+    "src/engine-backends/raylib/debug.c"
+    "src/engine-backends/raylib/render.c"
+    "src/engine-backends/raylib/window.c"
 )
 
 SET(SDL2_SOURCES
-	"src/engine-backends/sdl2/render.c"
-	"src/engine-backends/sdl2/window.c"
+    "src/engine-backends/sdl2/render.c"
+    "src/engine-backends/sdl2/window.c"
 )
 
 SET(SDL3_SOURCES
-	"src/engine-backends/sdl3/render.c"
-	"src/engine-backends/sdl3/window.c"
+    "src/engine-backends/sdl3/render.c"
+    "src/engine-backends/sdl3/window.c"
 )
 
 SET(GLFW_SOURCES
-	"src/engine-backends/glfw3/render.c"
-	"src/engine-backends/glfw3/window.c"
+    "src/engine-backends/glfw3/render.c"
+    "src/engine-backends/glfw3/window.c"
 )
 
 IF(NASM_ENABLED)
-	MESSAGE("${LOG_PREFIX} NASM soruces added!")
+    MESSAGE("${LOG_PREFIX} NASM soruces added!")
 
-	SET(ASM_SOURCE
-	)
+    SET(ASM_SOURCE
+    )
 
-	IF(CMAKE_C_COMPILER_ID MATCHES "TinyCC")
-		LIST(APPEND ASM_SOURCE
-			"src/engine-asm/x64_sv_stdatomic.asm"
-		)
-	ENDIF()
+    IF(CMAKE_C_COMPILER_ID MATCHES "TinyCC")
+        LIST(APPEND ASM_SOURCE
+            "src/engine-asm/x64_sv_stdatomic.asm"
+        )
+    ENDIF()
 ENDIF()
 
 IF (CXX_ENABLED)
-	SET(CXX_SOURCES
-		"src/engine-cpp/wolfhound.cpp"
-		"src/engine-cpp/print.cpp"
-		"src/engine-cpp/memory.cpp"
-		"src/engine-cpp/maths/core.cpp"
-		"src/engine-cpp/maths/hash.cpp"
-	)
+    SET(CXX_SOURCES
+        "src/engine-cpp/wolfhound.cpp"
+        "src/engine-cpp/print.cpp"
+        "src/engine-cpp/memory.cpp"
+        "src/engine-cpp/maths/core.cpp"
+        "src/engine-cpp/maths/hash.cpp"
+    )
 ENDIF()

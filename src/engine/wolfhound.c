@@ -3,6 +3,7 @@
 #include<wh-maths/memory.h>
 #include<wh-posix/string.h>
 #include<wh-posix/unistd.h>
+#include<wh-sys/foreman.h>
 #include<wh-sys/memory.h>
 #include<wh-testing/unite.h>
 #include<wh/config.h>
@@ -101,11 +102,6 @@ void _wh_loop(_wh_loop_params params) {
 
     wh_event_s event = { 0 };
 
-    if (ins->config.flags.dryrun) {
-        event.code = WH_EVENT_WINDOW_CLOSE;
-        goto go_skip_event_pull;
-    }
-
     if (nullptr == params.update) {
         params.update = &_wh_update_dummy;
     }
@@ -113,7 +109,13 @@ void _wh_loop(_wh_loop_params params) {
     if (nullptr == params.fixed_update) {
         params.fixed_update = &_wh_fixed_update_dummy;
     }
-
+    
+    wh_foreman_init(ins, &ins->foreman);
+    
+    if (ins->config.flags.dryrun) {
+        event.code = WH_EVENT_WINDOW_CLOSE;
+        goto go_skip_event_pull;
+    }
 go_loop:
     wh_event_pull(ins, &event);
 go_skip_event_pull:
