@@ -4,7 +4,9 @@
 
 void wh_foreman_init(wh_instance_s* ins, wh_foreman_s* foreman) {
     if (0 == ins->config.foreman.worker.count) {
-        ins->config.foreman.worker.count = 4;
+        foreman->workers.count = 4;
+    } else {
+        foreman->workers.count = ins->config.foreman.worker.count;
     }
 
     wh_log_debug(("Foreman reporting for duty! Worker count [ %i ]"), ins->config.foreman.worker.count);
