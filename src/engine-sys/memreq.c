@@ -3,9 +3,9 @@
 #include<wh-posix/unistd.h>
 #include<string.h>
 
-#if (WH_SYSTEM&WH_SYS_POSIX)
-#include<errno.h>
-#include<sys/mman.h>
+//#if (WH_SYSTEM&WH_SYS_POSIX)
+#include<wh-posix/errno.h>
+#include<wh-posix/sys/mman.h>
 
 void* _wh_sys_memreq(_wh_sys_memreq_params params) {
 	size_t page_size = (size_t)getpagesize();
@@ -35,7 +35,7 @@ void _wh_sys_memrel(_wh_sys_memrel_params params) {
 	}
 }
 
-#elif (WH_SYSTEM&WH_SYS_WINDOWS)
+/*#elif (WH_SYSTEM&WH_SYS_WINDOWS)
 #include<wh-posix/windows.h>
 
 void* _wh_sys_memreq(_wh_sys_memreq_params params) {

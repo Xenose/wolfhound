@@ -11,7 +11,7 @@ WH_C()
 		#define CLOCK_MONOTONIC_COARSE CLOCK_MONOTONIC
 	#endif
 #else
-#include<wh-posix/windows.h>
+ // #include<wh-posix/windows.h>
 
 typedef enum {
 	CLOCK_REALTIME,

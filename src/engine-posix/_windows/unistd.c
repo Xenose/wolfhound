@@ -1,45 +1,13 @@
 #include<wh-posix/unistd.h>
 #include<wh-posix/time.h>
 
+#include<wh-posix/_windows/fd_table.h>
 #include<windows.h>
-
-enum {
-	_NT_FREE_E,
-	_NT_STD_E,
-	_NT_HANDLE_E,
-};
-
-typedef struct {
-	int value;
-} _nt_std_s;
-
-typedef struct {
-	HANDLE value;
-} _nt_handle_s;
-
-typedef struct {
-	int type;
-
-	union {
-		_nt_std_s std;
-		_nt_handle_s handle;
-	};
-} _nt_fd_s;
-
-_nt_fd_s _table[1024] = {
-	{ _NT_STD_E, .std.value = 0 },
-	{ _NT_STD_E, .std.value = 1 },
-	{ _NT_STD_E, .std.value = 2 },
-};
 
 int getpagesize(void) {
 	SYSTEM_INFO si;
 	GetSystemInfo(&si);
 	return (int)si.dwPageSize;
-}
-
-pid_t gettid(void) {
-	return (pid_t)GetCurrentThreadId();
 }
 
 //int nanosleep() {
@@ -96,10 +64,23 @@ int access(const char* path, int amode) {
 
 	if (!GetFileAttributesExA(path, GetFileExInfoStandard, &attrib)) {
 		DWORD error = GetLastError();
-		
-		switch(error) {
+
+		switch (error) {
 			case ERROR_FILE_NOT_FOUND:
+			case ERROR_PATH_NOT_FOUND:
+				errno = ENOENT;
+				break;
+
+			case ERROR_ACCESS_DENIED:
 				errno = EACCES;
+				break;
+
+			case ERROR_INVALID_NAME:
+				errno = ENOENT;
+				break;
+
+			default:
+				errno = EIO;
 				break;
 		}
 
@@ -121,7 +102,67 @@ int access(const char* path, int amode) {
 go_error:
 	return -1;
 }
+	
+int dup(int oldfd) {
+	int fd = -1;
+	_wnt_fd_entry entry = { 0 };
 
-int open(const char* path, int flags, mode_t mode) {
+	if (-1 == _wnt_table(oldfd, _WNT_FDOP_GET, &entry)) {
+		errno = EBADF;
+		goto go_error_exit;
+	}
 
+	switch (entry.type) {
+		case _WNT_FD_TYPE_HANDLE: {
+			HANDLE tmp = entry.data.handle;
+			entry = (_wnt_fd_entry){ 0 };
+
+			// DuplicateHandle()
+		}
+	}
+
+go_error_exit:
+	return fd;
+}
+
+ssize_t write(int fd, const void* buffer, size_t count) {
+	ssize_t bytes = -1;
+	_wnt_fd_entry entry = { 0 };
+
+	if (-1 == _wnt_table(fd, _WNT_FDOP_GET, &entry)) {
+		errno = EBADF;
+		goto go_error_exit;
+	}
+
+	switch (entry.type) {
+		case _WNT_FD_TYPE_STD:
+		case _WNT_FD_TYPE_HANDLE: {
+				DWORD b = 0;
+
+				if (!WriteFile(entry.data.handle, buffer, (DWORD)count, &b, nullptr)) {
+					DWORD err = GetLastError();
+
+					switch (err) {
+						case ERROR_INVALID_HANDLE: errno = EBADF;		break;
+						case ERROR_ACCESS_DENIED:	errno = EACCES; 	break;
+						case ERROR_DISK_FULL:		errno = ENOSPC; 	break;
+						default:							errno = EIO;		break;
+					}
+
+					goto go_error_exit;
+				}
+
+				bytes = (ssize_t)b;
+			}
+			break;
+		default:
+			errno = ENOTSUP;
+	}
+
+go_error_exit:
+	return bytes;
+}
+
+pid_t gettid(void) {
+	return (pid_t)GetCurrentThreadId();
 }

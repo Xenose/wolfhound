@@ -7,16 +7,18 @@
 #if (WH_SYSTEM&WH_SYS_POSIX)
 	#include<unistd.h>
 #elif (WH_SYSTEM&WH_SYS_WINDOWS)
-	#include<wh-posix/windows.h>
-
 	#define F_OK 0x0000
 	#define R_OK 0x0001
 	#define W_OK 0x0002
 	#define X_OK 0x0004
 
-	#define write _write
-
+	extern int access(const char* path, int amode);
+	extern int dup(int oldfd);
 	extern int getpagesize(void);
+	extern int sleep(unsigned int seconds);
+	extern int usleep(useconds_t usec);
+	extern pid_t gettid(void);
+	extern ssize_t write(int fd, const void* buffer, size_t count);
 #endif
 
 #ifndef _GNU_SOURCE

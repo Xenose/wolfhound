@@ -3,7 +3,7 @@
 #include<wh/debug/logger.h>
 
 #include<errno.h>
-#include<sys/types.h>
+#include<wh-posix/sys/types.h>
 
 #if (WH_SYSTEM&WH_SYS_POSIX)
 #include<arpa/inet.h>

@@ -30,10 +30,15 @@ SET(C_SOURCES
 
     "src/engine-testing/unite.c"
 
+    "src/engine-posix/dirent.c"
+    "src/engine-posix/signal.c"
     "src/engine-posix/string.c"
     "src/engine-posix/time.c"
     "src/engine-posix/unistd.c"
-    "src/engine-posix/signal.c"
+    "src/engine-posix/sys/mman.c"
+    "src/engine-posix/sys/stat.c"
+
+    "src/engine-posix/_windows/_fd_table.c"
 
     "src/engine/debug/exceptions.c"
     "src/engine/arg_parser.c"
