@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<wh-posix/fcntl.h>
 #include<wh-posix/stdlib.h>
+#include<wh-posix/unistd.h>
 
 int main(int arc, char* const* arv) {
    int nb = 0;
