@@ -1,5 +1,5 @@
-#ifndef _wh_header_posix_windows_wnt_
-#define _wh_header_posix_windows_wnt_
+#ifndef _wnt_header_posix_windows_
+#define _wnt_header_posix_windows_
 
 // DO NOT INCLUDE THIS OUTSIDE WH-POSIX C SOURCE FILE!
 // WINDOWS.H INCLUDED!
@@ -7,9 +7,14 @@
 #include<wh-common/common.h>
 
 enum {
-   _WH_ENTRY_HANDLE,
-   _WH_ENTRY_MEMORY,
-   _WH_ENTRY_SOCKET,
+   _WNT_ENTRY_HANDLE,
+   _WNT_ENTRY_MEMORY,
+   _WNT_ENTRY_SOCKET,
+};
+
+enum {
+   _WNT_CALL_READ_FD,
+   _WNT_CALL_WRITE_FD,
 };
 
 typedef struct {
@@ -21,17 +26,19 @@ typedef struct {
       // Generic memory address
       void* memory;
    };
-} _wh_wnt_entry_s;
+} _wnt_entry_s;
 
 typedef struct {
    u64 capacity;     // total capacity
    u64 count;        // current used
-   _wh_wnt_entry_s* entries;
-} _wh_wnt_table_s;
+   _wnt_entry_s* entries;
+} _wnt_table_s;
 
 typedef struct {
-   _wh_wnt_table_s fds;
-   _wh_wnt_table_s mmaps;
-} _wh_wnt_t;
+   _wnt_table_s fds;
+   _wnt_table_s mmaps;
+} _wnt_s;
+
+extern i64 (*_wnt_call)(i64 call_id, ...);
 
 #endif /* _wh_header_posix_windows_wnt_ */
