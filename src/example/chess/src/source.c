@@ -91,13 +91,13 @@ int main(int arc, char* const* arv) {
 
     //_wh_libfind("libraylib.so", (char*[]){ "/usr/lib", "/lib" }, 2);
     wh_instance_s* ins = wh_init(
-            &ins,
-            (wh_args_s){ 0, arc, arv },								// command line arguments
-            (wh_string_s){ .str = "chess", .length = 6},			// application name
-            .mode_window   = WH_WINDOW_MODE_SDL3,
-            .mode_graphics = WH_GRAPHICS_MODE_SDL3,
-            .config_path   = (wh_string_s) { .str = buf, 0 },	// application config
-            );
+        &ins,
+        (wh_args_s){ 0, arc, arv },                         // command line arguments
+        (wh_string_s){ .str = "chess", .length = 6},        // application name
+        .mode_window   = WH_WINDOW_MODE_SDL3,
+        .mode_graphics = WH_GRAPHICS_MODE_SDL3,
+        .config_path   = (wh_string_s) { .str = buf, 0 },   // application config
+    );
 
     /*wh_hashmap_lazy_s hml = _wh_hashmap_lazy_create(nullptr, 10, sizeof(int));
 
