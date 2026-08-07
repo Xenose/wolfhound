@@ -7,14 +7,15 @@
 #include<wh-common/common.h>
 
 enum {
+   _WNT_ENTRY_UNKNOWN,
    _WNT_ENTRY_HANDLE,
    _WNT_ENTRY_MEMORY,
    _WNT_ENTRY_SOCKET,
 };
 
 enum {
-   _WNT_CALL_READ_FD,
-   _WNT_CALL_WRITE_FD,
+   _WNT_CALL_FD_READ,
+   _WNT_CALL_FD_WRITE,
 };
 
 typedef struct {
