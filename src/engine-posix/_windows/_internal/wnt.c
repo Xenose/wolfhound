@@ -1,5 +1,6 @@
 #include<wh-posix/stdarg.h>
 #include<wh-posix/unistd.h>
+#include<wh-posix/stdio.h>
 #include<wh-posix/_windows/wnt.h>
 
 // internal fucntions
@@ -86,9 +87,10 @@ i64 _wnt_call_real(i64 call_id, ...) {
 i64 _wnt_call_real_va(i64 call_id, va_list args) {
    switch(call_id) {
       case _WNT_CALL_FD_GET:
-         return _wnt_fd_get(call_id, args);
+         return _wnt_fd_get(&_wnt, args);
       case _WNT_CALL_FD_INSERT:
-         return _wnt_fd_insert(call_id, args);
+         return _wnt_fd_insert(&_wnt, args);
+
    }
 
    return -1;

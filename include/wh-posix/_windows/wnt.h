@@ -11,11 +11,13 @@ enum {
    _WNT_ENTRY_HANDLE,
    _WNT_ENTRY_MEMORY,
    _WNT_ENTRY_SOCKET,
+   _WNT_ENTRY_STD,
 };
 
 enum {
    _WNT_CALL_FD_GET,
    _WNT_CALL_FD_INSERT,
+   _WNT_CALL_FD_DELETE,
 };
 
 typedef struct {

@@ -39,6 +39,7 @@ SET(C_SOURCES
     "src/engine-posix/sys/stat.c"
 
     "src/engine-posix/_windows/_fd_table.c"
+    "src/engine-posix/_windows/_internal/wnt.c"
 
     "src/engine/debug/exceptions.c"
     "src/engine/arg_parser.c"

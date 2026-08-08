@@ -2,6 +2,8 @@
 #include<wh-posix/time.h>
 
 #include<wh-posix/_windows/fd_table.h>
+#include<wh-posix/_windows/wnt.h>
+
 #include<windows.h>
 
 int getpagesize(void) {
@@ -127,19 +129,19 @@ go_error_exit:
 
 ssize_t write(int fd, const void* buffer, size_t count) {
 	ssize_t bytes = -1;
-	_wnt_fd_entry entry = { 0 };
+	_wnt_entry_s entry = { 0 };
 
-	if (-1 == _wnt_table(fd, _WNT_FDOP_GET, &entry)) {
+	if (-1 == _wnt_call(_WNT_CALL_FD_GET, fd, &entry)) {
 		errno = EBADF;
 		goto go_error_exit;
 	}
 
 	switch (entry.type) {
-		case _WNT_FD_TYPE_STD:
-		case _WNT_FD_TYPE_HANDLE: {
+		case _WNT_ENTRY_HANDLE:
+		case _WNT_ENTRY_STD: {
 				DWORD b = 0;
 
-				if (!WriteFile(entry.data.handle, buffer, (DWORD)count, &b, nullptr)) {
+				if (!WriteFile(entry.handle, buffer, (DWORD)count, &b, nullptr)) {
 					DWORD err = GetLastError();
 
 					switch (err) {
