@@ -3,7 +3,7 @@
 
 // DO NOT INCLUDE THIS OUTSIDE WH-POSIX C SOURCE FILE!
 // WINDOWS.H INCLUDED!
-#include<windows.h>
+#include<wh-posix/windows.h>
 #include<wh-common/common.h>
 
 enum {
@@ -18,6 +18,15 @@ enum {
    _WNT_CALL_FD_GET,
    _WNT_CALL_FD_INSERT,
    _WNT_CALL_FD_DELETE,
+   _WNT_CALL_MMAP_GET,
+   _WNT_CALL_MMAP_INSERT,
+   _WNT_CALL_MMAP_DELETE,
+   _WNT_CALL_ERROR_2_ERRNO,
+};
+
+enum {
+   _WNT_ERROR_TYPE_NORMAL,
+   _WNT_ERROR_TYPE_SOCKET,
 };
 
 typedef struct {

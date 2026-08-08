@@ -1,7 +1,7 @@
 #include<wh-posix/fcntl.h>
 
-#include<wh-posix/_windows/fd_table.h>
-#include<windows.h>
+#include<wh-posix/_windows/wnt.h>
+#include<wh-posix/windows.h>
 
 
 int fcntl(int fd, int op, ...) {
@@ -10,7 +10,7 @@ int fcntl(int fd, int op, ...) {
 
 int open(const char* path, int flags, mode_t mode) {
    int fd = -1;
-	_wnt_fd_entry entry = { 0 };
+	_wnt_entry_s entry = { 0 };
    HANDLE handle = 0;
 
    // Windows stuff...
@@ -35,15 +35,14 @@ int open(const char* path, int flags, mode_t mode) {
 		goto go_error_exit;
    }
 
-   entry.type = _WNT_FD_TYPE_HANDLE;
-   entry.data.handle = handle;
-   
-   fd = _wnt_table(0, _WNT_FDOP_CREATE, &entry);
-
-   if (-1 == fd) {
+   entry.type = _WNT_ENTRY_HANDLE;
+   entry.handle = handle;
+  
+   if (-1 == _wnt_call(_WNT_CALL_FD_INSERT, &fd, entry)) {
       CloseHandle(handle);
+      fd = -1;
 		goto go_error_exit;
-	}
+   }
 
 go_error_exit:
    return fd;

@@ -9,9 +9,13 @@ int main(int arc, char* const* arv) {
 
    nb = write(1, message, sizeof(message) / sizeof(message[0]));
 
-   //int fd = open("README.md", O_RDONLY, 0);
+   int fd = open("README.md", O_RDONLY, 0);
 
-   //printf("Read fd [ %i ]\n", fd);
+   printf("Read fd [ %i ]\n", fd);
+
+   if (0 == close(fd)) {
+      printf("Closed socket!\n");
+   }
 
    return 0;
 }

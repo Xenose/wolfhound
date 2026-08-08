@@ -76,6 +76,10 @@ ENDIF()
 ADD_LIBRARY(${APP_NAME} STATIC ${ASM_SOURCE} ${F95_SOURCES} ${C_SOURCES} ${CXX_SOURCES})
 TARGET_INCLUDE_DIRECTORIES(${APP_NAME} PUBLIC ${INCLUDE_PATHS})
 
+IF(WIN32)
+	TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE ws2_32)
+ENDIF()
+
 # ------------------------------------------------------------------------------------
 #   Compiler definition section
 # ------------------------------------------------------------------------------------

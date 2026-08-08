@@ -1,4 +1,3 @@
-#include<wh-posix/stdio.h>
 #include<wh-posix/_windows/wnt.h>
 
 /*
@@ -70,4 +69,17 @@ go_error_exit:
    return -1;
 go_success:
    return 0;
+}
+
+i64 _wnt_fd_delete(_wnt_s* wnt, va_list args) {
+   int fd = va_arg(args, int);
+   
+   if (fd >= wnt->fds.capacity) {
+      goto go_error_exit;
+   }
+
+   wnt->fds.entries[fd].type = _WNT_ENTRY_FREE;
+   return 0;
+go_error_exit:
+   return -1;
 }

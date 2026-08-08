@@ -1,10 +1,50 @@
 #include<wh-posix/unistd.h>
 #include<wh-posix/time.h>
 
-#include<wh-posix/_windows/fd_table.h>
 #include<wh-posix/_windows/wnt.h>
 
-#include<windows.h>
+#include<wh-posix/windows.h>
+
+int close(int fd) {
+	_wnt_entry_s entry = { 0 };
+
+	// Posix allows freeing 0,1,2 but this would break
+	// our windows version, so instead just ignore it
+	// and report 0 == success.
+	switch (fd) {
+		case 0:
+		case 1:
+		case 2:
+			goto go_skip;
+	}
+
+	if (0 != _wnt_call(_WNT_CALL_FD_GET, fd, &entry)) {
+		goto go_error_exit;
+	}
+
+	switch(entry.type) {
+		case _WNT_ENTRY_HANDLE:
+			CloseHandle(entry.handle);
+			break;
+		case _WNT_ENTRY_SOCKET:
+			if (SOCKET_ERROR == closesocket(entry.sock)) {
+				// TODO errno
+			}
+			break;
+		default:
+			// TODO add errno
+			{}
+	}
+
+	if (0 != _wnt_call(_WNT_CALL_FD_DELETE, fd)) {
+		// TODO errno
+	}
+
+go_skip:
+	return 0;
+go_error_exit:
+	return -1;
+}
 
 int getpagesize(void) {
 	SYSTEM_INFO si;
@@ -66,26 +106,7 @@ int access(const char* path, int amode) {
 
 	if (!GetFileAttributesExA(path, GetFileExInfoStandard, &attrib)) {
 		DWORD error = GetLastError();
-
-		switch (error) {
-			case ERROR_FILE_NOT_FOUND:
-			case ERROR_PATH_NOT_FOUND:
-				errno = ENOENT;
-				break;
-
-			case ERROR_ACCESS_DENIED:
-				errno = EACCES;
-				break;
-
-			case ERROR_INVALID_NAME:
-				errno = ENOENT;
-				break;
-
-			default:
-				errno = EIO;
-				break;
-		}
-
+		_wnt_call(_WNT_CALL_ERROR_2_ERRNO, _WNT_ERROR_TYPE_NORMAL, error, &errno);
 		goto go_error;
 	}
 
@@ -107,24 +128,36 @@ go_error:
 	
 int dup(int oldfd) {
 	int fd = -1;
-	_wnt_fd_entry entry = { 0 };
+	_wnt_entry_s entry = { 0 };
 
-	if (-1 == _wnt_table(oldfd, _WNT_FDOP_GET, &entry)) {
+	if (-1 == _wnt_call(_WNT_CALL_FD_GET, oldfd, &entry)) {
 		errno = EBADF;
 		goto go_error_exit;
 	}
 
 	switch (entry.type) {
-		case _WNT_FD_TYPE_HANDLE: {
-			HANDLE tmp = entry.data.handle;
-			entry = (_wnt_fd_entry){ 0 };
-
+		case _WNT_ENTRY_HANDLE: {
+			HANDLE tmp = entry.handle;
 			// DuplicateHandle()
 		}
 	}
 
 go_error_exit:
 	return fd;
+}
+
+long sysconf(int name) {
+	switch(name) {
+		case _SC_PAGESIZE:
+			return (long)getpagesize();
+		default:
+			errno = EINVAL;
+			return -1;
+	}
+}
+
+pid_t gettid(void) {
+	return (pid_t)GetCurrentThreadId();
 }
 
 ssize_t write(int fd, const void* buffer, size_t count) {
@@ -142,15 +175,8 @@ ssize_t write(int fd, const void* buffer, size_t count) {
 				DWORD b = 0;
 
 				if (!WriteFile(entry.handle, buffer, (DWORD)count, &b, nullptr)) {
-					DWORD err = GetLastError();
-
-					switch (err) {
-						case ERROR_INVALID_HANDLE: errno = EBADF;		break;
-						case ERROR_ACCESS_DENIED:	errno = EACCES; 	break;
-						case ERROR_DISK_FULL:		errno = ENOSPC; 	break;
-						default:							errno = EIO;		break;
-					}
-
+					DWORD error = GetLastError();
+					_wnt_call(_WNT_CALL_ERROR_2_ERRNO, _WNT_ERROR_TYPE_NORMAL, error, &errno);
 					goto go_error_exit;
 				}
 
@@ -163,8 +189,4 @@ ssize_t write(int fd, const void* buffer, size_t count) {
 
 go_error_exit:
 	return bytes;
-}
-
-pid_t gettid(void) {
-	return (pid_t)GetCurrentThreadId();
 }
