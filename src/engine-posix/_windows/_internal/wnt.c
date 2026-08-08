@@ -84,5 +84,12 @@ i64 _wnt_call_real(i64 call_id, ...) {
 }
 
 i64 _wnt_call_real_va(i64 call_id, va_list args) {
-   return 0;
+   switch(call_id) {
+      case _WNT_CALL_FD_GET:
+         return _wnt_fd_get(call_id, args);
+      case _WNT_CALL_FD_INSERT:
+         return _wnt_fd_insert(call_id, args);
+   }
+
+   return -1;
 }
