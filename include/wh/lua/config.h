@@ -1,30 +1,30 @@
 #ifndef _wh_header_lua_config_
 #define _wh_header_lua_config_
 
-#include<wh-headers/lua.h>
-#include<wh/types/config.h>
+#include<wh-types/config.h>
+#include<wh/headers/lua.h>
 
 typedef struct {
-	lua_State* ls;
-	const char* table;
-	int index;
+    lua_State* ls;
+    const char* table;
+    int index;
 } _wh_lua_add_ints_params;
 
 typedef struct {
-	lua_State* ls;
-	const char* table;
-	int index;
+    lua_State* ls;
+    const char* table;
+    int index;
 } _wh_lua_add_uints_params;
 
 typedef struct {
-	lua_State* ls;
-	const char* table;
-	int index;
+    lua_State* ls;
+    const char* table;
+    int index;
 } _wh_lua_add_bools_params;
 
 typedef struct {
-	lua_State* ls;
-	wh_config_s* config;
+    lua_State* ls;
+    wh_config_s* config;
 } _wh_config_lua_expose_params;
 
 extern i8 _wh_lua_add_ints(_wh_lua_add_ints_params params, ...);

@@ -1,11 +1,9 @@
-#include<stdarg.h>
 
 // tmp for debug
-#include<stdio.h>
-#include<errno.h>
+#include<wh-posix/stdio.h>
+#include<wh-posix/errno.h>
 
-#include<wh-data/hashmap.h>
-#include<wh-maths/core.h>
+#include<wh-posix/stdarg.h>
 #include<wh-posix/stdatomic.h>
 #include<wh-posix/string.h>
 #include<wh-posix/time.h>
@@ -13,7 +11,9 @@
 #include<wh-sys/atomic_lock.h>
 #include<wh-sys/memreq.h>
 #include<wh/convert.h>
+#include<wh/data/hashmap.h>
 #include<wh/debug/error.h>
+#include<wh/maths/core.h>
 #include<wh/print.h>
 
 // =======================================================================================================

@@ -1,7 +1,7 @@
 #ifndef _wnt_header_system_
 #define _wnt_header_system_
 
-#include<wh-common/common.h>
+#include<wh-core/common.h>
 
 /*
 Windows def

@@ -1,14 +1,10 @@
-#include<errno.h>
-#include<string.h>
+#include<wh-posix/dirent.h>
+#include<wh-posix/errno.h>
+#include<wh-posix/string.h>
 #include<wh-sys/filesystem.h>
 #include<wh-sys/memory.h>
-
-#include<wh/print.h>
 #include<wh/debug/logger.h>
-
-#if (WH_SYSTEM&WH_SYS_POSIX)
-
-#include<dirent.h>
+#include<wh/print.h>
 
 wh_dir_s _wh_read_dir(_wh_dir_read_params params) {
 	i64 error = 0;
@@ -99,14 +95,3 @@ go_error_exit:
 void wh_dir_destroy(wh_heap_header_s* heap, wh_dir_s* dir) {
 	//wh_free(heap, dir->entries, &dir->entries);
 }
-
-#else
-
-wh_dir_s _wh_read_dir(_wh_dir_read_params params) {
-	return (wh_dir_s) { 0 };
-}
-
-void wh_dir_destroy(wh_heap_header_s* heap, wh_dir_s* dir) {
-}
-
-#endif

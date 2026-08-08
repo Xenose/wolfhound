@@ -1,5 +1,6 @@
+
+#include<wh-core/common.h>
 #include<wh-sys/file.h>
-#include<wh-common/common.h>
 
 typedef struct {
 	i64 type;

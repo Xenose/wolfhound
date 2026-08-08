@@ -3,8 +3,8 @@
 
 
 // my stuff
-#include<wh-maths/core.h>
-#include<wh-maths/memory.h>
+#include<wh/maths/core.h>
+#include<wh/maths/memory.h>
 #include<wh-posix/stdatomic.h>
 #include<wh-posix/unistd.h>
 #include<wh-sys/atomic_lock.h>

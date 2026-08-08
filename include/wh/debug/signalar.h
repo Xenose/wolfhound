@@ -1,11 +1,11 @@
 #ifndef _wh_header_signalar_
 #define _wh_header_signalar_
 
-#include<wh-common/common.h>
+#include<wh-core/common.h>
 #include<wh/wolfhound.h>
 
 typedef struct {
-	const char* name;
+    const char* name;
 } _wh_signalar_init_params;
 
 extern i8 _wh_signalar_init(_wh_signalar_init_params params);

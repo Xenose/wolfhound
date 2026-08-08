@@ -1,7 +1,7 @@
 #ifndef _wh_cpp_header_maths_hash_
 #define _wh_cpp_header_maths_hash_
 
-#include<wh-common/common.h>
+#include<wh-core/common.h>
 
 namespace wh::maths::hash {
 

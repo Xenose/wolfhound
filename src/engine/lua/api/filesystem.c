@@ -1,4 +1,4 @@
-#include<wh-headers/lua.h>
+#include<wh/headers/lua.h>
 
 #include<wh-sys/file.h>
 #include<wh/lua/api/filesystem.h>

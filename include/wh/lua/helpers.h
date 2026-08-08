@@ -1,8 +1,8 @@
 #ifndef _wh_header_lua_helpers_
 #define _wh_header_lua_helpers_
 
-#include<wh-headers/lua.h>
-#include<wh-common/common.h>
+#include<wh-core/common.h>
+#include<wh/headers/lua.h>
 
 extern i8 _wh_lua_add_values(lua_State* ls, ...);
 extern i8 _wh_lua_get_values(lua_State* ls, ...);

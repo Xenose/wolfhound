@@ -2,7 +2,7 @@
 #define _wh_cpp_header_maths_core_
 
 #include<string>
-#include<wh-common/common.h>
+#include<wh-core/common.h>
 
 namespace wh::maths {
 
@@ -12,7 +12,7 @@ extern i64 hash_simple(const char* str, i64 slots, u64 length);
 
 template<typename T>
 T abs(T value) {
-	return fabs(value);
+    return fabs(value);
 }
 
 } // namespace wh::maths

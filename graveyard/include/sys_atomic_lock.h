@@ -3,7 +3,7 @@
 
 // NOTE : graveyard file
 
-#include<wh-common/common.h>
+#include<wh-core/common.h>
 #include<wh-sys/info.h>
 #include<wh-posix/unistd.h>
 

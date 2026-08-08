@@ -1,7 +1,7 @@
 #ifndef _wh_header_sys_memory_
 #define _wh_header_sys_memory_
 
-#include<wh-common/common.h>
+#include<wh-core/common.h>
 
 WH_C()
 
@@ -10,12 +10,12 @@ WH_C()
 // =====================================================================================
 
 typedef struct {
-	u64 bytes;
+    u64 bytes;
 } _wh_sys_memreq_params;
 
 typedef struct {
-	void* ptr;
-	size_t len;
+    void* ptr;
+    size_t len;
 } _wh_sys_memrel_params;
 
 // System dependent code

@@ -1,9 +1,9 @@
 #ifndef _wh_header_wh_
 #define _wh_header_wh_
 
-#include<wh-common/common.h>
+#include<wh-core/common.h>
 #include<wh-sys/memory.h>
-#include<wh/params/wolfhound.h>
+#include<wh-params/wolfhound.h>
 
 WH_C()
 

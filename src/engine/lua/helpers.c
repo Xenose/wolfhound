@@ -1,9 +1,8 @@
-#include<stdarg.h>
-
-#include<wh-headers/lua.h>
+#include<wh-posix/stdarg.h>
 #include<wh/debug/logger.h>
-#include<wh/print.h>
+#include<wh/headers/lua.h>
 #include<wh/lua/helpers.h>
+#include<wh/print.h>
 
 i64 _wh_lua_add_keys(lua_State* ls, const char** keys, i64 index) {
     lua_getglobal(ls, keys[0]);

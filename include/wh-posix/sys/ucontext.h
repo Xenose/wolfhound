@@ -1,7 +1,7 @@
 #ifndef _wh_header_posix_ucontext_
 #define _wh_header_posix_ucontext_
 
-#include<wh-common/os.h>
+#include<wh-core/os.h>
 #include<wh-posix/signal.h>
 
 #if (WH_SYSTEM&WH_SYS_POSIX)

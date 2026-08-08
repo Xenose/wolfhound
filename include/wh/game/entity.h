@@ -1,18 +1,18 @@
 #ifndef _wh_header_game_entity_
 #define _wh_header_game_entity_
 
-#include<wh-common/common.h>
-#include<wh/types/wolfhound.h>
+#include<wh-core/common.h>
+#include<wh-types/wolfhound.h>
 
 typedef struct {
-	wh_instance_s* ins;
-	u64 count;
+    wh_instance_s* ins;
+    u64 count;
 } _wh_entities_init_params;
 
 typedef struct {
-	wh_instance_s* ins;
-	wh_string_s name;
-	void* data;
+    wh_instance_s* ins;
+    wh_string_s name;
+    void* data;
 } _wh_entity_create_params;
 
 extern i8 _wh_entity_init(_wh_entities_init_params params);

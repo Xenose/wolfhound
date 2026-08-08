@@ -1,4 +1,4 @@
-#include<wh-common/os.h>
+#include<wh-core/os.h>
 #if (WH_SYSTEM&WH_SYS_WINDOWS)
 
 #include<wh-posix/_windows/fd_table.h>

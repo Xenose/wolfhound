@@ -85,7 +85,7 @@ cmake --build "build/some_path"
 * Tier 0x02 :: Should work and could be used for release.
 * Tier 0x03 :: Validating C correctness and shouldn't be used for release builds.
 
-**Note by using the include/wh-common/c23-comp.h header it maybe possible to use a c11/c17 compiler also**
+**Note by using the include/wh-core/c23-comp.h header it maybe possible to use a c11/c17 compiler also**
 
 ## Core Concepts
 ### Action Entity System

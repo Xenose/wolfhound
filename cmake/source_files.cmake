@@ -6,13 +6,6 @@ IF(FORTRAN_ENABLED)
 ENDIF()
 
 SET(C_SOURCES
-    "src/engine-data/list.c"
-    "src/engine-data/hashmap.c"
-    "src/engine-data/dynamic_array.c"
-
-    "src/engine-maths/core.c"
-    "src/engine-maths/hash.c"
-    "src/engine-maths/memory.c"
 
     "src/engine-sys/atomic_lock.c"
     "src/engine-sys/file.c"
@@ -38,16 +31,15 @@ SET(C_SOURCES
     "src/engine-posix/sys/mman.c"
     "src/engine-posix/sys/stat.c"
 
-    "src/engine-posix/_windows/_fd_table.c"
-    "src/engine-posix/_windows/_internal/wnt.c"
-
-    "src/engine/debug/exceptions.c"
     "src/engine/arg_parser.c"
     "src/engine/config.c"
     "src/engine/convert.c"
-    "src/engine/data/hashmap_lazy.c"
+    "src/engine/data/dynamic_array.c"
+    "src/engine/data/hashmap.c"
+    "src/engine/data/list.c"
     "src/engine/debug/benchmark.c"
     "src/engine/debug/error.c"
+    "src/engine/debug/exceptions.c"
     "src/engine/debug/logger.c"
     "src/engine/debug/signalar.c"
     "src/engine/game/actions.c"
@@ -61,6 +53,9 @@ SET(C_SOURCES
     "src/engine/lua/api/maths.c"
     "src/engine/lua/config.c"
     "src/engine/lua/helpers.c"
+    "src/engine/maths/core.c"
+    "src/engine/maths/hash.c"
+    "src/engine/maths/memory.c"
     "src/engine/print.c"
     "src/engine/render.c"
     "src/engine/string.c"
@@ -68,29 +63,40 @@ SET(C_SOURCES
     "src/engine/wolfhound.c"
 )
 
+IF(WIN32)
+    LIST(APPEND C_SOURCES 
+        ${NT_SOURCES}
+        
+        "src/engine-posix/_windows/_fd_table.c"
+        "src/engine-posix/_windows/_internal/wnt.c"
+    )
+ENDIF()
+
+
+
 SET(VULKAN_SOURCES
-    "src/engine-backends/vulkan/vulkan.c"
+    "src/engine/backends/vulkan/vulkan.c"
 )
 
 SET(RAYLIB_SOURCES
-    "src/engine-backends/raylib/debug.c"
-    "src/engine-backends/raylib/render.c"
-    "src/engine-backends/raylib/window.c"
+    "src/engine/backends/raylib/debug.c"
+    "src/engine/backends/raylib/render.c"
+    "src/engine/backends/raylib/window.c"
 )
 
 SET(SDL2_SOURCES
-    "src/engine-backends/sdl2/render.c"
-    "src/engine-backends/sdl2/window.c"
+    "src/engine/backends/sdl2/render.c"
+    "src/engine/backends/sdl2/window.c"
 )
 
 SET(SDL3_SOURCES
-    "src/engine-backends/sdl3/render.c"
-    "src/engine-backends/sdl3/window.c"
+    "src/engine/backends/sdl3/render.c"
+    "src/engine/backends/sdl3/window.c"
 )
 
 SET(GLFW_SOURCES
-    "src/engine-backends/glfw3/render.c"
-    "src/engine-backends/glfw3/window.c"
+    "src/engine/backends/glfw3/render.c"
+    "src/engine/backends/glfw3/window.c"
 )
 
 IF(NASM_ENABLED)

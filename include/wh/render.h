@@ -6,63 +6,63 @@
 WH_C()
 
 enum {
-	WH_EVENT_UNKOWN,
-	WH_EVENT_WINDOW_CLOSE,
+    WH_EVENT_UNKOWN,
+    WH_EVENT_WINDOW_CLOSE,
 };
 
 typedef struct {
-	wh_struct stype;
-	u64 code;
+    wh_struct stype;
+    u64 code;
 } wh_event_s;
 
 // parameters
 typedef struct {
-	wh_instance_s* ins;
-	i64 size_x;
-	i64 size_y;
-	wh_string_s title;
+    wh_instance_s* ins;
+    i64 size_x;
+    i64 size_y;
+    wh_string_s title;
 } _wh_window_create_params;
 
 typedef struct {
-	wh_instance_s* ins;
-	i64* x;
-	i64* y;
+    wh_instance_s* ins;
+    i64* x;
+    i64* y;
 } _wh_window_get_size_params;
 
 typedef struct {
-	wh_instance_s* ins;
-	wh_event_s* event;
+    wh_instance_s* ins;
+    wh_event_s* event;
 } _wh_event_pull_params;
 
 typedef struct {
-	wh_instance_s* ins;
-	wh_rgba_s color;
+    wh_instance_s* ins;
+    wh_rgba_s color;
 } _wh_render_clear_params;
 
 typedef struct {
-	wh_instance_s* ins;
+    wh_instance_s* ins;
 } _wh_render_get_surface_params;
 
 typedef struct {
-	wh_instance_s* ins;
-	int x;
-	int y;
-	wh_rgba_s color;
+    wh_instance_s* ins;
+    int x;
+    int y;
+    wh_rgba_s color;
 } _wh_render_draw_pixel_params;
 
 typedef struct {
-	wh_instance_s* ins;
+    wh_instance_s* ins;
 } _wh_render_show_params;
 
 typedef struct {
-	wh_instance_s* ins;
-	float* data;
-	u64 count;
-	wh_rgba_s color;
+    wh_instance_s* ins;
+    float* data;
+    u64 count;
+    wh_rgba_s color;
 } _wh_render_line_params;
 
 typedef struct {
-	wh_instance_s* ins;
+    wh_instance_s* ins;
 } _wh_render_init_params;
 
 

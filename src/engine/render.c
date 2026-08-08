@@ -2,15 +2,15 @@
 #include<wh/render.h>
 
 #ifdef WH_SDL2_FOUND
-    #include<wh-backend/sdl2.h>
+    #include<wh/backend/sdl2.h>
 #endif
 
 #ifdef WH_GLFW_FOUND
-    #include<wh-backend/glfw3.h>
+    #include<wh/backend/glfw3.h>
 #endif
 
 #ifdef WH_SDL3_FOUND
-    #include<wh-backend/sdl3.h>
+    #include<wh/backend/sdl3.h>
 #endif
 
 const char* _wh_support_vulkan() {

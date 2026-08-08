@@ -1,14 +1,14 @@
 #ifndef _wh_header_error_
 #define _wh_header_error_
 
-#include<wh-common/common.h>
+#include<wh-core/common.h>
 
 typedef struct {
-	i64 number;
+    i64 number;
 } _wh_errno_str_params;
 
 typedef struct {
-	i64 number;
+    i64 number;
 } _wh_vk_status_params;
 
 extern const char* _wh_errno_str(_wh_errno_str_params params);

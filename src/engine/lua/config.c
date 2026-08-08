@@ -1,6 +1,6 @@
 #include<stdarg.h>
 
-#include<wh-headers/lua.h>
+#include<wh/headers/lua.h>
 #include<wh/lua/config.h>
 #include<wh/lua/helpers.h>
 

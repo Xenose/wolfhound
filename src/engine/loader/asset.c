@@ -6,7 +6,7 @@
 #include<wh/lua/api.h>
 #include<wh/string.h>
 
-#include<wh-headers/lua.h>
+#include<wh/headers/lua.h>
 
 #include<wh-posix/errno.h>
 #include<wh-posix/fcntl.h>

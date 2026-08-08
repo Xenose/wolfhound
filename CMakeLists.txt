@@ -36,16 +36,12 @@ INCLUDE(cmake/detect_lang.cmake)
 INCLUDE(cmake/compilers.cmake)
 INCLUDE(cmake/source_files.cmake)
 
-IF(WIN32)
-	LIST(APPEND C_SOURCES ${NT_SOURCES})
-ENDIF()
-
 # ------------------------------------------------------------------------------------
 #   Defining Macros for each filename
 # ------------------------------------------------------------------------------------
 FOREACH(src_file IN LISTS C_SOURCES CXX_SOURCES)
-	GET_FILENAME_COMPONENT(basename ${src_file} NAME)
-	SET_SOURCE_FILES_PROPERTIES(${src_file} PROPERTIES COMPILE_DEFINITIONS "__FILENAME__=\"${basename}\"")
+    GET_FILENAME_COMPONENT(basename ${src_file} NAME)
+    SET_SOURCE_FILES_PROPERTIES(${src_file} PROPERTIES COMPILE_DEFINITIONS "__FILENAME__=\"${basename}\"")
 ENDFOREACH()
 
 # ------------------------------------------------------------------------------------
@@ -113,49 +109,49 @@ TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE ${WH_LIBS})
 
 # Compiler flags
 TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
-	# Common flags non windows
-	$<$<AND:$<COMPILE_LANGUAGE:C>,$<OR:$<C_COMPILER_ID:GNU>,$<C_COMPILER_ID:TinyCC>,$<C_COMPILER_ID:ZIG>,$<C_COMPILER_ID:Clang>>>:
-		-g
-		-ggdb
-		-Wall
-		-Wextra
-		-Wpedantic
-		-Wconversion
-		-Wshadow
-		-Wno-unused
-		-Wno-implicit-fallthrough
-		-Wno-unused-but-set-variable
-		-Wunused-parameter
-		-Wno-unused-variable
-		-Wno-unused-function
-		-Wno-unused-label
-		-Wno-missing-field-initializers
-		-Wno-c23-extensions
-	>
+    # Common flags non windows
+    $<$<AND:$<COMPILE_LANGUAGE:C>,$<OR:$<C_COMPILER_ID:GNU>,$<C_COMPILER_ID:TinyCC>,$<C_COMPILER_ID:ZIG>,$<C_COMPILER_ID:Clang>>>:
+        -g
+        -ggdb
+        -Wall
+        -Wextra
+        -Wpedantic
+        -Wconversion
+        -Wshadow
+        -Wno-unused
+        -Wno-implicit-fallthrough
+        -Wno-unused-but-set-variable
+        -Wunused-parameter
+        -Wno-unused-variable
+        -Wno-unused-function
+        -Wno-unused-label
+        -Wno-missing-field-initializers
+        -Wno-c23-extensions
+    >
 
-	# GCC compiler flags
-	$<$<AND:$<COMPILE_LANGUAGE:C>,$<C_COMPILER_ID:GNU>>:
-		-rdynamic
-		-Wformat-security
-		# Need to fix for haiku
-		# -pg
-		-Wno-missing-field-initializers
-	>
+    # GCC compiler flags
+    $<$<AND:$<COMPILE_LANGUAGE:C>,$<C_COMPILER_ID:GNU>>:
+        -rdynamic
+        -Wformat-security
+        # Need to fix for haiku
+        # -pg
+        -Wno-missing-field-initializers
+    >
 
-	# MSVC flags
-	$<$<OR:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>:
-		-W4
-		-experimental:c11atomics
-		-Zc:preprocessor
-		-wd4100
-	>
+    # MSVC flags
+    $<$<OR:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>:
+        -W4
+        -experimental:c11atomics
+        -Zc:preprocessor
+        -wd4100
+    >
 )
 
 # Allows us to do line coverage testing
 IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" AND GENERATE_REPORT AND NOT ${IS_ANDROID})
-	MESSAGE(STATUS "Enabling coverage flags for GCC/Clang")
-	TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE --coverage -g)
-	TARGET_LINK_OPTIONS(${APP_NAME} PRIVATE --coverage)
+    MESSAGE(STATUS "Enabling coverage flags for GCC/Clang")
+    TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE --coverage -g)
+    TARGET_LINK_OPTIONS(${APP_NAME} PRIVATE --coverage)
 ENDIF()
 
 # -----------------------------------------------------------------------------

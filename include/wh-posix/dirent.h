@@ -1,7 +1,7 @@
 #ifndef _wh_header_posix_dirent_
 #define _wh_header_posix_dirent_
 
-#include<wh-common/os.h>
+#include<wh-core/os.h>
 
 #include<wh-posix/limits.h>
 #include<wh-posix/sys/types.h>

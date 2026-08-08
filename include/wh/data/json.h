@@ -1,19 +1,10 @@
-#ifndef _wh_header_data_json_
-#define _wh_header_data_json_
+#ifndef _wh_header_data_json
+#define _wh_header_data_json
 
-#include<wh-common/common.h>
-
-typedef struct {
-	struct_type stype;
-	u64 hash_id;
-	wh_string_s key;
-	void* data;
-} wh_json_entry_s;
+#include<wh-core/common.h>
 
 typedef struct {
-	struct_type stype;
-	u64 count;
-	wh_json_entry_s* entries;
+    wh_struct stype;
 } wh_json_s;
 
 #endif /* _wh_header_data_json_ */

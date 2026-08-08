@@ -1,4 +1,4 @@
-#include<wh-common/os.h>
+#include<wh-core/os.h>
 #include<wh-posix/signal.h>
 #include<wh-posix/windows.h>
 

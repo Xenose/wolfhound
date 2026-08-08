@@ -1,7 +1,3 @@
-
-#include<wh-backend/raylib/raylib.h>
-#include<wh-data/list.h>
-#include<wh-maths/core.h>
 #include<wh-posix/stdio.h>
 #include<wh-posix/string.h>
 #include<wh-sys/file.h>
@@ -9,18 +5,20 @@
 #include<wh-sys/info.h>
 #include<wh-sys/library.h>
 #include<wh-sys/memory.h>
+#include<wh-types/gameinfo.h>
 #include<wh/arg_parser.h>
+#include<wh/backend/raylib/raylib.h>
 #include<wh/convert.h>
-#include<wh/data/hashmap_lazy.h>
+#include<wh/data/list.h>
 #include<wh/debug/exceptions.h>
 #include<wh/debug/logger.h>
 #include<wh/game/actions.h>
 #include<wh/game/entity.h>
 #include<wh/images/loader.h>
+#include<wh/maths/core.h>
 #include<wh/print.h>
 #include<wh/render.h>
 #include<wh/string.h>
-#include<wh/types/gameinfo.h>
 #include<wh/window.h>
 #include<wh/wolfhound.h>
 

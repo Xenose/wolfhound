@@ -1,4 +1,4 @@
-#include<wh-maths/hash.h>
+#include<wh/maths/hash.h>
 #include<wh-cpp/maths/hash.hpp>
 
 

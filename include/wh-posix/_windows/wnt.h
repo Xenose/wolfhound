@@ -4,7 +4,7 @@
 // DO NOT INCLUDE THIS OUTSIDE WH-POSIX C SOURCE FILE!
 // WINDOWS.H INCLUDED!
 #include<wh-posix/windows.h>
-#include<wh-common/common.h>
+#include<wh-core/common.h>
 
 enum {
    _WNT_ENTRY_FREE,

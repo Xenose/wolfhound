@@ -4,6 +4,6 @@
 #include<sys/syscall.h>
 
 pid_t gettid(void) {
-	return (pid_t)syscall(SYS_gettid);
+    return (pid_t)syscall(SYS_gettid);
 }
 #endif /* _GNU_SOURCE */

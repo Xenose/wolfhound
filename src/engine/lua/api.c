@@ -1,4 +1,4 @@
-#include<wh-headers/lua.h>
+#include<wh/headers/lua.h>
 #include<wh/lua/api.h>
 #include<wh/lua/helpers.h>
 

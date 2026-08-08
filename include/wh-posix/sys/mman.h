@@ -2,12 +2,12 @@
 #define _wh_header_posix_sys_mman_
 
 #include<wh-posix/sys/types.h>
-#include<wh-common/common.h>
+#include<wh-core/common.h>
 
 WH_C()
 
 #if (WH_SYSTEM&WH_SYS_POSIX)
-	#include<sys/mman.h>
+    #include<sys/mman.h>
 #elif (WH_SYSTEM&WH_SYS_WINDOWS)
    #define MAP_FAILED ((void*)-1)
 

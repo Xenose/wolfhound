@@ -1,8 +1,8 @@
 #ifndef _wh_header_print_
 #define _wh_header_print_
 
-#include<stdarg.h>
-#include<wh-common/common.h>
+#include<wh-posix/stdarg.h>
+#include<wh-core/common.h>
 
 WH_C()
 
@@ -10,50 +10,50 @@ WH_C()
 #define WH_PRINT_ADD_NEW_LINE		0x0002
 
 typedef struct {
-	u64 left;		// %XX
-	u64 right;		// %.XX
+    u64 left;       // %XX
+    u64 right;      // %.XX
 
-	struct {
-		u8 length_set		: 1;	// .XX
-		u8 alt_form			: 1;	// #
-		u8 left_align		: 1;	// -
-		u8 zero_pad			: 1;	// 0
-		u8 space_pad		: 1;	// ' '
-		u8 force_sign		: 1;	// +
-		u8 thousnad_group : 1;	// '
-		u8 long_value		: 1;  // l
-		u8 llong_value		: 1;  // l
-	} flags;
+    struct {
+        u8 length_set       : 1;    // .XX
+        u8 alt_form         : 1;    // #
+        u8 left_align       : 1;    // -
+        u8 zero_pad         : 1;    // 0
+        u8 space_pad        : 1;    // ' '
+        u8 force_sign       : 1;    // +
+        u8 thousnad_group   : 1;    // '
+        u8 long_value       : 1;    // l
+        u8 llong_value      : 1;    // l
+    } flags;
 } wh_print_format_s;
 
 typedef struct {
-	char* start;
-	char* format;
-	char* buffer;
-	i64 length;		// length of buffer
-	i64 written;	// number of charters written
-	i64 fd;
+    char* start;
+    char* format;
+    char* buffer;
+    i64 length;     // length of buffer
+    i64 written;    // number of charters written
+    i64 fd;
 
-	wh_print_format_s print_format;
+    wh_print_format_s print_format;
 } wh_print_data_s;
 
 typedef struct {
-	wh_print_data_s* data; 
-	u64 needed;
+    wh_print_data_s* data; 
+    u64 needed;
 } _wh_print_buffer_check_params;
 
 typedef struct {
-	const char* format;
-	i64 fd;
-	char* buffer;
-	i64 buffer_length;
-	i64 offset;
-	u64 flags;
+    const char* format;
+    i64 fd;
+    char* buffer;
+    i64 buffer_length;
+    i64 offset;
+    u64 flags;
 } _wh_print_params;
 
 typedef struct {
-	const char* key;
-	i64 (*func)(wh_print_data_s* data, void* ptr);
+    const char* key;
+    i64 (*func)(wh_print_data_s* data, void* ptr);
 } _wh_print_add_func_params;
 
 extern i64 _wh_print_buffer_check(_wh_print_buffer_check_params params);

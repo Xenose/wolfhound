@@ -1,5 +1,5 @@
-#include<wh-headers/lua.h>
-#include<wh-maths/core.h>
+#include<wh/headers/lua.h>
+#include<wh/maths/core.h>
 #include<wh-posix/string.h>
 #include<wh-sys/file.h>
 #include<wh/arg_parser.h>

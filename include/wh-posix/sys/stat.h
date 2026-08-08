@@ -1,7 +1,7 @@
 #ifndef _wh_header_posix_sys_stat_
 #define _wh_header_posix_sys_stat_
 
-#include<wh-common/os.h>
+#include<wh-core/os.h>
 #include<wh-posix/sys/types.h>
 #include<wh-posix/time.h>
 

@@ -1,8 +1,7 @@
-#include<stdarg.h>
-
-#include<wh-headers/lua.h>
-#include<wh/lua/functions.h>
+#include<wh-posix/stdarg.h>
+#include<wh/headers/lua.h>
 #include<wh/lua/file.h>
+#include<wh/lua/functions.h>
 
 i8 _wh_lua_functions(lua_State* ls, const char* table, int index, ...) {
     va_list args;

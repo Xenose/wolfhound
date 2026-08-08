@@ -1,5 +1,5 @@
-#include<wh-common/os.h>
+#include<wh-core/os.h>
 
 #if (WH_SYSTEM&WH_SYS_WINDOWS)
-	#include"../_windows/stat.c"
+    #include"../_windows/stat.c"
 #endif

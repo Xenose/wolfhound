@@ -1,7 +1,7 @@
 #ifndef _wh_header_posix_libproc_
 #define _wh_header_posix_libproc_
 
-#include<wh-common/os.h>
+#include<wh-core/os.h>
 #include<wh-posix/signal.h>
 #include<wh-posix/sys/types.h>
 

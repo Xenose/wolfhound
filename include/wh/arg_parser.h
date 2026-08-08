@@ -1,16 +1,15 @@
 #ifndef _wh_header_arg_parser_
 #define _wh_header_arg_parser_
 
-#include<wh-headers/lua.h>
-
-#include<wh-common/common.h>
-#include<wh/types/config.h>
+#include<wh-core/common.h>
+#include<wh-types/config.h>
+#include<wh/headers/lua.h>
 
 typedef struct {
-	lua_State* ls;
-	int arc;
-	char* const* arv;
-	wh_config_s* config;
+    lua_State* ls;
+    int arc;
+    char* const* arv;
+    wh_config_s* config;
 } _wh_args_parse_params;
 
 extern i64 _wh_args_parse(_wh_args_parse_params params);
