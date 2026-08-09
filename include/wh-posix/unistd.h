@@ -49,14 +49,23 @@
     #define R_OK 0x0001
     #define W_OK 0x0002
     #define X_OK 0x0004
-    
-    extern int access(const char* path, int amode);
+
+    enum {
+        SEEK_SET,
+        SEEK_CUR,
+        SEEK_END,
+        SEEK_DATA,
+        SEEK_HOLE,
+    }
+
+    extern int access(const char *path, int amode);
     extern int close(int fd);
     extern int dup(int oldfd);
     extern int getpagesize(void);
     extern int sleep(unsigned int seconds);
     extern int usleep(useconds_t usec);
     extern long sysconf(int name);
+    extern off_t lseek(int fd, off_t offset, int whence);
     extern pid_t gettid(void);
     extern ssize_t write(int fd, const void* buffer, size_t count);
 #endif

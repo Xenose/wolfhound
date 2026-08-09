@@ -156,6 +156,65 @@ long sysconf(int name) {
 	}
 }
 
+off_t lseek(int fd, off_t offset, int whence) {
+	off_t off = 0;
+	_wnt_entry_s entry = { 0 };
+
+	LARGE_INTEGER _offset = { 0 };
+	LARGE_INTEGER _off = { 0 };
+
+	if (-1 == _wnt_call(_WNT_CALL_FD_GET, fd, &entry)) {
+		errno = EBADF;
+		goto go_error_exit;
+	}
+
+	if (_WNT_ENTRY_HANDLE != entry.type) {
+		errno = ESPIPE;
+		goto go_error_exit;
+	}
+
+	_offset.QuadPart = offset;
+
+	switch(whence) {
+		case SEEK_SET:
+			_off.QuadPart = offset;
+			break;
+
+		case SEEK_CUR:
+			if (0 == SetFilePointerEx(entry.handle, _offset, &_off, FILE_CURRENT)) {
+				_wnt_call(_WNT_CALL_ERROR_2_ERRNO, _WNT_ERROR_TYPE_NORMAL, GetLastError(), &errno);
+				goto go_error_exit;
+			}
+			break;
+
+		case SEEK_END:
+			if (0 == SetFilePointerEx(entry.handle, _offset, &_off, FILE_END)) {
+				_wnt_call(_WNT_CALL_ERROR_2_ERRNO, _WNT_ERROR_TYPE_NORMAL, GetLastError(), &errno);
+				goto go_error_exit;
+			}
+			break;
+
+		default:
+			errno = EINVAL;
+			goto go_error_exit;
+	}
+
+	if (0 > _off.QuadPart) {
+		errno = EINVAL;
+		goto go_error_exit;
+	}
+
+	if (!SetFilePointerEx(entry.handle, _off, nullptr, FILE_BEGIN)) {
+		errno = EINVAL;
+		goto go_error_exit;
+	}
+
+	off = _off.QuadPart;
+	return off;
+go_error_exit:
+	return -1;
+}
+
 pid_t gettid(void) {
 	return (pid_t)GetCurrentThreadId();
 }
