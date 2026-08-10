@@ -118,7 +118,7 @@ go_retry_resize:
     // Requesting the OS for memory.
     new_slots = wh_sys_memreq(resize_size);
 
-    if (nullptr != new_slots) {
+    if (nullptr == new_slots) {
         wh_log_critical(("Failed to allocated memory from the system!"));
         goto go_error_exit;
     }

@@ -2,14 +2,8 @@
 #define _wh_header_socket_
 
 #include<wh-core/common.h>
-
-#if (WH_SYSTEM&WH_SYS_POSIX)
-    #include<netdb.h>
-    #include<sys/socket.h>
-#elif (WH_SYSTEM&WH_SYS_WINDOWS)
-    #include<wh-posix/windows.h>
-#endif
-
+#include<wh-posix/netdb.h>
+#include<wh-posix/sys/socket.h>
 
 #define WH_SOCKET_UDP SOCK_DGRAM
 #define WH_SOCKET_TCP SOCK_STREAM

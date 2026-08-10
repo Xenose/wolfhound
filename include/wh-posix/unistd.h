@@ -3,6 +3,7 @@
 
 #include<wh-core/common.h>
 #include<wh-posix/sys/types.h>
+#include<wh-posix/stdio.h>
 
 #if (WH_SYSTEM&WH_SYS_POSIX)
     #include<unistd.h>
@@ -33,7 +34,7 @@
     #define _SC_HOST_NAME_MAX		_SC_HOST_NAME_MAX_
     #define _SC_LOGIN_NAME_MAX	 	_SC_LOGIN_NAME_MAX_
     #define _SC_CLK_TCK				_SC_CLK_TCK_
-    #define _SC_OPEN_MAX				_SC_OPEN_MAX_
+    #define _SC_OPEN_MAX			_SC_OPEN_MAX_
     #define _SC_PAGESIZE 			_SC_PAGESIZE_
     #define _SC_RE_DUP_MAX			_SC_RE_DUP_MAX_
     #define _SC_STREAM_MAX			_SC_STREAM_MAX_
@@ -50,13 +51,25 @@
     #define W_OK 0x0002
     #define X_OK 0x0004
 
-    enum {
-        SEEK_SET,
-        SEEK_CUR,
-        SEEK_END,
-        SEEK_DATA,
-        SEEK_HOLE,
-    }
+    #ifndef SEEK_SET
+        #define SEEK_SET    100
+    #endif
+
+    #ifdef SEEK_CUR
+        #define SEEK_CUR    101
+    #endif
+
+    #ifdef SEEK_END
+        #define SEEK_END    102
+    #endif
+
+    #ifdef SEEK_DATA
+        #define SEEK_DATA   103
+    #endif
+
+    #ifdef SEEK_HOLE
+        #define SEEK_HOLE   104
+    #endif
 
     extern int access(const char *path, int amode);
     extern int close(int fd);

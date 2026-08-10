@@ -15,7 +15,7 @@ wh_socket_s _wh_socket_init(_wh_socket_init_params params) {
     wh_socket_s out = { 0 };
     struct addrinfo hints = { 0 };
     struct addrinfo* results = nullptr;
-
+    
     int (*conbind)(int socket, const struct sockaddr* address, socklen_t address_len) = &connect;
 
     hints = (struct addrinfo){
@@ -34,6 +34,7 @@ wh_socket_s _wh_socket_init(_wh_socket_init_params params) {
     }
 
     if (0 != (s = getaddrinfo(params.ip, params.port, &hints, &results))) {
+        wh_log_error(("Failed [ getaddrinfo ]!"));
         goto go_error_exit;
     }
 
@@ -69,10 +70,4 @@ wh_socket_s _wh_socket_init(_wh_socket_init_params params) {
 
 go_error_exit:
     return out;
-}
-
-void _wh_sock_recv(wh_socket_s* sock) {
-}
-
-void _wh_sock_send(wh_socket_s* sock) {
 }

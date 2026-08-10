@@ -2,7 +2,6 @@
 #include<wh-posix/time.h>
 
 #include<wh-posix/_windows/wnt.h>
-
 #include<wh-posix/windows.h>
 
 int close(int fd) {
@@ -229,13 +228,21 @@ ssize_t write(int fd, const void* buffer, size_t count) {
 	}
 
 	switch (entry.type) {
+		case _WNT_ENTRY_SOCKET:
+			bytes = send(entry.sock, buffer, count, 0);
+
+			if (0 > bytes) {
+				_wnt_call(_WNT_CALL_ERROR_2_ERRNO, _WNT_ERROR_TYPE_SOCKET, WSAGetLastError(), &errno);
+				break;
+			}
+			break;
+
 		case _WNT_ENTRY_HANDLE:
 		case _WNT_ENTRY_STD: {
 				DWORD b = 0;
 
 				if (!WriteFile(entry.handle, buffer, (DWORD)count, &b, nullptr)) {
-					DWORD error = GetLastError();
-					_wnt_call(_WNT_CALL_ERROR_2_ERRNO, _WNT_ERROR_TYPE_NORMAL, error, &errno);
+					_wnt_call(_WNT_CALL_ERROR_2_ERRNO, _WNT_ERROR_TYPE_NORMAL, GetLastError(), &errno);
 					goto go_error_exit;
 				}
 

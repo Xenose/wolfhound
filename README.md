@@ -171,4 +171,3 @@ In AES system :: action(logic) -> Entity -> Data
 | Windows 11   | X64          | Ryzen 2700g   | 16GB | Radeon WX6100  |                                    |
 | OpenIndiana  | X64          | VM            | N/A  | N/A            | Hard to test on physical machines. |
 | Haiku        | X64          | I3-2120T      | 16GB | N/A            | ThinkCenter                        |
-

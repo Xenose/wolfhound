@@ -168,8 +168,8 @@ IF (BUILD_EXAMPLES)
 	ADD_SUBDIRECTORY(src/example/memory)
 	ADD_SUBDIRECTORY(src/example/posix)
 	ADD_SUBDIRECTORY(src/example/print)
-	#ADD_SUBDIRECTORY(src/example/socket_server)
-	#ADD_SUBDIRECTORY(src/example/socket_client)
+	ADD_SUBDIRECTORY(src/example/socket_server)
+	ADD_SUBDIRECTORY(src/example/socket_client)
 
 	# C++ examples
 	IF (CXX_ENABLED)
