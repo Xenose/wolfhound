@@ -47,8 +47,11 @@
    #define SOCK_PACKET     0x0F06
    
    extern int (*wnt_socket)(int domain, int type, int protocol);
+
+   // Normal socket functions
    extern int wnt_listen(int sockfd, int backlog);
    extern int wnt_bind(int sockfd, const struct sockaddr* addr, socklen_t addrlen);
+   extern int wnt_setsockopt(int sockfd, int level, int option_name, const void* option_value, socklen_t option_len);
 
    // TCP
    extern ssize_t wnt_send(int sockfd, const void* buffer, size_t size, int flags);
@@ -58,10 +61,12 @@
    extern ssize_t wnt_sendto(int sockfd, const void* buffer, size_t size, int flags, struct sockaddr* dest_addr, socklen_t addrlen);
    extern ssize_t wnt_recvfrom(int sockfd, const void* buffer, size_t size, int flags, struct sockaddr* src_addr, socklen_t* addrlen);
 
+
    #ifndef _WNT_RAW
-      #define socket    wnt_socket
-      #define listen    wnt_listen
-      #define bind      wnt_bind
+      #define socket       wnt_socket
+      #define listen       wnt_listen
+      #define bind         wnt_bind
+      #define setsockopt   wnt_setsockopt
 
       // TCP
       #define send      wnt_send

@@ -28,6 +28,7 @@
             #undef socket
             #undef listen
             #undef bind
+            #undef setsockopt
             #undef send  
             #undef recv
             #undef sendto

@@ -25,6 +25,8 @@ int main(int arc, char* const* arv) {
             }
 
             wh_log_info(("RECIVED -> %s"), buffer);
+        } else {
+            wh_log_error(("Failed to recv! [ %m ]"), errno);
         }
 
         memset(buffer, 0, 256);

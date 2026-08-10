@@ -160,3 +160,19 @@ ssize_t wnt_recvfrom(int sockfd, const void* buffer, size_t size, int flags, str
 
    return r;
 }
+
+int wnt_setsockopt(int sockfd, int level, int option_name, const void* option_value, socklen_t option_len) {
+   _wnt_entry_s entry;
+
+   if (0 != _wnt_call(_WNT_CALL_FD_GET, sockfd, &entry)) {
+      errno = EBADF;
+      return -1;
+   }
+
+   if (0 == setsockopt(entry.sock, level, option_name, option_value, option_len)) {
+      _wnt_call(_WNT_CALL_ERROR_2_ERRNO, _WNT_ERROR_TYPE_SOCKET, WSAGetLastError(), &errno);
+      return -1;
+   }
+
+   return 0;
+}
