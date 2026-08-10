@@ -29,6 +29,7 @@ wh_socket_s _wh_socket_init(_wh_socket_init_params params) {
     };
 
     if (WH_SOCKET_SERVER & params.flags) {
+        wh_log_debug(("Entrering server mode for socket!"));
         params.ip = "::";
         conbind = &bind;
     }
@@ -38,6 +39,7 @@ wh_socket_s _wh_socket_init(_wh_socket_init_params params) {
         goto go_error_exit;
     }
 
+    wh_log_debug(("Testing to create socket..."));
     for (struct addrinfo* pres = results; pres != nullptr; pres = pres->ai_next) {
         out.fd = socket(pres->ai_family, pres->ai_socktype, pres->ai_protocol);
 
@@ -51,7 +53,7 @@ wh_socket_s _wh_socket_init(_wh_socket_init_params params) {
         }
 
         if (0 != conbind(out.fd, pres->ai_addr, pres->ai_addrlen)) {
-            wh_log_debug(("Failed to bind/connect socket [ %i ] $n"), out.fd, errno);
+            wh_log_error(("Failed to bind/connect socket [ %i ] $n"), out.fd, errno);
             close(out.fd);
             out.fd = -1;
             continue;
@@ -60,6 +62,7 @@ wh_socket_s _wh_socket_init(_wh_socket_init_params params) {
         break;
     }
 
+    wh_log_debug(("Socket created [ %i ]\n"), out.fd);
     freeaddrinfo(results);
 
     if (-1 == out.fd) {

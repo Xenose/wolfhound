@@ -46,10 +46,9 @@
    #define SOCK_DRM        0x0F05
    #define SOCK_PACKET     0x0F06
    
-   extern int (*wnt_socket)(int domain, int type, int protocol);
-
-   // Normal socket functions
+   extern int wnt_socket(int domain, int type, int protocol);
    extern int wnt_listen(int sockfd, int backlog);
+   extern int wnt_connect(int sockfd, const struct sockaddr* addr, socklen_t addrlen);
    extern int wnt_bind(int sockfd, const struct sockaddr* addr, socklen_t addrlen);
    extern int wnt_setsockopt(int sockfd, int level, int option_name, const void* option_value, socklen_t option_len);
 
@@ -65,6 +64,7 @@
    #ifndef _WNT_RAW
       #define socket       wnt_socket
       #define listen       wnt_listen
+      #define connect      wnt_connect
       #define bind         wnt_bind
       #define setsockopt   wnt_setsockopt
 

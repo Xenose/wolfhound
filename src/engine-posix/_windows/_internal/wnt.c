@@ -6,6 +6,7 @@
 // internal fucntions
 #include"fd.c"
 #include"error.c"
+#include"socket.c"
 
 _wnt_s _wnt = { 0 };
 
@@ -93,7 +94,9 @@ i64 _wnt_call_real_va(i64 call_id, va_list args) {
          return _wnt_fd_insert(&_wnt, args);
       case _WNT_CALL_ERROR_2_ERRNO:
          return _wnt_error_2_errno(&_wnt, args);
-      }
+      case _WNT_CALL_INIT_SOCKET_BACK:
+         return _wnt_init_socket_back(&_wnt, args);
+   }
 
    return -1;
 }

@@ -4,15 +4,14 @@
 #define _WNT_RAW
 #include<wh-posix/sys/socket.h>
 
-int wnt_socket_internal(int domain, int type, int protocol);
-int wnt_socket_init(int domain, int type, int protocol);
-
-int (*wnt_socket)(int domain, int type, int protocol) = wnt_socket_init;
-
-int wnt_socket_internal(int domain, int type, int protocol) {
+int wnt_socket(int domain, int type, int protocol) {
    int fd = -1;
    _wnt_entry_s entry;
    SOCKET sock = { 0 };
+
+   if (-1 == _wnt_call(_WNT_CALL_INIT_SOCKET_BACK)) {
+      goto go_error_exit;
+   }
 
    sock = socket(domain, type, protocol);
 
@@ -24,31 +23,16 @@ int wnt_socket_internal(int domain, int type, int protocol) {
    entry.sock = sock;
    entry.type = _WNT_ENTRY_SOCKET;
 
-	if (0 != _wnt_call(_WNT_CALL_FD_INSERT, &fd, entry)) {
+	if (-1 ==  _wnt_call(_WNT_CALL_FD_INSERT, &fd, entry)) {
       closesocket(sock);
       errno = ENFILE;
       return -1;
    }
 
+   printf("Inserted socket fd == %i\n", fd);
    return fd;
-}
-
-int wnt_socket_init(int domain, int type, int protocol) {
-   int error = 0;
-   WSADATA wd = { 0 };
-
-   error = WSAStartup(MAKEWORD(2,2), &wd);
-
-   switch(error) {
-      default:
-         errno = EACCES;
-         return -1;
-      case 0:
-         printf("Windows socket layer started!\n");
-         wnt_socket = wnt_socket_internal;
-   }
-
-   return wnt_socket(domain, type, protocol);
+go_error_exit:
+   return -1;
 }
 
 // Normal functions
@@ -56,7 +40,7 @@ int wnt_socket_init(int domain, int type, int protocol) {
 int wnt_listen(int sockfd, int backlog) {
    _wnt_entry_s entry;
 
-   if (0 != _wnt_call(_WNT_CALL_FD_GET, sockfd, &entry)) {
+   if (-1 == _wnt_call(_WNT_CALL_FD_GET, sockfd, &entry)) {
       errno = EBADF;
       return -1;
    }
@@ -69,10 +53,26 @@ int wnt_listen(int sockfd, int backlog) {
    return 0;
 }
 
+int wnt_connect(int sockfd, const struct sockaddr* addr, socklen_t addrlen) {
+   _wnt_entry_s entry;
+
+   if (-1 == _wnt_call(_WNT_CALL_FD_GET, sockfd, &entry)) {
+      errno = EBADF;
+      return -1;
+   }
+
+   if (SOCKET_ERROR == connect(entry.sock, addr, addrlen)) {
+      _wnt_call(_WNT_CALL_ERROR_2_ERRNO, _WNT_ERROR_TYPE_SOCKET, WSAGetLastError(), &errno);
+      return -1;
+   }
+
+   return 0;
+}
+
 int wnt_bind(int sockfd, const struct sockaddr* addr, socklen_t addrlen) {
    _wnt_entry_s entry;
 
-   if (0 != _wnt_call(_WNT_CALL_FD_GET, sockfd, &entry)) {
+   if (-1 == _wnt_call(_WNT_CALL_FD_GET, sockfd, &entry)) {
       errno = EBADF;
       return -1;
    }
@@ -85,11 +85,38 @@ int wnt_bind(int sockfd, const struct sockaddr* addr, socklen_t addrlen) {
    return 0;
 }
 
+int wnt_setsockopt(int sockfd, int level, int option_name, const void* option_value, socklen_t option_len) {
+   _wnt_entry_s entry;
+
+   if (0 != _wnt_call(_WNT_CALL_FD_GET, sockfd, &entry)) {
+      errno = EBADF;
+      return -1;
+   }
+
+   if (SOCKET_ERROR == setsockopt(entry.sock, level, option_name, option_value, option_len)) {
+      switch(WSAGetLastError()) {
+         case WSANOTINITIALISED: errno = EINVAL;      break;
+         case WSAENETDOWN:       errno = EINVAL;      break;
+         case WSAEFAULT:         errno = ENOMEM;      break;
+         case WSAEINPROGRESS:    errno = ENOBUFS;     break;
+         case WSAEINVAL:         errno = ENOPROTOOPT; break;
+         case WSAENETRESET:      errno = ENOTSOCK;    break;
+         case WSAENOPROTOOPT:    errno = ENOPROTOOPT; break;
+         case WSAENOTCONN:       errno = ENOTSOCK;    break;
+         case WSAENOTSOCK:       errno = ENOTSOCK;    break;
+         default:                errno = EIO;         break;
+      }
+      return -1;
+   }
+
+   return 0;
+}
+
 ssize_t wnt_send(int sockfd, const void* buffer, size_t size, int flags) {
    ssize_t sent = 0;
    _wnt_entry_s entry;
 
-   if (0 != _wnt_call(_WNT_CALL_FD_GET, sockfd, &entry)) {
+   if (-1 == _wnt_call(_WNT_CALL_FD_GET, sockfd, &entry)) {
       errno = EBADF;
       return -1;
    }
@@ -153,26 +180,10 @@ ssize_t wnt_recvfrom(int sockfd, const void* buffer, size_t size, int flags, str
 
    r = recvfrom(entry.sock, buffer, size, flags, src_addr, addrlen);
 
-   if (0 > r) {
+   if (SOCKET_ERROR == r) {
       _wnt_call(_WNT_CALL_ERROR_2_ERRNO, _WNT_ERROR_TYPE_SOCKET, WSAGetLastError(), &errno);
       return -1;
    }
 
    return r;
-}
-
-int wnt_setsockopt(int sockfd, int level, int option_name, const void* option_value, socklen_t option_len) {
-   _wnt_entry_s entry;
-
-   if (0 != _wnt_call(_WNT_CALL_FD_GET, sockfd, &entry)) {
-      errno = EBADF;
-      return -1;
-   }
-
-   if (0 == setsockopt(entry.sock, level, option_name, option_value, option_len)) {
-      _wnt_call(_WNT_CALL_ERROR_2_ERRNO, _WNT_ERROR_TYPE_SOCKET, WSAGetLastError(), &errno);
-      return -1;
-   }
-
-   return 0;
 }

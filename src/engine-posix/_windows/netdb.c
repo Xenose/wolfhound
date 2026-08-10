@@ -6,8 +6,14 @@
 #include<wh-posix/stdio.h>
 
 int wnt_getaddrinfo(const char* node, const char* service, const struct addrinfo* hints, struct addrinfo** res) {
-   if (0 == getaddrinfo(node, select, hints, res)) {
-      printf("Failed!\n");
+   if (-1 == _wnt_call(_WNT_CALL_INIT_SOCKET_BACK)) {
+      goto go_error_exit;
+   }
+
+   if (0 != getaddrinfo(node, service, hints, res)) {
+      DWORD error = WSAGetLastError();
+      _wnt_call(_WNT_CALL_ERROR_2_ERRNO, _WNT_ERROR_TYPE_SOCKET, error, &errno);
+      printf("Error %i\n", error);
       goto go_error_exit;
    }
 

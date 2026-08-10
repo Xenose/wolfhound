@@ -27,6 +27,7 @@
             // sys/socket.h
             #undef socket
             #undef listen
+            #undef connect
             #undef bind
             #undef setsockopt
             #undef send  
