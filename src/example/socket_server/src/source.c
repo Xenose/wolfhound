@@ -3,6 +3,7 @@
 #include<wh-posix/string.h>
 #include<wh/debug/logger.h>
 #include<wh-sys/socket.h>
+#include<wh-posix/errno.h>
 
 int main(int arc, char* const* arv) {
     int rin = 0;
