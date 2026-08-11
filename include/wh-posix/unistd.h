@@ -80,6 +80,8 @@
     extern long sysconf(int name);
     extern off_t lseek(int fd, off_t offset, int whence);
     extern pid_t gettid(void);
+
+    extern ssize_t read(int fd, void* buffer, size_t count);
     extern ssize_t write(int fd, const void* buffer, size_t count);
 #endif
 

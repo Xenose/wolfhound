@@ -14,9 +14,8 @@ int main(int arc, char* const* arv) {
     wh_log_debug(("Clientr started!"));
 
     if (-1 != client.fd) while (1) {
-        printf("Type your message: ");
-        rin = scanf("%255s", buffer);
-        //rin = read(0, buffer, 255);
+        printf("Type your message [ %i ]: ", rin);
+        rin = read(0, buffer, 255);
         sendto(client.fd, buffer, rin, 0, nullptr, 0);
     }
 

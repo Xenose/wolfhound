@@ -218,6 +218,36 @@ pid_t gettid(void) {
 	return (pid_t)GetCurrentThreadId();
 }
 
+
+ssize_t read(int fd, void* buffer, size_t count) {
+	ssize_t bytes = -1;
+	_wnt_entry_s entry = { 0 };
+
+	if (-1 == _wnt_call(_WNT_CALL_FD_GET, fd, &entry)) {
+		errno = EBADF;
+		goto go_error_exit;
+	}
+	
+	switch (entry.type) {
+		case _WNT_ENTRY_SOCKET:
+			break;
+		case _WNT_ENTRY_HANDLE:
+		case _WNT_ENTRY_STD: {
+				DWORD b = 0;
+				count = count > UINT32_MAX ? UINT32_MAX : count;
+
+				ReadFile(entry.handle, buffer, count, &b, NULL);
+				bytes = b;
+			}
+			break;
+		default:
+			errno = ENOTSUP;
+	}
+
+go_error_exit:
+	return bytes;
+}
+
 ssize_t write(int fd, const void* buffer, size_t count) {
 	ssize_t bytes = -1;
 	_wnt_entry_s entry = { 0 };
@@ -240,6 +270,7 @@ ssize_t write(int fd, const void* buffer, size_t count) {
 		case _WNT_ENTRY_HANDLE:
 		case _WNT_ENTRY_STD: {
 				DWORD b = 0;
+				count = count > UINT32_MAX ? UINT32_MAX : count;
 
 				if (!WriteFile(entry.handle, buffer, (DWORD)count, &b, nullptr)) {
 					_wnt_call(_WNT_CALL_ERROR_2_ERRNO, _WNT_ERROR_TYPE_NORMAL, GetLastError(), &errno);
