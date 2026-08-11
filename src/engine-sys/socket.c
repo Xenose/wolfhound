@@ -1,3 +1,6 @@
+#include<wh/debug/logger.h>
+#include<wh-sys/socket.h>
+
 #include<wh-posix/arpa/inet.h>
 #include<wh-posix/errno.h>
 #include<wh-posix/netdb.h>
@@ -6,8 +9,6 @@
 #include<wh-posix/sys/socket.h>
 #include<wh-posix/sys/types.h>
 #include<wh-posix/unistd.h>
-#include<wh-sys/socket.h>
-#include<wh/debug/logger.h>
 
 wh_socket_s _wh_socket_init(_wh_socket_init_params params) {
     int s = -1;

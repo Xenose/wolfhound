@@ -23,23 +23,25 @@
     #define _WIN32_WINNT 0x0A00
 
     #pragma push_macro("_WINDOWS_POSIX")
-        #ifndef _WNT_RAW
-            // sys/socket.h
-            #undef socket
-            #undef listen
-            #undef connect
-            #undef bind
-            #undef setsockopt
-            #undef send  
-            #undef recv
-            #undef sendto
-            #undef recvfrom
+        // sys/socket.h
+        #undef socket
+        #undef listen
+        #undef connect
+        #undef bind
+        #undef setsockopt
+        #undef send  
+        #undef recv
+        #undef sendto
+        #undef recvfrom
 
-            // netdb.h
-            #undef getaddrinfo
-            #undef freeaddrinfo
-            #undef gai_strerror
-        #endif
+        // netdb.h
+        #undef getaddrinfo
+        #undef freeaddrinfo
+        #undef gai_strerror
+
+        // unistd.h
+        #undef gethostname
+
         // 1. Include Winsock 2 FIRST
         #include<winsock2.h>
         #include<ws2tcpip.h>

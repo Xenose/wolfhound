@@ -4,11 +4,16 @@
 #include<wh/debug/logger.h>
 #include<wh-sys/socket.h>
 #include<wh-posix/errno.h>
+#include<wh-posix/unistd.h>
 
 int main(int arc, char* const* arv) {
     int rin = 0;
     char buffer[256] = { 0 };
     wh_socket_s server = { 0 };
+
+    char host[256] = { 0 };
+
+    gethostname(host, 255);
 
     wh_log_debug(("Starting server..."));
     server = wh_socket_init(nullptr, "8080", WH_SOCKET_UDP, WH_SOCKET_SERVER);
@@ -26,7 +31,7 @@ int main(int arc, char* const* arv) {
                 }
             }
 
-            wh_log_info(("RECIVED -> %s"), buffer);
+            wh_log_info(("[ %s ] RECIVED -> %s"), host, buffer);
         }
 
         memset(buffer, 0, 256);

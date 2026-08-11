@@ -1,8 +1,8 @@
 #define USE_NAMESPACE_WOLFHOUND
-#include<wh-posix/unistd.h>
+#include<wh-sys/socket.h> // <-- include order problem
 #include<wh-posix/stdio.h>
+#include<wh-posix/unistd.h>
 #include<wh/debug/logger.h>
-#include<wh-sys/socket.h>
 
 int main(int arc, char* const* arv) {
     int rin = 0;

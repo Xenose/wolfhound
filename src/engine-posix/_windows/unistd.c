@@ -1,8 +1,9 @@
-#include<wh-posix/unistd.h>
+#include<wh-posix/windows.h>
+#include<wh-posix/_windows/wnt.h>
 #include<wh-posix/time.h>
 
-#include<wh-posix/_windows/wnt.h>
-#include<wh-posix/windows.h>
+#define _WNT_RAW
+#include<wh-posix/unistd.h>
 
 int close(int fd) {
 	_wnt_entry_s entry = { 0 };
@@ -40,6 +41,38 @@ int close(int fd) {
 	}
 
 go_skip:
+	return 0;
+go_error_exit:
+	return -1;
+}
+
+int wnt_gethostname(char* name, size_t size) {
+	int _size = 0;
+
+	if (-1 == _wnt_call(_WNT_CALL_INIT_SOCKET_BACK)) {
+		errno = EFAULT;
+      goto go_error_exit;
+   }
+
+	if (nullptr == name) {
+		errno = EFAULT;
+		goto go_error_exit;
+	}
+
+	// Translating type size
+	_size = INT_MAX < size ? INT_MAX : (int)size;
+
+	if (SOCKET_ERROR == gethostname(name, _size)) {
+		switch (WSAGetLastError()) {
+			case WSAEFAULT:				errno = EFAULT;			break;
+			case WSANOTINITIALISED:		errno = EPERM;				break;
+			case WSAENETDOWN:				errno = EPERM;				break;
+			case WSAEINPROGRESS:			errno = EPERM;				break;
+			default:							errno = EIO;				break;
+		}
+		goto go_error_exit;
+	}
+
 	return 0;
 go_error_exit:
 	return -1;

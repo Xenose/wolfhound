@@ -71,6 +71,8 @@
         #define SEEK_HOLE   104
     #endif
 
+    extern int wnt_gethostname(char* buffer, size_t size);
+
     extern int access(const char *path, int amode);
     extern int close(int fd);
     extern int dup(int oldfd);
@@ -83,6 +85,10 @@
 
     extern ssize_t read(int fd, void* buffer, size_t count);
     extern ssize_t write(int fd, const void* buffer, size_t count);
+
+    #ifndef _WNT_RAW
+       #define gethostname wnt_gethostname
+    #endif
 #endif
 
 #ifndef _GNU_SOURCE
