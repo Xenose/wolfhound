@@ -230,6 +230,12 @@ ssize_t read(int fd, void* buffer, size_t count) {
 	
 	switch (entry.type) {
 		case _WNT_ENTRY_SOCKET:
+			bytes = recv(entry.sock, buffer, count, 0);
+			
+			if (0 > bytes) {
+				_wnt_call(_WNT_CALL_ERROR_2_ERRNO, _WNT_ERROR_TYPE_SOCKET, WSAGetLastError(), &errno);
+				break;
+			}
 			break;
 		case _WNT_ENTRY_HANDLE:
 		case _WNT_ENTRY_STD: {
