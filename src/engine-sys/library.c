@@ -67,7 +67,7 @@ i8 _wh_libfind(const char* name, char** paths, u64 length) {
 }
 
 #elif _WIN64
-#include<wh-posix/windows.h>
+#include<wh-posix/_windows/windows.h>
 
 wh_lib_s _wh_libopen(_wh_libopen_params params) {
 	wh_lib_s out = { 0 };

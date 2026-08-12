@@ -7,8 +7,9 @@
 #if (WH_SYSTEM&WH_SYS_POSIX)
    #include<wh-posix/sys/socket.h>
 #else
-   #include <wh-posix/winsock2.h>
-   #include <wh-posix/ws2tcpip.h>
+   #define _WH_WINSOCK
+      #include<wh-posix/_windows/windows.h>
+   #undef _WH_WINSOCK
 
    #if !(WH_SYSTEM&WH_SYS_WINDOWS)
       #define AF_UNIX         0xF000

@@ -11,8 +11,9 @@
 #if (WH_SYSTEM&WH_SYS_POSIX)
     #include <netdb.h>
 #else
-    #include <wh-posix/winsock2.h>
-    #include <wh-posix/ws2tcpip.h>
+    #define _WH_WINSOCK
+        #include <wh-posix/_windows/windows.h>
+    #undef _WH_WINSOCK
 
     extern int wnt_getaddrinfo(const char* node, const char* service, const struct addrinfo* hints, struct addrinfo** res);
     extern void wnt_freeaddrinfo(struct addrinfo *res);

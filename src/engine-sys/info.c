@@ -48,7 +48,7 @@ i64 wh_sys_program_path(char* buffer, u64 buffer_size) {
 }
 
 #elif (WH_SYSTEM&WH_SYS_WINDOWS)
-#include<wh-posix/windows.h>
+#include<wh-posix/_windows/windows.h>
 
 i64 wh_sys_program_path(char* buffer, u64 buffer_size) {
 	DWORD length = GetModuleFileNameA(

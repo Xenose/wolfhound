@@ -1,6 +1,6 @@
 #include<wh-core/os.h>
 #include<wh-posix/signal.h>
-#include<wh-posix/windows.h>
+#include<wh-posix/_windows/windows.h>
 
 
 static struct sigaction _handler_sigsegv = { 0 };

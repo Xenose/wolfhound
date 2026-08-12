@@ -42,20 +42,25 @@
         // unistd.h
         #undef gethostname
 
-        // 1. Include Winsock 2 FIRST
-        #include<winsock2.h>
-        #include<ws2tcpip.h>
+        #ifdef _WH_WINSOCK
+            #include<winsock2.h>
+            #include<ws2tcpip.h>
+        #else
+            // 1. Include Winsock 2 FIRST
+            #include<winsock2.h>
+            #include<ws2tcpip.h>
 
-        // 2. Now include Windows.h safely (it will see winsock2 is loaded and skip winsock.h)
-        #include<windows.h>
+            // 2. Now include Windows.h safely (it will see winsock2 is loaded and skip winsock.h)
+            #include<windows.h>
 
-        // 3. Rest of system/Win32 headers
+            // 3. Rest of system/Win32 headers
 
-        #include<iphlpapi.h>
-        #include<io.h>
-        // Other Win32 headers
+            #include<iphlpapi.h>
+            #include<io.h>
+            // Other Win32 headers
 
-        #include<winternl.h>
+            #include<winternl.h>
+        #endif
     #pragma pop_macro("_WINDOWS_POSIX")
 
     #ifdef _MSC_VER

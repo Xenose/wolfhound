@@ -2,7 +2,7 @@
 #define _wh_header_file_
 
 #ifdef _WIN32
-    #include<wh-posix/windows.h>
+    #include<wh-posix/_windows/windows.h>
 #endif
 
 #include<wh-core/common.h>

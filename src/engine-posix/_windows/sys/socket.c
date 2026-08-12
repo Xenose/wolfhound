@@ -1,4 +1,4 @@
-#include<wh-posix/windows.h>
+#include<wh-posix/_windows/windows.h>
 #include<wh-posix/_windows/wnt.h>
 
 #define _WNT_RAW

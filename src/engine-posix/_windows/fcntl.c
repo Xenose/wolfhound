@@ -1,7 +1,7 @@
 #include<wh-posix/fcntl.h>
 
 #include<wh-posix/_windows/wnt.h>
-#include<wh-posix/windows.h>
+#include<wh-posix/_windows/windows.h>
 
 
 int fcntl(int fd, int op, ...) {

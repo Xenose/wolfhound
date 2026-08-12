@@ -3,7 +3,7 @@
 
 // DO NOT INCLUDE THIS OUTSIDE WH-POSIX C SOURCE FILE!
 // WINDOWS.H INCLUDED!
-#include <wh-posix/windows.h>
+#include <wh-posix/_windows/windows.h>
 #include <wh-core/common.h>
 
 enum {

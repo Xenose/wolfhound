@@ -1,4 +1,3 @@
-#define USE_NAMESPACE_WOLFHOUND
 #include<wh-posix/sys/socket.h>
 #include<wh-posix/string.h>
 #include<wh/debug/logger.h>
