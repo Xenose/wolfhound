@@ -1,7 +1,7 @@
 #ifndef _wh_header_render_
 #define _wh_header_render_
 
-#include<wh/wolfhound.h>
+#include <wh/wolfhound.h>
 
 WH_C()
 

@@ -1,7 +1,7 @@
 #ifndef _wh_header_lua_api_file_
 #define _wh_header_lua_api_file_
 
-#include<wh/headers/lua.h>
+#include <wh/headers/lua.h>
 
 /* [MD_DOC]
  * # wh_lua_file_load

@@ -1,9 +1,9 @@
 #ifndef _wh_header_types_foreman_
 #define _wh_header_types_foreman_
 
-#include<wh-core/common.h>
-#include<wh-sys/atomic_lock.h>
-#include<wh-types/gameinfo.h>
+#include <wh-core/common.h>
+#include <wh-sys/atomic_lock.h>
+#include <wh-types/gameinfo.h>
 
 typedef struct {
     struct_type stype;

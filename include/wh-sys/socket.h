@@ -1,9 +1,9 @@
 #ifndef _wh_header_socket_
 #define _wh_header_socket_
 
-#include<wh-core/common.h>
-#include<wh-posix/netdb.h>
-#include<wh-posix/sys/socket.h>
+#include <wh-core/common.h>
+#include <wh-posix/netdb.h>
+#include <wh-posix/sys/socket.h>
 
 #define WH_SOCKET_UDP SOCK_DGRAM
 #define WH_SOCKET_TCP SOCK_STREAM

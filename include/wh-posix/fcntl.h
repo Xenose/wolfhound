@@ -4,6 +4,21 @@
 #include<wh-core/os.h>
 #include<wh-posix/sys/types.h>
 
+// For libc-test
+#ifndef O_TTY_INIT
+    #define O_TTY_INIT 0
+#endif
+
+// For libc-test
+#ifndef O_EXEC
+    #define O_EXEC     0
+#endif
+
+// For libc-test
+#ifndef O_SEARCH
+    #define O_SEARCH   0
+#endif
+
 #if (WH_SYSTEM&WH_SYS_POSIX)
     #include<fcntl.h>
 #elif (WH_SYSTEM&WH_SYS_WINDOWS)

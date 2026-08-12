@@ -1,6 +1,6 @@
-#include<stdio.h>
+#include <wh-posix/stdio.h>
 
-#include<wh/debug/logger.h>
+#include<wh//debug/logger.h>
 
 #include"main.h"
 #include"print.h"

@@ -1,8 +1,8 @@
 #ifndef _wh_header_common_c23_comp_
 #define _wh_header_common_c23_comp_
 
-#include<wh-posix/stdint.h>
-#include<wh-core/os.h>
+#include <wh-posix/stdint.h>
+#include <wh-core/os.h>
 
 /*
  * C23 has added the keyword nullptr to the language,

@@ -6,7 +6,7 @@
 #define FD_MAX 1024
 
 /*
-#include<stdio.h>
+#include <wh-posix/stdio.h>
 
 void _wnt_log_last_error(const char* context, DWORD err) {
     LPSTR msg = NULL;

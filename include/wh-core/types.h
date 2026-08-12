@@ -1,8 +1,8 @@
 #ifndef _wh_header_common_types_
 #define _wh_header_common_types_
 
-#include<wh-posix/stdint.h>
-#include<wh-posix/stdatomic.h>
+#include <wh-posix/stdint.h>
+#include <wh-posix/stdatomic.h>
 
 /* [MD_DOC]
  * # Integer Types

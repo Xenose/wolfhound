@@ -1,8 +1,8 @@
 #ifndef _wh_header_signalar_
 #define _wh_header_signalar_
 
-#include<wh-core/common.h>
-#include<wh/wolfhound.h>
+#include <wh-core/common.h>
+#include <wh/wolfhound.h>
 
 typedef struct {
     const char* name;

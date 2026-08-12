@@ -1,7 +1,7 @@
 #define USE_NAMESPACE_WOLFHOUND
-#include<stdio.h>
-#include<wh/print.h>
-#include<wh/debug/benchmark.h>
+#include <wh-posix/stdio.h>
+#include <wh/print.h>
+#include <wh/debug/benchmark.h>
 
 int main(int arc, char* const* arv) {
     wh_benchmark_s wh_bench = { 0 };

@@ -1,9 +1,9 @@
 #ifndef _wh_header_wrap_string_
 #define _wh_header_wrap_string_
 
-#include<stddef.h>
-#include<string.h>
+#include<wh-posix/stddef.h>
 #include<wh-core/common.h>
+#include<string.h>
 
 #if (WH_SYSTEM&WH_SYS_WINDOWS)
 
@@ -39,9 +39,9 @@ extern int strncpy_s(char* restrict dst, size_t dst_size, const char* restrict s
 #endif
 
 #ifndef WH_SHOTGUN_FOOT_OH_YEA
-	#define strcat(...) static_assert(0, "DO NOT USE STRCAT USE WH_STRCAT"); strcat(__VA_ARGS__)
+    #define strcat(...) static_assert(0, "DO NOT USE STRCAT USE WH_STRCAT"); strcat(__VA_ARGS__)
 #else
-	#warning YOU ARE ABOUT TO SHOT YOURSELF!
+    #warning YOU ARE ABOUT TO SHOT YOURSELF!
 #endif /* WH_SHOTGUN_FOOT_OH_YEA */
 
 #endif /* _wh_header_wrap_string_ */

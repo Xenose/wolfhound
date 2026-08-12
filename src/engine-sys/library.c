@@ -1,13 +1,13 @@
 
-#include<wh-types/library.h>
-#include<wh/debug/logger.h>
-#include<wh-sys/library.h>
+#include <wh-types/library.h>
+#include <wh/debug/logger.h>
+#include <wh-sys/library.h>
 
 #ifdef __linux__
-#include<string.h>
-#include<dirent.h>
-#include<dlfcn.h>
-#include<stdlib.h>
+#include <wh-posix/string.h>
+#include <wh-posix/dirent.h>
+#include <wh-posix/dlfcn.h>
+#include <wh-posix/stdlib.h>
 
 wh_lib_s _wh_libopen(_wh_libopen_params params) {
 	char* error = nullptr;

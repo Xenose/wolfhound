@@ -5,7 +5,7 @@
 #include<wh-posix/signal.h>
 
 #if (WH_SYSTEM&WH_SYS_POSIX)
-   #include<sys/ucontext.h>
+   #include <wh-posix/sys/ucontext.h>
 #else(WH_SYSTEM&WH_SYS_WINDOWS)
    typedef void* mcontext_t;
 

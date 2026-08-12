@@ -11,6 +11,7 @@ ENABLE_LANGUAGE(ASM_NASM OPTIONAL)
 OPTION(NO_CXX_COMPILER "Disbles the C++ compiler" False)
 OPTION(LINUX_MINGW_WIN "Cross compiles the code for Windows" False)
 OPTION(BUILD_EXAMPLES "Builds the example projects" True)
+OPTION(BUILD_LIBC_TESTS "Build the libc-test suite for POSIX validation" ON)
 
 OPTION(NO_SDL3 "Disable SDL3" False)
 OPTION(NO_SDL2 "Disable SDL2" False)
@@ -161,30 +162,39 @@ ENDIF()
 # or examples and link against the core libraries defined above.
 # -----------------------------------------------------------------------------
 IF (BUILD_EXAMPLES)
-	ADD_SUBDIRECTORY(src/example/chess)
-	ADD_SUBDIRECTORY(src/example/lists)
-	ADD_SUBDIRECTORY(src/example/hashmaps)
-	ADD_SUBDIRECTORY(src/example/gameobject)
-	ADD_SUBDIRECTORY(src/example/memory)
-	ADD_SUBDIRECTORY(src/example/posix)
-	ADD_SUBDIRECTORY(src/example/print)
-	ADD_SUBDIRECTORY(src/example/socket_server)
-	ADD_SUBDIRECTORY(src/example/socket_client)
+    ADD_SUBDIRECTORY(src/example/chess)
+    ADD_SUBDIRECTORY(src/example/lists)
+    ADD_SUBDIRECTORY(src/example/hashmaps)
+    ADD_SUBDIRECTORY(src/example/gameobject)
+    ADD_SUBDIRECTORY(src/example/memory)
+    ADD_SUBDIRECTORY(src/example/posix)
+    ADD_SUBDIRECTORY(src/example/print)
+    ADD_SUBDIRECTORY(src/example/socket_server)
+    ADD_SUBDIRECTORY(src/example/socket_client)
 
-	# C++ examples
-	IF (CXX_ENABLED)
-		ADD_SUBDIRECTORY(src/example/cpp)
-	ENDIF()
+    # C++ examples
+    IF (CXX_ENABLED)
+        ADD_SUBDIRECTORY(src/example/cpp)
+    ENDIF()
+ENDIF()
+
+IF(BUILD_LIBC_TESTS)
+    IF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/vendor/libc-test/CMakeLists.txt")
+        # If you created a CMakeLists.txt inside vendor/libc-test as discussed earlier:
+        ADD_SUBDIRECTORY(vendor/libc-test)
+    ELSE()
+        MESSAGE(WARNING "vendor/libc-test found, but no CMakeLists.txt is present inside it.")
+    ENDIF()
 ENDIF()
 
 # Tests
 IF (CXX_ENABLED)
-	# For now GTEST is not supported on windows.
-	IF (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-		ADD_SUBDIRECTORY(src/unit-gtests-cpp/)
-	ENDIF()
+    # For now GTEST is not supported on windows.
+    IF (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+        ADD_SUBDIRECTORY(src/unit-gtests-cpp/)
+    ENDIF()
 ENDIF()
 
 IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" AND GENERATE_REPORT)
-	ADD_SUBDIRECTORY(src/unit-tests-c/)
+    ADD_SUBDIRECTORY(src/unit-tests-c/)
 ENDIF()

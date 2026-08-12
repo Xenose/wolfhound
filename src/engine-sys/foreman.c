@@ -1,5 +1,5 @@
-#include<wh-sys/foreman.h>
-#include<wh/debug/logger.h>
+#include <wh-sys/foreman.h>
+#include <wh/debug/logger.h>
 
 
 void wh_foreman_init(wh_instance_s* ins, wh_foreman_s* foreman) {

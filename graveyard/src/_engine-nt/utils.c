@@ -1,5 +1,5 @@
-#include<wh-core/common.h>
-#include<wh-posix/windows.h>
+#include <wh-core/common.h>
+#include <wh-posix/windows.h>
 
 enum {
    WNT_STATUS_UNKNOWN = -1,

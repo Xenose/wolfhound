@@ -1,9 +1,9 @@
 #ifndef _wh_header_system_list_
 #define _wh_header_system_list_
 
-#include<wh-core/common.h>
-#include<wh-sys/atomic_lock.h>
-#include<wh-types/memory.h>
+#include <wh-core/common.h>
+#include <wh-sys/atomic_lock.h>
+#include <wh-types/memory.h>
 
 WH_C()
 

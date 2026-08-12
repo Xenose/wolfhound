@@ -1,8 +1,8 @@
 #ifndef _wh_header_data_hashmap_lazy_
 #define _wh_header_data_hashmap_lazy_
 
-#include<wh-core/common.h>
-#include<wh-sys/memory.h>
+#include <wh-posix/wh-core/common.h>
+#include <wh-posix/wh-sys/memory.h>
 
 typedef struct {
     struct_type stype;

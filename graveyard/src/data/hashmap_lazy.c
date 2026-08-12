@@ -1,11 +1,11 @@
-#include<stdarg.h>
+#include<wh-posix/stdarg.h>
 #include<wh/data/hashmap_lazy.h>
 #include<wh/maths/core.h>
 #include<wh-sys/memory.h>
 #include<wh/print.h>
 #include<wh/debug/logger.h>
 
-#include<string.h>
+#include<wh-posix/string.h>
 
 wh_hashmap_lazy_entry_s* _wh_hashmap_entry(void* entry, u64  data_size, u64 index) {
 	return wh_ptr_add(entry, (sizeof(wh_hashmap_lazy_entry_s) + data_size) * index);

@@ -1,4 +1,5 @@
-#include<stdlib.h>
+#include<wh-posix/stdlib.h>
+
 #include<wh-sys/memory.h>
 #include<wh/data/hashmap.h>
 #include<wh/data/list.h>

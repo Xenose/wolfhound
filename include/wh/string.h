@@ -1,8 +1,8 @@
 #ifndef _wh_header_string_
 #define _wh_header_string_
 
-#include<wh-core/common.h>
-#include<wh-params/string.h>
+#include <wh-core/common.h>
+#include <wh-params/string.h>
 
 WH_C()
 

@@ -1,7 +1,7 @@
 #ifndef _wh_header_memory_copy_
 #define _wh_header_memory_copy_
 
-#include<wh-core/common.h>
+#include <wh-core/common.h>
 
 typedef struct {
     const void* c0;

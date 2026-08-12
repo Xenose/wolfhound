@@ -3,11 +3,16 @@
 
 #include<wh-core/os.h>
 
+// For libc-testing
+#ifndef NI_NUMERICSCOPE
+    #define NI_NUMERICSCOPE 0x0040
+#endif
+
 #if (WH_SYSTEM&WH_SYS_POSIX)
-    #include<netdb.h>
+    #include <netdb.h>
 #else
-    #include<winsock2.h>
-    #include<ws2tcpip.h>
+    #include <wh-posix/winsock2.h>
+    #include <wh-posix/ws2tcpip.h>
 
     extern int wnt_getaddrinfo(const char* node, const char* service, const struct addrinfo* hints, struct addrinfo** res);
     extern void wnt_freeaddrinfo(struct addrinfo *res);

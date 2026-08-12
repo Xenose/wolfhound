@@ -4,7 +4,7 @@
 #include<wh-core/os.h>
 
 #if (WH_SYSTEM&WH_SYS_POSIX)
-   #include<sys/reg.h>
+   #include <wh-posix/sys/reg.h>
 #endif
 
 #endif

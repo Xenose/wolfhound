@@ -1,8 +1,8 @@
 #ifndef _wh_header_game_entity_
 #define _wh_header_game_entity_
 
-#include<wh-core/common.h>
-#include<wh-types/wolfhound.h>
+#include <wh-core/common.h>
+#include <wh-types/wolfhound.h>
 
 typedef struct {
     wh_instance_s* ins;

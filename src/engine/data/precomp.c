@@ -1,4 +1,4 @@
-#include<stdint.h>
+#include <wh-posix/stdint.h>
 
 // 0xF 1111
 // 0x0 0000

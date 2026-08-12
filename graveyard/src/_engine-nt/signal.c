@@ -1,5 +1,5 @@
-#include<_wh-nt/signal.h>
-#include<wh-posix/windows.h>
+#include <_wh-nt/signal.h>
+#include <wh-posix/windows.h>
 
 // BOOL WINAPI SetConsoleCtrlHandler(_In_opt_ PHANDLER_ROUTINE HandlerRoutine, _In_ BOOL Add);
 int _wnt_set_console_ctrl_handler(int (*handler)(unsigned int), short add) {

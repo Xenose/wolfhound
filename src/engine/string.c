@@ -1,5 +1,5 @@
-#include<stdarg.h>
-#include<string.h>
+#include<wh-posix/stdarg.h>
+#include<wh-posix/string.h>
 
 #include<wh/string.h>
 #include<wh-sys/memory.h>

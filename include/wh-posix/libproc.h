@@ -1,9 +1,9 @@
 #ifndef _wh_header_posix_libproc_
 #define _wh_header_posix_libproc_
 
-#include<wh-core/os.h>
-#include<wh-posix/signal.h>
-#include<wh-posix/sys/types.h>
+#include <wh-core/os.h>
+#include <wh-posix/signal.h>
+#include <wh-posix/sys/types.h>
 
 // Note : The name and semantics shift a bit from solaris,
 // so to reflect this change we named it proc_xxx in the
@@ -15,7 +15,7 @@
 // proc    :: https://docs.oracle.com/cd/E88353_01/html/E37852/proc-5.html
 
 #if (WH_SYSTEM&WH_SYS_SOLARIS)
-    #include<libproc.h>
+    #include <wh-posix/libproc.h>
 
     #define proc_grab       Pgrab
     #define proc_release    Prelease

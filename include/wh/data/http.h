@@ -1,7 +1,7 @@
 #ifndef _wh_header_data_http
 #define _wh_header_data_http
 
-#include<wh-core/common.h>
+#include <wh-core/common.h>
 
 typedef enum {
     HTTP_REQUEST_TYPE_CONNECT,

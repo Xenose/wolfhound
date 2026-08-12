@@ -1,9 +1,9 @@
 #ifndef _wh_header_debug_
 #define _wh_header_debug_
 
-#include<wh-core/common.h>
+#include <wh-core/common.h>
 
-#include<wh/print.h>
+#include <wh/print.h>
 
 typedef struct {
     const char* file;

@@ -1,8 +1,8 @@
 #ifndef _wh_header_print_
 #define _wh_header_print_
 
-#include<wh-posix/stdarg.h>
-#include<wh-core/common.h>
+#include <wh-posix/stdarg.h>
+#include <wh-core/common.h>
 
 WH_C()
 

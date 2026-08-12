@@ -1,8 +1,8 @@
 #ifndef _wh_header_raylib_raylib_
 #define _wh_header_raylib_raylib_
 
-#include<wh-posix/stdarg.h>
-#include<wh-core/common.h>
+#include <wh-posix/stdarg.h>
+#include <wh-core/common.h>
 
 typedef enum {
     RAY_LOG_ALL,

@@ -1,4 +1,4 @@
-#include<pthread_np.h>
+#include<wh-posix/pthread_np.h>
 #include<wh-posix/unistd.h>
 
 pid_t gettid(void) {

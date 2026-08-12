@@ -1,4 +1,4 @@
-#include<wh-sys/atomic_lock.h>
+#include <wh-sys/atomic_lock.h>
 
 int _wh_clear_lock_flags(wh_atomic_lock_s* x) {
     x->thread_id = 0;

@@ -1,5 +1,5 @@
-#include<wh/debug/logger.h>
-#include<wh/render.h>
+#include <wh/debug/logger.h>
+#include <wh/render.h>
 
 #ifdef WH_SDL2_FOUND
     #include<wh/backend/sdl2.h>

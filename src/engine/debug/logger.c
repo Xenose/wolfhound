@@ -1,5 +1,4 @@
-#include<stdarg.h>
-
+#include<wh-posix/stdarg.h>
 #include<wh/print.h>
 #include<wh/debug/logger.h>
 #include<wh/wolfhound.h>

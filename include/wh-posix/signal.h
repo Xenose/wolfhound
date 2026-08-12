@@ -1,9 +1,9 @@
 #ifndef _wh_header_posix_signal_
 #define _wh_header_posix_signal_
 
-#include<signal.h>
-#include<wh-core/common.h>
-#include<wh-posix/sys/types.h>
+#include <signal.h>
+#include <wh-core/common.h>
+#include <wh-posix/sys/types.h>
 
 #if (WH_SYSTEM&WH_SYS_WINDOWS)
 

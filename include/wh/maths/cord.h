@@ -1,7 +1,7 @@
 #ifndef __wh_maths_cord__
 #define __wh_maths_cord__
 
-#include<wh-posix/stdint.h>
+#include <wh-posix/stdint.h>
 
 #define WH_CORD_UNIT 10 // 10 means 10 bits giving us 1024 per 1mm
 

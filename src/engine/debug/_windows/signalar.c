@@ -1,8 +1,8 @@
 #include<wh-posix/signal.h>
-#include<string.h>
-#include<errno.h>
+#include<wh-posix/string.h>
+#include<wh-posix/errno.h>
 
-#include<stdio.h>
+#include<wh-posix/stdio.h>
 
 
 // my code

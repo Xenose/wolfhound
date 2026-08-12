@@ -1,7 +1,7 @@
 #ifndef _wh_header_debug_exceptions_
 #define _wh_header_debug_exceptions_
 
-#include<setjmp.h>
+#include<wh-posix/setjmp.h>
 #include<wh-core/common.h>
 
 enum {

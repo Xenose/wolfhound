@@ -1,7 +1,6 @@
 #ifndef _wh_header_posix_windows_fd_table_
 #define _wh_header_posix_windows_fd_table_
 
-
 #include<wh-posix/windows.h>
 
 typedef enum {

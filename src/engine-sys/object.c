@@ -1,9 +1,9 @@
-#include<wh/string.h>
-#include<wh/debug/logger.h>
-#include<wh-sys/dynamic_object.h>
+#include <wh/string.h>
+#include <wh/debug/logger.h>
+#include <wh-sys/dynamic_object.h>
 
 #ifdef __unix__
-#include<dlfcn.h>
+#include <wh-posix/dlfcn.h>
 
 wh_dynamic_s wh_sys_dynamic_open(const char* path) {
 	char file_path[256] = { 0 };

@@ -2,8 +2,8 @@
 #include<wh/data/list.h>
 #include<wh/debug/logger.h>
 
-#include<string.h>
-#include<stdlib.h>
+#include<wh-posix/string.h>
+#include<wh-posix/stdlib.h>
 
 #include"sll_common.c"
 

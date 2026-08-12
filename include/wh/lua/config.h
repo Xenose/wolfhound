@@ -1,8 +1,8 @@
 #ifndef _wh_header_lua_config_
 #define _wh_header_lua_config_
 
-#include<wh-types/config.h>
-#include<wh/headers/lua.h>
+#include <wh-types/config.h>
+#include <wh/headers/lua.h>
 
 typedef struct {
     lua_State* ls;

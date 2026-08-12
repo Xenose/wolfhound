@@ -1,7 +1,7 @@
 #ifndef _wh_header_data_json
 #define _wh_header_data_json
 
-#include<wh-core/common.h>
+#include <wh-core/common.h>
 
 typedef struct {
     wh_struct stype;

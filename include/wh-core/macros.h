@@ -1,11 +1,11 @@
 #ifndef _wh_header_common_macros_
 #define _wh_header_common_macros_
 
-#include<stddef.h>
+#include <wh-posix/stddef.h>
 
-#include<wh-core/os.h>
-#include<wh-core/prefix.h>
-#include<wh-core/c23-comp.h>
+#include <wh-core/os.h>
+#include <wh-core/prefix.h>
+#include <wh-core/c23-comp.h>
 
 WH_C()
 

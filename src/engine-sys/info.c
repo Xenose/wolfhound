@@ -1,8 +1,8 @@
-#include<wh-sys/info.h>
-#include<wh-posix/unistd.h>
-#include<wh-posix/string.h>
+#include <wh-sys/info.h>
+#include <wh-posix/unistd.h>
+#include <wh-posix/string.h>
 
-#include<wh/print.h>
+#include <wh/print.h>
 
 static wh_thread i64 _thread_id = -1;
 

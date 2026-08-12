@@ -1,9 +1,9 @@
 #ifndef _wh_memory_
 #define _wh_memory_
 
-#include<wh-core/common.h>
-#include<wh-types/memory.h>
-#include<wh-params/memory.h>
+#include <wh-core/common.h>
+#include <wh-types/memory.h>
+#include <wh-params/memory.h>
 
 WH_C()
 

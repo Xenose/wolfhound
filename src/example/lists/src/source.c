@@ -1,4 +1,4 @@
-#include<stdio.h>
+#include<wh-posix/stdio.h>
 #include<wh/data/list.h>
 #include<wh/debug/logger.h>
 #include<wh/debug/signalar.h>

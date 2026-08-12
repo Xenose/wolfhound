@@ -1,5 +1,5 @@
-#include<signal.h>
-#include<stdio.h>
+#include<wh-posix/signal.h>
+#include<wh-posix/stdio.h>
 #include<wh-posix/unistd.h>
 #include<wh/debug/exceptions.h>
 

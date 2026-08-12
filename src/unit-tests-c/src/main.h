@@ -1,7 +1,7 @@
 #ifndef _wh_unit_main_
 #define _wh_unit_main_
 
-#include<stdint.h>
+#include<wh-posix/stdint.h>
 #include<wh-core/common.h>
 #include<wh-testing/macros.h>
 

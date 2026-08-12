@@ -1,4 +1,4 @@
-#include<errno.h>
+#include<wh-posix/errno.h>
 #include<wh-posix/string.h>
 
 int strncpy_s(char* restrict dst, size_t dst_size, const char* restrict src, size_t src_size) {

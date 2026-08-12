@@ -1,8 +1,8 @@
 #ifndef _wh_header_data_linked_list_
 #define _wh_header_data_linked_list_
 
-#include<wh-core/common.h>
-#include<wh-types/memory.h>
+#include <wh-posix/wh-core/common.h>
+#include <wh-posix/wh-types/memory.h>
 /*
 typedef struct _wh_sllist_item_s {
 	struct _wh_sllist_item_s* p_next;

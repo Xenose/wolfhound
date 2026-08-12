@@ -1,6 +1,6 @@
-#include<stdarg.h>
-#include<stdio.h>
-#include<stdlib.h>
+#include<wh-posix/stdarg.h>
+#include<wh-posix/stdio.h>
+#include<wh-posix/stdlib.h>
 #include<wh/print.h>
 #include<wh/debug/exceptions.h>
 #include<wh/debug/benchmark.h>

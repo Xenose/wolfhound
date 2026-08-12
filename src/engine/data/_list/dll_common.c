@@ -1,7 +1,7 @@
 #ifndef _wh_c_dll_common_
 #define _wh_c_dll_common_
 
-#include<string.h>
+#include<wh-posix/string.h>
 #include<wh/data/list.h>
 #include<wh/data/list.h>
 #include<wh/debug/logger.h>

@@ -1,14 +1,14 @@
-#include<wh/memory.h>
-#include<wh/wolfhound.h>
-#include<wh/print.h>
-#include<wh/maths/core.h>
-#include<wh/convert.h>
-#include<wh/debug/logger.h>
-#include<wh/string.h>
+#include <wh/memory.h>
+#include <wh/wolfhound.h>
+#include <wh/print.h>
+#include <wh/maths/core.h>
+#include <wh/convert.h>
+#include <wh/debug/logger.h>
+#include <wh/string.h>
 
 // temp
-#include<string.h>
-#include<stdio.h>
+#include <wh-posix/string.h>
+#include <wh-posix/stdio.h>
 
 /* [MD] Example
  *

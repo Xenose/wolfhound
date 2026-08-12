@@ -1,4 +1,4 @@
-#include<math.h>
+#include<wh-posix/math.h>
 
 #include<wh/debug/exceptions.h>
 

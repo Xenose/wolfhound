@@ -1,21 +1,21 @@
-#include<wh-sys/file.h>
-#include<wh/loader/asset.h>
-#include<wh/print.h>
-#include<wh/debug/logger.h>
-#include<wh/lua/helpers.h>
-#include<wh/lua/api.h>
-#include<wh/string.h>
+#include <wh-sys/file.h>
+#include <wh/loader/asset.h>
+#include <wh/print.h>
+#include <wh/debug/logger.h>
+#include <wh/lua/helpers.h>
+#include <wh/lua/api.h>
+#include <wh/string.h>
 
-#include<wh/headers/lua.h>
+#include <wh/headers/lua.h>
 
-#include<wh-posix/errno.h>
-#include<wh-posix/fcntl.h>
-#include<wh-posix/string.h>
-#include<wh-posix/dirent.h>
-#include<wh-posix/sys/stat.h>
+#include <wh-posix/errno.h>
+#include <wh-posix/fcntl.h>
+#include <wh-posix/string.h>
+#include <wh-posix/dirent.h>
+#include <wh-posix/sys/stat.h>
 
 
-#include<wh-sys/filesystem.h>
+#include <wh-sys/filesystem.h>
 
 typedef struct {
 	struct_type stype;

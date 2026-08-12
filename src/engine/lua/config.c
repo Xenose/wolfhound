@@ -1,4 +1,4 @@
-#include<stdarg.h>
+#include<wh-posix/stdarg.h>
 
 #include<wh/headers/lua.h>
 #include<wh/lua/config.h>

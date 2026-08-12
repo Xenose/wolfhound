@@ -1,8 +1,8 @@
 #ifndef _wh_header_debug_benchmark_
 #define _wh_header_debug_benchmark_
 
-#include<wh-core/common.h>
-#include<wh-posix/time.h>
+#include <wh-core/common.h>
+#include <wh-posix/time.h>
 
 typedef struct {
     struct timespec time;

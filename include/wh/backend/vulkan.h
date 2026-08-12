@@ -1,7 +1,7 @@
 #ifndef _wh_header_vulkan_
 #define _wh_header_vulkan_
 
-#include<wh/wolfhound.h>
+#include <wh/wolfhound.h>
 
 typedef struct {
     wh_instance_s* instance;

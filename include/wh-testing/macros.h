@@ -1,7 +1,7 @@
 #ifndef _wh_header_testing_macros_
 #define _wh_header_testing_macros_
 
-#include<wh-core/common.h>
+#include <wh-core/common.h>
 
 typedef struct {
     i64 passed;

@@ -1,7 +1,7 @@
 #ifndef _wh_header_sys_memory_
 #define _wh_header_sys_memory_
 
-#include<wh-core/common.h>
+#include <wh-core/common.h>
 
 WH_C()
 

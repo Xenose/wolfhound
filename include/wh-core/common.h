@@ -1,7 +1,7 @@
 #ifndef _wh_header_common_
 #define _wh_header_common_
 
-#include<limits.h>
+#include<wh-posix/limits.h>
 
 #include<wh-core/types.h>
 #include<wh-core/prefix.h>
@@ -12,12 +12,9 @@
 WH_C()
 
 #include<wh-posix/stdint.h>
-#include<stddef.h>
-#include<stdbool.h>
-
-#if !(WH_SYSTEM&WH_SYS_WINDOWS)
-    #include<sys/types.h>
-#endif
+#include<wh-posix/stddef.h>
+#include<wh-posix/stdbool.h>
+#include<wh-posix/sys/types.h>
 
 
 /* [MD_DOC]

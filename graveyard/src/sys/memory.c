@@ -1,18 +1,18 @@
-#include<stdlib.h>
-#include<string.h>
+#include <wh-posix/stdlib.h>
+#include <wh-posix/string.h>
 
 
 // my stuff
-#include<wh/maths/core.h>
-#include<wh/maths/memory.h>
-#include<wh-posix/stdatomic.h>
-#include<wh-posix/unistd.h>
-#include<wh-sys/atomic_lock.h>
-#include<wh-sys/memory.h>
-#include<wh-sys/memreq.h>
-#include<wh/debug/logger.h>
-#include<wh/memory/arena.h>
-#include<wh/memory/freelist.h>
+#include <wh/maths/core.h>
+#include <wh/maths/memory.h>
+#include <wh-posix/stdatomic.h>
+#include <wh-posix/unistd.h>
+#include <wh-sys/atomic_lock.h>
+#include <wh-sys/memory.h>
+#include <wh-sys/memreq.h>
+#include <wh/debug/logger.h>
+#include <wh/memory/arena.h>
+#include <wh/memory/freelist.h>
 
 WH_DEPRECATED("DON'T USE THIS FUNCTION!")
 void* _wh_mem(_wh_mem_params params) {

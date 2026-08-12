@@ -1,4 +1,4 @@
-#include<stdio.h>
+#include<wh-posix/stdio.h>
 #include<wh/debug/benchmark.h>
 
 /* 

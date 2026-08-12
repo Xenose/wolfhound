@@ -1,8 +1,8 @@
 #ifndef _wh_header_data_dynamic_array
 #define _wh_header_data_dynamic_array
 
-#include<wh-core/common.h>
-#include<wh-types/memory.h>
+#include <wh-core/common.h>
+#include <wh-types/memory.h>
 
 typedef struct {
     struct_type stype;

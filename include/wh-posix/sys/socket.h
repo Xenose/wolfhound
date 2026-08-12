@@ -5,10 +5,10 @@
 #include<wh-posix/sys/types.h>
 
 #if (WH_SYSTEM&WH_SYS_POSIX)
-   #include<sys/socket.h>
+   #include<wh-posix/sys/socket.h>
 #else
-   #include<winsock2.h>
-   #include<ws2tcpip.h>
+   #include <wh-posix/winsock2.h>
+   #include <wh-posix/ws2tcpip.h>
 
    #if !(WH_SYSTEM&WH_SYS_WINDOWS)
       #define AF_UNIX         0xF000

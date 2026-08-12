@@ -1,19 +1,19 @@
 #ifndef _wh_headers_lua_
 #define _wh_headers_lua_
 
-#include<wh-core/common.h>
+#include <wh-core/common.h>
 
 WH_C()
 
 #if (WH_SYSTEM&WH_SYS_FREEBSD)
     // TODO remove hard coding of lua path in cmake
-    #include<lua54/lua.h>
-    #include<lua54/lualib.h>
-    #include<lua54/lauxlib.h>
+    #include <wh-posix/lua54/lua.h>
+    #include <wh-posix/lua54/lualib.h>
+    #include <wh-posix/lua54/lauxlib.h>
 #else
-    #include<lua.h>
-    #include<lualib.h>
-    #include<lauxlib.h>
+    #include <lua.h>
+    #include <lualib.h>
+    #include <lauxlib.h>
 #endif
 
 // Older versions don't have "is integer"
