@@ -7,7 +7,7 @@
 #include <wh-posix/sys/mman.h>
 
 void* _wh_sys_memreq(_wh_sys_memreq_params params) {
-    size_t page_size = (size_t)getpagesize();
+    size_t page_size = (size_t)sysconf(_SC_PAGESIZE);
     void* mem = mmap(
             nullptr, params.bytes, PROT_READ | PROT_WRITE, 
             MAP_SHARED | MAP_ANONYMOUS, -1, 0);

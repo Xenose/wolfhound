@@ -23,7 +23,7 @@ i64 _wnt_call_init(i64 call_id, ...) {
    i64 result = 0;
    va_list args;
    
-   u64 ebytes = getpagesize(); // TODO make sure 100 entires are possible
+   u64 ebytes = (u64)sysconf(_SC_PAGESIZE); // TODO make sure 100 entires are possible
    u64 ecount = ebytes / sizeof(_wnt_entry_s);
 
    _wnt.fds.entries = VirtualAlloc(

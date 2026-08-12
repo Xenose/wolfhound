@@ -7,7 +7,7 @@
 
 static i8 _wh_internal_sys_list_alloc_memreq(wh_list_s* out, u64 count) {
 	void* new_data = nullptr;
-	i64 pagesize = (i64)getpagesize();
+	i64 pagesize = (i64)sysconf(_SC_PAGESIZE);
 	u64 new_size = (u64)wh_align((i64)out->sysmem.size + pagesize, pagesize); 
 
 	union {

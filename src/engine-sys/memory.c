@@ -243,7 +243,7 @@ wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
     wh_heap_header_s* heap = nullptr;
     u64 old_bytes = params.bytes + sizeof(wh_heap_header_s);
 
-    params.bytes = (u64)wh_align((i64)(params.bytes + sizeof(wh_heap_header_s)), getpagesize());
+    params.bytes = (u64)wh_align((i64)(params.bytes + sizeof(wh_heap_header_s)), sysconf(_SC_PAGESIZE));
 
     wh_log_info(("requested [ $k ] giving [ $k ]"), old_bytes, params.bytes);
 
