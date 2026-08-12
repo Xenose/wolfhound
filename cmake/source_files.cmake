@@ -24,6 +24,7 @@ SET(C_SOURCES
     "src/engine-testing/unite.c"
 
     "src/engine-posix/dirent.c"
+    "src/engine-posix/libproc.c"
     "src/engine-posix/netdb.c"
     "src/engine-posix/signal.c"
     "src/engine-posix/string.c"

@@ -1,9 +1,9 @@
 #ifndef _wh_header_posix_libproc_
 #define _wh_header_posix_libproc_
 
-#include <wh-core/os.h>
-#include <wh-posix/signal.h>
-#include <wh-posix/sys/types.h>
+#include<wh-core/os.h>
+#include<wh-posix/signal.h>
+#include<wh-posix/sys/types.h>
 
 // Note : The name and semantics shift a bit from solaris,
 // so to reflect this change we named it proc_xxx in the
@@ -213,5 +213,6 @@
 
     /* Non-invasive, non-freezing information reader */
     int proc_read(pid_t pid, proc_status_t* status);
+    void proc_print(proc_status_t* status);
 
 #endif /* _wh_header_posix_libproc_ */

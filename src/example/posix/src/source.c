@@ -1,7 +1,8 @@
-#include <wh-posix/stdio.h>
-#include <wh-posix/fcntl.h>
-#include <wh-posix/stdlib.h>
-#include <wh-posix/unistd.h>
+#include<wh-posix/stdio.h>
+#include<wh-posix/fcntl.h>
+#include<wh-posix/stdlib.h>
+#include<wh-posix/unistd.h>
+#include<wh-posix/libproc.h>
 
 int main(int arc, char* const* arv) {
    int nb = 0;
@@ -16,6 +17,11 @@ int main(int arc, char* const* arv) {
    if (0 == close(fd)) {
       printf("Closed socket!\n");
    }
+
+   proc_status_t pstatus = { 0 };
+
+   proc_read(getpid(), &pstatus); 
+   proc_print(&pstatus);
 
    return 0;
 }

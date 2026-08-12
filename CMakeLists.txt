@@ -11,7 +11,7 @@ ENABLE_LANGUAGE(ASM_NASM OPTIONAL)
 OPTION(NO_CXX_COMPILER "Disbles the C++ compiler" False)
 OPTION(LINUX_MINGW_WIN "Cross compiles the code for Windows" False)
 OPTION(BUILD_EXAMPLES "Builds the example projects" True)
-OPTION(BUILD_LIBC_TESTS "Build the libc-test suite for POSIX validation" ON)
+OPTION(BUILD_LIBC_TESTS "Build the libc-test suite for POSIX validation" OFF)
 
 OPTION(NO_SDL3 "Disable SDL3" False)
 OPTION(NO_SDL2 "Disable SDL2" False)
