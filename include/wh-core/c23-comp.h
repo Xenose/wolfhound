@@ -33,8 +33,8 @@
  */
 #if (WH_SYSTEM&WH_SYS_MSVC)
     #define wh_thread __declspec(thread)
-// #elif (WH_SYSTEM&WH_SYS_TCC)
-//    #define wh_thread // TODO assert once we solve this...
+#elif (WH_SYSTEM&WH_SYS_TCC)
+    #define wh_thread // TODO assert once we solve this...
 #elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
     #define wh_thread _Thread_local
 #else

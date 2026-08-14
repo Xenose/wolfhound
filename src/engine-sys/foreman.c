@@ -1,6 +1,10 @@
-#include <wh-sys/foreman.h>
-#include <wh/debug/logger.h>
+#include<wh-posix/unistd.h>
+#include<wh-sys/foreman.h>
+#include<wh/debug/logger.h>
 
+
+void wh_worker() {
+}
 
 void wh_foreman_init(wh_instance_s* ins, wh_foreman_s* foreman) {
     if (0 == ins->config.foreman.worker.count) {
@@ -22,4 +26,6 @@ void wh_foreman_execute(wh_foreman_s* foreman) {
     for (u64 i = 0; i < worker_count; i++) {
         wh_log_debug(("Sending work to worker [ %i ]"), i);
     }
+
+    sleep(1);
 }

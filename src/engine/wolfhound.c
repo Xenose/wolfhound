@@ -118,6 +118,7 @@ go_loop:
     wh_event_pull(ins, &event);
 go_skip_event_pull:
     wh_render_clear(ins);
+    wh_foreman_execute(&ins->foreman);
 
     params.update(ins);
 
