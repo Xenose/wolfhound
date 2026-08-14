@@ -302,8 +302,7 @@ class builder_c:
         )
 
         for e in find_executable(f"{self.home}/build/{target}", ["CMakeFiles"]):
-            full_path = f"{self.home}/{e}"
-
+            full_path = e
             link_name = os.path.basename(e)
             link_name = link_name.replace(".EXE", "")
             link_name = f"build/bin/{link_name}-{p}-{self.compiler}-{a}-{self.build_system}"
