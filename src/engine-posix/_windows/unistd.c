@@ -28,16 +28,16 @@ int close(int fd) {
             break;
         case _WNT_ENTRY_SOCKET:
             if (SOCKET_ERROR == closesocket(entry.sock)) {
-                // TODO errno
+_wnt_call(_WNT_CALL_ERROR_2_ERRNO, _WNT_ERROR_TYPE_NORMAL, WSAGetLastError(), &errno);
             }
             break;
         default:
-            // TODO add errno
+            _wnt_call(_WNT_CALL_ERROR_2_ERRNO, _WNT_ERROR_TYPE_NORMAL, WSAGetLastError(), &errno);
             {}
     }
 
     if (0 != _wnt_call(_WNT_CALL_FD_DELETE, fd)) {
-        // TODO errno
+        _wnt_call(_WNT_CALL_ERROR_2_ERRNO, _WNT_ERROR_TYPE_NORMAL, GetLastError(), &errno);
     }
 
 go_skip:
@@ -64,12 +64,13 @@ int wnt_gethostname(char* name, size_t size) {
 
     if (SOCKET_ERROR == gethostname(name, _size)) {
         switch (WSAGetLastError()) {
-            case WSAEFAULT:				errno = EFAULT;			break;
-            case WSANOTINITIALISED:		errno = EPERM;				break;
-            case WSAENETDOWN:				errno = EPERM;				break;
-            case WSAEINPROGRESS:			errno = EPERM;				break;
-            default:							errno = EIO;				break;
+            case WSAEFAULT:             errno = EFAULT; break;
+            case WSANOTINITIALISED:     errno = EPERM;  break;
+            case WSAENETDOWN:           errno = EPERM;  break;
+            case WSAEINPROGRESS:        errno = EPERM;  break;
+            default:                    errno = EIO;    break;
         }
+
         goto go_error_exit;
     }
 
