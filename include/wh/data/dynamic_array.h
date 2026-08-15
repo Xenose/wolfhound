@@ -41,7 +41,8 @@ typedef struct {
 
 typedef struct {
     wh_darray_s* array;
-} _wh_darray_push_back_params;
+    i64 count;
+} _wh_darray_resize_params;
 
 typedef struct {
     wh_darray_s* array;
@@ -56,9 +57,11 @@ typedef struct {
 extern void _wh_darray_init(_wh_darray_init_params params);
 extern void* _wh_darry_get(_wh_darray_get_params params);
 extern void* _wh_darray_set(_wh_darray_set_params params);
+extern i8 _wh_darray_resize(_wh_darray_resize_params params);
 
 #define wh_darray_init(...) _wh_darray_init((_wh_darray_init_params){ __VA_ARGS__ })
 #define wh_darray_get(...)  _wh_darry_get((_wh_darray_get_params){ __VA_ARGS__ })
 #define wh_darray_set(...) _wh_darray_set((_wh_darray_set_params){ __VA_ARGS__ })
+#define wh_darray_resize(...) _wh_darray_resize((_wh_darray_resize_params){ __VA_ARGS__ })
 
 #endif /* _wh_header_data_dynamic_array_ */

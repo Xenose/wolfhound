@@ -48,7 +48,34 @@ void* _wh_darray_set_std(_wh_darray_set_params* params) {
     return data;
 }
 
-void _wh_darray_push_back_std(_wh_darray_push_back_params params) {
+i8 _wh_darray_resize_std(_wh_darray_resize_params* params) {
+    void* data = nullptr;
+    u64 count = (u64)(((i64)params->array->node_count) + params->count); // Allow resizing using negative numbers
+
+    data = calloc(count, params->array->type_size);
+
+    if (nullptr == data) {
+        wh_log_error(("Failed to expand array!"));
+        goto go_error_exit;
+    }
+
+    wh_log_debug(("Array resized from [ %u ] to [ %u ]"), params->array->node_count, count);
+
+    memcpy(
+            data, 
+            params->array->memory, 
+            params->array->type_size * count > params->array->node_count ? // preventing overflow risk
+                params->array->node_count : 
+                count
+    );
+
+    free(params->array->memory);
+    params->array->memory = data;
+    params->array->node_count = count;
+
+    return 0;
+go_error_exit:
+    return -1;
 }
 
 void _wh_darray_delete_std(_wh_darray_delete_param params) {

@@ -16,6 +16,8 @@ int main(int arc, char* const* arv) {
     
     value = wh_darray_set(&array, 10, WH_INT(10));
     wh_log_info(("Value is [ %i ]"), *value);
+
+    wh_darray_resize(&array, -10);
     
     value = wh_darray_get(&array, 10);
     wh_log_info(("Value is [ %i ]"), *value);
