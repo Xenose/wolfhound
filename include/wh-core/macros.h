@@ -20,19 +20,19 @@ WH_C()
 #define wh_ptr_offset(_ptr_, _x_) ((void*)&(((u8*)_ptr_)[_x_]))
 
 #ifndef __FILENAME__
-	#define __FILENAME__ __FILE__
+    #define __FILENAME__ __FILE__
 #endif
 
 // WH_EPF :: Empty Parameter Function
 #if !(WH_SYSTEM&WH_SYS_GCC)&&!(WH_SYSTEM&WH_SYS_MINGW)&&!(WH_SYSTEM&WH_SYS_MSVC)&&!(WH_SYSTEM&WH_SYS_TCC)
-	#define WH_EPF(x) \
-		_Pragma("GCC diagnostic push") \
-		_Pragma("GCC diagnostic ignored \"-Wmissing-field-initializers\"") \
-		x \
-		_Pragma("GCC diagnostic pop")
+    #define WH_EPF(x) \
+        _Pragma("GCC diagnostic push") \
+        _Pragma("GCC diagnostic ignored \"-Wmissing-field-initializers\"") \
+        x \
+        _Pragma("GCC diagnostic pop")
 #else
-	#define WH_EPF(x) \
-		x
+    #define WH_EPF(x) \
+        x
 #endif
 
 /* [MD_DOC]

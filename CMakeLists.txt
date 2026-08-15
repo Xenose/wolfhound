@@ -74,28 +74,28 @@ ADD_LIBRARY(${APP_NAME} STATIC ${ASM_SOURCE} ${F95_SOURCES} ${C_SOURCES} ${CXX_S
 TARGET_INCLUDE_DIRECTORIES(${APP_NAME} PUBLIC ${INCLUDE_PATHS})
 
 IF(WIN32)
-	TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE ws2_32)
+    TARGET_LINK_LIBRARIES(${APP_NAME} PRIVATE ws2_32)
 ENDIF()
 
 # ------------------------------------------------------------------------------------
 #   Compiler definition section
 # ------------------------------------------------------------------------------------
 IF(COMPILER_KEFIR)
-	MESSAGE(STATUS "Compiler set to Kefir")
+    MESSAGE(STATUS "Compiler set to Kefir")
 
-	# Manually forcing the ID here allows you to use $<C_COMPILER_ID:Kefir> later
-	SET(CMAKE_C_COMPILER_ID "Kefir" CACHE STRING "Compiler ID" FORCE)
-	TARGET_COMPILE_DEFINITIONS(${APP_NAME} PUBLIC __KEFIR__=1)
+    # Manually forcing the ID here allows you to use $<C_COMPILER_ID:Kefir> later
+    SET(CMAKE_C_COMPILER_ID "Kefir" CACHE STRING "Compiler ID" FORCE)
+    TARGET_COMPILE_DEFINITIONS(${APP_NAME} PUBLIC __KEFIR__=1)
 ENDIF()
 
 FOREACH(wh_def IN LISTS WH_DEFS)
-	MESSAGE("Defining ${wh_def}")
-	TARGET_COMPILE_DEFINITIONS(${APP_NAME} PUBLIC ${wh_def}=1)
+    MESSAGE("Defining ${wh_def}")
+    TARGET_COMPILE_DEFINITIONS(${APP_NAME} PUBLIC ${wh_def}=1)
 ENDFOREACH()
 
 IF(WH_INCLUDES)
-	MESSAGE(STATUS "Adding collected manual include directories: ${WH_INCLUDES}")
-	TARGET_INCLUDE_DIRECTORIES(${APP_NAME} PUBLIC ${WH_INCLUDES})
+    MESSAGE(STATUS "Adding collected manual include directories: ${WH_INCLUDES}")
+    TARGET_INCLUDE_DIRECTORIES(${APP_NAME} PUBLIC ${WH_INCLUDES})
 ENDIF()
 
 MESSAGE(STATUS "WH_LIBS = ${WH_LIBS}")
@@ -163,14 +163,15 @@ ENDIF()
 # -----------------------------------------------------------------------------
 IF (BUILD_EXAMPLES)
     ADD_SUBDIRECTORY(src/example/chess)
-    ADD_SUBDIRECTORY(src/example/lists)
-    ADD_SUBDIRECTORY(src/example/hashmaps)
+    ADD_SUBDIRECTORY(src/example/dynamic_array)
     ADD_SUBDIRECTORY(src/example/gameobject)
+    ADD_SUBDIRECTORY(src/example/hashmaps)
+    ADD_SUBDIRECTORY(src/example/lists)
     ADD_SUBDIRECTORY(src/example/memory)
     ADD_SUBDIRECTORY(src/example/posix)
     ADD_SUBDIRECTORY(src/example/print)
-    ADD_SUBDIRECTORY(src/example/socket_server)
     ADD_SUBDIRECTORY(src/example/socket_client)
+    ADD_SUBDIRECTORY(src/example/socket_server)
 
     # C++ examples
     IF (CXX_ENABLED)
