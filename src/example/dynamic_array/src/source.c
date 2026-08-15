@@ -8,6 +8,12 @@ void hash_foreach(void* value) {
     wh_log_debug(("--> %i"), *((int*)value));
 }
 
+void test_for_each(u64 index, void* data) {
+    int* value = data;
+    
+    wh_log_info(("Value is [ %i ]"), *value);
+}
+
 int main(int arc, char* const* arv) {
     int* value = nullptr;
     wh_darray_s array = { 0 };
@@ -21,6 +27,8 @@ int main(int arc, char* const* arv) {
     
     value = wh_darray_get(&array, 10);
     wh_log_info(("Value is [ %i ]"), *value);
+
+    wh_darray_for_each(&array, &test_for_each);
     
     return 0;
 }

@@ -81,5 +81,8 @@ go_error_exit:
 void _wh_darray_delete_std(_wh_darray_delete_param params) {
 }
 
-void _wh_darray_for_each_std(_wh_darray_for_each_params params) {
+void _wh_darray_for_each_std(_wh_darray_for_each_params* params) {
+    for (u64 i = 0; i < params->array->node_count; i++) {
+        params->loop(i, wh_ptr_offset(params->array->memory, params->array->type_size * i));
+    }
 }
