@@ -46,11 +46,11 @@ typedef struct {
 
 typedef struct {
 #ifdef WH_VULKAN_FOUND
-    struct_type			stype;
-    VkInstance			instance;
-    VkSurfaceKHR		surface;
-    VkPhysicalDevice	physical;
-    VkDevice				device;
+    struct_type         stype;
+    VkInstance          instance;
+    VkSurfaceKHR        surface;
+    VkPhysicalDevice    physical;
+    VkDevice            device;
 #else
     void* nothing_here;
 #endif

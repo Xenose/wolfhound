@@ -1,9 +1,10 @@
 #ifndef _wh_header_types_foreman_
 #define _wh_header_types_foreman_
 
-#include <wh-core/common.h>
-#include <wh-sys/atomic_lock.h>
-#include <wh-types/gameinfo.h>
+#include<wh-core/common.h>
+#include<wh-sys/atomic_lock.h>
+#include<wh-types/gameinfo.h>
+#include<wh/data/dynamic_array.h>
 
 typedef struct {
     struct_type stype;
@@ -22,17 +23,8 @@ typedef struct {
 
 typedef struct {
     struct_type stype;
-
-    // All the actions in the application.
-    struct {
-        u64 count;
-        wh_action_s* ptr;
-    } actions;
-
-    struct {
-        u64 count;
-        wh_worker_s* ptr;
-    } workers;
+    wh_darray_s workers;
+    wh_darray_s actions;
 } wh_foreman_s;
 
 #endif /* _wh_header_types_foreman_ */
