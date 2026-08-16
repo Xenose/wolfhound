@@ -7,25 +7,29 @@ void wh_worker() {
 }
 
 void wh_foreman_init(wh_instance_s* ins, wh_foreman_s* foreman) {
+    _wh_darray_init_params d_params = {
+        .stype = 0,
+        .array = &foreman->workers,
+        .type_size = sizeof(wh_worker_s),
+    };
+
     if (0 == ins->config.foreman.worker.count) {
-        foreman->workers.count = 4;
+        d_params.count = 4;
     } else {
-        foreman->workers.count = ins->config.foreman.worker.count;
+        d_params.count = ins->config.foreman.worker.count;
     }
 
-    wh_log_debug(("Foreman reporting for duty! Worker count [ %i ]"), ins->config.foreman.worker.count);
+    wh_log_debug(("Foreman reporting for duty! Worker count [ %i ]"), d_params.count);
+}
+
+void worker_loop(u64 index, void* data) {
+    wh_log_debug(("Sending work to worker [ %i ]"), index);
 }
 
 // Idea foreman assigns work to the worker queue,
 // and the pointer back tells the foreman when the
 // worker was done with the work.
 void wh_foreman_execute(wh_foreman_s* foreman) {
-    u64 worker_count = foreman->workers.count;
-    wh_worker_s* workers = foreman->workers.ptr;
-
-    for (u64 i = 0; i < worker_count; i++) {
-        wh_log_debug(("Sending work to worker [ %i ]"), i);
-    }
-
+    wh_darray_for_each(&foreman->workers);
     sleep(1);
 }
