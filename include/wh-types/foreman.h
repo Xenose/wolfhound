@@ -23,8 +23,9 @@ typedef struct {
 
 typedef struct {
     struct_type stype;
-    wh_darray_s workers;
-    wh_darray_s actions;
+
+    wh_darray_s workers;    // threads/workers
+    wh_darray_s queue;      // tasks for the workers
 } wh_foreman_s;
 
 #endif /* _wh_header_types_foreman_ */
