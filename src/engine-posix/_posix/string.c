@@ -20,7 +20,7 @@ int strncpy_s(char* restrict dst, size_t dst_size, const char* restrict src, siz
         goto go_error_exit;
     }
 
-    if (WH_TRUNCATE == src_size) {
+    if (_TRUNCATE == src_size) {
         src_size = strnlen(src, dst_size - 1);
         error = STRUNCATE;
     } else if (0 == src_size) {

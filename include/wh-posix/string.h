@@ -6,11 +6,8 @@
 #include<string.h>
 
 #if (WH_SYSTEM&WH_SYS_WINDOWS)
-
-#define WH_TRUNCATE _TRUNCATE
-
-extern char* stpncpy(char* restrict dst, const char* restrict src, size_t length);
-extern char* stpcpy(char* restrict dst, const char* restrict src);
+    extern char* stpncpy(char* restrict dst, const char* restrict src, size_t length);
+    extern char* stpcpy(char* restrict dst, const char* restrict src);
 
     /* [MD_DOC]
      *
@@ -32,10 +29,8 @@ extern char* stpcpy(char* restrict dst, const char* restrict src);
     extern void* memccpy(void* restrict dst, const void* restrict src, int c, size_t n);
 #else
 
-#define WH_TRUNCATE (size_t)(-1)
-
-extern int strncpy_s(char* restrict dst, size_t dst_size, const char* restrict src, size_t src_size);
-
+    #define _TRUNCATE (size_t)(-1)
+    extern int strncpy_s(char* restrict dst, size_t dst_size, const char* restrict src, size_t src_size);
 #endif
 
 #ifndef WH_SHOTGUN_FOOT_OH_YEA

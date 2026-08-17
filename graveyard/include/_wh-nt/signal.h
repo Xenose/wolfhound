@@ -1,4 +1,4 @@
-#ifndef _wnt_header_siganl_
+#ifndef _wnt_header_signal_
 #define _wnt_header_signal_
 
 typedef struct {
