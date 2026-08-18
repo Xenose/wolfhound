@@ -6,7 +6,7 @@
 #include<wh-posix/unistd.h>
 
 // Same file just sorted
-#include"_unistd.d/_unistd_thread.c"
+#include"_unistd.d/thread.c"
 
 int close(int fd) {
     _wnt_entry_s entry = { 0 };
