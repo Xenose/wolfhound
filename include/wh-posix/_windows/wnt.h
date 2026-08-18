@@ -6,6 +6,13 @@
 #include <wh-posix/_windows/windows.h>
 #include <wh-core/common.h>
 
+// Dummy values for lsp server
+#if !(WH_SYSTEM&WH_SYS_WINDOWS)
+    #include"_dummy.h"
+#endif
+
+#define WNT_INVALID_PID ((pid_t)LLONG_MAX)
+
 enum {
    _WNT_ENTRY_FREE,
    _WNT_ENTRY_HANDLE,

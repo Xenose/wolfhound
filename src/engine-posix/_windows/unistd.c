@@ -248,9 +248,7 @@ go_error_exit:
     return -1;
 }
 
-pid_t gettid(void) {
-    return (pid_t)GetCurrentThreadId();
-}
+
 
 
 ssize_t read(int fd, void* buffer, size_t count) {

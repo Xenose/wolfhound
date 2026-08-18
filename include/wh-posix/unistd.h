@@ -73,6 +73,11 @@
 
     extern int wnt_gethostname(char* buffer, size_t size);
 
+    // Threading related
+    extern pid_t gettid(void);
+    extern pid_t getpid(void);
+    extern pid_t getppid(void);
+
     extern int access(const char *path, int amode);
     extern int close(int fd);
     extern int dup(int oldfd);
@@ -81,7 +86,6 @@
     extern int usleep(useconds_t usec);
     extern long sysconf(int name);
     extern off_t lseek(int fd, off_t offset, int whence);
-    extern pid_t gettid(void);
 
     extern ssize_t read(int fd, void* buffer, size_t count);
     extern ssize_t write(int fd, const void* buffer, size_t count);
