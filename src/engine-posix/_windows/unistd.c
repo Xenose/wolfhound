@@ -5,6 +5,9 @@
 #define _WNT_RAW
 #include<wh-posix/unistd.h>
 
+// Same file just sorted
+#include"_unistd.d/_unistd_thread.c"
+
 int close(int fd) {
     _wnt_entry_s entry = { 0 };
 
