@@ -12,6 +12,7 @@ void* _wh_tracker_destructor(wh_hashmap_destructor_s* entry);
 
 typedef struct {
     void* ptr;
+    wh_heap_header_s* heap;
     void** owners;
     u64 owner_count;
     u64 line;
@@ -26,7 +27,7 @@ static wh_hashmap_s _map = {
     .destructor = _wh_tracker_destructor,
 
     .type_size = sizeof(_wh_heap_ptr_pair_s),
-    .resize_size = 8096,
+    .resize_size = 8096, // TODO improve this : Normal pagesize 
 };
 
 void* _wh_tracker_destructor(wh_hashmap_destructor_s* entry) {
@@ -77,6 +78,7 @@ go_skip:
 
         _wh_heap_ptr_pair_s tmp = {
             .ptr = ptr,
+            .heap = heap,
             .owners = malloc(sizeof(void*)),
             .owner_count = 1,
             .line = line,
@@ -87,10 +89,10 @@ go_skip:
             wh_log_critical(("Failed to allocate owner ptr memory"));
         } else {
             tmp.owners[0] = owner;
+            wh_hashmap_insert(&_map, ptr, &tmp);
+            entry = wh_hashmap_get(&_map, ptr);
         }
 
-        wh_hashmap_insert(&_map, ptr, &tmp);
-        entry = wh_hashmap_get(&_map, ptr);
     } else {
         entry = wh_hashmap_get(&_map, ptr);
 
@@ -106,8 +108,6 @@ go_skip:
 
         ++entry->owner_count;
     }
-
-    wh_log_debug(("inserted new node!"));
 }
 
 void _wh_tracker_remove(void* owner, void* ptr) {
@@ -151,8 +151,8 @@ void _wh_mem_scan_for_each(void* node) {
 
     wh_for(u64, i, entry->owner_count) {
         wh_try {
-            if (entry->owners[i] != entry->ptr) {
-                //wh_log_warning(("Owner change! ptr [ %u ] != owner [ %u ] in file:line [ %s:%u ]"), current->owners[i].owner, current->ptr, current->owners[i].file, current->owners[i].line);
+            if (*((void**)entry->owners[i]) != entry->ptr) {
+                wh_log_warning(("Owner change! ptr [ %p ] != owner [ %p ] in file:line [ %s:%u ]"), entry->owners[i], entry->ptr, entry->file, entry->line);
                 clean_up = true;
             }
         } wh_catch(ex) {
@@ -161,16 +161,30 @@ void _wh_mem_scan_for_each(void* node) {
         }
 
         if (clean_up) {
-            wh_log_error(("Found a loss end pointer, clean up your mess!"));
-            --entry->owner_count;
-            entry->owners[i] = entry->owners[entry->owner_count];
+            wh_log_error(("Found a loss end pointer, clean up your mess! [ owner : %p, line : %i, file : %s ]"), 
+                    entry->owners[i], entry->line, entry->file);
+
+            if (0 == --entry->owner_count) {
+                entry->owners[i] = nullptr;
+            } else {
+                entry->owners[i] = entry->owners[entry->owner_count];
+            }
         }
     }
 
     if (0 == entry->owner_count) {
-        wh_log_error(("LEAK FOUND! freeing... ptr : [ %p ]"), entry->ptr);
+        switch (entry->heap->stype) {
+            default:
+                wh_log_error(("Owners are zero LEAK FOUND! freeing the pointer... ptr : [ %p ]"), entry->ptr);
+                wh_free(entry->heap, entry->ptr, nullptr);
+                break;
+
+            case WH_STRUCT_TYPE_HEAP_ARENA:
+                wh_log_error(("Leak detected in Arena allocator, cannot automatically free : [ %p ]"), entry->ptr);
+                break;
+        }
+
         wh_hashmap_delete(&_map, entry->ptr);
-        //wh_free(->heap, current->ptr, nullptr);
     }
 }
 

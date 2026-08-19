@@ -35,6 +35,10 @@ void key_escape(wh_event_s* e) {
     wh_log_info(("Hello!"));
 }
 
+void test_tracker() {
+    void* test = wh_alloc(nullptr, 16, &test);
+}
+
 int main(int arc, char* const* arv) {
     char buf[256] = { 0 };
     wh_instance_s* ins = { 0 };
@@ -51,6 +55,9 @@ int main(int arc, char* const* arv) {
         .mode_graphics = WH_GRAPHICS_MODE_SDL3,
         .config_path = (wh_string_s){ .str = buf, 0 },      // application config
     );
+
+    test_tracker();
+    _wh_mem_scan();
 
     // Setting the limits of Actions and Entities
     wh_action_init(ins, 100);
@@ -71,7 +78,9 @@ int main(int arc, char* const* arv) {
 
     _wh_event_subscribe(41, &key_escape);
 
-    wh_loop(ins, &update, &fixed_update);
+    //wh_loop(ins, &update, &fixed_update);
 
+    // Needs a better public api or background thread.
+    _wh_mem_scan();
     return 0;
 }

@@ -96,7 +96,7 @@ go_error_exit:
  */
 void _wh_loop(_wh_loop_params params) {
     wh_instance_s* ins = params.instance;
-    wh_graphics_s*	grap = &ins->graphics;
+    wh_graphics_s* grap = &ins->graphics;
 
     wh_event_s event = { 0 };
 

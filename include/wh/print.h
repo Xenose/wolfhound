@@ -6,8 +6,8 @@
 
 WH_C()
 
-#define WH_PRINT_NO_FLUSH			0x0001
-#define WH_PRINT_ADD_NEW_LINE		0x0002
+#define WH_PRINT_NO_FLUSH       0x0001
+#define WH_PRINT_ADD_NEW_LINE   0x0002
 
 typedef struct {
     u64 left;       // %XX
@@ -20,9 +20,9 @@ typedef struct {
         u8 zero_pad         : 1;    // 0
         u8 space_pad        : 1;    // ' '
         u8 force_sign       : 1;    // +
-        u8 thousnad_group   : 1;    // '
+        u8 thousand_group   : 1;    // '
         u8 long_value       : 1;    // l
-        u8 llong_value      : 1;    // l
+        u8 llong_value      : 1;    // ll
     } flags;
 } wh_print_format_s;
 
@@ -69,12 +69,12 @@ extern void _wh_print_add_func(_wh_print_add_func_params params);
  * wh_print((const char* format, i64 fd : optional, char* buffer : optional, u64 buffer_length : optional, u64 offset : optional, u64 flags : optional), ...)
  * ```
  *
- * @d_param(const char*)	format			: The formatted string used for printing.
- * @d_opt(i64)					fd					: The file descriptor for output(defaults yo 1).
- * @d_opt(char*)				buffer			: Optional output buffer.
- * @d_opt(u64)					buffer_length	: Size of the output buffer.
- * @d_opt(u64)					offset			: Offset into buffer to start writing.
- * @d_opt(u64)					flags				: Print control flags (e.g. WH_PRINT_NO_FLUSH).
+ * @d_param(const char*)    format          : The formatted string used for printing.
+ * @d_opt(i64)              fd              : The file descriptor for output(defaults to 1).
+ * @d_opt(char*)            buffer          : Optional output buffer.
+ * @d_opt(u64)              buffer_length   : Size of the output buffer.
+ * @d_opt(u64)              offset          : Offset into buffer to start writing.
+ * @d_opt(u64)              flags           : Print control flags (e.g. WH_PRINT_NO_FLUSH).
  *
  * ## Formats
  * | Trigger | Standard from | Input            | Currently Implemented | Description                                                           |
@@ -88,7 +88,7 @@ extern void _wh_print_add_func(_wh_print_add_func_params params);
  * | $n      | Wolfhound     | Errno            | YES                   |                                                                       |
  * | $m      | Wolfhound     | Memory, Length   | YES                   | Takes a pointer to memory and its length printing it in hex.          |
  * | $s      | Wolfhound     | String, Length   | NO                    | Prints a string using the provided length.                            |
- * | $t      | Wolfhound     | Format String    | NO                    | Reads the inputted string and print the formatted time.               |
+ * | $t      | Wolfhound     | Format String    | YES                   | Reads the inputted string and print the formatted time.               |
  * | $v      | Wolfhound     | VK_Result        | YES                   | Takes the status code and prints in human readable format.            |
  * | %a      | C ANSI        | double           | YES(tmp sprintf)      |                                                                       |
  * | %A      | C ANSI        | double           | YES(tmp sprintf)      |                                                                       |
@@ -131,7 +131,7 @@ extern void _wh_print_add_func(_wh_print_add_func_params params);
 
 #endif /* USE_NAMESPACE_WOLFHOUND */ 
 
-#endif /* __cplusplus */
+#endif /* not __cplusplus */
 
 WH_C_END()
 #endif /* _wh_header_print_ */
