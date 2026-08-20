@@ -42,9 +42,9 @@ bool _wh_track_search(void* entry_in, void* ptr_in) {
     return false;
 }
 
-void _wh_tracker_add(void* owner, void* ptr, _wh_heap_ptr_pair_s* entry) {
+void _wh_tracker_add(void* owner, void* ptr, _wh_heap_ptr_pair_s* entry, u64 line, const char* file) {
     _wh_heap_ptr_pair_s* e = entry;
-    void** tmp = nullptr;
+    _wh_owner_s* tmp = nullptr;
     size_t bytes = 0;
 
     if (nullptr == e) {
@@ -56,19 +56,21 @@ void _wh_tracker_add(void* owner, void* ptr, _wh_heap_ptr_pair_s* entry) {
         }
     }
 
-    bytes = sizeof(void*) * (e->owner_count + 1);
+    bytes = sizeof(_wh_owner_s) * (e->owner_count + 1);
     tmp = realloc(e->owners, bytes);
-    wh_log_debug(("The owner count is %u : %u : %p"), e, bytes, tmp);
 
     if (nullptr == tmp) {
         wh_log_critical(("Failed to allocate owner ptr memory"));
     } else {
         e->owners = tmp;
-        e->owners[e->owner_count] = owner;
+        e->owners[e->owner_count] = (_wh_owner_s) {
+            .ptr = owner,
+            .line = line,
+            .file = file,
+        };
+
         e->owner_count += 1;
     }
-
-    wh_log_debug(("Owner added!"));
 }
 
 /*
@@ -100,22 +102,25 @@ go_skip:
         _wh_heap_ptr_pair_s tmp = {
             .ptr = ptr,
             .heap = heap,
-            .owners = malloc(sizeof(void*)),
+            .owners = malloc(sizeof(_wh_owner_s)),
             .owner_count = 1,
-            .line = line,
-            .file = file,
         };
 
         if (nullptr == tmp.owners) {
             wh_log_critical(("Failed to allocate owner ptr memory"));
         } else {
-            tmp.owners[0] = owner;
+
+            tmp.owners[0] = (_wh_owner_s){
+                .ptr = owner,
+                .line = line,
+                .file = file,
+            };
+
             wh_hashmap_insert(&_map, ptr, &tmp);
-            entry = wh_hashmap_get(&_map, ptr);
         }
 
     } else {
-      _wh_tracker_add(owner, ptr, entry);  
+      _wh_tracker_add(owner, ptr, entry, line, file);  
     }
 }
 
@@ -140,9 +145,9 @@ void _wh_tracker_remove(void* owner, void* ptr) {
         wh_log_debug(("The owner count is %u"), entry->owner_count);
 
         wh_for(u64, i, entry->owner_count) {
-            if (owner == entry->owners[i]) {
+            if (owner == entry->owners[i].ptr) {
                 --entry->owner_count;
-                entry->owners[i] = entry->owners[entry->owner_count];
+                entry->owners[i].ptr = entry->owners[entry->owner_count].ptr;
                 break;
             }
         }
@@ -162,8 +167,9 @@ void _wh_mem_scan_for_each(void* node) {
         wh_log_info(("Checking owner [ %p ]"), entry->owners[i]);
 
         wh_try {
-            if (*((void**)entry->owners[i]) != entry->ptr) {
-                wh_log_warning(("Owner change! ptr [ %p ] != owner [ %p ] in file:line [ %s:%u ]"), entry->owners[i], entry->ptr, entry->file, entry->line);
+            if (*entry->owners[i].ptr != entry->ptr) {
+                wh_log_warning(("Owner change! ptr [ %p ] != owner [ %p ] in file:line [ %s:%u ]"),
+                        entry->owners[i].ptr, entry->ptr, entry->owners[i].file, entry->owners[i].line);
                 clean_up = true;
             }
         } wh_catch(ex) {
@@ -173,12 +179,12 @@ void _wh_mem_scan_for_each(void* node) {
 
         if (clean_up) {
             wh_log_error(("Found a loss end pointer, clean up your mess! [ owner : %p, line : %i, file : %s ]"), 
-                    entry->owners[i], entry->line, entry->file);
+                    entry->owners[i].ptr, entry->owners[i].line, entry->owners[i].file);
 
             if (0 == --entry->owner_count) {
-                entry->owners[i] = nullptr;
+                entry->owners[i].ptr = nullptr;
             } else {
-                entry->owners[i] = entry->owners[entry->owner_count];
+                entry->owners[i].ptr = entry->owners[entry->owner_count].ptr;
             }
         }
     }

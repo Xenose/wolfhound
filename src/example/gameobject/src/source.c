@@ -36,8 +36,9 @@ void key_escape(wh_event_s* e) {
 }
 
 void* test_tracker() {
-    void* test = wh_alloc(nullptr, 16, &test);
-    return test;
+    void* test1 = wh_alloc(nullptr, 16, &test1);
+    void* test2 = wh_own(test1, &test2);
+    return test1;
 }
 
 int main(int arc, char* const* arv) {

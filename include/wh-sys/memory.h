@@ -21,7 +21,7 @@ extern void* (*_wh_alloc)(_wh_mem_alloc_params params);
 extern void* (*_wh_realloc)(_wh_mem_realloc_params params);
 
 extern void  (*_wh_free)(_wh_mem_free_params params);
-extern void (*_wh_disown)(_wh_mem_free_params params);
+extern void* (*_wh_disown)(_wh_mem_free_params params);
 extern void* (*_wh_own)(_wh_own_params params);
 
 // General functions
@@ -74,7 +74,8 @@ extern i32 wh_mem_leak_count(void);
  */
 #define wh_free(...)    WH_EPF(_wh_free((_wh_mem_free_params) { __VA_ARGS__ }))
 #define wh_disown(...)  WH_EPF(_wh_disown((_wh_mem_free_params) { __VA_ARGS__ }))
-#define wh_own(...)     WH_EPF(_wh_own((_wh_own_params) { __VA_ARGS__ }))
+#define wh_own(...)     WH_EPF(_wh_own((_wh_own_params) { __VA_ARGS__ , .line = __LINE__, .file = __FILENAME__ }))
+#define wh_inherit(ptr, old, new) wh_own(wh_disown(old), new)
 
 
 /* [MD_DOC]

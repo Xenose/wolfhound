@@ -26,7 +26,7 @@ static wh_hashmap_s _map = {
     .resize_size = 4096,
 };
 
-void _wh_disown_no_tracking(_wh_mem_free_params params) {}
+void* _wh_disown_no_tracking(_wh_mem_free_params params) {}
 void* _wh_own_no_tracking(_wh_mem_alloc_params params) {}
 // the global main heap
 static wh_heap_header_s* _heap_main;
@@ -35,7 +35,7 @@ void* _wh_alloc_tracking(_wh_mem_alloc_params params);
 void* _wh_realloc_tracking(_wh_mem_realloc_params params);
 
 void _wh_free_tracking(_wh_mem_free_params params);
-void _wh_disown_tracking(_wh_mem_free_params params);
+void* _wh_disown_tracking(_wh_mem_free_params params);
 void* _wh_own_tracking(_wh_own_params params);
 
 void* (*_wh_alloc)(_wh_mem_alloc_params params) = &_wh_alloc_tracking;
@@ -44,7 +44,7 @@ void* (*_wh_realloc)(_wh_mem_realloc_params params) = &_wh_realloc_tracking;
 void  (*_wh_free)(_wh_mem_free_params params) = &_wh_free_tracking;
 
 // ownership handling
-void (*_wh_disown)(_wh_mem_free_params params) = &_wh_disown_tracking;
+void* (*_wh_disown)(_wh_mem_free_params params) = &_wh_disown_tracking;
 void* (*_wh_own)(_wh_own_params params) = &_wh_own_tracking;
 
 /*
@@ -184,13 +184,14 @@ go_error_exit:
     return out;
 }
 
-void _wh_disown_tracking(_wh_mem_free_params params) {
+void* _wh_disown_tracking(_wh_mem_free_params params) {
     if (nullptr == params.owner || nullptr == params.ptr) {
         wh_log_notice(("Cannot disown a nullptr"));
-        return;
+        return params.ptr;
     }
 
     _wh_tracker_remove(params.owner, params.ptr);
+    return params.ptr;
 }
 
 void* _wh_own_tracking(_wh_own_params params) {
@@ -199,7 +200,7 @@ void* _wh_own_tracking(_wh_own_params params) {
         return params.ptr;
     }
 
-    _wh_tracker_add(params.owner, params.ptr, nullptr);
+    _wh_tracker_add(params.owner, params.ptr, nullptr, params.line, params.file);
     return params.ptr;
 }
 

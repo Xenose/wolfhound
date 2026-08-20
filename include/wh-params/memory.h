@@ -25,6 +25,8 @@ typedef struct {
 typedef struct {
     void* ptr;
     void* owner;
+    u64 line;
+    const char* file;
 } _wh_own_params;
 
 typedef struct {
