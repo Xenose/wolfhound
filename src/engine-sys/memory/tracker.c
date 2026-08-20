@@ -43,23 +43,32 @@ bool _wh_track_search(void* entry_in, void* ptr_in) {
 }
 
 void _wh_tracker_add(void* owner, void* ptr, _wh_heap_ptr_pair_s* entry) {
-    _wh_heap_ptr_pair_s* e = nullptr;
+    _wh_heap_ptr_pair_s* e = entry;
     void** tmp = nullptr;
+    size_t bytes = 0;
 
     if (nullptr == e) {
-        entry = wh_hashmap_get(&_map, ptr);
+        e = wh_hashmap_get(&_map, ptr);
+
+        if (nullptr == e) {
+            wh_log_error(("Failed to get ptr!"));
+            return;
+        }
     }
 
-    tmp = realloc(e->owners, sizeof(void*) * (e->owner_count + 1));
-    wh_log_debug(("The owner count is %u"), e->owner_count);
+    bytes = sizeof(void*) * (e->owner_count + 1);
+    tmp = realloc(e->owners, bytes);
+    wh_log_debug(("The owner count is %u : %u : %p"), e, bytes, tmp);
 
     if (nullptr == tmp) {
         wh_log_critical(("Failed to allocate owner ptr memory"));
     } else {
         e->owners = tmp;
-        e->owners[entry->owner_count] = owner;
-        ++e->owner_count;
+        e->owners[e->owner_count] = owner;
+        e->owner_count += 1;
     }
+
+    wh_log_debug(("Owner added!"));
 }
 
 /*
@@ -150,6 +159,8 @@ void _wh_mem_scan_for_each(void* node) {
     _wh_heap_ptr_pair_s* entry = node;
 
     wh_for(u64, i, entry->owner_count) {
+        wh_log_info(("Checking owner [ %p ]"), entry->owners[i]);
+
         wh_try {
             if (*((void**)entry->owners[i]) != entry->ptr) {
                 wh_log_warning(("Owner change! ptr [ %p ] != owner [ %p ] in file:line [ %s:%u ]"), entry->owners[i], entry->ptr, entry->file, entry->line);
@@ -190,6 +201,7 @@ void _wh_mem_scan_for_each(void* node) {
 
 i64 _wh_mem_scan(void) {
     i64 count = 0;
+    wh_log_info(("Scanning for owners of memory!"));
     _wh_hashmap_foreach(&_map, &_wh_mem_scan_for_each);
     return count;
 }

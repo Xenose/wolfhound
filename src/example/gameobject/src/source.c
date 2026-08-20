@@ -59,6 +59,7 @@ int main(int arc, char* const* arv) {
         .config_path = (wh_string_s){ .str = buf, 0 },      // application config
     );
 
+    _wh_mem_scan();
     void* t1 = wh_own(test_tracker(), &t1);
     _wh_mem_scan();
 
