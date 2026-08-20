@@ -39,6 +39,14 @@ static void _wh_print_format(wh_print_data_s* data, va_list list);
 // =======================================================================================================
 // private function start
 // =======================================================================================================
+
+void _wh_print_add_func(_wh_print_add_func_params params) {
+    wh_hashmap_insert(&_map, (void*)params.key,  (void*)params.func);
+}
+
+// =======================================================================================================
+// private formatting function start
+// =======================================================================================================
 static void _wh_print_call_func(wh_print_data_s* data, void* ptr, char* key_start, char* key_end) {
     i64 (*func)(wh_print_data_s* data, void* ptr) = (i64(*)(wh_print_data_s*, void*))wh_hashmap_get(&_map, key_start);
 
@@ -49,14 +57,8 @@ static void _wh_print_call_func(wh_print_data_s* data, void* ptr, char* key_star
     data->format = key_end + 2;
 }
 
-void _wh_print_add_func(_wh_print_add_func_params params) {
-    wh_hashmap_insert(&_map, (void*)params.key,  (void*)params.func);
-}
-
 static void _wh_print_cpychar(wh_print_data_s* d, char c) {
-    i64 written = wh_print_buffer_check(d, 1);
-
-    if (-1 == written) {
+    if (-1 == wh_print_buffer_check(d, 1)) {
         return;
     }
 
@@ -68,17 +70,21 @@ static void _wh_print_cpychar(wh_print_data_s* d, char c) {
 // TODO replace with something faster.
 static void _wh_print_fstr_slow(wh_print_data_s* d, char type, double value) {
     char out[64];
+    char* format = "%.*f";
     int precision = d->print_format.flags.length_set ? (int)d->print_format.right : 6;
     int length = 0;
 
-    if (type == 'e' || type == 'E' || type == 'g' || type == 'G') {
-        length = snprintf(out, sizeof(out), type == 'e' ? "%.*e" : 
-                type == 'E' ? "%.*E" : 
-                type == 'g' ? "%.*g" : 
-                "%.*G", precision, value);
-    } else {
-        length = snprintf(out, sizeof(out), "%.*f", precision, value);
+                //case 'a': case 'A': case 'e': case 'E': case 'f': case 'F': case 'g': case 'G':
+    switch (type) {
+        case 'a': format = "%.*a"; break;
+        case 'A': format = "%.*A"; break;
+        case 'e': format = "%.*e"; break;
+        case 'E': format = "%.*E"; break;
+        case 'g': format = "%.*g"; break;
+        case 'G': format = "%.*G"; break;
     }
+    
+    length = snprintf(out, sizeof(out), format, precision, value);
 
     if (length < 0 || length >= (int)sizeof(out)) {
         return;
@@ -94,7 +100,6 @@ static void _wh_print_fstr_slow(wh_print_data_s* d, char type, double value) {
 }
 
 static void _wh_print_cpystr(wh_print_data_s* d, char* tmp, i64 length) {
-    i64 written = 0;
     i64 padding = 0;
 
     if (nullptr == tmp) {
@@ -110,7 +115,7 @@ static void _wh_print_cpystr(wh_print_data_s* d, char* tmp, i64 length) {
 
     padding = (i64)d->print_format.left > length ? (i64)d->print_format.left - length : 0;
 
-    if (-1 == (written = wh_print_buffer_check(d, (u64)(length + padding)))) {
+    if (-1 == wh_print_buffer_check(d, (u64)(length + padding))) {
         goto go_error_exit;
     }
 
@@ -142,13 +147,11 @@ go_error_exit:
     ++d->format;
 }
 
+
 static void _wh_print_uint(wh_print_data_s* d, u64 value, u64 base) {
-    i64 written = 0;
     u64 length = wh_uintpos(value, base) + (0 > value ? 2 : 1);
 
-    written = wh_print_buffer_check(d, length);
-
-    if (-1 == written) {
+    if (-1 == wh_print_buffer_check(d, length)) {
         return;
     }
 
@@ -157,10 +160,32 @@ static void _wh_print_uint(wh_print_data_s* d, u64 value, u64 base) {
     ++d->format;
 }
 
+static void _wh_print_int(wh_print_data_s* d, i64 value, i64 base) {
+    i64 length = wh_intpos(value, base) + (0 > value ? 2 : 1);
+
+    if (-1 == wh_print_buffer_check(d, (u64)length)) {
+        return;
+    }
+
+    wh_int2str(value, d->buffer, (u64)length, (u64)base);
+    d->buffer += length;
+    ++d->format;
+}
+
+static void _wh_print_int128(wh_print_data_s* d, i128 value, i64 base) {
+    i128 length = wh_intpos128(value, base) + (0 > value ? 2 : 1);
+
+    if (-1 == wh_print_buffer_check(d, (u64)length)) {
+        return;
+    }
+
+    wh_int2str(value, d->buffer, (u64)length, (u64)base);
+    d->buffer += length;
+    ++d->format;
+}
+
 static void _wh_print_int_bytes(wh_print_data_s* d, i64 value, i64 base) {
     const char* end = "B";
-    i64 written = 0;
-    i64 length = 0;
 
     if (value >= WH_1GB) {
         end = "GB";
@@ -173,80 +198,38 @@ static void _wh_print_int_bytes(wh_print_data_s* d, i64 value, i64 base) {
         value /= WH_1KB;
     }
 
-    length = wh_intpos(value, base) + (0 > value ? 2 : 1);
-    written = wh_print_buffer_check(d, (u64)length + 2);
-
-    if (-1 == written) {
-        return;
-    }
-
-    wh_int2str(value, d->buffer, (u64)length, (u64)base);
-    d->buffer += length;
+    _wh_print_int(d, value, base);
     d->buffer += stpcpy(d->buffer, end) - d->buffer;
     ++d->format;
 }
 
-static void _wh_print_int(wh_print_data_s* d, i64 value, i64 base) {
-    i64 written = 0;
-    i64 length = wh_intpos(value, base) + (0 > value ? 2 : 1);
-
-    written = wh_print_buffer_check(d, (u64)length);
-
-    if (-1 == written) {
-        return;
-    }
-
-    wh_int2str(value, d->buffer, (u64)length, (u64)base);
-    d->buffer += length;
-    ++d->format;
-}
-
-static void _wh_print_int128(wh_print_data_s* d, i128 value, i64 base) {
-    i64 written = 0;
-    i128 length = wh_intpos128(value, base) + (0 > value ? 2 : 1);
-
-    written = wh_print_buffer_check(d, (u64)length);
-
-    if (-1 == written) {
-        return;
-    }
-
-    wh_int2str(value, d->buffer, (u64)length, (u64)base);
-    d->buffer += length;
-    ++d->format;
-}
-
 static void _wh_print_memory(wh_print_data_s* data, u8* ptr, int bytes) {
-    i64 written = 0;
     i64 length = 0;
 
-    written = wh_print_buffer_check(data, (u64)bytes * 3);
+    if (-1 == wh_print_buffer_check(data, (u64)bytes * 4)) {
+        return;
+    }
 
     wh_for(i64, i, bytes) {
         length = wh_intpos(ptr[i], 16) + 1;
 
         if (!(i % 8)) {
-            *data->buffer = '\n';
-            ++data->buffer;
-            *data->buffer = '\t';
+            data->buffer[0] = '\n';
+            data->buffer[1] = '\t';
+            data->buffer[2] = ' ';
+            data->buffer += 3;
+        } else {
+            data->buffer[0] = ' ';
             ++data->buffer;
         }
-
-        *data->buffer = ' ';
-        ++data->buffer;
 
         switch (length) {
             case 1:
                 *data->buffer = '0';
                 ++data->buffer;
-
-                wh_int2str(ptr[i], data->buffer, (u64)length, 16);
-                data->buffer += length;
-                break;
             case 2:
                 wh_int2str(ptr[i], data->buffer, (u64)length, 16);
                 data->buffer += length;
-                break;
         }
     }
 
@@ -254,17 +237,16 @@ static void _wh_print_memory(wh_print_data_s* data, u8* ptr, int bytes) {
 }
 
 static void _wh_print_time(wh_print_data_s* data, char* const format) {
-    i64 written = 0;
     struct tm* tm = nullptr;
     char buffer[256] = { 0 };
     u64 length = 0;
-    time_t t = time(NULL);
+    time_t t = { 0 };
 
+    t = time(NULL);
     tm = localtime(&t);
     length = strftime(buffer, 255, format, tm);
-    written = wh_print_buffer_check(data, (u64)length);
 
-    if (-1 == written) {
+    if (-1 == wh_print_buffer_check(data, (u64)length)) {
         return;
     }
 
@@ -284,60 +266,71 @@ static void _wh_print_format_sub(wh_print_data_s* data, va_list list) {
     data->format = f + 1;
 }
 
+
+// =======================================================================================================
+// private formatting loop function start
+// =======================================================================================================
+
+// I don't like this but it reduces code duplication.
+#define _WH_PRINT_FORMAT_COMMON_CASE(_goto_, _formater_, _data_) \
+    case (_formater_): \
+        goto _goto_; \
+    case '#': \
+        (_data_)->print_format.flags.alt_form = true; \
+        goto _goto_; \
+    case '-': \
+        (_data_)->print_format.flags.left_align = true; \
+        goto _goto_; \
+    case '+': \
+        (_data_)->print_format.flags.force_sign = true; \
+        goto _goto_; \
+    case ' ': \
+        (_data_)->print_format.flags.space_pad = true; \
+        goto _goto_; \
+    case '0': \
+        (_data_)->print_format.flags.zero_pad = true; \
+        goto _goto_; \
+    case '.': \
+        vp = &(_data_)->print_format.right; \
+        (_data_)->print_format.flags.length_set = true; \
+        ++(_data_)->format; \
+        goto _goto_; \
+    case '1': case '2': case '3': case '4': case '5': \
+    case '6': case '7': case '8': case '9': \
+        *vp = (u64)wh_str2int((_data_)->format, (i64)strlen((_data_)->format), 10); \
+        vp = &(_data_)->print_format.left; \
+        (_data_)->format += wh_uintpos(*vp); \
+        goto _goto_; \
+    case 'l': \
+        if ((_data_)->print_format.flags.long_value) { \
+            (_data_)->print_format.flags.llong_value = true; \
+        } else { \
+            (_data_)->print_format.flags.long_value = true; \
+        } \
+        ++(_data_)->format; \
+        goto _goto_
+
+
 static void _wh_print_format(wh_print_data_s* data, va_list list) {
     void* tmp = nullptr;
     u64* vp = &data->print_format.left;
 
+    goto go_loop; // skipping the memset
+go_loop_memset:
+    memset(&data->print_format, 0, sizeof(wh_print_format_s));
 go_loop:
     switch (*data->format) {
         case '\0':
             // time to break and leave this loop
             break;
 
-            // custom cases
-        case '$':
+        case '$': // custom cases
 go_dollar_switch:
             switch (*(++data->format)) {
-                case '$':
-                    goto go_default;
-
-                case '#':
-                    data->print_format.flags.alt_form = true;
-                    goto go_dollar_switch;
-
-                case '-':
-                    data->print_format.flags.left_align = true;
-                    goto go_dollar_switch;
-
-                case '+':
-                    data->print_format.flags.force_sign = true;
-                    goto go_dollar_switch;
-
-                case ' ':
-                    data->print_format.flags.space_pad = true;
-                    goto go_dollar_switch;
-
-                case '0':
-                    data->print_format.flags.zero_pad = true;
-                    goto go_dollar_switch;
-
-                case '.':
-                    vp = &data->print_format.right;
-                    data->print_format.flags.length_set = true;
-                    ++data->format;
-                    goto go_dollar_switch;
-
-                case '1': case '2': case '3': case '4': case '5': 
-                case '6': case '7': case '8': case '9':
-                    *vp = (u64)wh_str2int(data->format, (i64)strlen(data->format), 10); 
-                    vp = &data->print_format.left;
-                    data->format += wh_uintpos(*vp);
-                    goto go_dollar_switch;
+                _WH_PRINT_FORMAT_COMMON_CASE(go_dollar_switch, '$', data);
 
                 case '[': // custom function from user using hash maps
                     _wh_print_call_func(data, va_arg(list, void*), data->format + 1, strstr(data->format, "]"));
-                    break;
-                case 'b': // binary
                     break;
                 case 'f':
                     _wh_print_format_sub(data, list);
@@ -350,9 +343,6 @@ go_dollar_switch:
                     break;
                 case 'k':
                     _wh_print_int_bytes(data, va_arg(list, i64), 10);
-                    break;
-                case 'l':
-                    data->print_format.flags.space_pad = true;
                     break;
                 case 'm': // memory
                     tmp = va_arg(list, u8*);
@@ -370,90 +360,32 @@ go_dollar_switch:
                     break;
             }
 
-            memset(&data->print_format, 0, sizeof(wh_print_format_s));
-            goto go_loop;
+            goto go_loop_memset;
 
-            // standard cases
-        case '%':
+        case '%': // standard cases
 go_standard_switch:
             switch (*(++data->format)) {
-                case '%':
-                    goto go_default;
-
-                case '#':
-                    data->print_format.flags.alt_form = true;
-                    goto go_standard_switch;
-
-                case '-':
-                    data->print_format.flags.left_align = true;
-                    goto go_standard_switch;
-
-                case '+':
-                    data->print_format.flags.force_sign = true;
-                    goto go_standard_switch;
-
-                case ' ':
-                    data->print_format.flags.space_pad = true;
-                    goto go_standard_switch;
-
-                case '0':
-                    data->print_format.flags.zero_pad = true;
-                    goto go_standard_switch;
-
-                case '.':
-                    vp = &data->print_format.right;
-                    data->print_format.flags.length_set = true;
-                    ++data->format;
-                    goto go_standard_switch;
-
-                case '1': case '2': case '3': case '4': case '5':
-                case '6': case '7': case '8': case '9':
-                    *vp = (u64)wh_str2int(data->format, (i64)strlen(data->format), 10); 
-                    vp = &data->print_format.left;
-                    data->format += wh_uintpos(*vp);
-                    goto go_standard_switch;
-
-                case 'a':
-                    _wh_print_fstr_slow(data, 'a', va_arg(list, double));
-                    break;
-
-                case 'A':
-                    _wh_print_fstr_slow(data, 'A', va_arg(list, double));
-                    break;
-
+                _WH_PRINT_FORMAT_COMMON_CASE(go_standard_switch, '%', data);
+                
                 case 'c':
                     _wh_print_cpychar(data, (char)va_arg(list, int));
                     break;
 
-                case 'd':
-                    goto go_print_int;
-
-                case 'e':
-                    _wh_print_fstr_slow(data, 'e', va_arg(list, double));
+                case 'a': case 'A': case 'e': case 'E': case 'f': case 'F': case 'g': case 'G':
+                    _wh_print_fstr_slow(data, *data->format, va_arg(list, double));
                     break;
 
-                case 'E':
-                    _wh_print_fstr_slow(data, 'E', va_arg(list, double));
+                case 'b':
+                    if (data->print_format.flags.alt_form) {
+                        data->print_format.flags.alt_form = false;
+                        _wh_print_cpystr(data, "0b", 2);
+                        data->format--;
+                    }
+
+                    _wh_print_uint(data, va_arg(list, u64), 2);
                     break;
 
-                case 'f':
-                    _wh_print_fstr_slow(data, 'f', va_arg(list, double));
-                    break;
-
-                case 'F':
-                    _wh_print_fstr_slow(data, 'F', va_arg(list, double));
-                    break;
-
-                case 'g':
-                    _wh_print_fstr_slow(data, 'g', va_arg(list, double));
-                    break;
-
-                case 'G':
-                    _wh_print_fstr_slow(data, 'G', va_arg(list, double));
-                    break;
-
-go_print_int: // To reduce duplicated for %d
-                case 'i':
+                case 'd': case 'i':
                     if (data->print_format.flags.llong_value) {
                         _wh_print_int128(data, va_arg(list, i128), 10);
                     } else if (data->print_format.flags.long_value) {
@@ -463,14 +395,6 @@ go_print_int: // To reduce duplicated for %d
                     }
                     break;
 
-                case 'l':
-                    if (data->print_format.flags.long_value) {
-                        data->print_format.flags.llong_value = true;
-                    } else {
-                        data->print_format.flags.long_value = true;
-                    }
-                    ++data->format;
-                    goto go_standard_switch;
 
                 case 'u':
                     _wh_print_uint(data, va_arg(list, u64), 10);
@@ -494,25 +418,27 @@ go_print_int: // To reduce duplicated for %d
                     break;
 
                 case 'o':
-                    _wh_print_int(data, va_arg(list, i64), 8);
+                    _wh_print_int(data, va_arg(list, u64), 8);
                     break;
 
                 case 'p':
                     _wh_print_cpystr(data, "0x", 2);
                     data->format--;
-                    _wh_print_uint(data, va_arg(list, u64), 16);
+                    _wh_print_uint(data, va_arg(list, uintptr_t), 16);
                     break;
 
                 case 'x':
+                    _wh_print_cpystr(data, "0x", 2);
+                    goto go_X;
                 case 'X':
                     _wh_print_cpystr(data, "0x", 2);
+go_X:
                     data->format--;
-                    _wh_print_int(data, va_arg(list, i64), 16);
+                    _wh_print_uint(data, va_arg(list, u64), 16);
                     break;
             }
 
-            memset(&data->print_format, 0, sizeof(wh_print_format_s));
-            goto go_loop;
+            goto go_loop_memset;
 
 go_default:
         default:
@@ -609,4 +535,3 @@ i64 _wh_print(_wh_print_params params, ...) {
 
     return ret;
 }
-

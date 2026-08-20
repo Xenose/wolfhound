@@ -107,6 +107,7 @@ extern void _wh_print_add_func(_wh_print_add_func_params params);
  * | %S      | POSIX         | const wchar_t*   | NO                    |                                                                       |
  * | %n      | C ANSI        |                  | YES                   |                                                                       |
  * | %m      | GNU           | NONE             | YES                   | Prints the errno string in place.                                     |
+ * | %p      | C ANSI        | void*            | YES                   | Prints a memory address in hexadecimal.                               |
  * 
  * ## Examples
  * ```c

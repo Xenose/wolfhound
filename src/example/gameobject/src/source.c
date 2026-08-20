@@ -42,6 +42,8 @@ void test_tracker() {
 int main(int arc, char* const* arv) {
     char buf[256] = { 0 };
     wh_instance_s* ins = { 0 };
+    
+    wh_print(("%#b\n"), 0x00F0);
 
     wh_log_info(("Starting GameObject Demo!"));
     wh_sys_program_path(buf, 255);
