@@ -1,16 +1,17 @@
-#include <wh-posix/errno.h>
-#include <wh-posix/stdatomic.h>
-#include <wh-posix/string.h>
-#include <wh-posix/unistd.h>
-#include <wh-sys/atomic_lock.h>
-#include <wh-sys/memory.h>
-#include <wh-sys/memreq.h>
-#include <wh/data/hashmap.h>
-#include <wh/debug/logger.h>
-#include <wh/maths/core.h>
-#include <wh/maths/memory.h>
-#include <wh/memory/arena.h>
-#include <wh/memory/freelist.h>
+#include<wh-posix/errno.h>
+#include<wh-posix/stdatomic.h>
+#include<wh-posix/string.h>
+#include<wh-posix/unistd.h>
+#include<wh-sys/atomic_lock.h>
+#include<wh-sys/memory.h>
+#include<wh-sys/memreq.h>
+#include<wh-sys/memory/tracker.h>
+#include<wh/data/hashmap.h>
+#include<wh/debug/logger.h>
+#include<wh/maths/core.h>
+#include<wh/maths/memory.h>
+#include<wh/memory/arena.h>
+#include<wh/memory/freelist.h>
 
 // hashmap
 typedef struct {
@@ -25,8 +26,8 @@ static wh_hashmap_s _map = {
     .resize_size = 4096,
 };
 
-//static _wh_heap_table_s _table = { 0 };
-
+void _wh_disown_no_tracking(_wh_mem_free_params params) {}
+void* _wh_own_no_tracking(_wh_mem_alloc_params params) {}
 // the global main heap
 static wh_heap_header_s* _heap_main;
 
@@ -35,15 +36,16 @@ void* _wh_realloc_tracking(_wh_mem_realloc_params params);
 
 void _wh_free_tracking(_wh_mem_free_params params);
 void _wh_disown_tracking(_wh_mem_free_params params);
-
-extern void _wh_tracker_remove(void* owner, void* ptr);
-extern void _wh_tracker_insert(void* owner, void* ptr, wh_heap_header_s* heap, u64 line, const char* file);
+void* _wh_own_tracking(_wh_own_params params);
 
 void* (*_wh_alloc)(_wh_mem_alloc_params params) = &_wh_alloc_tracking;
 void* (*_wh_realloc)(_wh_mem_realloc_params params) = &_wh_realloc_tracking;
 
 void  (*_wh_free)(_wh_mem_free_params params) = &_wh_free_tracking;
+
+// ownership handling
 void (*_wh_disown)(_wh_mem_free_params params) = &_wh_disown_tracking;
+void* (*_wh_own)(_wh_own_params params) = &_wh_own_tracking;
 
 /*
  * Hashmap functions
@@ -191,12 +193,20 @@ void _wh_disown_tracking(_wh_mem_free_params params) {
     _wh_tracker_remove(params.owner, params.ptr);
 }
 
-void _wh_disown_no_tracking(_wh_mem_free_params params) {
+void* _wh_own_tracking(_wh_own_params params) {
+    if (nullptr == params.owner || nullptr == params.ptr) {
+        wh_log_notice(("Cannot own a nullptr"));
+        return params.ptr;
+    }
+
+    _wh_tracker_add(params.owner, params.ptr, nullptr);
+    return params.ptr;
 }
+
 
 /*
  * Debug functions
- *
+ * needs to add a global counter after removing the old code.
  */
 int32_t wh_mem_leak_count(void) {
     return 0;//atomic_load(&_heap_main->ptr_count);

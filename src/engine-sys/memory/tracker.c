@@ -1,23 +1,15 @@
 #include<wh-posix/stdlib.h>
 
-#include<wh-sys/memory.h>
 #include<wh/data/hashmap.h>
 #include<wh/data/list.h>
 #include<wh/debug/exceptions.h>
 #include<wh/debug/logger.h>
 
+#include<wh-sys/memory/tracker.h>
+
 void* _wh_tracker_destructor(wh_hashmap_destructor_s* entry);
 
 // Linked list tracking
-
-typedef struct {
-    void* ptr;
-    wh_heap_header_s* heap;
-    void** owners;
-    u64 owner_count;
-    u64 line;
-    const char* file;
-} _wh_heap_ptr_pair_s;
 
 // need pointer version
 static wh_hashmap_s _map = {
@@ -48,6 +40,26 @@ bool _wh_track_search(void* entry_in, void* ptr_in) {
     }
 
     return false;
+}
+
+void _wh_tracker_add(void* owner, void* ptr, _wh_heap_ptr_pair_s* entry) {
+    _wh_heap_ptr_pair_s* e = nullptr;
+    void** tmp = nullptr;
+
+    if (nullptr == e) {
+        entry = wh_hashmap_get(&_map, ptr);
+    }
+
+    tmp = realloc(e->owners, sizeof(void*) * (e->owner_count + 1));
+    wh_log_debug(("The owner count is %u"), e->owner_count);
+
+    if (nullptr == tmp) {
+        wh_log_critical(("Failed to allocate owner ptr memory"));
+    } else {
+        e->owners = tmp;
+        e->owners[entry->owner_count] = owner;
+        ++e->owner_count;
+    }
 }
 
 /*
@@ -94,19 +106,7 @@ go_skip:
         }
 
     } else {
-        entry = wh_hashmap_get(&_map, ptr);
-
-        void** tmp = realloc(entry->owners, sizeof(void*) * (entry->owner_count + 1));
-        wh_log_debug(("The owner count is %u"), entry->owner_count);
-
-        if (nullptr == tmp) {
-            wh_log_critical(("Failed to allocate owner ptr memory"));
-        } else {
-            entry->owners = tmp;
-            entry->owners[entry->owner_count] = owner;
-        }
-
-        ++entry->owner_count;
+      _wh_tracker_add(owner, ptr, entry);  
     }
 }
 

@@ -35,8 +35,9 @@ void key_escape(wh_event_s* e) {
     wh_log_info(("Hello!"));
 }
 
-void test_tracker() {
+void* test_tracker() {
     void* test = wh_alloc(nullptr, 16, &test);
+    return test;
 }
 
 int main(int arc, char* const* arv) {
@@ -58,7 +59,7 @@ int main(int arc, char* const* arv) {
         .config_path = (wh_string_s){ .str = buf, 0 },      // application config
     );
 
-    test_tracker();
+    void* t1 = wh_own(test_tracker(), &t1);
     _wh_mem_scan();
 
     // Setting the limits of Actions and Entities

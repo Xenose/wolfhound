@@ -23,6 +23,11 @@ typedef struct {
 } _wh_heap_print_params;
 
 typedef struct {
+    void* ptr;
+    void* owner;
+} _wh_own_params;
+
+typedef struct {
     wh_heap_header_s* heap;
     u64 bytes;
     void* owner;
