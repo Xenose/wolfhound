@@ -26,8 +26,8 @@ static wh_hashmap_s _map = {
     .resize_size = 4096,
 };
 
-void* _wh_disown_no_tracking(_wh_mem_free_params params) {}
-void* _wh_own_no_tracking(_wh_mem_alloc_params params) {}
+void* _wh_disown_no_tracking(_wh_mem_free_params params) { return params.ptr; }
+void* _wh_own_no_tracking(_wh_own_params params) { return params.ptr; }
 // the global main heap
 static wh_heap_header_s* _heap_main;
 
@@ -52,7 +52,7 @@ void* (*_wh_own)(_wh_own_params params) = &_wh_own_tracking;
  *
  */
 wh_heap_header_s* wh_heap_insert(const char* name, wh_heap_header_s* header) {
-    wh_hashmap_insert(&_map, (void*)name, &header);
+    wh_hashmap_insert(&_map, (void*)name, header);
     return header;
 }
 

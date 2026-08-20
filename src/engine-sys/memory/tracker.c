@@ -32,16 +32,6 @@ void* _wh_tracker_destructor(wh_hashmap_destructor_s* entry) {
     return nullptr;
 }
 
-bool _wh_track_search(void* entry_in, void* ptr_in) {
-    _wh_heap_ptr_pair_s* entry = entry_in;
-
-    if (entry->ptr == ptr_in) {
-        return true;
-    }
-
-    return false;
-}
-
 void _wh_tracker_add(void* owner, void* ptr, _wh_heap_ptr_pair_s* entry, u64 line, const char* file) {
     _wh_heap_ptr_pair_s* e = entry;
     _wh_owner_s* tmp = nullptr;
@@ -184,7 +174,7 @@ void _wh_mem_scan_for_each(void* node) {
             if (0 == --entry->owner_count) {
                 entry->owners[i].ptr = nullptr;
             } else {
-                entry->owners[i].ptr = entry->owners[entry->owner_count].ptr;
+                entry->owners[i] = entry->owners[entry->owner_count];
             }
         }
     }
