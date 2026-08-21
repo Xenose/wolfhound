@@ -4,10 +4,17 @@
 
 #include <wh/print.h>
 
-static wh_thread i64 _thread_id = -1;
+#if !(WH_SYSTEM&WH_SYS_TCC)
+    static wh_thread i64 _thread_id = -1;
+#endif
 
 i64 wh_sys_gettid(void) {
-		return -1 == _thread_id ? (_thread_id = (i64)gettid()) : _thread_id;
+    #if (WH_SYSTEM&WH_SYS_TCC)
+        return gettid();
+    #else
+        return -1 == _thread_id ?
+            (_thread_id = (i64)gettid()) : _thread_id;
+    #endif
 }
 
 #if (WH_SYSTEM&WH_SYS_LINUX)
@@ -16,19 +23,19 @@ i64 wh_sys_gettid(void) {
  * Gets the path to the current executable/binary
  */
 i64 wh_sys_program_path(char* buffer, u64 buffer_size) {
-	i64 length = readlink("/proc/self/exe", buffer, buffer_size);
+    i64 length = readlink("/proc/self/exe", buffer, buffer_size);
 
-	if (-1 == length) {
-		return length;
-	}
+    if (-1 == length) {
+        return length;
+    }
 
-	--length;
+    --length;
 
-	while (0 < length && '/' != buffer[length]) {
-		buffer[length--] = '\0';
-	}
+    while (0 < length && '/' != buffer[length]) {
+        buffer[length--] = '\0';
+    }
 
-	return length;
+    return length;
 }
 
 #elif (WH_SYSTEM&WH_SYS_BSD)

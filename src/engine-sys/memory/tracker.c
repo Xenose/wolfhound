@@ -162,7 +162,7 @@ void _wh_mem_scan_for_each(void* node) {
                         entry->owners[i].ptr, entry->ptr, entry->owners[i].file, entry->owners[i].line);
                 clean_up = true;
             }
-        } wh_catch(ex) {
+        } wh_catch(wh_exception_s, ex) {
             //wh_log_critical(("SEGFAULT :: Owner change! ptr [ %u ] != owner [ %u ] in file:line [ %s:%u ]"), current->owners[i].owner, current->ptr, current->owners[i].file, current->owners[i].line);
             clean_up = true;
         }

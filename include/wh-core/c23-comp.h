@@ -34,38 +34,14 @@
 #if (WH_SYSTEM&WH_SYS_MSVC)
     #define wh_thread __declspec(thread)
 #elif (WH_SYSTEM&WH_SYS_TCC)
-    #define wh_thread // TODO assert once we solve this...
+    // TODO :: if possible find a way to add thread local
+    // storage on TinyCC.
+    #define wh_thread static_assert(0, "DO NOT USE WITH TCC")
 #elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
     #define wh_thread _Thread_local
 #else
-    #define wh_thread __thread
+    #define wh_thread __thread 
 #endif
-
-// TCC atomic concept
-/* Proof of concept
- *
- * #define T* get_value(wh_thread_local_data* data) { \
- *	void* tmp = nullptr; \
- *	pid_t lt = getpid(); \
- *	\
- *	for (i64 i = 0; i < data.count; i++) {\
- *		if (lt == data[i].thread_id) { \
- *			return sizeof(pid_t) + data[i].data; \
- *		} \
- *	} \
- *	\
- *	tmp = realloc(data.data, (data.count + 1) * data.size); \
-
- *	if (nullptr == tmp) {
- *		assert("Failed to allocated thread local data");
- *	}
-
- *	data.data = data;
- *	*((pid_t*)&data.data[data.count]) = lt;
- *	++data.count;
- *	return sizeof(pid_t) + data.data;
- *}
- */
 
 /* 
  * tcc does not implement <stdbool.h> or _Bool reliably 

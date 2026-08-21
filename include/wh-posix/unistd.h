@@ -55,19 +55,19 @@
         #define SEEK_SET    100
     #endif
 
-    #ifdef SEEK_CUR
+    #ifndef SEEK_CUR
         #define SEEK_CUR    101
     #endif
 
-    #ifdef SEEK_END
+    #ifndef SEEK_END
         #define SEEK_END    102
     #endif
 
-    #ifdef SEEK_DATA
+    #ifndef SEEK_DATA
         #define SEEK_DATA   103
     #endif
 
-    #ifdef SEEK_HOLE
+    #ifndef SEEK_HOLE
         #define SEEK_HOLE   104
     #endif
 

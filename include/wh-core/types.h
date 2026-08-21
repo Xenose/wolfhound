@@ -18,11 +18,12 @@
  */
 
 #if defined(_MSC_VER) || defined(__TINYC__) || defined(__KEFIR__)
-	typedef int64_t	int128_t;
-	typedef uint64_t	uint128_t;
+    typedef int64_t     int128_t;
+    // TODO assert once we solve this...
+    typedef uint64_t    uint128_t;
 #else
-	typedef __int128_t	int128_t;
-	typedef __uint128_t	uint128_t;
+    typedef __int128_t	int128_t;
+    typedef __uint128_t	uint128_t;
 #endif
 
 typedef int8_t      i8;
@@ -37,15 +38,15 @@ typedef uint32_t    u32;
 typedef uint64_t    u64;
 typedef uint128_t   u128;
 
-typedef atomic_int_least8_t	ai8;
-typedef atomic_int_least16_t	ai16;
-typedef atomic_int_least32_t	ai32;
-typedef atomic_int_least64_t	ai64;
+typedef atomic_int_least8_t     ai8;
+typedef atomic_int_least16_t    ai16;
+typedef atomic_int_least32_t    ai32;
+typedef atomic_int_least64_t    ai64;
 
-typedef atomic_uint_least8_t	au8;
-typedef atomic_uint_least16_t	au16;
-typedef atomic_uint_least32_t	au32;
-typedef atomic_uint_least64_t	au64;
+typedef atomic_uint_least8_t    au8;
+typedef atomic_uint_least16_t   au16;
+typedef atomic_uint_least32_t   au32;
+typedef atomic_uint_least64_t   au64;
 
 typedef atomic_flag aflag;
 typedef atomic_bool abool;

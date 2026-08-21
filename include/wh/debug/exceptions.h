@@ -3,9 +3,13 @@
 
 #include<wh-posix/setjmp.h>
 #include<wh-core/common.h>
+#include<wh-posix/signal.h>
 
 enum {
-    WH_EXCEPTION_SIGSEGV = -1,
+    WH_EXCEPTION_SIGSEGV = -2,
+    WH_EXCEPTION_UNKNOWN = -1,
+
+    WH_EXCEPTION_NONE = 0,
 };
 
 typedef struct {
@@ -13,24 +17,25 @@ typedef struct {
     i64 error;
 } wh_exception_s;
 
-#if !(WH_SYSTEM&WH_SYS_POSIX)
-    #define sigjmp_buf jmp_buf
-    #define sigsetjmp(__env__, __val__) setjmp(__env__)
-    #define siglongjmp(__env__, __val__) longjmp(__env__, __val__)
-#endif
+typedef struct _wh_try_info {
+    struct sigaction old_action;
+    struct _wh_try_info* old_info;
+    sigjmp_buf buffer;
+    i64 error;
+    i8 count;
+} _wh_try_info_s;
 
-extern wh_thread i64 _jmp_index;
 
-extern wh_thread i64 _jmp_error[];
-extern wh_thread sigjmp_buf _jmp_buffers[];
+extern i8 _jmp_init(_wh_try_info_s* info);
+extern i8 _jmp_last_exception(wh_exception_s* exp);
 
-extern i8 _jmp_init();
+#define wh_try for (_wh_try_info_s _info_##__LINE__ = { 0 }; \
+        0 == _jmp_init(&_info_##__LINE__); ++_info_##__LINE__.count) \
+        if (0 == sigsetjmp(_info_##__LINE__.buffer, 1))
 
-#define wh_try if (0 == _jmp_init()) for (i64 _old_index##__LINE__ = _jmp_index++; \
-    _old_index##__LINE__ != _jmp_index; _jmp_index--) if (0 == (_jmp_error[_jmp_index] = sigsetjmp(_jmp_buffers[_jmp_index], 1)))
+#define wh_catch(type, name) else for (type name; WH_EXCEPTION_NONE == _jmp_last_exception(&name);)
 
-#define wh_catch(_ex_) else for (wh_exception_s _ex_ = (wh_exception_s){ .error = _jmp_error[_jmp_index] }; 0 != _ex_.error; _ex_.error = 0)
-
-#define wh_throw(_error_) siglongjmp(_jmp_buffers[_jmp_index], _error_)
+// TODO  :: make a function to get last _wh_try_info_s
+// #define wh_throw(_error_) siglongjmp(, _error_)
 
 #endif /* _wh_header_debug_exceptions_ */

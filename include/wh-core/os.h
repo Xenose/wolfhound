@@ -26,7 +26,7 @@
     #define WH_SYSTEM_OS WH_SYS_WINDOWS
 #elif defined(__APPLE__) && defined(__MACH__)
     #define WH_SYSTEM_OS (WH_SYS_MACOS | WH_SYS_UNIX | WH_SYS_POSIX)
-#elif defined(__HAIKU__) | defined(__BEOS__)
+#elif defined(__HAIKU__) || defined(__BEOS__)
     #define WH_SYSTEM_OS (WH_SYS_BEOS | WH_SYS_POSIX)
 #elif defined(__FreeBSD__)
     #define WH_SYSTEM_OS (WH_SYS_FREEBSD | WH_SYS_BSD | WH_SYS_UNIX | WH_SYS_POSIX)
