@@ -53,19 +53,19 @@ INCLUDE(cmake/libs/find_glew.cmake)
 INCLUDE(cmake/libs/find_glfw3.cmake)
 
 IF(NOT NO_SDL3)
-	INCLUDE(cmake/libs/find_sdl3.cmake)
+    INCLUDE(cmake/libs/find_sdl3.cmake)
 ENDIF()
 
 INCLUDE(cmake/libs/find_unwind.cmake)
 
 IF (NOT ANDROID OR NOT CMAKE_SYSTEM_NAME STREQUAL "Android")
-	INCLUDE(cmake/libs/find_vulkan.cmake)
+    INCLUDE(cmake/libs/find_vulkan.cmake)
 ENDIF()
 
 # Fallback if SDL3 is not found.
 IF (NOT "WH_SDL3_FOUND" IN_LIST WH_DEFS) 
-	MESSAGE("Modern SDL3 not found using SDL2.")
-	INCLUDE(cmake/libs/find_sdl2.cmake)
+    MESSAGE("Modern SDL3 not found using SDL2.")
+    INCLUDE(cmake/libs/find_sdl2.cmake)
 ENDIF()
 
 # old way
@@ -189,13 +189,13 @@ IF(BUILD_LIBC_TESTS)
 ENDIF()
 
 # Tests
-IF (CXX_ENABLED)
-    # For now GTEST is not supported on windows.
-    IF (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-        ADD_SUBDIRECTORY(src/unit-gtests-cpp/)
-    ENDIF()
-ENDIF()
+# IF (CXX_ENABLED)
+#     # For now GTEST is not supported on windows.
+#     IF (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+#         ADD_SUBDIRECTORY(src/unit-gtests-cpp/)
+#     ENDIF()
+# ENDIF()
 
-IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" AND GENERATE_REPORT)
-    ADD_SUBDIRECTORY(src/unit-tests-c/)
-ENDIF()
+#IF(GENERATE_REPORT)
+    ADD_SUBDIRECTORY(src/c-unit-tests/)
+# ENDIF()

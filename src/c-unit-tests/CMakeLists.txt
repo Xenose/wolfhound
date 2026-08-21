@@ -1,0 +1,6 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.28)
+PROJECT(c-unit-tests LANGUAGES C)
+
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+ADD_EXECUTABLE(c-unit-tests "src/source.c")
+TARGET_LINK_LIBRARIES(c-unit-tests PRIVATE wolfhound)

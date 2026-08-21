@@ -21,8 +21,6 @@ SET(C_SOURCES
     "src/engine-sys/memreq.c"
     "src/engine-sys/socket.c"
 
-    "src/engine-testing/unite.c"
-
     "src/engine-posix/dirent.c"
     "src/engine-posix/libproc.c"
     "src/engine-posix/netdb.c"

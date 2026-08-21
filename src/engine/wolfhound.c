@@ -2,7 +2,6 @@
 #include<wh-posix/unistd.h>
 #include<wh-sys/foreman.h>
 #include<wh-sys/memory.h>
-#include<wh-testing/unite.h>
 #include<wh/config.h>
 #include<wh/debug/logger.h>
 #include<wh/debug/signalar.h>

@@ -1,7 +1,7 @@
 #include <wh/headers/lua.h>
 #include <wh-sys/file.h>
 #include <wh-sys/filesystem.h>
-#include <wh-testing/unite.h>
+#include <wh-testing/unit.h>
 #include <wh/debug/logger.h>
 #include <wh/lua/api.h>
 #include <wh-sys/memory.h>
