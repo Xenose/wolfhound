@@ -1,7 +1,8 @@
-#include<wh-posix/unistd.h>
 #include<wh-sys/foreman.h>
 #include<wh/debug/logger.h>
 
+#include<wh-posix/unistd.h>
+#include<wh-posix/sched.h>
 
 void wh_worker() {
 }
@@ -32,5 +33,5 @@ void worker_loop(u64 index, void* data) {
 // worker was done with the work.
 void wh_foreman_execute(wh_foreman_s* foreman) {
     wh_darray_for_each(&foreman->workers, worker_loop);
-    usleep(100000);
+    usleep(50000);
 }
