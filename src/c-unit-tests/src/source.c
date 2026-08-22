@@ -36,8 +36,6 @@ void test_string() {
         wh_strcat((.error = &error), "Hello,", " ", nullptr, "world!");
         WH_TEST_STREQ(wh_strcat, "", buffer, "wh_strcat::world_test");
         WH_TEST_INT64EQ(wh_strcat, (int64_t)ENOBUFS, error);
-
-        WH_TEST_REPORT(wh_strcat);
     }
 }
 
