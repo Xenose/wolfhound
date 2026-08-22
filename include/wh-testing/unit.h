@@ -56,7 +56,7 @@ typedef struct {
 #define WH_TEST_INT64EQ(_name_, i1, i2, ...) \
     _WH_TEST_CMP( \
             _name_, (i2 == i1), \
-            {printf("\t[ \033[31mFAILED\033[0m ] int1 -> [ %li  ] int2 -> [ %li ] " __VA_ARGS__ "\n", i1, i2);}, \
-            {printf("\t[ \033[32mPASSED\033[0m ] " __VA_ARGS__ "\n");})
+            {printf("\t[ \033[31mFAILED\033[0m ] \033[36m%s == %s [ %li :  %li ] " __VA_ARGS__ "\033[0m\n", #i1, #i2, i1, i2);}, \
+            {printf("\t[ \033[32mPASSED\033[0m ] %s == %s " __VA_ARGS__ "\n", #i1, #i2);})
 
 #endif /* _wh_header_testing_unit_ */
