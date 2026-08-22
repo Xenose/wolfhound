@@ -7,7 +7,7 @@ typedef struct {
     char* buffer;
     u64 buffer_length;
     u64 offset;
-    u64* error;
+    i64* error;
 } _wh_strcat_params;
 
 typedef struct {
@@ -19,7 +19,7 @@ typedef struct {
     const char* str;
     u64 str_length;
     u64 key_length;
-    u64* error;
+    i64* error;
 } _wh_strstr_params;
 
 #endif /* _wh_header_params_string_ */

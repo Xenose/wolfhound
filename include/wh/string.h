@@ -23,7 +23,7 @@ extern const char* _wh_strstr(_wh_strstr_params params);
  * @d_param(char*)  buffer          : The buffer where the data will be stored.
  * @d_param(u64)    buffer_length   : The size of the buffer.
  * @d_opt(u64)      offset          : The offset where the appending will start, note this will subtract from length and add to the buffer pointer.
- * @d_opt(u64*)	    error           : A pointer to user provided pointer where the errors will be stored.
+ * @d_opt(i64*)	    error           : A pointer to user provided pointer where the errors will be stored.
  *
  * ## Note
  *  * The buffer will not be null terminated, if the buffer is set to 0 the user can do "buffer_length - 1".
@@ -31,6 +31,10 @@ extern const char* _wh_strstr(_wh_strstr_params params);
  * ## Return
  * Will return the buffer pointer at its current location.
  *
+ * ## Error values
+ * ENOBUFS : length value was set to 0.
+ * EFAULT  : a nullptr was passed into buffer.
+ * ENOMEM  : buffer was too small for input.
  */
 #define wh_strcat(x, ...)   WH_EPF(_wh_strcat((_wh_strcat_params) { WH_VA_ARGS x }, __VA_ARGS__, WH_PTR_MAX))
 

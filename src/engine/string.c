@@ -1,5 +1,6 @@
 #include<wh-posix/stdarg.h>
 #include<wh-posix/string.h>
+#include<wh-posix/errno.h>
 
 #include<wh/string.h>
 #include<wh-sys/memory.h>
@@ -11,9 +12,17 @@ char* _wh_strcat(_wh_strcat_params params, ...) {
     u64 len = params.buffer_length;
     va_list list;
 
-    if (0 == params.buffer_length || nullptr == params.buffer) {
+    if (0 == params.buffer_length) {
         if (nullptr != params.error) {
-            *params.error = 1;
+            *params.error = ENOBUFS;
+        }
+
+        goto go_exit;
+    }
+
+    if (nullptr == params.buffer) {
+        if (nullptr != params.error) {
+            *params.error = EFAULT;
         }
 
         goto go_exit;
@@ -25,11 +34,15 @@ char* _wh_strcat(_wh_strcat_params params, ...) {
     va_start(list, params);
 
     while(WH_PTR_MAX != (s = va_arg(list, const char*))) {
+        if (nullptr == s) {
+            continue;
+        }
+
         sl = strlen(s);
 
-        if (len < sl) {
+        if (len <= sl) {
             if (nullptr != params.error) {
-                *params.error = 1;
+                *params.error = ENOMEM;
             }
 
             memcpy(params.buffer, s, len);

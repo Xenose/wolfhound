@@ -25,20 +25,42 @@ typedef struct {
             .params = (wh_unit_test_params) { WH_VA_OPT(__VA_ARGS__) } \
         }; -1 < _name_##_test.params.count; _name_##_test.params.count--)
 
-#define WH_TEST_STREQ(_name_, s1, s2, ...) \
+
+#define _WH_TEST_CMP(_name_, _cmp_, _print_failure_, _print_success_) \
     wh_try { \
-            if (!strcmp(s2, s1)) { \
-                printf("\t[ \033[32mPASSED\033[0m ] " __VA_ARGS__ "\n"); \
-                ++_name_.passed; \
+            if _cmp_ { \
+                _print_success_ \
+                ++(_name_##_test).passed; \
             } else { \
-                printf("\t[ \033[31mFAILED\033[0m ] s1 -> [ %s  ] s2 -> [ %s ] " __VA_ARGS__ "\n", s1, s2); \
-                ++_name_.failed; \
+                _print_failure_ \
+                ++(_name_##_test).failed; \
             } \
     } wh_catch(wh_exception_s, _ex) { \
+        _print_failure_ \
+        ++(_name_##_test).failed; \
     }
 
+
+#define WH_TEST_STREQ(_name_, s1, s2, ...) \
+    _WH_TEST_CMP( \
+            _name_,  (!strcmp(s2, s1)), \
+            {printf("\t[ \033[31mFAILED\033[0m ] s1 -> [ %s  ] s2 -> [ %s ] " __VA_ARGS__ "\n", s1, s2);}, \
+            {printf("\t[ \033[32mPASSED\033[0m ] " __VA_ARGS__ "\n");})
+
+#define WH_TEST_INT32EQ(_name_, i1, i2, ...) \
+    _WH_TEST_CMP( \
+            _name_, (i2 == i1), \
+            {printf("\t[ \033[31mFAILED\033[0m ] int1 -> [ %i  ] int2 -> [ %i ] " __VA_ARGS__ "\n", i1, i2);}, \
+            {printf("\t[ \033[32mPASSED\033[0m ] " __VA_ARGS__ "\n");})
+
+#define WH_TEST_INT64EQ(_name_, i1, i2, ...) \
+    _WH_TEST_CMP( \
+            _name_, (i2 == i1), \
+            {printf("\t[ \033[31mFAILED\033[0m ] int1 -> [ %li  ] int2 -> [ %li ] " __VA_ARGS__ "\n", i1, i2);}, \
+            {printf("\t[ \033[32mPASSED\033[0m ] " __VA_ARGS__ "\n");})
+
 #define WH_TEST_REPORT(_name_) \
-    printf("\n\tTEST REPORT [ failed : %lu, passed : %lu ]\n", _name_.failed, _name_.passed)
+    printf("\n\tTEST REPORT [ failed : %lu, passed : %lu ]\n", _name_##_test.failed, _name_##_test.passed)
 
 
 #endif /* _wh_header_testing_unit_ */
