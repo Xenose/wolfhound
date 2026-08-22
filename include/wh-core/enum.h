@@ -1,5 +1,5 @@
-#ifndef _wh_header_common_enum_
-#define _wh_header_common_enum_
+#ifndef _wh_header_core_enum_
+#define _wh_header_core_enum_
 
 enum {
     WH_STRUCT_TYPE_UNKOWN = 0,
@@ -74,24 +74,24 @@ enum {
 };
 
 enum {
-	WH_SUCCESS,
-	WH_ERROR_UNKOWN,
+    WH_SUCCESS,
+    WH_ERROR_UNKOWN,
 
-	WH_ERROR_INVALID_PARAM,
-	WH_ERROR_INVALID_PARAM_NULLPTR,
-	WH_ERROR_FAILED_MEMREQ,
-	WH_ERROR_HEAP_TOO_SMALL,
-	WH_ERROR_NO_MATCH,
-	WH_ERROR_NO_MEMORY,
-	WH_ERROR_OVERFLOW_ISSUE,
+    WH_ERROR_INVALID_PARAM,
+    WH_ERROR_INVALID_PARAM_NULLPTR,
+    WH_ERROR_FAILED_MEMREQ,
+    WH_ERROR_HEAP_TOO_SMALL,
+    WH_ERROR_NO_MATCH,
+    WH_ERROR_NO_MEMORY,
+    WH_ERROR_OVERFLOW_ISSUE,
 
-	WH_ERROR_ENUM_END
+    WH_ERROR_ENUM_END
 };
 
 #ifndef _WIN32
 enum {
-	STRUNCATE = 10000
+    STRUNCATE = 10000
 };
 #endif
 
-#endif /* _wh_header_common_enum_ */
+#endif /* _wh_header_core_enum_ */

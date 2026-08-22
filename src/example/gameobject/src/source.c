@@ -60,9 +60,10 @@ int main(int arc, char* const* arv) {
         .config_path = (wh_string_s){ .str = buf, 0 },      // application config
     );
 
-    _wh_mem_scan();
-    void* t1 = wh_own(test_tracker(), &t1);
-    _wh_mem_scan();
+    // Testing memory tracker
+    // _wh_mem_scan();
+    // void* t1 = wh_own(test_tracker(), &t1);
+    // _wh_mem_scan();
 
     // Setting the limits of Actions and Entities
     wh_action_init(ins, 100);
@@ -83,7 +84,7 @@ int main(int arc, char* const* arv) {
 
     _wh_event_subscribe(41, &key_escape);
 
-    //wh_loop(ins, &update, &fixed_update);
+    wh_loop(ins, &update, &fixed_update);
 
     // Needs a better public api or background thread.
     _wh_mem_scan();
