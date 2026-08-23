@@ -96,6 +96,28 @@ void* _wh_alloc_no_tracking(_wh_mem_alloc_params params) {
     return mem;
 }
 
+void* _wh_calloc(_wh_calloc_params params) {
+    void* mem = nullptr;
+    u64 bytes = params.count * params.bytes;
+
+    _wh_mem_alloc_params p = {
+        .heap   = params.heap,
+        .bytes  = bytes,
+        .owner  = params.owner,
+        .flags  = params.flags,
+        .line   = params.line,
+        .file   = params.file,
+    };
+
+    mem = _wh_alloc(p);
+
+    if (nullptr != mem) {
+        memset(mem, 0, bytes);
+    }
+
+    return mem;
+}
+
 void _wh_free_no_tracking(_wh_mem_free_params params) {
     if (nullptr == params.heap) {
         params.heap = _heap_main;

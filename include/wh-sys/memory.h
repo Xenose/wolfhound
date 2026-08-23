@@ -1,9 +1,9 @@
 #ifndef _wh_memory_
 #define _wh_memory_
 
-#include <wh-core/common.h>
-#include <wh-types/memory.h>
-#include <wh-params/memory.h>
+#include<wh-core/common.h>
+#include<wh-types/memory.h>
+#include<wh-params/memory.h>
 
 WH_C()
 
@@ -23,6 +23,8 @@ extern void* (*_wh_realloc)(_wh_mem_realloc_params params);
 extern void  (*_wh_free)(_wh_mem_free_params params);
 extern void* (*_wh_disown)(_wh_mem_free_params params);
 extern void* (*_wh_own)(_wh_own_params params);
+
+extern void* _wh_calloc(_wh_calloc_params params);
 
 // General functions
 extern void _wh_heap_print(_wh_heap_print_params params);
@@ -83,6 +85,8 @@ extern i32 wh_mem_leak_count(void);
  * ## wh_mem_alloc()
  */
 #define wh_alloc(...) WH_EPF(_wh_alloc((_wh_mem_alloc_params) { __VA_ARGS__, .line = __LINE__, .file = __FILENAME__ }))
+
+#define wh_calloc(...) WH_EPF(_wh_calloc((_wh_calloc_params) { __VA_ARGS__, .line = __LINE__, .file = __FILENAME__ }))
 
 /* [MD_DOC]
  */

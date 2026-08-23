@@ -1,7 +1,8 @@
 #ifndef _wh_header_data_hashmap_
 #define _wh_header_data_hashmap_
 
-#include <wh-core/common.h>
+#include<wh-core/common.h>
+#include<wh-types/memory.h>
 
 // Constant key hashmap
 // needs to live for the scope of the hashmap

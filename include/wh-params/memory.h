@@ -43,6 +43,19 @@ typedef struct {
 
 typedef struct {
     wh_heap_header_s* heap;
+    u64 count;
+    u64 bytes;
+    void* owner;
+    u64 flags;
+    i64* error;
+
+    // debug info
+    u64 line;
+    const char* file;
+} _wh_calloc_params;
+
+typedef struct {
+    wh_heap_header_s* heap;
     void* ptr;
     u64 bytes;
     u64 flags;

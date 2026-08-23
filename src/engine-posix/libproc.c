@@ -2,5 +2,5 @@
 #include<wh-posix/signal.h>
 
 #if (WH_SYSTEM&WH_SYS_LINUX)
-    #include"_linux/libproc.c"
+    #include"_common/libproc.c"
 #endif

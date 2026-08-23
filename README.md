@@ -144,7 +144,7 @@ In AES system :: action(logic) -> Entity -> Data
 
 |  Language       | File Count | Lines of Code | Percentage |
 | --------------- | ---------- | ------------- | ---------- |
-| C               | 304        | 9542          | 78.17%     |
+| C               | 304        | 9543          | 78.18%     |
 | Python          | 35         | 1042          | 8.54%      |
 | CMake           | 26         | 566           | 4.64%      |
 | C++             | 20         | 495           | 4.06%      |
@@ -155,7 +155,7 @@ In AES system :: action(logic) -> Entity -> Data
 | GLSL            | 1          | 13            | 0.11%      |
 | Assembly        | 2          | 11            | 0.09%      |
 | INI             | 1          | 3             | 0.02%      |
-| Summary         | 416        | 12206         | 100.00%    |
+| Summary         | 416        | 12207         | 100.00%    |
 
 <!--python-stats-end-->
 

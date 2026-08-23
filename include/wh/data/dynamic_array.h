@@ -1,8 +1,9 @@
 #ifndef _wh_header_data_dynamic_array
 #define _wh_header_data_dynamic_array
 
-#include <wh-core/common.h>
-#include <wh-types/memory.h>
+#include<wh-core/common.h>
+#include<wh-types/memory.h>
+#include<wh-params/memory.h>
 
 WH_C()
 
@@ -11,7 +12,6 @@ typedef struct {
     wh_atomic_lock_s lock;
 
     union {
-        wh_heap_header_s heap;
         wh_sysmem_s sysmem;
         void* memory;
     };
@@ -19,6 +19,7 @@ typedef struct {
     u64 type_size;
     u64 node_count;
 
+    wh_heap_header_s* heap;
     void* head;
     void* tail;
 } wh_darray_s;
@@ -26,6 +27,7 @@ typedef struct {
 typedef struct {
     struct_type stype;
     wh_darray_s* array;
+    wh_heap_header_s* heap;
     u64 type_size;
     u64 count;
 } _wh_darray_init_params;
