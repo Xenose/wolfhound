@@ -67,7 +67,7 @@ i64 _wh_str2int(_wh_str2int_params params) {
     if ('0' <= params.buffer[0] && '9' >= params.buffer[0]) {
         out = params.buffer[0] - '0';
 
-        for(u64 i = 1; i < params.buffer_length; i++) {
+        for(i64 i = 1; i < params.buffer_length; i++) {
             if ('0' > params.buffer[i] || '9' < params.buffer[i]) {
                 break;
             }
@@ -95,7 +95,7 @@ char* float2str(float value, char* buffer, u64 buffer_length) {
 }
 
 void _wh_str_invert(_wh_str_invert_params params) {
-    wh_for(i64, i, params.length) {
+    wh_for(u64, i, params.length) {
         switch (params.buffer[i]) {
             case 'a': case 'b': case 'c': case 'd': case 'e': case 'f':
             case 'g': case 'h': case 'i': case 'j': case 'k': case 'l':

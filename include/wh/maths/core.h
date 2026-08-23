@@ -76,16 +76,16 @@ extern i64 _wh_hash_simple(_wh_hash_simple_params params);
 #else
     #define wh_abs(x) \
         _Generic((x), \
-            i8: WH_ABS_I8(x), \
-            i16: WH_ABS_I16(x), \
-            i32: WH_ABS_I32(x), \
-            i64: WH_ABS_I64(x), \
-            i128: WH_ABS_I128(x), \
-            u8: (x), \
-            u16: (x), \
-            u32: (x), \
-            u64: (x), \
-            u128: (x), \
+            i8:     WH_ABS_I8(x), \
+            i16:    WH_ABS_I16(x), \
+            i32:    WH_ABS_I32(x), \
+            i64:    WH_ABS_I64(x), \
+            i128:   WH_ABS_I128(x), \
+            u8:     (u8)(x), \
+            u16:    (u16)(x), \
+            u32:    (u32)(x), \
+            u64:    (u64)(x), \
+            u128:   (u128)(x), \
             default: fabsl((long double)x) \
             )
 #endif

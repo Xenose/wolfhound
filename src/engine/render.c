@@ -133,5 +133,5 @@ go_error_exit:
 }
 
 void _wh_event_subscribe(int key, void (*func)(wh_event_s*)) {
-	_wh_event_keys[key] = func;
+    _wh_event_keys[key] = func;
 }

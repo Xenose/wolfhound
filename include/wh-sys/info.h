@@ -5,7 +5,7 @@
 
 WH_C()
 
-extern i64 wh_sys_gettid(void);
+extern pid_t wh_sys_gettid(void);
 extern i64 wh_sys_program_path(char* buffer, u64 buffer_size);
 
 WH_C_END()

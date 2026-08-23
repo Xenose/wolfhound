@@ -1,5 +1,6 @@
 #include<wh/data/dynamic_array.h>
 
+#include"_dynamic_array/dynamic_array_wolf.c"
 #include"_dynamic_array/dynamic_array_std.c"
 
 typedef struct {
@@ -12,8 +13,15 @@ typedef struct {
 } _map_func;
 
 static _map_func _funcs[] = {
-    {},
-    {},
+    {
+        .init       = _wh_darray_init_wolf,
+        .get        = _wh_darray_get_wolf,
+        .set        = _wh_darray_set_wolf,
+        .resize     = _wh_darray_resize_wolf,
+        .for_each   = _wh_darray_for_each_wolf,
+    },
+    {
+    },
     {
         .init       = _wh_darray_init_std,
         .get        = _wh_darray_get_std,

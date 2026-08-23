@@ -27,9 +27,9 @@ typedef struct {
 typedef struct {
     struct_type stype;
     wh_darray_s* array;
-    wh_heap_header_s* heap;
     u64 type_size;
     u64 count;
+    wh_heap_header_s* heap;
 } _wh_darray_init_params;
 
 typedef struct {

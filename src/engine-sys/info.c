@@ -5,15 +5,15 @@
 #include <wh/print.h>
 
 #if !(WH_SYSTEM&WH_SYS_TCC)
-    static wh_thread i64 _thread_id = -1;
+    static wh_thread pid_t _thread_id = -1;
 #endif
 
-i64 wh_sys_gettid(void) {
+pid_t wh_sys_gettid(void) {
     #if (WH_SYSTEM&WH_SYS_TCC)
         return gettid();
     #else
         return -1 == _thread_id ?
-            (_thread_id = (i64)gettid()) : _thread_id;
+            (_thread_id = gettid()) : _thread_id;
     #endif
 }
 
@@ -41,35 +41,35 @@ i64 wh_sys_program_path(char* buffer, u64 buffer_size) {
 #elif (WH_SYSTEM&WH_SYS_BSD)
 
 i64 wh_sys_program_path(char* buffer, u64 buffer_size) {
-	return 0;
+    return 0;
 }
 
 #elif (WH_SYSTEM&WH_SYS_SOLARIS)
 
 i64 wh_sys_program_path(char* buffer, u64 buffer_size) {
-	return 0;
+    return 0;
 }
 
 #elif (WH_SYSTEM&WH_SYS_WINDOWS)
 #include<wh-posix/_windows/windows.h>
 
 i64 wh_sys_program_path(char* buffer, u64 buffer_size) {
-	DWORD length = GetModuleFileNameA(
-		nullptr, buffer, (DWORD)buffer_size);
+    DWORD length = GetModuleFileNameA(
+            nullptr, buffer, (DWORD)buffer_size);
 
-	if (0 == length) {
-		return -1;
-	}
+    if (0 == length) {
+        return -1;
+    }
 
-	--length;
+    --length;
 
-	while (0 < length && '\\' != buffer[length]) {
-		buffer[length--] = '\0';
-	}
+    while (0 < length && '\\' != buffer[length]) {
+        buffer[length--] = '\0';
+    }
 
-	return length;
+    return length;
 }
 
 #elif (WH_SYSTEM&WH_SYS_BEOS)
-	#include"_beos/info.c"
+    #include"_beos/info.c"
 #endif
