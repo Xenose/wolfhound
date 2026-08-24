@@ -179,7 +179,7 @@ static void _wh_print_int128(wh_print_data_s* d, i128 value, i64 base) {
         return;
     }
 
-    wh_int2str(value, d->buffer, (u64)length, (u64)base);
+    wh_int2str128(value, d->buffer, (u64)length, (u64)base);
     d->buffer += length;
     ++d->format;
 }

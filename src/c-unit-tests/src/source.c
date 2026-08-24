@@ -8,7 +8,7 @@
 #include<wh/string.h>
 
 
-void test_string() {
+WH_TEST_FUNC(test_strings) {
     WH_TEST(wh_strcat) {
         int64_t error = 0;
         char buffer[256] = { 0 };
@@ -47,5 +47,7 @@ void test_string() {
 }
 
 int main(int arc, char* const* arv) {
-    test_string();
+    wh_unit_results_s results = { 0 };
+
+    test_strings(&results);
 }

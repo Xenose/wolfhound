@@ -3,6 +3,8 @@
 
 #include<wh-posix/stdint.h>
 #include<wh-posix/stdio.h>
+#include<wh-posix/stdlib.h>
+#include<wh-posix/string.h>
 #include<wh-core/c23-comp.h>
 
 typedef struct {
@@ -18,26 +20,50 @@ typedef struct {
     wh_unit_test_params params;
 } wh_unit_test_s;
 
-#define WH_TEST(_name_, ...) for (wh_unit_test_s _name_##_test = { \
+typedef struct {
+    uint64_t count;
+    wh_unit_test_s* ptr;
+} wh_unit_results_s;
+
+static wh_unit_test_s* _wh_unit_test_realloc(wh_unit_results_s* res, wh_unit_test_s out) {
+    wh_unit_test_s* ptr = nullptr;
+
+    ptr = realloc(res->ptr, sizeof(wh_unit_test_s) * (res->count + 1));
+
+    if (nullptr == ptr) {
+        goto go_error_exit;
+    }
+
+    res->ptr = ptr;
+    memcpy(&res->ptr[res->count], &out, sizeof(wh_unit_test_s));
+
+    return &ptr[res->count++];
+go_error_exit:
+    return nullptr;
+}
+
+#define WH_TEST_FUNC(_name_) void _name_(wh_unit_results_s* _results_)
+
+#define WH_TEST(_name_, ...) for (wh_unit_test_s* _name_##_test = _wh_unit_test_realloc(_results_, (wh_unit_test_s){ \
             .name = #_name_, \
             .file = __FILE__, \
             .line = __LINE__, \
             .params = (wh_unit_test_params) { WH_VA_OPT(__VA_ARGS__) } \
-        }; -1 < _name_##_test.params.count; \
-        0 == printf("\n\tTEST REPORT [ failed : %lu, passed : %lu ]\n", _name_##_test.failed, _name_##_test.passed) ? _name_##_test.params.count-- : _name_##_test.params.count--)
+        }); nullptr != _name_##_test && -1 < _name_##_test->params.count; \
+        0 == printf("\n\tTEST REPORT [ failed : %lu, passed : %lu ]\n", _name_##_test->failed, _name_##_test->passed) ? _name_##_test->params.count-- : _name_##_test->params.count--)
 
 #define _WH_TEST_CMP(_name_, _cmp_, _print_failure_, _print_success_) \
     wh_try { \
             if _cmp_ { \
                 _print_success_ \
-                ++(_name_##_test).passed; \
+                ++(_name_##_test)->passed; \
             } else { \
                 _print_failure_ \
-                ++(_name_##_test).failed; \
+                ++(_name_##_test)->failed; \
             } \
     } wh_catch(wh_exception_s, _ex) { \
         _print_failure_ \
-        ++(_name_##_test).failed; \
+        ++(_name_##_test)->failed; \
     }
 
 

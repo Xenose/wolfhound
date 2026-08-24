@@ -52,6 +52,30 @@ go_error_exit:
     return params.buffer;
 }
 
+char* _wh_int2str128(_wh_int2str128_params params) {
+    _wh_uint2str_params data = {
+        .buffer = params.buffer,
+        .buffer_length = params.buffer_length,
+        .base = params.base
+    };
+
+    /*if (0 != params.buffer || 0 > params.buffer_length) {
+      goto go_error_exit;
+      }*/
+
+    if (0 > params.value) {
+        params.value = -params.value;
+        *data.buffer = '-';
+        ++data.buffer;
+        --data.buffer_length;
+    }
+
+    data.value = wh_abs(params.value);
+    return _wh_uint2str(data);
+go_error_exit:
+    return params.buffer;
+}
+
 i64 _wh_str2int(_wh_str2int_params params) {
     i64 out = 0;
     i64 sign = 1;
@@ -67,12 +91,40 @@ i64 _wh_str2int(_wh_str2int_params params) {
     if ('0' <= params.buffer[0] && '9' >= params.buffer[0]) {
         out = params.buffer[0] - '0';
 
-        for(i64 i = 1; i < params.buffer_length; i++) {
+        wh_for(i64, i, params.buffer_length) {
             if ('0' > params.buffer[i] || '9' < params.buffer[i]) {
                 break;
             }
 
             out *= 10;
+            out += params.buffer[i] - '0';
+        }
+    }
+
+    return out * sign;
+}
+
+i128 _wh_str2int128(_wh_str2int128_params params) {
+    i64 out = 0;
+    i64 sign = 1;
+
+    switch (params.buffer[0]) {
+        case '-':
+            sign = -1;
+        case '+':
+            ++params.buffer;
+            --params.buffer_length;
+    }
+
+    if ('0' <= params.buffer[0] && '9' >= params.buffer[0]) {
+        out = params.buffer[0] - '0';
+
+        wh_for(i64, i, params.buffer_length) {
+            if ('0' > params.buffer[i] || '9' < params.buffer[i]) {
+                break;
+            }
+
+            out += 10;
             out += params.buffer[i] - '0';
         }
     }
