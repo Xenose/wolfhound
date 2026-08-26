@@ -1,7 +1,9 @@
 #include <wh-posix/string.h>
 #include <wh/debug/logger.h>
 #include <wh/maths/memory.h>
-#include <wh/memory/freelist.h>
+
+#include <wh-types/memory.h>
+#include <wh-params/memory.h>
 
 wh_heap_node_s* _wh_mem_alloc_freelist_head(_wh_mem_alloc_params* params, i64* error) {
     wh_heap_node_s* node = params->heap->freelist.nodes;
@@ -61,7 +63,7 @@ void* _wh_mem_alloc_freelist(_wh_mem_alloc_params* params)  {
     }
 
     // check if the nodes is big enough for a split
-    if ((node->bytes - 64) > (params->bytes + sizeof(wh_heap_node_s))) {
+    if ((node->bytes - 64) >= (params->bytes + sizeof(wh_heap_node_s))) {
         wh_heap_node_s* header = nullptr;
         u64 size = (u64)wh_align(params->bytes + sizeof(wh_heap_node_s), 64);
 

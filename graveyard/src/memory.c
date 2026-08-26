@@ -11,10 +11,6 @@
 #include<wh/maths/core.h>
 #include<wh/maths/memory.h>
 
-#include"_memory/dummy.c"
-#include"_memory/freelist.c"
-#include"_memory/arena.c"
-
 // hashmap
 typedef struct {
     wh_heap_header_s* header;
@@ -51,28 +47,13 @@ void* (*_wh_own)(_wh_own_params params) = &_wh_own_tracking;
 
 
 typedef struct {
-    void* (*alloc)(_wh_mem_alloc_params* params);
-    void* (*realloc)(_wh_mem_realloc_params* params);
-    void (*free)(_wh_mem_free_params* params);
+    const void* (*calloc)(_wh_calloc_params params);
+    const void* (*alloc)(_wh_mem_alloc_params params);
+    const void* (*realloc)(_wh_mem_realloc_params params);
+    const void* (*disown)(_wh_mem_free_params params);
+    const void* (*own)(_wh_own_params params);
 } _wh_alloc_funcs;
 
-static _wh_alloc_funcs funcs[] = {
-    { // arena
-        .alloc =    &_wh_arena_alloc,
-        .realloc =  &_wh_dummy_realloc,
-        .free =     &_wh_arena_free,
-    },
-    { // bucket
-        .alloc =    &_wh_dummy_alloc,
-        .realloc =  &_wh_dummy_realloc,
-        .free =     &_wh_dummy_free,
-    },
-    { // freelist
-        .alloc =    &_wh_mem_alloc_freelist,
-        .realloc =  &_wh_mem_realloc_freelist,
-        .free =     &_wh_mem_free_freelist,
-    }
-};
 
 /*
  * Hashmap functions
@@ -88,13 +69,11 @@ wh_heap_header_s* wh_heap_get(const char* name) {
     return header;
 }
 
-
 /*
  * The raw allocations functions
  *
  */
 void* _wh_alloc_no_tracking(_wh_mem_alloc_params params) {
-    i64 index = params.heap->stype - WH_STRUCT_TYPE_HEAP_ARENA;
     void* mem = nullptr;
     params.bytes = (u64)wh_align((i64)params.bytes, 16);
 
@@ -102,8 +81,19 @@ void* _wh_alloc_no_tracking(_wh_mem_alloc_params params) {
         params.heap = _heap_main;
     }
 
-    wh_spinlock_v3(&params.heap->locked) {
-        mem = funcs[index].alloc(&params);
+    switch (params.heap->stype) {
+        case WH_STRUCT_TYPE_HEAP_ARENA:
+            wh_spinlock_v3(&params.heap->locked) {
+                mem = _wh_mem_alloc_arena(&params);
+            }
+            break;
+
+        default:
+        case WH_STRUCT_TYPE_HEAP_FREELIST:
+            wh_spinlock_v3(&params.heap->locked) {
+                mem = _wh_mem_alloc_freelist(&params);
+            }
+            break;
     }
 
     if (0 != params.flags) {
@@ -111,20 +101,7 @@ void* _wh_alloc_no_tracking(_wh_mem_alloc_params params) {
             memset(mem, 0, params.bytes);
         }
     }
-
     return mem;
-}
-
-void _wh_free_no_tracking(_wh_mem_free_params params) {
-    i64 index = params.heap->stype - WH_STRUCT_TYPE_HEAP_ARENA;
-
-    if (nullptr == params.heap) {
-        params.heap = _heap_main;
-    }
-
-    wh_spinlock_v3(&params.heap->locked) {
-        funcs[index].free(&params);
-    }
 }
 
 void* _wh_calloc(_wh_calloc_params params) {
@@ -149,18 +126,45 @@ void* _wh_calloc(_wh_calloc_params params) {
     return mem;
 }
 
+void _wh_free_no_tracking(_wh_mem_free_params params) {
+    if (nullptr == params.heap) {
+        params.heap = _heap_main;
+    }
 
+    switch (params.heap->stype) {
+        case WH_STRUCT_TYPE_HEAP_ARENA:
+            wh_spinlock_v3(&params.heap->locked) {
+                _wh_mem_free_arena(&params);
+            }
+            break;
+
+        default:
+        case WH_STRUCT_TYPE_HEAP_FREELIST:
+            wh_spinlock_v3(&params.heap->locked) {
+                _wh_mem_free_freelist(&params);
+            }
+            break;
+    }
+}
 
 void* _wh_realloc_no_tracking(_wh_mem_realloc_params params) {
-    i64 index = params.heap->stype - WH_STRUCT_TYPE_HEAP_ARENA;
     void* mem = nullptr;
 
     if (nullptr == params.heap) {
         params.heap = _heap_main;
     }
 
-    wh_spinlock_v3(&params.heap->locked) {
-        mem = funcs[index].realloc(&params);
+    switch (params.heap->stype) {
+        case WH_STRUCT_TYPE_HEAP_ARENA:
+            wh_log_error(("Arena allocator don't support realloc"));
+            break;
+
+        default:
+        case WH_STRUCT_TYPE_HEAP_FREELIST:
+            wh_spinlock_v3(&params.heap->locked) {
+                mem = _wh_mem_realloc_freelist(&params);
+            }
+            break;
     }
 
     return mem;
@@ -367,16 +371,16 @@ i8 _wh_heap_delete(void) {
 
 void _wh_memory_tracking(_wh_memory_tracking_params params) {
     if (0 == params.tracking_off) {
-        _wh_alloc       = &_wh_alloc_no_tracking;
-        _wh_realloc     = &_wh_realloc_no_tracking;
-        _wh_free        = &_wh_free_no_tracking;
+        _wh_alloc	= &_wh_alloc_no_tracking;
+        _wh_realloc	= &_wh_realloc_no_tracking;
+        _wh_free		= &_wh_free_no_tracking;
 
-        _wh_disown      = &_wh_disown_no_tracking;
+        _wh_disown	= &_wh_disown_no_tracking;
     } else {
-        _wh_alloc       = &_wh_alloc_tracking;
-        _wh_realloc     = &_wh_realloc_tracking;
-        _wh_free        = &_wh_free_tracking;
+        _wh_alloc	= &_wh_alloc_tracking;
+        _wh_realloc	= &_wh_realloc_tracking;
+        _wh_free		= &_wh_free_tracking;
 
-        _wh_disown      = &_wh_disown_tracking;
+        _wh_disown	= &_wh_disown_tracking;
     }
 }

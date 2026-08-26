@@ -14,10 +14,13 @@ SET(C_SOURCES
     "src/engine-sys/info.c"
     "src/engine-sys/library.c"
     "src/engine-sys/memory.c"
-    "src/engine-sys/memory/arena.c"
-    "src/engine-sys/memory/core.c"
-    "src/engine-sys/memory/freelist.c"
     "src/engine-sys/memory/tracker.c"
+    "src/engine-sys/memory/core.c"
+    
+    # No longer needed.
+    # "src/engine-sys/memory/arena.c"
+    # "src/engine-sys/memory/freelist.c"
+    
     "src/engine-sys/memreq.c"
     "src/engine-sys/socket.c"
 

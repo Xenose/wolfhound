@@ -1,7 +1,7 @@
 #include <wh/debug/logger.h>
-#include <wh/memory/arena.h>
+#include <wh-params/memory.h>
 
-void* _wh_mem_alloc_arena(_wh_mem_alloc_params* params)  {
+void* _wh_arena_alloc(_wh_mem_alloc_params* params)  {
     void* out = nullptr;
     void* ptr = params->heap->arena.start;
 
@@ -21,7 +21,7 @@ go_error_exit:
     return out;
 }
 
-void _wh_mem_free_arena(_wh_mem_free_params* params) {
+void _wh_arena_free(_wh_mem_free_params* params) {
     wh_heap_header_s* heap = params->heap;
 
     heap->bytes_free += (heap->bytes_used - sizeof(wh_heap_header_s));
