@@ -94,13 +94,15 @@ wh_heap_header_s* wh_heap_get(const char* name) {
  *
  */
 void* _wh_alloc_no_tracking(_wh_mem_alloc_params params) {
-    i64 index = params.heap->stype - WH_STRUCT_TYPE_HEAP_ARENA;
+    i64 index = 0;
     void* mem = nullptr;
-    params.bytes = (u64)wh_align((i64)params.bytes, 16);
 
     if (nullptr == params.heap) {
         params.heap = _heap_main;
     }
+
+    params.bytes = (u64)wh_align((i64)params.bytes, 16);
+    index = params.heap->stype - WH_STRUCT_TYPE_HEAP_ARENA;
 
     wh_spinlock_v3(&params.heap->locked) {
         mem = funcs[index].alloc(&params);
@@ -116,11 +118,13 @@ void* _wh_alloc_no_tracking(_wh_mem_alloc_params params) {
 }
 
 void _wh_free_no_tracking(_wh_mem_free_params params) {
-    i64 index = params.heap->stype - WH_STRUCT_TYPE_HEAP_ARENA;
+    i64 index = 0;
 
     if (nullptr == params.heap) {
         params.heap = _heap_main;
     }
+
+    index = params.heap->stype - WH_STRUCT_TYPE_HEAP_ARENA;
 
     wh_spinlock_v3(&params.heap->locked) {
         funcs[index].free(&params);
@@ -152,12 +156,14 @@ void* _wh_calloc(_wh_calloc_params params) {
 
 
 void* _wh_realloc_no_tracking(_wh_mem_realloc_params params) {
-    i64 index = params.heap->stype - WH_STRUCT_TYPE_HEAP_ARENA;
+    i64 index = 0;
     void* mem = nullptr;
 
     if (nullptr == params.heap) {
         params.heap = _heap_main;
     }
+
+    index = params.heap->stype - WH_STRUCT_TYPE_HEAP_ARENA;
 
     wh_spinlock_v3(&params.heap->locked) {
         mem = funcs[index].realloc(&params);
