@@ -141,6 +141,10 @@ void _wh_free_no_tracking(_wh_mem_free_params params) {
         params.heap = _heap_main;
     }
 
+    if (nullptr == params.ptr) {
+        wh_log_error(("trying to free nullptr"));
+    }
+
     index = params.heap->stype - WH_STRUCT_TYPE_HEAP_ARENA;
 
     wh_spinlock_v3(&params.heap->locked) {

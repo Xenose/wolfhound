@@ -59,6 +59,7 @@ void* _wh_mem_alloc_freelist(_wh_mem_alloc_params* params)  {
     }
 
     if (nullptr == node) {
+        wh_log_error(("Failed to get heap node"));
         goto go_error_exit;
     }
 
@@ -66,7 +67,6 @@ void* _wh_mem_alloc_freelist(_wh_mem_alloc_params* params)  {
     if ((node->bytes - 64) >= (params->bytes + sizeof(wh_heap_node_s))) {
         wh_heap_node_s* header = nullptr;
         u64 size = (u64)wh_align(params->bytes + sizeof(wh_heap_node_s), 64);
-
         wh_log_debug(("node is size [ $k ] currently and allocated size is [ $k ]"), node->bytes, size);
 
         if (WH_ALLOC_TAIL & params->flags) {
@@ -109,7 +109,7 @@ go_error_exit:
 
 wh_heap_node_s* _wh_mem_freelist_previous(_wh_mem_free_params* params, wh_heap_node_s* pn, wh_heap_node_s* cn) {
     if (nullptr != pn) {
-        if (wh_not(WH_MEM_IN_USE & pn->flags)) {
+        if (!(WH_MEM_IN_USE & pn->flags)) {
             pn->next = cn->next;
             pn->bytes += cn->bytes;
             cn = _wh_mem_freelist_previous(params, pn->previous, pn);
@@ -121,7 +121,7 @@ wh_heap_node_s* _wh_mem_freelist_previous(_wh_mem_free_params* params, wh_heap_n
 
 void _wh_mem_freelist_next(_wh_mem_free_params* params, wh_heap_node_s* nn, wh_heap_node_s* cn) {
     if (nullptr != nn) {
-        if (wh_not(WH_MEM_IN_USE & nn->flags)) {
+        if (!(WH_MEM_IN_USE & nn->flags)) {
             cn->bytes += nn->bytes;
             cn->next = nn->next;
             _wh_mem_freelist_next(params, nn->next, cn);
@@ -133,23 +133,16 @@ void _wh_mem_free_freelist(_wh_mem_free_params* params) {
     i64 error = 0;
     wh_heap_node_s* node = params->heap->freelist.nodes;
 
-    if (nullptr == params->ptr) {
-        wh_log_error(("trying to free nullptr"));
-        goto go_error_exit;
-    }
-
     if (nullptr == node) {
         error = WH_ERROR_NO_MEMORY;
         goto go_error_exit;
     }
 
-    while (node->data != params->ptr) {
+    for (;node->data != params->ptr; node = node->next) {
         if (nullptr == node->next) {
             wh_log_error(("Failed to find pointer next pointer is NULL"));
             goto go_error_exit;
         }
-
-        node = node->next;
     }
 
     if (node->data == params->ptr) {
