@@ -85,6 +85,11 @@ int main(int arc, char* const* arv) {
 
     printf("\n\n");
     for (struct dirent* entry = readdir(dir); nullptr != entry; entry = readdir(dir)) {
+
+        if (0 == strcmp(entry->d_name, ".") || 0 == strcmp(entry->d_name, "..")) {
+            continue;
+        }
+
         str_append(path, path_length, entry->d_name);
         printf("Executing test [ %s ]\n", path);
 
@@ -92,11 +97,12 @@ int main(int arc, char* const* arv) {
 
         if (nullptr == handle) {
             printf("Failed to load test [ %s ] -> %s\n", path, dlerror());
-            continue;
+            goto go_memset;
         }
 
         dlerror();
 
+go_memset:
         // Resetting the path so we can reuse it for the next test.
         memset(&path[path_end], 0, path_length - path_end);
     }
