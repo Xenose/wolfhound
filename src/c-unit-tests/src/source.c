@@ -3,6 +3,7 @@
 #include<wh-posix/string.h>
 #include<wh-posix/errno.h>
 #include<wh-posix/dirent.h>
+#include<wh-posix/dlfcn.h>
 
 #include<wh-sys/info.h>
 
@@ -65,11 +66,15 @@ int main(int arc, char* const* arv) {
 
     char path[PATH_LENGTH] = { 0 };
     int path_length = PATH_LENGTH - 1;
+    int path_end = 0;
 
     DIR* dir = nullptr;
-    
+   
+    // Constructing the test path and getting the
+    // end of the path.
     wh_sys_program_path(path, path_length);
     str_append(path, path_length, "tests/");
+    path_end = strlen(path);
 
     printf("Path is [ %s ]\n", path);
 
@@ -80,7 +85,20 @@ int main(int arc, char* const* arv) {
 
     printf("\n\n");
     for (struct dirent* entry = readdir(dir); nullptr != entry; entry = readdir(dir)) {
-        printf("Executing test [ %s ]\n", entry->d_name);
+        str_append(path, path_length, entry->d_name);
+        printf("Executing test [ %s ]\n", path);
+
+        void* handle = dlopen(path, 0);
+
+        if (nullptr == handle) {
+            printf("Failed to load test [ %s ] -> %s\n", path, dlerror());
+            continue;
+        }
+
+        dlerror();
+
+        // Resetting the path so we can reuse it for the next test.
+        memset(&path[path_end], 0, path_length - path_end);
     }
 
     closedir(dir);
