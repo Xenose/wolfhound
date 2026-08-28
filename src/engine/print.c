@@ -11,7 +11,7 @@
 #include<wh-sys/atomic_lock.h>
 #include<wh-sys/memreq.h>
 #include<wh/convert.h>
-#include<wh/data/hashmap.h>
+#include<wh-sys/data/hashmap.h>
 #include<wh/debug/error.h>
 #include<wh/maths/core.h>
 #include<wh/print.h>

@@ -2,8 +2,8 @@
 #define _wh_c_dll_common_
 
 #include<wh-posix/string.h>
-#include<wh/data/list.h>
-#include<wh/data/list.h>
+#include<wh-sys/data/list.h>
+#include<wh-sys/data/list.h>
 #include<wh/debug/logger.h>
 
 static void* _wh_data_dll(void* node) {

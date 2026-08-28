@@ -1,4 +1,4 @@
-#include<wh/data/dynamic_array.h>
+#include<wh-sys/data/dynamic_array.h>
 
 #include<wh/debug/logger.h>
 #include<wh/debug/signalar.h>

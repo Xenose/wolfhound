@@ -1,5 +1,5 @@
 #include<wh-posix/stdarg.h>
-#include<wh/data/hashmap_lazy.h>
+#include<wh-sys/data/hashmap_lazy.h>
 #include<wh/maths/core.h>
 #include<wh-sys/memory.h>
 #include<wh/print.h>

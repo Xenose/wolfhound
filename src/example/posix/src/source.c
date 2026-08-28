@@ -4,6 +4,23 @@
 #include<wh-posix/unistd.h>
 #include<wh-posix/libproc.h>
 
+#include<wh-core/data/array.h>
+
+WH_DARRAY(int, test_array);
+
+static void* _resize(void* ptr, int size, int type_size) {
+    void* p = realloc(ptr, size * type_size);
+
+    if (nullptr == p) {
+        printf("Failed to reallocate array!\n");
+    } else {
+        printf("Reallocated array!");
+        ptr = p;
+    }
+
+    return ptr;
+}
+
 int main(int arc, char* const* arv) {
    int nb = 0;
    char message[] = "Hello, world!\n";
@@ -22,6 +39,9 @@ int main(int arc, char* const* arv) {
 
    proc_read(getpid(), &pstatus); 
    proc_print(&pstatus);
+
+   WH_DARRAY_RESIZE(&test_array, 100, _resize); 
+   
 
    return 0;
 }

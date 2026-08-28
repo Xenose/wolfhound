@@ -1,4 +1,4 @@
-#include<wh/data/dynamic_array.h>
+#include<wh-sys/data/dynamic_array.h>
 
 #include"_dynamic_array/dynamic_array_wolf.c"
 #include"_dynamic_array/dynamic_array_std.c"

@@ -1,7 +1,7 @@
 #ifndef _wh_source_guard_data_common_darray_
 #define _wh_source_guard_data_common_darray_
 
-#include<wh/data/dynamic_array.h>
+#include<wh-sys/data/dynamic_array.h>
 #include<wh-posix/stdlib.h>
 #include<wh-posix/string.h>
 #include<wh-sys/memory.h>

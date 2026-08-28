@@ -1,4 +1,4 @@
-#include<wh/data/hashmap.h>
+#include<wh-sys/data/hashmap.h>
 
 #include"_hashmap/lazy_simple_sys.c"
 

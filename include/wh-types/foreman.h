@@ -4,7 +4,7 @@
 #include<wh-core/common.h>
 #include<wh-sys/atomic_lock.h>
 #include<wh-types/gameinfo.h>
-#include<wh/data/dynamic_array.h>
+#include<wh-sys/data/dynamic_array.h>
 
 typedef struct {
     struct_type stype;

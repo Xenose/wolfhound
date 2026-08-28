@@ -1,8 +1,8 @@
 #ifndef _wh_c_sll_common_
 #define _wh_c_sll_common_
 
-#include<wh/data/list.h>
-#include<wh/data/list.h>
+#include<wh-sys/data/list.h>
+#include<wh-sys/data/list.h>
 
 static void* _wh_data_sll(void* node) {
 	wh_sllist_item_s* n = node;

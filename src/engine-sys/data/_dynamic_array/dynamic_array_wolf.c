@@ -1,4 +1,4 @@
-#include<wh/data/dynamic_array.h>
+#include<wh-sys/data/dynamic_array.h>
 #include<wh-posix/stdlib.h>
 #include<wh-posix/string.h>
 #include<wh-sys/memory.h>

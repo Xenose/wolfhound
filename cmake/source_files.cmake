@@ -6,16 +6,18 @@ IF(FORTRAN_ENABLED)
 ENDIF()
 
 SET(C_SOURCES
-
     "src/engine-sys/atomic_lock.c"
+    "src/engine-sys/data/dynamic_array.c"
+    "src/engine-sys/data/hashmap.c"
+    "src/engine-sys/data/list.c"
     "src/engine-sys/file.c"
     "src/engine-sys/filesystem.c"
     "src/engine-sys/foreman.c"
     "src/engine-sys/info.c"
     "src/engine-sys/library.c"
     "src/engine-sys/memory.c"
-    "src/engine-sys/memory/tracker.c"
     "src/engine-sys/memory/core.c"
+    "src/engine-sys/memory/tracker.c"
     
     # No longer needed.
     # "src/engine-sys/memory/arena.c"
@@ -38,9 +40,6 @@ SET(C_SOURCES
     "src/engine/arg_parser.c"
     "src/engine/config.c"
     "src/engine/convert.c"
-    "src/engine/data/dynamic_array.c"
-    "src/engine/data/hashmap.c"
-    "src/engine/data/list.c"
     "src/engine/debug/benchmark.c"
     "src/engine/debug/error.c"
     "src/engine/debug/exceptions.c"
