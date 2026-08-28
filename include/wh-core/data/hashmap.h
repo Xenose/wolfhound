@@ -21,10 +21,10 @@
 #define WH_HASHMAP_VALUE_BY_INDEX(_var_, _index_) \
     (_var_)->array[_index_]
 
-#define WH_HASHMAP_USED(_var_, _index_) \
+#define WH_HASHMAP_USED(_var_) \
     (_var_)->count
 
-#define WH_HASHMAP_CAPACITY(_var_, _index_) \
+#define WH_HASHMAP_CAPACITY(_var_) \
     (_var_)->slots
 
 #endif /* _wh_header_core_data_hashmap_ */ 
