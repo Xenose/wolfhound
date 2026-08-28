@@ -39,7 +39,7 @@ void _wh_darray_init(_wh_darray_init_params params) {
     _funcs[fi].init(&params);
 }
 
-void* _wh_darry_get(_wh_darray_get_params params) {
+void* _wh_darray_get(_wh_darray_get_params params) {
     u64 fi = 0; // function index
     
     fi = ((u64)params.array->stype) - WH_STRUCT_TYPE_DYNAMIC_ARRAY_WOLF;

@@ -59,7 +59,7 @@ typedef struct {
 } _wh_darray_for_each_params;
 
 extern void _wh_darray_init(_wh_darray_init_params params);
-extern void* _wh_darry_get(_wh_darray_get_params params);
+extern void* _wh_darray_get(_wh_darray_get_params params);
 extern void* _wh_darray_set(_wh_darray_set_params params);
 extern i8 _wh_darray_resize(_wh_darray_resize_params params);
 extern void _wh_darray_for_each(_wh_darray_for_each_params params);
@@ -78,7 +78,7 @@ extern void _wh_darray_for_each(_wh_darray_for_each_params params);
      * on error, for example trying to access memory outside
      * the index range.
      */
-    #define wh_darray_get(...)  _wh_darry_get((_wh_darray_get_params){ __VA_ARGS__ })
+    #define wh_darray_get(...)  _wh_darray_get((_wh_darray_get_params){ __VA_ARGS__ })
 
     /* [MD_DOC]
      * Sets the value at the index of the array, if a error
