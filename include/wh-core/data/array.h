@@ -5,11 +5,11 @@
 #include<wh-posix/string.h>
 
 #define WH_DARRAY(T, _name_, ...) \
-    struct { \
+    struct _##_name_##_darray_struct{ \
         size_t size; \
         T* array; \
         __VA_ARGS__ \
-    } _name_
+    } _name_; typedef struct _##_name_##_darray_struct
 
 #define WH_DARRAY_SIZE(_var_) \
     (_var_)->size
@@ -21,6 +21,6 @@
     memset(&(_var_)->array[_index_], 0, sizeof((_var_)->array[_index_]))
 
 #define WH_DARRAY_RESIZE(_var_, _count_, _func_) \
-    (_var_)->array = (_func_((void*)((_var_)->array), &(_var_)->size, _count_, sizeof((_var_)->array[0])))
+    (_var_)->array = (_func_((void*) _var_, _count_, sizeof((_var_)->array[0])))
 
 #endif /* _wh_header_core_data_array_ */
