@@ -29,6 +29,7 @@ SET(C_SOURCES
     "src/engine-posix/dirent.c"
     "src/engine-posix/libproc.c"
     "src/engine-posix/netdb.c"
+    "src/engine-posix/setjmp.c"
     "src/engine-posix/signal.c"
     "src/engine-posix/string.c"
     "src/engine-posix/sys/mman.c"

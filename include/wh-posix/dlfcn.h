@@ -38,6 +38,13 @@
         Dl_serpath*     dls_serpath;    // the pointer of elements
     } Dl_serinfo;
 
+    typedef struct {
+        const char* dli_fname;
+        void*       dli_fbase;
+        const char* dli_sname;
+        void*       dli_saddr;
+    } Dl_info;
+
     extern void* dlopen(const char*, int flags);
     extern void* dlsym(void* handle, const char* symbol);
     extern int dlinfo(void* handle, int request, void* info);

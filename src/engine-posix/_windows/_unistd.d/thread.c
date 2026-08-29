@@ -16,7 +16,7 @@ pid_t getpid() {
 pid_t getppid() {
     // Outside the windows process range.
     pid_t out = WNT_INVALID_PID;
-    HANDLE hs = INVALID_HANDLE_VALUE;
+    /*HANDLE hs = INVALID_HANDLE_VALUE;
     PROCESSENTRY32 pe32 = { 0 };
     DWORD me = 0; // this process
 
@@ -37,6 +37,6 @@ pid_t getppid() {
     }
 
     CloseHandle(hs);
-go_error_exit:
+go_error_exit:*/
     return out;
 }
