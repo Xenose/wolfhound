@@ -6,7 +6,7 @@
 #include<wh-params/memory.h>
 
 wh_heap_node_s* _wh_mem_alloc_freelist_head(_wh_mem_alloc_params* params, i64* error) {
-    wh_heap_node_s* node = params->heap->freelist.head;
+    wh_heap_node_s* node = params->heap->freelist.nodes;
 
     while (node->flags & WH_MEM_IN_USE || node->bytes < params->bytes) {
         if (nullptr == node->next) {
@@ -47,7 +47,7 @@ void* _wh_mem_alloc_freelist(_wh_mem_alloc_params* params)  {
     void* out = nullptr;
     wh_heap_node_s* node = nullptr;
 
-    if (nullptr == params->heap->freelist.head || nullptr == params->heap->freelist.tail) {
+    if (nullptr == params->heap->freelist.nodes || nullptr == params->heap->freelist.tail) {
         error = WH_ERROR_NO_MEMORY;
         goto go_error_exit;
     }
@@ -92,7 +92,6 @@ void* _wh_mem_alloc_freelist(_wh_mem_alloc_params* params)  {
         }
 
         params->heap->freelist.tail = header;
-        params->heap->bytes_used += header->bytes;
         header->previous = node;
         node->next = header;
 
@@ -132,7 +131,7 @@ void _wh_mem_freelist_next(_wh_mem_free_params* params, wh_heap_node_s* nn, wh_h
 
 void _wh_mem_free_freelist(_wh_mem_free_params* params) {
     i64 error = 0;
-    wh_heap_node_s* node = params->heap->freelist.head;
+    wh_heap_node_s* node = params->heap->freelist.nodes;
 
     if (nullptr == node) {
         error = WH_ERROR_NO_MEMORY;

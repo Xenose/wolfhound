@@ -264,14 +264,14 @@ void _wh_heap_print(_wh_heap_print_params params) {
         heap = _heap_main;
     }
 
-    node = heap->freelist.nodes;
+    node = heap->freelist.head;
     wh_print(("\n"));
 
     while (nullptr != node) {
         if (node->flags & WH_MEM_IN_USE) {
-            wh_print(("[\033[31mUSED \033[0m$k]"), node->bytes);
+            wh_print(("[\033[31mUSED \033[0m$k ] "), node->bytes);
         } else {
-            wh_print(("[\033[32mFREE \033[0m$k]"), node->bytes);
+            wh_print(("[\033[32mFREE \033[0m$k ] "), node->bytes);
         }
 
         node = node->next;
@@ -313,6 +313,7 @@ wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
         }
 
         _heap_main = heap;
+        heap->bytes_total = params.bytes;
     }
 
     wh_heap_insert(params.name, heap);
@@ -332,7 +333,7 @@ wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
                 wh_log_debug(("Heap is type WH_STRUCT_TYPE_HEAP_ARENA"));
 
                 heap->bytes_used = sizeof(wh_heap_header_s);
-                heap->bytes_free = params.bytes - heap->bytes_used;
+                // heap->bytes_free = params.bytes - heap->bytes_used;
                 heap->arena.start = wh_ptr_add(heap, sizeof(wh_heap_header_s));
                 break;
 
@@ -344,14 +345,15 @@ wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
                 memset(next, 0, sizeof(wh_heap_node_s));
 
                 heap->bytes_used = sizeof(wh_heap_header_s) + sizeof(wh_heap_node_s);
-                heap->bytes_free = params.bytes - heap->bytes_used;
-                heap->freelist.nodes = next;
+                // heap->bytes_free = params.bytes - heap->bytes_used;
+                heap->freelist.head = next;
                 heap->freelist.tail = next;
 
                 // next node
                 next->stype = WH_STRUCT_TYPE_HEAP_NODE;
                 next->flags = 0;
-                next->bytes = heap->bytes_free;
+                
+                next->bytes = (u64)heap->bytes_total - (u64)heap->bytes_used;
                 next->data = wh_ptr_add(next, sizeof(wh_heap_node_s));
                 break;
         }
@@ -368,7 +370,7 @@ i8 _wh_heap_delete(void) {
         return -1;
     }
 
-    wh_sys_memrel(_heap_main, _heap_main->bytes_free + _heap_main->bytes_used);
+    wh_sys_memrel(_heap_main, (u64)_heap_main->bytes_total);
 
     return 0;
 }

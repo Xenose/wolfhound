@@ -64,6 +64,13 @@ int main(int arc, char* const* arv) {
     // _wh_mem_scan();
     // void* t1 = wh_own(test_tracker(), &t1);
     // _wh_mem_scan();
+    
+    void* values[256] = { nullptr };
+
+    wh_for(int, i, 43) {
+        wh_heap_print();
+        values[i] = wh_alloc(nullptr, 64, &values[i]);
+    }
 
     // Setting the limits of Actions and Entities
     wh_action_init(ins, 100);

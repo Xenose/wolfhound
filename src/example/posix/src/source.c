@@ -66,7 +66,7 @@ int main(int arc, char* const* arv) {
    WH_DARRAY_CLEAR(&test_array, 9);
    printf("--> %i\n", WH_DARRAY_VALUE(&test_array, 9));
    printf("--> %lu\n", WH_DARRAY_SIZE(&test_array));
-
    WH_HASHMAP_RESIZE(&test_hashmap, 10, _resize_hash);
+
    return 0;
 }

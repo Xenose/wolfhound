@@ -23,7 +23,7 @@ typedef struct _wh_heap_node_s {
 } wh_heap_node_s;
 
 typedef struct {
-    wh_heap_node_s* nodes;
+    wh_heap_node_s* head;
     wh_heap_node_s* tail;
 } _wh_heap_header_freelist_s;
 
@@ -36,8 +36,8 @@ typedef struct _wh_heap_header_s {
     wh_atomic_lock_s locked;
 
     i64 allocation_count;
-    u64 bytes_used;
-    u64 bytes_free;
+    i64 bytes_used;
+    i64 bytes_total;
 
     union {
         _wh_heap_header_freelist_s freelist;

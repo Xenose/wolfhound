@@ -62,6 +62,7 @@ go_exit:
     return 0;
 }
 
+// This is wrong, need to read the stype and resize on the stored keys
 static i8 _lazy_simple_hash_copy(wh_hashmap_s* map, void* slots, u64 bytes, i64 slot_count, u64 resize_size) {
     u64 index = 0;
     void* src = nullptr;
@@ -69,8 +70,9 @@ static i8 _lazy_simple_hash_copy(wh_hashmap_s* map, void* slots, u64 bytes, i64 
     void* src_key = nullptr;
     void* dst_key = nullptr;
 
+    // wh_hashmap_slot_ptr_s* src;
     wh_for(u64, i, map->slot_count) {
-        src = wh_ptr_offset(map->slots, i * bytes);
+        src = wh_ptr_offset(map->slots, (i + 1) * bytes);
         src_key = _lazy_simple_key_get(src, map->stype);
 
         if (nullptr != src_key) {
@@ -78,6 +80,8 @@ static i8 _lazy_simple_hash_copy(wh_hashmap_s* map, void* slots, u64 bytes, i64 
 
             dst = wh_ptr_offset(slots, index * bytes);
             dst_key = _lazy_simple_key_get(dst, map->stype);
+        
+            wh_log_debug(("Old pointer [ %x ], new pointer [ %x ]"), src_key, dst_key);
 
             if (nullptr != dst_key) {
                 wh_sys_memrel(slots, resize_size);
