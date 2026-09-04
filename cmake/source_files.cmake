@@ -10,6 +10,7 @@ SET(C_SOURCES
     "src/engine-sys/data/dynamic_array.c"
     "src/engine-sys/data/hashmap.c"
     "src/engine-sys/data/list.c"
+    "src/engine-sys/debug/logger.c"
     "src/engine-sys/file.c"
     "src/engine-sys/filesystem.c"
     "src/engine-sys/foreman.c"
@@ -18,13 +19,13 @@ SET(C_SOURCES
     "src/engine-sys/memory.c"
     "src/engine-sys/memory/core.c"
     "src/engine-sys/memory/tracker.c"
+    "src/engine-sys/memreq.c"
+    "src/engine-sys/print.c"
+    "src/engine-sys/socket.c"
     
     # No longer needed.
     # "src/engine-sys/memory/arena.c"
     # "src/engine-sys/memory/freelist.c"
-    
-    "src/engine-sys/memreq.c"
-    "src/engine-sys/socket.c"
 
     "src/engine-posix/dirent.c"
     "src/engine-posix/libproc.c"
@@ -44,7 +45,6 @@ SET(C_SOURCES
     "src/engine/debug/benchmark.c"
     "src/engine/debug/error.c"
     "src/engine/debug/exceptions.c"
-    "src/engine/debug/logger.c"
     "src/engine/debug/signalar.c"
     "src/engine/game/actions.c"
     "src/engine/game/entity.c"
@@ -60,7 +60,6 @@ SET(C_SOURCES
     "src/engine/maths/core.c"
     "src/engine/maths/hash.c"
     "src/engine/maths/memory.c"
-    "src/engine/print.c"
     "src/engine/render.c"
     "src/engine/string.c"
     "src/engine/window.c"

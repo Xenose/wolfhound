@@ -23,12 +23,20 @@ WH_C()
     #define __FILENAME__ __FILE__
 #endif
 
-// WH_EPF :: Empty Parameter Function
 #if !(WH_SYSTEM&WH_SYS_GCC)&&!(WH_SYSTEM&WH_SYS_MINGW)&&!(WH_SYSTEM&WH_SYS_MSVC)&&!(WH_SYSTEM&WH_SYS_TCC)
+
+    // WH_EPF :: Empty Parameter Function
     #define WH_EPF(x) \
         _Pragma("GCC diagnostic push") \
         _Pragma("GCC diagnostic ignored \"-Wmissing-field-initializers\"") \
         x \
+        _Pragma("GCC diagnostic pop")
+
+    #define WH_IGNORE_UNUSED_PARAMS() \
+        _Pragma("GCC diagnostic push") \
+        _Pragma("GCC diagnostic ignored \"-Wunused-parameter\"")
+
+    #define WH_IGNORE_END() \
         _Pragma("GCC diagnostic pop")
 #else
     #define WH_EPF(x) \
