@@ -10,7 +10,7 @@
 #include <wh-sys/atomic_lock.h>
 #include <wh-sys/memory.h>
 #include <wh-sys/memreq.h>
-#include <wh/debug/logger.h>
+#include <wh-sys/debug/logger.h>
 #include <wh/memory/arena.h>
 #include <wh/memory/freelist.h>
 

@@ -2,7 +2,7 @@
 #include <wh-posix/unistd.h>
 #include <wh-posix/string.h>
 
-#include <wh/print.h>
+#include <wh-sys/print.h>
 
 #if !(WH_SYSTEM&WH_SYS_TCC)
     static wh_thread pid_t _thread_id = -1;

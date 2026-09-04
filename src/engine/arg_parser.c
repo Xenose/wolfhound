@@ -3,10 +3,10 @@
 #include<wh-posix/string.h>
 #include<wh-sys/file.h>
 #include<wh/arg_parser.h>
-#include<wh/debug/logger.h>
+#include<wh-sys/debug/logger.h>
 #include<wh/lua/config.h>
 #include<wh/lua/helpers.h>
-#include<wh/print.h>
+#include<wh-sys/print.h>
 #include<wh/string.h>
 
 i64 _wh_args_parse(_wh_args_parse_params params) {

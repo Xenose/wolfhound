@@ -1,5 +1,5 @@
 #include<wh-posix/stdarg.h>
-#include<wh/debug/logger.h>
+#include<wh-sys/debug/logger.h>
 #include<wh/game/entity.h>
 #include<wh-posix/string.h>
 // The best path probably is to use a linked list and

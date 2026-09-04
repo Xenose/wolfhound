@@ -11,12 +11,12 @@
 #include <wh/convert.h>
 #include <wh-sys/data/list.h>
 #include <wh/debug/exceptions.h>
-#include <wh/debug/logger.h>
+#include <wh-sys/debug/logger.h>
 #include <wh/game/actions.h>
 #include <wh/game/entity.h>
 #include <wh/images/loader.h>
 #include <wh/maths/core.h>
-#include <wh/print.h>
+#include <wh-sys/print.h>
 #include <wh/render.h>
 #include <wh/string.h>
 #include <wh/window.h>

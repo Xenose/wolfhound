@@ -5,7 +5,7 @@
 #include<wh-posix/stdlib.h>
 #include<wh-posix/string.h>
 #include<wh-sys/memory.h>
-#include<wh/debug/logger.h>
+#include<wh-sys/debug/logger.h>
 
 void _wh_darray_init_common(_wh_darray_init_params* params, void* mem) {
     wh_log_info(("Creating array size of %i and type size of %i"), params->count, params->type_size);

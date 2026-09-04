@@ -1,4 +1,4 @@
-#include <wh/debug/logger.h>
+#include <wh-sys/debug/logger.h>
 #include <wh/render.h>
 
 #ifdef WH_SDL2_FOUND

@@ -7,7 +7,7 @@
 #include <wh-posix/sys/reg.h>
 #include <wh-posix/sys/ucontext.h>
 
-#include <wh/debug/logger.h>
+#include <wh-sys/debug/logger.h>
 #define UNW_LOCAL_ONLY
 
 static void _wh_signal_handler(int sig, siginfo_t* info, ucontext_t* uc) {

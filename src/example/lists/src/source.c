@@ -1,6 +1,6 @@
 #include<wh-posix/stdio.h>
 #include<wh-sys/data/list.h>
-#include<wh/debug/logger.h>
+#include<wh-sys/debug/logger.h>
 #include<wh/debug/signalar.h>
 
 int main(int arc, char* const* arv) {

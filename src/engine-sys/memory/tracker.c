@@ -3,7 +3,7 @@
 #include<wh-sys/data/hashmap.h>
 #include<wh-sys/data/list.h>
 #include<wh/debug/exceptions.h>
-#include<wh/debug/logger.h>
+#include<wh-sys/debug/logger.h>
 
 #include<wh-sys/memory/tracker.h>
 

@@ -5,8 +5,8 @@
 #include<wh-sys/atomic_lock.h>
 #include<wh-sys/memreq.h>
 #include<wh-sys/data/list.h>
-#include<wh/debug/logger.h>
-#include<wh/debug/logger.h>
+#include<wh-sys/debug/logger.h>
+#include<wh-sys/debug/logger.h>
 
 // Functions using the memory allocator
 static int8_t _wh_sys_list_single_init(wh_list_s* out, _wh_list_init_params* params);

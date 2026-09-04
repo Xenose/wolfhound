@@ -2,10 +2,10 @@
 #include <wh-sys/file.h>
 #include <wh-sys/filesystem.h>
 #include <wh-testing/unit.h>
-#include <wh/debug/logger.h>
+#include<wh-sys/debug/logger.h>
 #include <wh/lua/api.h>
 #include <wh-sys/memory.h>
-#include <wh/print.h>
+#include <wh-sys/print.h>
 #include <wh/string.h>
 
 ai64 count_failed;

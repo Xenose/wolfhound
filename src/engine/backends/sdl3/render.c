@@ -1,6 +1,6 @@
 #include<SDL3/SDL.h>
 
-#include<wh/debug/logger.h>
+#include<wh-sys/debug/logger.h>
 #include<wh/render.h>
 
 i8 _wh_window_create_sdl3(_wh_window_create_params params) {

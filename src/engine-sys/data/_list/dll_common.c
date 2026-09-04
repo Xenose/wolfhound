@@ -4,7 +4,7 @@
 #include<wh-posix/string.h>
 #include<wh-sys/data/list.h>
 #include<wh-sys/data/list.h>
-#include<wh/debug/logger.h>
+#include<wh-sys/debug/logger.h>
 
 static void* _wh_data_dll(void* node) {
 	wh_dllist_item_s* n = node;

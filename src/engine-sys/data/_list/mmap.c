@@ -2,7 +2,7 @@
 #include<wh/maths/memory.h>
 #include<wh-sys/memreq.h>
 #include<wh-sys/data/list.h>
-#include<wh/debug/logger.h>
+#include<wh-sys/debug/logger.h>
 #include<wh-posix/unistd.h>
 
 static i8 _wh_internal_sys_list_alloc_memreq(wh_list_s* out, u64 count) {

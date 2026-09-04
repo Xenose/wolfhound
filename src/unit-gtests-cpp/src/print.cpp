@@ -8,7 +8,7 @@
 #include<wh/debug/exceptions.h>
 #include<wh-testing/macros.h>
 #include<wh/debug/benchmark.h>
-#include<wh/print.h>
+#include<wh-sys/print.h>
 
 #include<gtest/gtest.h>
 

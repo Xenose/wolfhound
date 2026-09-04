@@ -3,7 +3,7 @@
 #include<wh-sys/foreman.h>
 #include<wh-sys/memory.h>
 #include<wh/config.h>
-#include<wh/debug/logger.h>
+#include<wh-sys/debug/logger.h>
 #include<wh/debug/signalar.h>
 #include<wh/loader/asset.h>
 #include<wh/maths/memory.h>

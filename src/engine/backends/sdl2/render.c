@@ -1,6 +1,6 @@
 #include<SDL2/SDL.h>
 
-#include<wh/debug/logger.h>
+#include<wh-sys/debug/logger.h>
 #include<wh/render.h>
 
 i8 _wh_window_create_sdl2(_wh_window_create_params params) {

@@ -4,7 +4,7 @@
 #include<wh-posix/sys/mman.h>
 #include<wh-posix/unistd.h>
 #include<wh-sys/file.h>
-#include<wh/debug/logger.h>
+#include<wh-sys/debug/logger.h>
 #include<wh/memory/core.h>
 
 // Splitting the giant array into its own C file...

@@ -3,10 +3,10 @@
 #include<wh-sys/info.h>
 #include<wh/game/actions.h>
 #include<wh/game/entity.h>
-#include<wh/print.h>
+#include<wh-sys/print.h>
 #include<wh/string.h>
 #include<wh/wolfhound.h>
-#include<wh/debug/logger.h>
+#include<wh-sys/debug/logger.h>
 #include<wh/render.h>
 
 void update(wh_instance_s* ins) {

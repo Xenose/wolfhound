@@ -1,5 +1,5 @@
 #include<wh-posix/string.h>
-#include<wh/debug/logger.h>
+#include<wh-sys/debug/logger.h>
 #include<wh/maths/memory.h>
 
 #include<wh-types/memory.h>

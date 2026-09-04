@@ -3,8 +3,8 @@
 #include <wh-posix/string.h>
 #include <wh-sys/filesystem.h>
 #include <wh-sys/memory.h>
-#include <wh/debug/logger.h>
-#include <wh/print.h>
+#include <wh-sys/debug/logger.h>
+#include <wh-sys/print.h>
 
 wh_dir_s _wh_read_dir(_wh_dir_read_params params) {
 	i64 error = 0;

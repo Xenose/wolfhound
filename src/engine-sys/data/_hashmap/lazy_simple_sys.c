@@ -2,7 +2,7 @@
 #include<wh-posix/unistd.h>
 #include<wh-sys/memreq.h>
 #include<wh-sys/data/hashmap.h>
-#include<wh/debug/logger.h>
+#include<wh-sys/debug/logger.h>
 #include<wh/maths/core.h>
 #include<wh/maths/memory.h>
 

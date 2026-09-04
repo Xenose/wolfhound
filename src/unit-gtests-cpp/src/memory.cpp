@@ -1,6 +1,6 @@
 #include<wh/debug/exceptions.h>
 #include<wh-testing/macros.h>
-#include<wh/debug/logger.h>
+#include<wh-sys/debug/logger.h>
 
 #include<wh-sys/memory.h>
 #include<wh-cpp/memory.hpp>

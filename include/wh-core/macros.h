@@ -1,11 +1,11 @@
 #ifndef _wh_header_common_macros_
 #define _wh_header_common_macros_
 
-#include <wh-posix/stddef.h>
+#include<wh-posix/stddef.h>
 
-#include <wh-core/os.h>
-#include <wh-core/prefix.h>
-#include <wh-core/c23-comp.h>
+#include<wh-core/os.h>
+#include<wh-core/prefix.h>
+#include<wh-core/c23-comp.h>
 
 WH_C()
 
@@ -23,7 +23,21 @@ WH_C()
     #define __FILENAME__ __FILE__
 #endif
 
-#if !(WH_SYSTEM&WH_SYS_GCC)&&!(WH_SYSTEM&WH_SYS_MINGW)&&!(WH_SYSTEM&WH_SYS_MSVC)&&!(WH_SYSTEM&WH_SYS_TCC)
+
+#if (WH_SYSTEM&WH_SYS_MSVC)
+    #define WH_IGNORE_UNUSED_PARAMS()
+
+    #define WH_IGNORE_END()
+#else
+    #define WH_IGNORE_UNUSED_PARAMS() \
+        _Pragma("GCC diagnostic push") \
+        _Pragma("GCC diagnostic ignored \"-Wunused-parameter\"")
+
+    #define WH_IGNORE_END() \
+        _Pragma("GCC diagnostic pop")
+#endif
+
+#if (WH_SYSTEM&WH_SYS_CLANG) || (WH_SYSTEM&WH_SYS_KEIFIR)
 
     // WH_EPF :: Empty Parameter Function
     #define WH_EPF(x) \
@@ -32,22 +46,9 @@ WH_C()
         x \
         _Pragma("GCC diagnostic pop")
 
-    #define WH_IGNORE_UNUSED_PARAMS() \
-        _Pragma("GCC diagnostic push") \
-        _Pragma("GCC diagnostic ignored \"-Wunused-parameter\"")
-
-    #define WH_IGNORE_END() \
-        _Pragma("GCC diagnostic pop")
 #else
     #define WH_EPF(x) \
         x
-
-    #define WH_IGNORE_UNUSED_PARAMS() \
-        _Pragma("GCC diagnostic push") \
-        _Pragma("GCC diagnostic ignored \"-Wunused-parameter\"")
-
-    #define WH_IGNORE_END() \
-        _Pragma("GCC diagnostic pop")
 #endif
 
 /* [MD_DOC]

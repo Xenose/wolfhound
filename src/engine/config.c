@@ -2,7 +2,7 @@
 
 #include<wh/headers/lua.h>
 #include<wh-sys/file.h>
-#include<wh/debug/logger.h>
+#include<wh-sys/debug/logger.h>
 #include<wh/config.h>
 #include<wh/arg_parser.h>
 #include<wh/lua/config.h>

@@ -1,7 +1,7 @@
 #include <wh-sys/file.h>
 #include <wh/loader/asset.h>
-#include <wh/print.h>
-#include <wh/debug/logger.h>
+#include <wh-sys/print.h>
+#include <wh-sys/debug/logger.h>
 #include <wh/lua/helpers.h>
 #include <wh/lua/api.h>
 #include <wh/string.h>

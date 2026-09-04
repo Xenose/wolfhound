@@ -2,7 +2,7 @@
 #include<wh-posix/stdlib.h>
 #include<wh-posix/string.h>
 #include<wh-sys/memory.h>
-#include<wh/debug/logger.h>
+#include<wh-sys/debug/logger.h>
 
 #include"_common.c"
 

@@ -1,5 +1,5 @@
 #include <wh/string.h>
-#include <wh/debug/logger.h>
+#include <wh-sys/debug/logger.h>
 #include <wh-sys/dynamic_object.h>
 
 #ifdef __unix__

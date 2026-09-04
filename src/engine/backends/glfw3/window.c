@@ -1,6 +1,6 @@
 #include<wh/render.h>
 #include<wh/window.h>
-#include<wh/debug/logger.h>
+#include<wh-sys/debug/logger.h>
 
 #include<GLFW/glfw3.h>
 

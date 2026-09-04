@@ -1,6 +1,6 @@
 #define USE_NAMESPACE_WOLFHOUND
 #include <wh-posix/stdio.h>
-#include <wh/print.h>
+#include <wh-sys/print.h>
 #include <wh/debug/benchmark.h>
 
 int main(int arc, char* const* arv) {

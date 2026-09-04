@@ -2,8 +2,8 @@
 #include<wh-sys/data/hashmap_lazy.h>
 #include<wh/maths/core.h>
 #include<wh-sys/memory.h>
-#include<wh/print.h>
-#include<wh/debug/logger.h>
+#include<wh-sys/print.h>
+#include<wh-sys/debug/logger.h>
 
 #include<wh-posix/string.h>
 

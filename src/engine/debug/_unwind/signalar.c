@@ -7,7 +7,7 @@
 #define _pointer_count 20
 
 // my code
-#include<wh/debug/logger.h>
+#include<wh-sys/debug/logger.h>
 #include<wh/debug/signalar.h>
 #include<wh-posix/ucontext.h>
 #include<wh-posix/execinfo.h>
