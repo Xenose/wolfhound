@@ -13,44 +13,6 @@
 
 #define PATH_LENGTH 1024
 
-WH_TEST_FUNC(test_strings) {
-    WH_TEST(wh_strcat) {
-        int64_t error = 0;
-        char buffer[256] = { 0 };
-
-        // Easy test for wh_strcat
-        error = 0;
-        wh_strcat((buffer, 255), "Hello,", " ", "world!");
-        WH_TEST_STREQ(wh_strcat, "Hello, world!", buffer, "wh_strcat::world_test");
-        WH_TEST_INT64EQ(wh_strcat, 0l, error);
-      
-        error = 0;
-        memset(buffer, 0, 256);
-        wh_strcat((buffer, 255), "Hello,", " ", nullptr, "world!");
-        WH_TEST_STREQ(wh_strcat, "Hello, world!", buffer, "wh_strcat::world_test");
-        WH_TEST_INT64EQ(wh_strcat, 0l, error);
-
-        error = 0;
-        memset(buffer, 0, 256);
-        wh_strcat((buffer, 10, .error = &error), "Hello,", " ", nullptr, "world!");
-        WH_TEST_STREQ(wh_strcat, "Hello, wor", buffer, "wh_strcat::world_test");
-        WH_TEST_INT64EQ(wh_strcat, (int64_t)ENOMEM, error);
-        
-        error = 0;
-        memset(buffer, 0, 256);
-        wh_strcat((.buffer_length = 10, .error = &error), "Hello,", " ", nullptr, "world!");
-        WH_TEST_STREQ(wh_strcat, "", buffer, "wh_strcat::world_test");
-        WH_TEST_INT64EQ(wh_strcat, (int64_t)EFAULT, error);
-
-        error = 0;
-        memset(buffer, 0, 256);
-        wh_strcat((.error = &error), "Hello,", " ", nullptr, "world!");
-        WH_TEST_STREQ(wh_strcat, "", buffer, "wh_strcat::world_test");
-        WH_TEST_INT64EQ(wh_strcat, (int64_t)ENOBUFS, error);
-        WH_TEST_INT64EQ(wh_strcat, (int64_t)ENOBUFS, error + 1);
-    }
-}
-
 void str_append(char* buffer, int buffer_size, char* str) {
     int len = strlen(buffer);
 
@@ -59,6 +21,35 @@ void str_append(char* buffer, int buffer_size, char* str) {
     }
 
     strncpy(&buffer[len], str, strlen(str));
+}
+
+void* add_test(wh_unit_results_s* results, void** out, const char* name, const char* path) {
+    wh_unit_test_s* ptr = nullptr;
+    void* handle = dlopen(path, RTLD_NOW);
+    
+    if (nullptr == handle) {
+        printf("Failed to load test [ %s ] -> %s\n", path, dlerror());
+        goto go_error_exit;
+    }
+
+    dlerror();
+    ptr = realloc(results->ptr, sizeof(wh_unit_test_s) * (results->count + 1));
+
+    if (nullptr == ptr) {
+        goto go_error_exit;
+    }
+
+    results->ptr = ptr;
+    ptr[results->count].name = strdup(name);
+
+    *out = &ptr[results->count];
+    ++results->count;
+    return handle;
+
+go_error_exit_dlclose:
+    dlclose(handle);
+go_error_exit:
+    return nullptr;
 }
 
 int main(int arc, char* const* arv) {
@@ -84,24 +75,33 @@ int main(int arc, char* const* arv) {
     }
 
     printf("\n\n");
-    for (struct dirent* entry = readdir(dir); nullptr != entry; entry = readdir(dir)) {
 
-        if (0 == strcmp(entry->d_name, ".") || 0 == strcmp(entry->d_name, "..")) {
+    for (struct dirent* entry = readdir(dir); nullptr != entry; entry = readdir(dir)) {
+        void* ptr = nullptr;
+
+        if ('_' == entry->d_name[0] || 0 == strcmp(entry->d_name, ".") || 0 == strcmp(entry->d_name, "..")) {
             continue;
         }
 
         str_append(path, path_length, entry->d_name);
         printf("Executing test [ %s ]\n", path);
 
-        void* handle = dlopen(path, 0);
-
+        void* handle = add_test(&results, &ptr, entry->d_name, path);
+        
         if (nullptr == handle) {
-            printf("Failed to load test [ %s ] -> %s\n", path, dlerror());
             goto go_memset;
         }
 
-        dlerror();
+        wh_try {
+            i64 (*test)(wh_unit_test_s* info) = dlsym(handle, "init");
+            test(ptr);
+        } wh_catch(wh_exception_s, _ex) {
+            printf("Test failed!\n");
+            goto go_dlclose; // TODO fix as its continue without stopping.
+        }
 
+go_dlclose:
+        dlclose(handle);
 go_memset:
         // Resetting the path so we can reuse it for the next test.
         memset(&path[path_end], 0, path_length - path_end);
