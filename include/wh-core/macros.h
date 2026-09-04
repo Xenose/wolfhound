@@ -41,6 +41,13 @@ WH_C()
 #else
     #define WH_EPF(x) \
         x
+
+    #define WH_IGNORE_UNUSED_PARAMS() \
+        _Pragma("GCC diagnostic push") \
+        _Pragma("GCC diagnostic ignored \"-Wunused-parameter\"")
+
+    #define WH_IGNORE_END() \
+        _Pragma("GCC diagnostic pop")
 #endif
 
 /* [MD_DOC]
