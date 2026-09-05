@@ -24,7 +24,7 @@ WH_C()
 #endif
 
 
-#if (WH_SYSTEM&WH_SYS_MSVC)
+#if (WH_SYSTEM&WH_SYS_MSVC) || (WH_SYSTEM&WH_SYS_TCC) || (WH_SYSTEM&WH_SYS_KEFIR)
     #define WH_IGNORE_UNUSED_PARAMS()
 
     #define WH_IGNORE_END()
