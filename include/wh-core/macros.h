@@ -70,6 +70,5 @@ WH_C()
 #define WH_U32(_x_) (u32[]){ _x_ }
 #define WH_U64(_x_) (u64[]){ _x_ }
 
-
 WH_C_END()
 #endif /* _wh_header_common_macros_ */
