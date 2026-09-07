@@ -128,6 +128,7 @@ TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
         -Wno-unused-label
         -Wno-missing-field-initializers
         -Wno-c23-extensions
+        -fPIC
     >
 
     # GCC compiler flags

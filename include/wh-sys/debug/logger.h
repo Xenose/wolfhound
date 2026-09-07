@@ -69,6 +69,6 @@ extern void wh_log_set_level(i64 level, u8 state);
  *	void wh_log_init(u64 mode)
  * ```
  */
-#define wh_log_init(...)	_wh_log_init((_wh_log_init_params) { __VA_ARGS__ })
+#define wh_log_init(...)    _wh_log_init((_wh_log_init_params) { __VA_ARGS__ })
 
 #endif /* _wh_header_debug_ */

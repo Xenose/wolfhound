@@ -5,10 +5,8 @@
 #include<wh-posix/dirent.h>
 #include<wh-posix/dlfcn.h>
 
-#include<wh-sys/info.h>
-
 #include<wh-testing/unit.h>
-
+#include<wh-sys/info.h>
 #include<wh/string.h>
 
 #define PATH_LENGTH 1024
@@ -60,7 +58,6 @@ int main(int arc, char* const* arv) {
     int path_end = 0;
 
     DIR* dir = nullptr;
-   
     // Constructing the test path and getting the
     // end of the path.
     wh_sys_program_path(path, path_length);
