@@ -92,9 +92,8 @@ int main(int arc, char* const* arv) {
         wh_try {
             i64 (*test)(wh_unit_test_s* info) = dlsym(handle, "init");
             test(ptr);
-        } wh_catch(wh_exception_s, _ex) {
-            printf("Test failed!\n");
-            goto go_dlclose; // TODO fix as its continue without stopping.
+        } wh_catch(wh_exception_s, ex) {
+            printf("Test failed! [ %s ]\n", ex.msg);
         }
 
 go_dlclose:

@@ -13,12 +13,17 @@ static void _wh_handler(int sig, siginfo_t* action, void* data) {
     _wh_try_info_s* info = _jmp_info;
 
     signal(sig, SIG_DFL);
-    _jmp_info = info->old_info;
+
+    _jmp_info->error = WH_EXCEPTION_UNKNOWN;
+    //_jmp_info = info->old_info;
+
     sigaction(SIGSEGV, &info->old_action, nullptr);
 
 
     switch (sig) {
         case SIGSEGV:
+            _jmp_info->error = WH_EXCEPTION_SIGSEGV;
+            _jmp_info->msg = "SEGFAULT";
             siglongjmp(info->buffer, WH_EXCEPTION_SIGSEGV);
             break;
     }
@@ -55,12 +60,17 @@ ERROR_EXIT:
 }
 
 i8 _jmp_last_exception(wh_exception_s* exp) {
-    switch (exp->error) {
-        case 0:
-            _jmp_info = _jmp_info->old_info;
-            exp->error = 1;
-            return 1;
+    i8 error = WH_EXCEPTION_UNKNOWN;
+
+    switch (_jmp_info->error) {
+        case WH_EXCEPTION_NONE:
+            error = WH_EXCEPTION_NONE;
+
         default:
-            return 0;
     }
+
+    exp->error = error;
+    exp->msg = _jmp_info->msg;
+    _jmp_info = _jmp_info->old_info;
+    return error;
 }

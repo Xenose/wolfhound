@@ -3,6 +3,7 @@
 #include<wh-sys/debug/logger.h>
 
 #define HEAP_SIZE 4096
+#define PTR_COUNT 256
 
 i64 test_memory_reuse(wh_unit_test_s* info, wh_heap_header_s* heap) {
     void* p1 = nullptr;
@@ -24,6 +25,18 @@ i64 test_memory_reuse(wh_unit_test_s* info, wh_heap_header_s* heap) {
     return 0;
 }
 
+i64 test_memory_large_allocation(wh_unit_test_s* info, wh_heap_header_s* heap) {
+    void* ptrs[PTR_COUNT] = { nullptr };
+
+    for (uint64_t i = 0; i < PTR_COUNT; i++) {
+        ptrs[i] = wh_alloc(heap, 64, &ptrs[i]);
+    }
+
+    _wh_mem_scan();
+    return 0;
+}
+
+
 i64 init(wh_unit_test_s* info) {
     // Log levels are noisy for unit testing.
     wh_log_set_level(WH_LOG_LEVEL_EMERGENCY,    0);
@@ -42,6 +55,7 @@ i64 init(wh_unit_test_s* info) {
     WH_TEST_INT64EQ(info, (int64_t)!heap, (int64_t)NULL);
 
     test_memory_reuse(info, heap);
+    test_memory_large_allocation(info, heap);
 
     return 0;
 }

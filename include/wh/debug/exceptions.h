@@ -15,6 +15,7 @@ enum {
 typedef struct {
     struct_type sType;
     i64 error;
+    const char* msg;
 } wh_exception_s;
 
 typedef struct _wh_try_info {
@@ -22,6 +23,7 @@ typedef struct _wh_try_info {
     struct _wh_try_info* old_info;
     sigjmp_buf buffer;
     i64 error;
+    const char* msg;
     i8 count;
 } _wh_try_info_s;
 
@@ -33,7 +35,7 @@ extern i8 _jmp_last_exception(wh_exception_s* exp);
         0 == _jmp_init(&_info_##__LINE__); ++_info_##__LINE__.count) \
         if (0 == sigsetjmp(_info_##__LINE__.buffer, 1))
 
-#define wh_catch(type, name) else for (type name; WH_EXCEPTION_NONE == _jmp_last_exception(&name);)
+#define wh_catch(type, name) else for (type name = { .error = _jmp_last_exception(&name)}; WH_EXCEPTION_NONE != name.error; name.error = WH_EXCEPTION_NONE)
 
 // TODO  :: make a function to get last _wh_try_info_s
 // #define wh_throw(_error_) siglongjmp(, _error_)
