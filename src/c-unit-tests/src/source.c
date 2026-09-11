@@ -81,7 +81,7 @@ int main(int arc, char* const* arv) {
         }
 
         str_append(path, path_length, entry->d_name);
-        printf("Executing test [ %s ]\n", path);
+        printf("\nExecuting test [ %s ]\n", path);
 
         void* handle = add_test(&results, &ptr, entry->d_name, path);
         
@@ -93,7 +93,7 @@ int main(int arc, char* const* arv) {
             i64 (*test)(wh_unit_test_s* info) = dlsym(handle, "init");
             test(ptr);
         } wh_catch(wh_exception_s, ex) {
-            printf("Test failed! [ %s ]\n", ex.msg);
+            printf("\t[ \033[31m%s\033[0m ] Test failed!\n", ex.msg);
         }
 
 go_dlclose:

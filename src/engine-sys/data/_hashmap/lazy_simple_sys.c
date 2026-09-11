@@ -128,7 +128,10 @@ go_retry_resize:
     }
 
     memset(new_slots, 0, resize_size);
-    _lazy_simple_hash_copy(map, new_slots, bytes, (i64)new_slot_count, resize_size);
+
+    if (nullptr != map->slots) {
+        _lazy_simple_hash_copy(map, new_slots, bytes, (i64)new_slot_count, resize_size);
+    }
 
     if (nullptr != map->slots) {
         wh_sys_memrel(map->slots, map->resize_size);
@@ -195,7 +198,7 @@ go_error_exit:
     return -1;
 }
 
-static i8 _insert_lazy_simple_sys_strig(_wh_hashmap_insert_params params) {
+static i8 _insert_lazy_simple_sys_string(_wh_hashmap_insert_params params) {
     //return _insert_lazy_simple_sys(&params, hash);
 }
 
