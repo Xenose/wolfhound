@@ -2,6 +2,9 @@
 #include<wh-posix/stdio.h>
 #include<wh-posix/unistd.h>
 #include<wh/debug/exceptions.h>
+#include<wh-posix/execinfo.h>
+
+#define _pointer_count 20
 
 #if !(WH_SYSTEM&WH_SYS_TCC)
     wh_thread _wh_try_info_s* _jmp_info = nullptr;
@@ -12,19 +15,30 @@
 static void _wh_handler(int sig, siginfo_t* action, void* data) {
     _wh_try_info_s* info = _jmp_info;
 
+    // backtrace variables
+    int count = _pointer_count;
+    void* ptrs[_pointer_count] = { nullptr };
+
+
+
     signal(sig, SIG_DFL);
 
     _jmp_info->error = WH_EXCEPTION_UNKNOWN;
     //_jmp_info = info->old_info;
 
-    sigaction(SIGSEGV, &info->old_action, nullptr);
-
+    sigaction(sig, &info->old_action, nullptr);
 
     switch (sig) {
         case SIGSEGV:
+            count = backtrace(ptrs, count);
+            backtrace_symbols_fd(ptrs, count, 2);
+
+
+            // Setting the exception
             _jmp_info->error = WH_EXCEPTION_SIGSEGV;
             _jmp_info->msg = "SEGFAULT";
             siglongjmp(info->buffer, WH_EXCEPTION_SIGSEGV);
+
             break;
     }
 }

@@ -8,6 +8,7 @@
 #include<wh-testing/unit.h>
 #include<wh-sys/info.h>
 #include<wh/string.h>
+#include<wh/debug/signalar.h>
 
 #define PATH_LENGTH 1024
 
@@ -58,6 +59,10 @@ int main(int arc, char* const* arv) {
     int path_end = 0;
 
     DIR* dir = nullptr;
+
+    // Adding the signalar backtrace.
+    wh_signalar_init(arv[0]);
+
     // Constructing the test path and getting the
     // end of the path.
     wh_sys_program_path(path, path_length);

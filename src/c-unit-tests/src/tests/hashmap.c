@@ -53,6 +53,7 @@ i64 test_insert(wh_unit_test_s* info, wh_hashmap_s* hs) {
     WH_TEST_INT64EQ(info, 59L, (long)*(int*)wh_hashmap_get(hs, "hello27"));
     WH_TEST_INT64EQ(info, 58L, (long)*(int*)wh_hashmap_get(hs, "hello28"));
     WH_TEST_INT64EQ(info, 57L, (long)*(int*)wh_hashmap_get(hs, "hello29"));
+
     return 0;
 }
 
