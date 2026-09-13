@@ -40,6 +40,19 @@ i64 test_insert(wh_unit_test_s* info, wh_hashmap_s* hs) {
     WH_TEST_INT64EQ(info, 58L, (long)*(int*)wh_hashmap_get(hs, "hello18"));
     WH_TEST_INT64EQ(info, 57L, (long)*(int*)wh_hashmap_get(hs, "hello19"));
 
+    wh_hashmap_insert(hs, "hello24", WH_INT(62));
+    wh_hashmap_insert(hs, "hello25", WH_INT(61));
+    wh_hashmap_insert(hs, "hello26", WH_INT(60));
+    wh_hashmap_insert(hs, "hello27", WH_INT(59));
+    wh_hashmap_insert(hs, "hello28", WH_INT(58));
+    wh_hashmap_insert(hs, "hello29", WH_INT(57));
+
+    WH_TEST_INT64EQ(info, 62L, (long)*(int*)wh_hashmap_get(hs, "hello24"));
+    WH_TEST_INT64EQ(info, 61L, (long)*(int*)wh_hashmap_get(hs, "hello25"));
+    WH_TEST_INT64EQ(info, 60L, (long)*(int*)wh_hashmap_get(hs, "hello26"));
+    WH_TEST_INT64EQ(info, 59L, (long)*(int*)wh_hashmap_get(hs, "hello27"));
+    WH_TEST_INT64EQ(info, 58L, (long)*(int*)wh_hashmap_get(hs, "hello28"));
+    WH_TEST_INT64EQ(info, 57L, (long)*(int*)wh_hashmap_get(hs, "hello29"));
     return 0;
 }
 
