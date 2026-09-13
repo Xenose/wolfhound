@@ -76,7 +76,9 @@ static i8 _lazy_simple_hash_copy(wh_hashmap_s* map, void* slots, u64 bytes, i64 
         src_key = _lazy_simple_key_get(src, map->stype);
 
         if (nullptr != src_key) {
+            printf("Hello! %p\n", src_key);
             index = (u64)_lazy_simple_hash(map->stype, src_key, (i64)slot_count);
+            printf("%p\n", src_key);
 
             dst = wh_ptr_offset(slots, index * bytes);
             dst_key = _lazy_simple_key_get(dst, map->stype);
@@ -178,6 +180,7 @@ static i8 _insert_lazy_simple_sys(_wh_hashmap_insert_params* params) {
 
         if (nullptr != _reallocate_lazy_simple_sys(params->map)) {
             slots = params->map->slots;
+
             hash = _lazy_simple_hash(params->map->stype, params->key, (i64)params->map->slot_count);
             dst = wh_ptr_offset(slots, (u64)hash * bytes);
             break;
