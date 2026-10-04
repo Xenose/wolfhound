@@ -70,14 +70,11 @@ ERROR_EXIT:
 }
 
 wh_exception_s _jmp_last_exception(wh_exception_s* exp) {
-
     i8 error = WH_EXCEPTION_UNKNOWN;
 
     switch (_jmp_info->error) {
         case WH_EXCEPTION_NONE:
             error = WH_EXCEPTION_NONE;
-
-        default:
     }
 
     exp->error = error;
