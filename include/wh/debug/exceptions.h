@@ -29,13 +29,13 @@ typedef struct _wh_try_info {
 
 
 extern i8 _jmp_init(_wh_try_info_s* info);
-extern i8 _jmp_last_exception(wh_exception_s* exp);
+extern wh_exception_s _jmp_last_exception(wh_exception_s* exp);
 
 #define wh_try for (_wh_try_info_s _info_##__LINE__ = { 0 }; \
         0 == _jmp_init(&_info_##__LINE__); ++_info_##__LINE__.count) \
         if (0 == sigsetjmp(_info_##__LINE__.buffer, 1))
 
-#define wh_catch(type, name) else for (type name = { .error = _jmp_last_exception(&name)}; WH_EXCEPTION_NONE != name.error; name.error = WH_EXCEPTION_NONE)
+#define wh_catch(type, name) else for (type name = (type)_jmp_last_exception((wh_exception_s*)&name); WH_EXCEPTION_NONE != name.error; name.error = WH_EXCEPTION_NONE)
 
 // TODO  :: make a function to get last _wh_try_info_s
 // #define wh_throw(_error_) siglongjmp(, _error_)

@@ -98,7 +98,7 @@ int main(int arc, char* const* arv) {
             i64 (*test)(wh_unit_test_s* info) = dlsym(handle, "init");
             test(ptr);
         } wh_catch(wh_exception_s, ex) {
-            printf("\t[ \033[31m%s\033[0m ] Test failed!\n", ex.msg);
+            printf("\t[ \033[31m%s\033[0m ] Test failed! %p\n", ex.msg, ex.msg);
         }
 
 go_dlclose:
