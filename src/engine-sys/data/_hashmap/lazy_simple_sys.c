@@ -36,9 +36,12 @@ static void* _lazy_simple_key_set(void* slots, void* key, i64 type) {
 static void* _lazy_simple_key_get(void* slots, i64 type) {
     switch (type) {
         case WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_SYS:
+        case WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_STD:
             return ((wh_hashmap_slot_string_s*)slots)->key;
         case WH_STRUCT_TYPE_HASHMAP_LAZY_PTR_SYS:
             return ((wh_hashmap_slot_ptr_s*)slots)->key;
+        default:
+            wh_log_error(("Failed to get key type!!!"));
     }
 
     return nullptr;
@@ -53,9 +56,12 @@ i8 _lazy_simple_keycomp(void* src_key, void* dst_key, i64 type) {
 
     if (nullptr != dst_key) switch (type) {
         case WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_SYS:
+        case WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_STD:
             return !strcmp(src_key, dst_key);
         case WH_STRUCT_TYPE_HASHMAP_LAZY_PTR_SYS:
             return src_key == dst_key;
+        default:
+            wh_log_error(("Failed to get key type!!!"));
     }
 
 go_exit:
@@ -76,16 +82,14 @@ static i8 _lazy_simple_hash_copy(wh_hashmap_s* map, void* slots, u64 bytes, i64 
         src_key = _lazy_simple_key_get(src, map->stype);
 
         if (nullptr != src_key) {
-            printf("Hello! %p\n", src_key);
             index = (u64)_lazy_simple_hash(map->stype, src_key, (i64)slot_count);
-            printf("%p\n", src_key);
-
             dst = wh_ptr_offset(slots, index * bytes);
             dst_key = _lazy_simple_key_get(dst, map->stype);
-        
-            wh_log_debug(("Old pointer [ %x ], new pointer [ %x ]"), src_key, dst_key);
+       
+            wh_log_debug(("dst [ %x ], dst_key [ %x ]"), dst, dst_key);
+            wh_log_debug(("Old pointer [ %x ], new pointer [ %x ], bytes -> %i "), src_key, dst_key, bytes);
 
-            if (nullptr != dst_key) {
+            if (nullptr == dst_key) {
                 wh_sys_memrel(slots, resize_size);
                 return -1;
             }
@@ -132,7 +136,9 @@ go_retry_resize:
     memset(new_slots, 0, resize_size);
 
     if (nullptr != map->slots) {
-        _lazy_simple_hash_copy(map, new_slots, bytes, (i64)new_slot_count, resize_size);
+        if (-1 == _lazy_simple_hash_copy(map, new_slots, bytes, (i64)new_slot_count, resize_size)) {
+            goto go_error_exit;
+        }
     }
 
     if (nullptr != map->slots) {
@@ -170,7 +176,7 @@ static i8 _insert_lazy_simple_sys(_wh_hashmap_insert_params* params) {
     src_key = ((wh_hashmap_slot_string_s*)wh_ptr_offset(slots, (u64)hash * bytes))->key;
 
     if (_lazy_simple_keycomp(src_key, dst->key, params->map->stype)) {
-        wh_log_error(("Inputed key and existing key is the same [ %s -> %s ]"),
+        wh_log_error(("Inputted key and existing key is the same [ %s -> %s ]"),
                 params->key, dst->key);
         goto go_error_exit;
     }
@@ -179,6 +185,10 @@ static i8 _insert_lazy_simple_sys(_wh_hashmap_insert_params* params) {
         wh_log_debug(("Hashmap size to small resizing!"));
 
         if (nullptr != _reallocate_lazy_simple_sys(params->map)) {
+            if (slots == params->map->slots) {
+                goto go_error_exit;
+            }
+
             slots = params->map->slots;
 
             hash = _lazy_simple_hash(params->map->stype, params->key, (i64)params->map->slot_count);
