@@ -98,7 +98,21 @@ int main(int arc, char* const* arv) {
             i64 (*test)(wh_unit_test_s* info) = dlsym(handle, "init");
             test(ptr);
         } wh_catch(wh_exception_s, ex) {
+
             printf("\t[ \033[31m%s\033[0m ] Test failed! %p\n", ex.msg, ex.msg);
+        }
+        
+        wh_try {
+            i64 (*destructor)(wh_unit_test_s* info) = dlsym(handle, "destructor");
+
+            if (NULL == destructor) {
+                printf("\t[ \033[31mDLSYM\033[0m ] Destructor failed!\n");
+            } else {
+                destructor(ptr);
+            }
+
+        } wh_catch(wh_exception_s, ex) {
+            printf("\t[ \033[31m%s\033[0m ] Destructor failed! %p\n", ex.msg, ex.msg);
         }
 
 go_dlclose:

@@ -1,5 +1,6 @@
 #include<wh-testing/unit.h>
 #include<wh/string.h>
+#include<wh-sys/debug/logger.h>
 
 #include<wh-posix/errno.h>
 
@@ -37,11 +38,15 @@ i64 test_strcat(wh_unit_test_s* info) {
     wh_strcat((.error = &error), "Hello,", " ", nullptr, "world!");
     WH_TEST_STREQ(info, "", buffer, "wh_strcat::world_test");
     WH_TEST_INT64EQ(info, (int64_t)ENOBUFS, error);
-    WH_TEST_INT64EQ(info, (int64_t)ENOBUFS, error + 1);
+
     return 0;
 }
 
 i64 init(wh_unit_test_s* info) {
     test_strcat(info);
+    return 0;
+}
+
+i64 destructor(wh_unit_test_s* info) {
     return 0;
 }

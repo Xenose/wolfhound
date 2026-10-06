@@ -73,9 +73,22 @@ i64 test_insert(wh_unit_test_s* info, wh_hashmap_s* hs) {
     WH_TEST_INT64EQ(info, 58L, (long)*(int*)wh_hashmap_get(hs, "hello28"));
     WH_TEST_INT64EQ(info, 57L, (long)*(int*)wh_hashmap_get(hs, "hello29"));
 
+    wh_hashmap_insert(hs, "hello34", WH_INT(62));
+    wh_hashmap_insert(hs, "hello35", WH_INT(61));
+    wh_hashmap_insert(hs, "hello36", WH_INT(60));
+    wh_hashmap_insert(hs, "hello37", WH_INT(59));
+    wh_hashmap_insert(hs, "hello38", WH_INT(58));
+    wh_hashmap_insert(hs, "hello39", WH_INT(57));
+
+    WH_TEST_INT64EQ(info, 62L, (long)*(int*)wh_hashmap_get(hs, "hello34"));
+    WH_TEST_INT64EQ(info, 61L, (long)*(int*)wh_hashmap_get(hs, "hello35"));
+    WH_TEST_INT64EQ(info, 60L, (long)*(int*)wh_hashmap_get(hs, "hello36"));
+    WH_TEST_INT64EQ(info, 59L, (long)*(int*)wh_hashmap_get(hs, "hello37"));
+    WH_TEST_INT64EQ(info, 58L, (long)*(int*)wh_hashmap_get(hs, "hello38"));
+    WH_TEST_INT64EQ(info, 57L, (long)*(int*)wh_hashmap_get(hs, "hello39"));
+
     return 0;
 }
-
 
 i64 init(wh_unit_test_s* info) {
     // Log levels are noisy for unit testing.
