@@ -78,7 +78,7 @@ static i8 _lazy_simple_hash_copy(wh_hashmap_s* map, void* slots, u64 bytes, i64 
 
     // wh_hashmap_slot_ptr_s* src;
     wh_for(u64, i, map->slot_count) {
-        src = wh_ptr_offset(map->slots, (i + 1) * bytes);
+        src = wh_ptr_offset(map->slots, (i) * bytes);
         src_key = _lazy_simple_key_get(src, map->stype);
 
         if (nullptr != src_key) {
@@ -89,7 +89,7 @@ static i8 _lazy_simple_hash_copy(wh_hashmap_s* map, void* slots, u64 bytes, i64 
             wh_log_debug(("dst [ %x ], dst_key [ %x ]"), dst, dst_key);
             wh_log_debug(("Old pointer [ %x ], new pointer [ %x ], bytes -> %i "), src_key, dst_key, bytes);
 
-            if (nullptr == dst_key) {
+            if (nullptr != dst_key) {
                 wh_sys_memrel(slots, resize_size);
                 return -1;
             }
