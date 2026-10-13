@@ -72,7 +72,7 @@ i64 _wh_core_log_real_va(_wh_print_params print_params, _wh_log_params params, v
     );
 
     buffer[offset++] = '\n';
-    write(1, buffer, length);
+    write(1, buffer, (size_t)offset);
     return 0;
 }
 WH_IGNORE_UNUSED_PARAMS()
