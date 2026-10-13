@@ -12,6 +12,11 @@ void simple(wh_unit_test_s* info) {
     
     WH_TEST_STREQ(info, wh_buffer, "Hello, World!");
     WH_TEST_STREQ(info, wh_buffer, std_buffer);
+
+    // Test 2
+    wh_print(("--> %i", .buffer = wh_buffer, .buffer_length = 1024, .flags = WH_PRINT_NO_FLUSH), 102);
+    snprintf(std_buffer, 1024, "--> %i", 102);
+
 }
 
 i64 init(wh_unit_test_s* info) {

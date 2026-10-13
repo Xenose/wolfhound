@@ -1,30 +1,9 @@
-#ifndef _wh_header_debug_
-#define _wh_header_debug_
+#ifndef _wh_header_sys_debug_logger_
+#define _wh_header_sys_debug_logger_
 
-#include <wh-core/common.h>
-#include <wh-sys/print.h>
+#include<wh-core/common.h>
+#include<wh-sys/print.h>
 
-typedef struct {
-    const char* file;
-    const char* func;
-    const char* level;
-    i64 line;
-} _wh_log_params;
-
-typedef struct {
-    u64 mode;
-} _wh_log_init_params;
-
-enum { 
-    WH_LOG_LEVEL_EMERGENCY,
-    WH_LOG_LEVEL_ALERT,
-    WH_LOG_LEVEL_CRITICAL,
-    WH_LOG_LEVEL_ERROR,
-    WH_LOG_LEVEL_WARNING,
-    WH_LOG_LEVEL_NOTICE,
-    WH_LOG_LEVEL_INFO,
-    WH_LOG_LEVEL_DEBUG
-};
 
 extern i64 (*_wh_log_va[])(_wh_print_params print_params, _wh_log_params params, va_list args);
 extern i64 (*_wh_log[])(_wh_print_params print_params, _wh_log_params params, ...);
@@ -71,4 +50,4 @@ extern void wh_log_set_level(i64 level, u8 state);
  */
 #define wh_log_init(...)    _wh_log_init((_wh_log_init_params) { __VA_ARGS__ })
 
-#endif /* _wh_header_debug_ */
+#endif /* _wh_header_sys_debug_logger_ */

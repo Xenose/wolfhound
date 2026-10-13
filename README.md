@@ -144,18 +144,18 @@ In AES system :: action(logic) -> Entity -> Data
 
 |  Language       | File Count | Lines of Code | Percentage |
 | --------------- | ---------- | ------------- | ---------- |
-| C               | 318        | 10290         | 79.35%     |
-| Python          | 35         | 1042          | 8.04%      |
-| CMake           | 26         | 580           | 4.47%      |
-| C++             | 20         | 495           | 3.82%      |
-| Markdown        | 6          | 242           | 1.87%      |
-| Lua             | 13         | 171           | 1.32%      |
+| C               | 325        | 10465         | 79.61%     |
+| Python          | 35         | 1042          | 7.93%      |
+| CMake           | 26         | 582           | 4.43%      |
+| C++             | 20         | 495           | 3.77%      |
+| Markdown        | 6          | 242           | 1.84%      |
+| Lua             | 13         | 171           | 1.30%      |
 | Dockerfile      | 4          | 64            | 0.49%      |
-| Bourne Shell    | 4          | 57            | 0.44%      |
+| Bourne Shell    | 4          | 57            | 0.43%      |
 | GLSL            | 1          | 13            | 0.10%      |
 | Assembly        | 2          | 11            | 0.08%      |
 | INI             | 1          | 3             | 0.02%      |
-| Summary         | 430        | 12968         | 100.00%    |
+| Summary         | 437        | 13145         | 100.00%    |
 
 <!--python-stats-end-->
 

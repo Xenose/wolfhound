@@ -6,8 +6,10 @@
 #include<wh-sys/print.h>
 #include<wh/string.h>
 #include<wh/wolfhound.h>
-#include<wh-sys/debug/logger.h>
 #include<wh/render.h>
+
+#include<wh-core/debug/logger.h>
+#include<wh-sys/debug/logger.h>
 
 void update(wh_instance_s* ins) {
 }
@@ -95,5 +97,6 @@ int main(int arc, char* const* arv) {
 
     // Needs a better public api or background thread.
     _wh_mem_scan();
+    wh_core_debug(("--> Hello world!"));
     return 0;
 }

@@ -6,6 +6,9 @@ IF(FORTRAN_ENABLED)
 ENDIF()
 
 SET(C_SOURCES
+    "src/engine-core/print.c"
+    "src/engine-core/debug/logger.c"
+
     "src/engine-sys/atomic_lock.c"
     "src/engine-sys/data/dynamic_array.c"
     "src/engine-sys/data/hashmap.c"
