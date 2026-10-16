@@ -49,7 +49,7 @@ int main(int arc, char* const* arv) {
     
     wh_print(("%#b\n"), 0x00F0);
 
-    wh_log_info(("Starting GameObject Demo!"));
+    wh_info(("Starting GameObject Demo!"));
     wh_sys_program_path(buf, 255);
     wh_strcat((buf, 256, strlen(buf)), "config.lua");
 

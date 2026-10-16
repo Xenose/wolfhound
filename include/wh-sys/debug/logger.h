@@ -20,7 +20,7 @@ extern void wh_log_set_level(i64 level, u8 state);
  *
  * ## example
  * ```bash
- * [ LOG_LEVEL  ] FILE.C::LINE::FUNCTION --> MASSAGE
+ * [ LOG_LEVEL  ] FILE.C::LINE::FUNCTION --> MESSAGE
  * ```
  */
 #define wh_log_va_emergency(x, _args_)   WH_EPF(_wh_log_va[0]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[35mEMERGENCY\033[0m", __LINE__ }, _args_))
@@ -49,5 +49,23 @@ extern void wh_log_set_level(i64 level, u8 state);
  * ```
  */
 #define wh_log_init(...)    _wh_log_init((_wh_log_init_params) { __VA_ARGS__ })
+
+#undef wh_emergency
+#undef wh_alert
+#undef wh_critical
+#undef wh_error
+#undef wh_warning
+#undef wh_notice
+#undef wh_info
+#undef wh_debug
+
+#define wh_emergency(x, ...)        wh_log_emergancy(x, __VA_ARGS__)
+#define wh_alert(x, ...)            wh_log_alert(x, __VA_ARGS__)
+#define wh_critical(x, ...)         wh_log_critical(x, __VA_ARGS__)
+#define wh_error(x, ...)            wh_log_error(x, __VA_ARGS__)
+#define wh_warning(x, ...)          wh_log_warning(x, __VA_ARGS__)
+#define wh_notice(x, ...)           wh_log_notic(x, __VA_ARGS__)
+#define wh_info(x, ...)             wh_log_info(x, __VA_ARGS__)
+#define wh_debug(x, ...)            wh_log_debug(x, __VA_ARGS__)
 
 #endif /* _wh_header_sys_debug_logger_ */

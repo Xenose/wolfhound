@@ -24,5 +24,40 @@ extern i64 (*_wh_core_log[])(_wh_print_params print_params, _wh_log_params param
 #define wh_core_info(x, ...)            WH_EPF(_wh_core_log[6]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[36mINFO\033[0m     ", __LINE__ } WH_VA_OPT(__VA_ARGS__)))
 #define wh_core_debug(x, ...)           WH_EPF(_wh_core_log[7]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[90mDEBUG\033[0m    ", __LINE__ } WH_VA_OPT(__VA_ARGS__)))
 
+// common macros with the system logging system,
+// the system logging system takes priority when
+// included in the same file, see include/wh-sys/debug/logger.h
+// for more information.
+#ifndef wh_emergency
+    #define wh_emergency(x, ...) wh_core_emergancy(x, __VA_ARGS__)
+#endif
+
+#ifndef wh_alert
+    #define wh_alert(x, ...) wh_core_alert(x, __VA_ARGS__)
+#endif
+
+#ifndef wh_critical
+    #define wh_critical(x, ...) wh_core_critical(x, __VA_ARGS__)
+#endif
+
+#ifndef wh_error
+    #define wh_error(x, ...) wh_core_error(x, __VA_ARGS__)
+#endif
+
+#ifndef wh_warning
+    #define wh_warning(x, ...) wh_core_warning(x, __VA_ARGS__)
+#endif
+
+#ifndef wh_notice
+    #define wh_notice(x, ...) wh_core_notic(x, __VA_ARGS__)
+#endif
+
+#ifndef wh_info
+    #define wh_info(x, ...) wh_core_info(x, __VA_ARGS__)
+#endif
+
+#ifndef wh_debug
+    #define wh_debug(x, ...) wh_core_debug(x, __VA_ARGS__)
+#endif
 
 #endif /* _wh_header_core_debug_logger_ */
