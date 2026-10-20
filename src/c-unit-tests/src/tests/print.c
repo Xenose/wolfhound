@@ -17,6 +17,13 @@ void simple(wh_unit_test_s* info) {
     wh_print(("--> %i", .buffer = wh_buffer, .buffer_length = 1024, .flags = WH_PRINT_NO_FLUSH), 102);
     snprintf(std_buffer, 1024, "--> %i", 102);
 
+    // Test 3
+    wh_print(("Hello $$ world!", .buffer = wh_buffer, .buffer_length = 1024, .flags = WH_PRINT_NO_FLUSH));
+    WH_TEST_STREQ(info, wh_buffer, "Hello $ world!");
+
+    // Test 3
+    wh_print(("Hello %% world!", .buffer = wh_buffer, .buffer_length = 1024, .flags = WH_PRINT_NO_FLUSH));
+    WH_TEST_STREQ(info, wh_buffer, "Hello % world!");
 }
 
 i64 init(wh_unit_test_s* info) {

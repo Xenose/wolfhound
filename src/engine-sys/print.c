@@ -274,7 +274,10 @@ static void _wh_print_format_sub(wh_print_data_s* data, va_list list) {
 // I don't like this but it reduces code duplication.
 #define _WH_PRINT_FORMAT_COMMON_CASE(_goto_, _formater_, _data_) \
     case (_formater_): \
-        goto _goto_; \
+        (_data_)->buffer[0] = _formater_; \
+        ++(_data_)->buffer; \
+        ++(_data_)->format; \
+        break; \
     case '#': \
         (_data_)->print_format.flags.alt_form = true; \
         goto _goto_; \
