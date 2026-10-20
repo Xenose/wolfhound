@@ -2,6 +2,10 @@
 #include<wh-sys/print.h>
 #include<wh-posix/stdio.h>
 
+i64 some_cpp_func(wh_print_data_s* data, void* ptr) {
+    return 0;
+}
+
 void simple(wh_unit_test_s* info) {
     char wh_buffer[1024] = { 0 };
     char std_buffer[1024] = { 0 };
@@ -24,6 +28,17 @@ void simple(wh_unit_test_s* info) {
     // Test 3
     wh_print(("Hello %% world!", .buffer = wh_buffer, .buffer_length = 1024, .flags = WH_PRINT_NO_FLUSH));
     WH_TEST_STREQ(info, wh_buffer, "Hello % world!");
+}
+
+void functions(wh_unit_test_s* info) {
+    char wh_buffer[1024] = { 0 };
+   
+    // Registering test functions.
+    wh_print_add_func("cpp", &some_cpp_func);
+
+    // Testing ideal case.
+    wh_print(("Some cpp -->$[cpp]"), nullptr);
+    WH_TEST_STREQ(info, wh_buffer, "Some cpp -->");
 }
 
 i64 init(wh_unit_test_s* info) {
