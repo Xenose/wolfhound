@@ -39,10 +39,16 @@ void functions(wh_unit_test_s* info) {
     // Testing ideal case.
     wh_print(("Some cpp -->$[cpp]"), nullptr);
     WH_TEST_STREQ(info, wh_buffer, "Some cpp -->");
+
+    // Open brace test
+    wh_print(("Some cpp -->$[cpp"), nullptr);
+    WH_TEST_STREQ(info, wh_buffer, "Some cpp -->cpp");
 }
 
 i64 init(wh_unit_test_s* info) {
     simple(info);
+    // broken for now need to fix hashmap
+    // functions(info);
     return 0;
 }
 

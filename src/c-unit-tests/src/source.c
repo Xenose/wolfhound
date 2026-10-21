@@ -51,6 +51,14 @@ go_error_exit:
     return nullptr;
 }
 
+i64 report(wh_unit_results_s* results) {
+    wh_for(i64, i, results->count) {
+        printf("Reporting result!\n");
+    }
+
+    return 0;
+}
+
 int main(int arc, char* const* arv) {
     wh_unit_results_s results = { 0 };
 
@@ -124,7 +132,7 @@ go_memset:
 
     closedir(dir);
     //test_strings(&results);
-    return 0;
+    return report(&results);
 go_error_exit:
     return -1;
 }

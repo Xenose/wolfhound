@@ -41,14 +41,21 @@ static void _wh_print_format(wh_print_data_s* data, va_list list);
 // =======================================================================================================
 
 void _wh_print_add_func(_wh_print_add_func_params params) {
-    wh_hashmap_insert(&_map, (void*)params.key,  (void*)params.func);
+    wh_hashmap_insert(&_map, (void*)params.key, (void*)params.func);
 }
 
 // =======================================================================================================
 // private formatting function start
 // =======================================================================================================
 static void _wh_print_call_func(wh_print_data_s* data, void* ptr, char* key_start, char* key_end) {
-    i64 (*func)(wh_print_data_s* data, void* ptr) = (i64(*)(wh_print_data_s*, void*))wh_hashmap_get(&_map, key_start);
+    i64 (*func)(wh_print_data_s* data, void* ptr) = nullptr;
+
+    if (nullptr == key_end) {
+        data->format += 2;
+        return;
+    }
+
+    func = (i64(*)(wh_print_data_s*, void*))wh_hashmap_get(&_map, key_start);
 
     if (nullptr != func) {
         func(data, ptr);
@@ -185,20 +192,29 @@ static void _wh_print_int128(wh_print_data_s* d, i128 value, i64 base) {
 }
 
 static void _wh_print_int_bytes(wh_print_data_s* d, i64 value, i64 base) {
+    u32 length = 1;
     const char* end = "B";
 
     if (value >= WH_1GB) {
         end = "GB";
+        length = 2;
         value /= WH_1GB;
     } else if (value >= WH_1MB) {
         end = "MB";
+        length = 2;
         value /= WH_1MB;
     } else if (value >= WH_1KB) {
         end = "KB";
+        length = 2;
         value /= WH_1KB;
     }
 
     _wh_print_int(d, value, base);
+
+    if (-1 == wh_print_buffer_check(d, length)) {
+        return;
+    }
+
     d->buffer += stpcpy(d->buffer, end) - d->buffer;
     ++d->format;
 }
@@ -274,9 +290,7 @@ static void _wh_print_format_sub(wh_print_data_s* data, va_list list) {
 // I don't like this but it reduces code duplication.
 #define _WH_PRINT_FORMAT_COMMON_CASE(_goto_, _formater_, _data_) \
     case (_formater_): \
-        (_data_)->buffer[0] = _formater_; \
-        ++(_data_)->buffer; \
-        ++(_data_)->format; \
+        _wh_print_cpychar(_data_, _formater_); \
         break; \
     case '#': \
         (_data_)->print_format.flags.alt_form = true; \

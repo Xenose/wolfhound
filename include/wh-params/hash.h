@@ -8,4 +8,9 @@ typedef struct {
     u32 seed;
 } _wh_hash_xx32_params;
 
+typedef struct {
+    wh_buffer_s buffer;
+    u64 seed;
+} _wh_hash_xx64_params;
+
 #endif /* _wh_header_params_hash_ */

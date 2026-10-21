@@ -13,15 +13,20 @@ u32 _wh_hash_xx32(_wh_hash_xx32_params params) {
     static const u32 p5 = 0x165667B1U;  // 0b 00010110010101100110011110110001
 
     // step 1
-    u32 a1 = params.seed + p1 + p2;
-    u32 a2 = params.seed + p2;
-    u32 a3 = params.seed;
-    u32 a4 = params.seed - p1;
+    u32 a1 = 0; 
+    u32 a2 = 0;
+    u32 a3 = 0;
+    u32 a4 = 0;
 
     if (16 > bytes) {
         a_out = params.seed + p5;
         goto go_step_4;
     }
+
+    a1 = params.seed + p1 + p2;
+    a2 = params.seed + p2;
+    a3 = params.seed;
+    a4 = params.seed - p1;
 
     // step 2
     for (; 16 <= bytes; bytes -= 16, index += 16) {
@@ -76,6 +81,32 @@ go_step_4:
     return a_out;
 } // _wh_hash_xx32
 
-i64 wh_hash_xx64() {
+i64 wh_hash_xx64(_wh_hash_xx64_params params) {
+    u64 index = 0;
+    u64 bytes = params.buffer.bytes;
+    u64 a_out = 0;
+
+    static const u64 p1 = 0x9E3779B185EBCA87ULL;  // 0b1001111000110111011110011011000110000101111010111100101010000111
+    static const u64 p2 = 0xC2B2AE3D27D4EB4FULL;  // 0b1100001010110010101011100011110100100111110101001110101101001111
+    static const u64 p3 = 0x165667B19E3779F9ULL;  // 0b0001011001010110011001111011000110011110001101110111100111111001
+    static const u64 p4 = 0x85EBCA77C2B2AE63ULL;  // 0b1000010111101011110010100111011111000010101100101010111001100011
+    static const u64 p5 = 0x27D4EB2F165667C5ULL;  // 0b0010011111010100111010110010111100010110010101100110011111000101
+
+    // Step 1
+    u64 a1 = params.seed + p1 + p2;
+    u64 a2 = params.seed + p2;
+    u64 a3 = params.seed;
+    u64 a4 = params.seed - p1;
+
+    if (32 > bytes) {
+        a_out = params.seed + p5;
+        goto go_step_4;
+    }
+
+    // Step 2
+    // Step 3
+    // Step 4
+
+go_step_4:
     return 0;
 }

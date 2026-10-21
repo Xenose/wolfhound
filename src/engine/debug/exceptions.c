@@ -57,16 +57,22 @@ i8 _jmp_init(_wh_try_info_s* info) {
     sigemptyset(&new_action.sa_mask);
 
     if (-1 == sigaction(SIGSEGV, &new_action, &info->old_action)) {
-        goto ERROR_EXIT;
+        goto go_error_exit;
     }
 
     info->old_info = _jmp_info;
     _jmp_info = info;
 go_skip:
     return info->count;
-ERROR_EXIT:
+go_error_exit:
     // TODO :: return more errors
     return -1;
+}
+
+i8 _jmp_reset(_wh_try_info_s* info) {
+    info->old_info = _jmp_info;
+    _jmp_info = info;
+    return 1;
 }
 
 wh_exception_s _jmp_last_exception(wh_exception_s* exp) {
