@@ -7,7 +7,7 @@
 #define _pointer_count 20
 
 #if !(WH_SYSTEM&WH_SYS_TCC)
-     wh_thread _wh_try_info_s* _jmp_info = nullptr;
+     wh_thread _wh_try_info_s* volatile _jmp_info = nullptr;
 #else
     _wh_try_info_s* _jmp_info;
 #endif
@@ -37,6 +37,20 @@ static void _wh_handler(int sig, siginfo_t* action, void* data) {
             siglongjmp(info->buffer, WH_EXCEPTION_SIGSEGV);
             break;
     }
+}
+
+i8 _jmp_reset(_wh_try_info_s* info) {
+    info->old_info = _jmp_info;
+    _jmp_info = info;
+    return 1;
+}
+
+i8 _jmp_throw(int exception) {
+    _wh_try_info_s* info = _jmp_info;
+
+    _jmp_info->error = exception;
+    _jmp_info->msg = "USER";
+    siglongjmp(info->buffer, exception);
 }
 
 i8 _jmp_init(_wh_try_info_s* info) {
@@ -69,11 +83,7 @@ go_error_exit:
     return -1;
 }
 
-i8 _jmp_reset(_wh_try_info_s* info) {
-    info->old_info = _jmp_info;
-    _jmp_info = info;
-    return 1;
-}
+
 
 wh_exception_s _jmp_last_exception(wh_exception_s* exp) {
     i8 error = WH_EXCEPTION_UNKNOWN;
