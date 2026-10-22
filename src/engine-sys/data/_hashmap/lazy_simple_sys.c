@@ -86,8 +86,8 @@ static i8 _lazy_simple_hash_copy(wh_hashmap_s* map, void* slots, u64 bytes, i64 
             dst = wh_ptr_offset(slots, index * bytes);
             dst_key = _lazy_simple_key_get(dst, map->stype);
        
-            wh_log_debug(("dst [ %x ], dst_key [ %x ]"), dst, dst_key);
-            wh_log_debug(("Old pointer [ %x ], new pointer [ %x ], bytes -> %i "), src_key, dst_key, bytes);
+            wh_debug(("dst [ %x ], dst_key [ %x ]"), dst, dst_key);
+            wh_debug(("Old pointer [ %x ], new pointer [ %x ], bytes -> %i "), src_key, dst_key, bytes);
 
             if (nullptr != dst_key) {
                 wh_sys_memrel(slots, resize_size);
@@ -99,7 +99,7 @@ static i8 _lazy_simple_hash_copy(wh_hashmap_s* map, void* slots, u64 bytes, i64 
         }
     }
 
-    wh_log_info(("Key at [ %u ]"), index);
+    wh_info(("Key at [ %u ]"), index);
     return 0;
 }
 
@@ -129,7 +129,7 @@ go_retry_resize:
     new_slots = wh_sys_memreq(resize_size);
 
     if (nullptr == new_slots) {
-        wh_log_critical(("Failed to allocated memory from the system!"));
+        wh_critical(("Failed to allocated memory from the system!"));
         goto go_error_exit;
     }
 

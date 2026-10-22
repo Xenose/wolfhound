@@ -244,6 +244,7 @@ class builder_c:
             "-S", f"{self.home}",
             "-B", path,
             "-G", self.build_system,
+            "-DGENERATE_REPORT=ON",
             f"-DNO_SDL3={args.no_sdl3}",
             f"-DNO_SDL2={args.no_sdl2}",
         ]

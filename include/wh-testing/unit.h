@@ -55,7 +55,7 @@ go_error_exit:
 
 #define _WH_TEST_CMP(_name_, _cmp_, _print_failure_, _print_success_) \
         if _cmp_ { \
-            _print_success_ \
+            /* _print_success_ */ \
             ++(_name_)->passed; \
         } else { \
             _print_failure_ \

@@ -16,6 +16,8 @@
 #include<wh/maths/core.h>
 #include<wh-sys/print.h>
 
+#include<wh-core/debug/logger.h>
+
 // =======================================================================================================
 // Globals
 // =======================================================================================================
@@ -27,7 +29,7 @@ static wh_thread char _buffer[8096];
 static wh_hashmap_s _map = {
     .stype = WH_STRUCT_TYPE_HASHMAP_LAZY_PTR_SYS,
     .slots = nullptr,
-    .type_size = sizeof(void*),
+    .type_size = sizeof(void(*)),
     .resize_size = 8096,
 };
 
@@ -51,11 +53,12 @@ static void _wh_print_call_func(wh_print_data_s* data, void* ptr, char* key_star
     i64 (*func)(wh_print_data_s* data, void* ptr) = nullptr;
 
     if (nullptr == key_end) {
-        data->format += 2;
+        ++data->format;
         return;
     }
 
     func = (i64(*)(wh_print_data_s*, void*))wh_hashmap_get(&_map, key_start);
+    wh_info(("Function pointer is [ %p ]"), func);
 
     if (nullptr != func) {
         func(data, ptr);

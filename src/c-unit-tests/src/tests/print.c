@@ -2,6 +2,8 @@
 #include<wh-sys/print.h>
 #include<wh-posix/stdio.h>
 
+#include<wh-core/debug/logger.h>
+
 i64 some_cpp_func(wh_print_data_s* data, void* ptr) {
     return 0;
 }
@@ -35,6 +37,7 @@ void functions(wh_unit_test_s* info) {
    
     // Registering test functions.
     wh_print_add_func("cpp", &some_cpp_func);
+    wh_info(("function is %p"), &some_cpp_func);
 
     // Testing ideal case.
     wh_print(("Some cpp -->$[cpp]"), nullptr);
@@ -47,8 +50,7 @@ void functions(wh_unit_test_s* info) {
 
 i64 init(wh_unit_test_s* info) {
     simple(info);
-    // broken for now need to fix hashmap
-    // functions(info);
+    functions(info);
     return 0;
 }
 
