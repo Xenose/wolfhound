@@ -101,8 +101,8 @@ i64 test_exceptions_segfault(wh_unit_test_s* info) {
 
 i64 test_exceptions_propagation(wh_unit_test_s* info) {
     i64 code = WH_EXCEPTION_NONE;
-    int caught_outer = 0;
-    int caught_inner = 0;
+    i64 caught_outer = 0;
+    i64 caught_inner = 0;
 
     wh_try {
         wh_try {
@@ -116,9 +116,31 @@ i64 test_exceptions_propagation(wh_unit_test_s* info) {
         caught_outer = 1;
     }
 
-    WH_TEST_INT64EQ(info, (i64)caught_inner, 1L);
-    WH_TEST_INT64EQ(info, (i64)caught_outer, 0L);
+    WH_TEST_INT64EQ(info, caught_inner, 1L);
+    WH_TEST_INT64EQ(info, caught_outer, 0L);
     WH_TEST_INT64EQ(info, code, (i64)WH_EXCEPTION_UNKNOWN);
+
+    code = 0;
+    caught_inner = 0;
+    caught_outer = 0;
+
+    wh_try {
+        wh_try {
+            wh_throw(WH_EXCEPTION_UNKNOWN);
+        } wh_catch(wh_exception_s, e) {
+            wh_throw(e.error);
+        }
+    } wh_catch(wh_exception_s, e) {
+        code = e.error;
+        caught_outer = 1;
+    }
+
+    WH_TEST_INT64EQ(info, caught_outer, 1L);
+    WH_TEST_INT64EQ(info, code, (i64)WH_EXCEPTION_UNKNOWN);
+
+    code = 0;
+    caught_inner = 0;
+    caught_outer = 0;
 
     return 0;
 }
