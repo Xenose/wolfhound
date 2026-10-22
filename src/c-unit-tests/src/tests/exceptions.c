@@ -79,22 +79,28 @@ i64 test_exceptions_throw(wh_unit_test_s* info) {
 }
 
 i64 test_exceptions_segfault(wh_unit_test_s* info) {
+    i64 code = 0;
     const char* status = nullptr;
 
     wh_try {
         status = "failed";
         raise(SIGSEGV);
     } wh_catch(wh_exception_s, e) {
+        code = e.error;
         status = "passed";
     }
 
+    WH_TEST_INT64EQ(info, code, (i64)WH_EXCEPTION_SIGSEGV);
     WH_TEST_STREQ(info, status, "passed");
+
+    code = 0;
     status = nullptr;
 
     return 0;
 }
 
 i64 test_exceptions_propagation(wh_unit_test_s* info) {
+    i64 code = WH_EXCEPTION_NONE;
     int caught_outer = 0;
     int caught_inner = 0;
 
@@ -102,14 +108,18 @@ i64 test_exceptions_propagation(wh_unit_test_s* info) {
         wh_try {
             wh_throw(WH_EXCEPTION_UNKNOWN);
         } wh_catch(wh_exception_s, e) {
+            code = e.error;
             caught_inner = 1;
         }
     } wh_catch(wh_exception_s, e) {
+        code = e.error;
         caught_outer = 1;
     }
 
     WH_TEST_INT64EQ(info, (i64)caught_inner, 1L);
     WH_TEST_INT64EQ(info, (i64)caught_outer, 0L);
+    WH_TEST_INT64EQ(info, code, (i64)WH_EXCEPTION_UNKNOWN);
+
     return 0;
 }
 

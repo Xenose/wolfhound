@@ -13,27 +13,26 @@
 #endif
 
 static void _wh_handler(int sig, siginfo_t* action, void* data) {
-    _wh_try_info_s* info = _jmp_info;
+    _wh_try_info_s* volatile info = _jmp_info;
 
     // backtrace variables
     int count = _pointer_count;
     void* ptrs[_pointer_count] = { nullptr };
 
-    signal(sig, SIG_DFL);
     _jmp_info->error = WH_EXCEPTION_UNKNOWN;
-    // _jmp_info = info->old_info;
 
     sigaction(sig, &info->old_action, nullptr);
 
     switch (sig) {
         case SIGSEGV:
             count = backtrace(ptrs, count);
-            backtrace_symbols_fd(ptrs, count, 2);
+            // backtrace_symbols_fd(ptrs, count, 2);
 
             // Setting the exception
             _jmp_info->error = WH_EXCEPTION_SIGSEGV;
             _jmp_info->msg = "SEGFAULT";
 
+            //_jmp_info = info->old_info;
             siglongjmp(info->buffer, WH_EXCEPTION_SIGSEGV);
             break;
     }
@@ -91,10 +90,13 @@ wh_exception_s _jmp_last_exception(wh_exception_s* exp) {
     switch (_jmp_info->error) {
         case WH_EXCEPTION_NONE:
             error = WH_EXCEPTION_NONE;
+            break;
+
+        default:
+            exp->msg = _jmp_info->msg;
+            exp->error = error;
     }
 
-    exp->error = error;
-    exp->msg = _jmp_info->msg;
     _jmp_info = _jmp_info->old_info;
 
     return *exp;
