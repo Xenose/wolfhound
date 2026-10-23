@@ -2,6 +2,10 @@
 #include<wh/maths/core.h>
 
 static i64 test_simple(wh_unit_test_s* info) {
+    WH_TEST_INT64EQ(info, wh_intpos(-0), 0L);
+    WH_TEST_INT64EQ(info, wh_intpos(-6), 0L);
+    WH_TEST_INT64EQ(info, wh_intpos(-9), 0L);
+
     WH_TEST_INT64EQ(info, wh_intpos(0), 0L);
     WH_TEST_INT64EQ(info, wh_intpos(6), 0L);
     WH_TEST_INT64EQ(info, wh_intpos(9), 0L);
