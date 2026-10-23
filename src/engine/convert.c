@@ -91,7 +91,7 @@ i64 _wh_str2int(_wh_str2int_params params) {
     if ('0' <= params.buffer[0] && '9' >= params.buffer[0]) {
         out = params.buffer[0] - '0';
 
-        wh_for(i64, i, params.buffer_length) {
+        for(i64 i = 1; i < params.buffer_length; i++) {
             if ('0' > params.buffer[i] || '9' < params.buffer[i]) {
                 break;
             }

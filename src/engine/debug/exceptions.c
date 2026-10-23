@@ -47,9 +47,15 @@ i8 _jmp_reset(_wh_try_info_s* info) {
 i8 _jmp_throw(int exception) {
     _wh_try_info_s* info = _jmp_info;
 
-    _jmp_info->error = exception;
-    _jmp_info->msg = "USER";
-    siglongjmp(info->buffer, exception);
+    if (0 == exception) {
+        _jmp_info->error = WH_EXCEPTION_UNKNOWN;
+        _jmp_info->msg = "USER";
+    } else {
+        _jmp_info->error = exception;
+        _jmp_info->msg = "USER";
+    }
+
+    siglongjmp(info->buffer, (int)_jmp_info->error);
 }
 
 i8 _jmp_init(_wh_try_info_s* info) {

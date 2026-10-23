@@ -43,7 +43,7 @@ static void _wh_print_format(wh_print_data_s* data, va_list list);
 // =======================================================================================================
 
 void _wh_print_add_func(_wh_print_add_func_params params) {
-    wh_hashmap_insert(&_map, (void*)params.key, (void*)params.func);
+    wh_hashmap_insert(&_map, (void*)params.key, (void*)&params.func);
 }
 
 // =======================================================================================================

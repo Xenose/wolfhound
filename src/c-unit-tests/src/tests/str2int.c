@@ -8,10 +8,11 @@ i64 test_numbers(wh_unit_test_s* info) {
     char buffer[256] = { 0 };
 
     wh_for(int, i, 100000) {
-       result = wh_str2int(buffer, 256);
-       excpected = strtol(buffer, nullptr, 10);
-       
-       WH_TEST_INT64EQ(info, result, excpected);
+        snprintf(buffer, 255, "%i", i);
+        result = wh_str2int(buffer, 256);
+        excpected = strtol(buffer, nullptr, 10);
+
+        WH_TEST_INT64EQ(info, result, excpected);
     }
 
     return 0;
