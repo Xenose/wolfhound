@@ -4,15 +4,12 @@
 #include<wh/wolfhound.h>
 
 #include<wh-core/common.h>
+#include<wh-core/print.h>
 
 static i64 _wh_log_real_va(_wh_print_params print_params, _wh_log_params params, va_list args);
 
 static i64 _wh_log_dummy(_wh_print_params print_params, _wh_log_params params, ...);
 static i64 _wh_log_real(_wh_print_params print_params, _wh_log_params params, ...);
-
-#if !(WH_SYSTEM&WH_SYS_TCC)
-    static wh_thread char _buffer[8096] = { 0 };
-#endif
 
 i64 (*_wh_log_va[])(_wh_print_params print_params, _wh_log_params params, va_list args) = {
     &_wh_log_real_va, // Emergency
@@ -43,6 +40,12 @@ static i64 _wh_log_dummy_va(_wh_print_params print_params, _wh_log_params params
 WH_IGNORE_END()
 
 static i64 _wh_log_real_va(_wh_print_params print_params, _wh_log_params params, va_list args) {
+    char* _buffer = print_params.buffer;
+
+    if (nullptr == print_params.buffer) {
+        _buffer = wh_core_print_buffer(&print_params.buffer_length);
+    }
+
     #if (WH_SYSTEM&WH_SYS_TCC)
         char _buffer[8096] = { 0 };
     #endif

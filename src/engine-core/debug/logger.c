@@ -8,6 +8,8 @@
 #include<wh-core/macros.h>
 #include<wh-core/print.h>
 
+#include<wh/maths/core.h>
+
 static i64 _wh_core_log_dummy_va(_wh_print_params print_params, _wh_log_params params, va_list args);
 static i64 _wh_core_log_real_va(_wh_print_params print_params, _wh_log_params params, va_list args);
 static i64 _wh_core_log_dummy(_wh_print_params print_params, _wh_log_params params, ...);
@@ -44,13 +46,12 @@ i64 _wh_core_log_dummy_va(_wh_print_params print_params, _wh_log_params params, 
 
 i64 _wh_core_log_real_va(_wh_print_params print_params, _wh_log_params params, va_list args) {
     i64 count = 0;
-    size_t length = (size_t)print_params.buffer_length;
+    i64 length = print_params.buffer_length;
     int offset = 0;
     char* buffer = print_params.buffer;
 
     if (nullptr == buffer) {
-        length = WH_CORE_PRINT_BUFFER_LENGTH;
-        buffer = wh_core_print_buffer();
+        buffer = wh_core_print_buffer(&length);
     }
 
     offset = snprintf(

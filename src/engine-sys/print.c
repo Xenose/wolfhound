@@ -16,14 +16,12 @@
 #include<wh/maths/core.h>
 #include<wh-sys/print.h>
 
+#include<wh-core/print.h>
 #include<wh-core/debug/logger.h>
 
 // =======================================================================================================
 // Globals
 // =======================================================================================================
-#if !(WH_SYSTEM&WH_SYS_TCC)
-static wh_thread char _buffer[8096];
-#endif
 
 // i64 (*func)(wh_print_data_s* data, void* ptr);
 static wh_hashmap_s _map = {
@@ -501,8 +499,7 @@ i64 _wh_print_va(_wh_print_params params, va_list list) {
     char* buffer = params.buffer;
 
     if (nullptr == params.buffer) {
-        buffer = _buffer;
-        params.buffer_length = 8096;
+        buffer = wh_core_print_buffer(&params.buffer_length);
     }
 
     if (nullptr == params.format) {
