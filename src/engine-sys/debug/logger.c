@@ -46,10 +46,6 @@ static i64 _wh_log_real_va(_wh_print_params print_params, _wh_log_params params,
         _buffer = wh_core_print_buffer(&print_params.buffer_length);
     }
 
-    #if (WH_SYSTEM&WH_SYS_TCC)
-        char _buffer[8096] = { 0 };
-    #endif
-
     i64 used = wh_print((
         "[ %s ] $t :: \033[90m%s::%d::%s -->\033[0m ",
         2, _buffer, 8096, 0, WH_PRINT_NO_FLUSH),
