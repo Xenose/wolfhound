@@ -15,7 +15,10 @@ int main(int arc, char* const* arv) {
         print(("Test number 1 -> %i\n"), 1);
     }
 
+    printf("\twh_print\n");
     wh_benchmark_print(&wh_bench);
+
+    printf("\tprintf\n");
     wh_benchmark_print(&std_bench);
     return 0;
 }
