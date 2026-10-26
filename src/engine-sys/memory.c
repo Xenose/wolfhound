@@ -290,7 +290,7 @@ wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
 
     params.bytes = (u64)wh_align((i64)(params.bytes + sizeof(wh_heap_header_s)), sysconf(_SC_PAGESIZE));
 
-    wh_log_info(("requested [ $k ] giving [ $k ]"), old_bytes, params.bytes);
+    wh_info(("requested [ $k ] giving [ $k ]"), old_bytes, params.bytes);
 
     if (nullptr != _heap_main) {
         if (nullptr == params.heap) {
@@ -316,6 +316,7 @@ wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
         heap->bytes_total = params.bytes;
     }
 
+    // TODO 2026-10-25 causes crash on TinyCC
     wh_heap_insert(params.name, heap);
 
     wh_spinlock_v3(&heap->locked) {

@@ -333,10 +333,10 @@ static void _wh_print_format(wh_print_data_s* data, va_list list) {
     void* tmp = nullptr;
     u64* vp = &data->print_format.left;
 
-    goto go_loop; // skipping the memset
-go_loop_memset:
+    goto go_redo_loop; // skipping the memset
+go_redo_loop_memset:
     memset(&data->print_format, 0, sizeof(wh_print_format_s));
-go_loop:
+go_redo_loop:
     switch (*data->format) {
         case '\0':
             // time to break and leave this loop
@@ -378,7 +378,7 @@ go_dollar_switch:
                     break;
             }
 
-            goto go_loop_memset;
+            goto go_redo_loop_memset;
 
         case '%': // standard cases
 go_standard_switch:
@@ -456,12 +456,12 @@ go_X:
                     break;
             }
 
-            goto go_loop_memset;
+            goto go_redo_loop_memset;
 
 go_default:
         default:
             _wh_print_cpychar(data, *data->format);
-            goto go_loop;
+            goto go_redo_loop;
     }
 }
 

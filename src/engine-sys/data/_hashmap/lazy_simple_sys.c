@@ -6,7 +6,6 @@
 #include<wh/maths/core.h>
 #include<wh/maths/memory.h>
 
-
 static i64 _lazy_simple_hash(i64 type, void* key, i64 slot_count) {
     i64 hash = -1;
 
@@ -50,11 +49,11 @@ static void* _lazy_simple_key_get(void* slots, i64 type) {
 i8 _lazy_simple_keycomp(void* src_key, void* dst_key, i64 type) {
     wh_log_info(("src_key :: %u, dst_key :: %u"), src_key, dst_key);
 
-    if (nullptr != src_key) {
+    if (nullptr != src_key || nullptr != dst_key) {
         goto go_exit;
     }
 
-    if (nullptr != dst_key) switch (type) {
+    switch (type) {
         case WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_SYS:
         case WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_STD:
             return !strcmp(src_key, dst_key);
@@ -94,7 +93,7 @@ static i8 _lazy_simple_hash_copy(wh_hashmap_s* map, void* slots, u64 bytes, i64 
                 return -1;
             }
 
-            memcpy(dst, src, map->type_size);
+            memcpy(dst, src, bytes);
             _lazy_simple_key_set(dst, src_key, map->stype);
         }
     }
@@ -133,6 +132,7 @@ go_retry_resize:
         goto go_error_exit;
     }
 
+    wh_info(("slots -> %p to %p"), new_slots, ((char*)new_slots) + resize_size);
     memset(new_slots, 0, resize_size);
 
     if (nullptr != map->slots) {
@@ -161,6 +161,8 @@ static i8 _insert_lazy_simple_sys(_wh_hashmap_insert_params* params) {
     wh_hashmap_slot_string_s* slots = params->map->slots;
     wh_hashmap_slot_string_s* dst = nullptr;
 
+    wh_info(("Bytes -> %i"), bytes);
+
     if (nullptr == slots) {
         slots = _reallocate_lazy_simple_sys(params->map);
     }
@@ -173,7 +175,10 @@ static i8 _insert_lazy_simple_sys(_wh_hashmap_insert_params* params) {
     }
 
     dst = wh_ptr_offset(slots, (u64)hash * bytes);
-    src_key = ((wh_hashmap_slot_string_s*)wh_ptr_offset(slots, (u64)hash * bytes))->key;
+
+    // The issue for TinyCC
+    // src_key = ((wh_hashmap_slot_string_s*)wh_ptr_offset(slots, (u64)hash * bytes))->key;
+    src_key = _lazy_simple_key_get(wh_ptr_offset(slots, (u64)hash * bytes), params->map->stype);
 
     if (_lazy_simple_keycomp(src_key, dst->key, params->map->stype)) {
         wh_log_error(("Inputted key and existing key is the same [ %s -> %s ]"),

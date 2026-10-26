@@ -29,19 +29,19 @@
     };
     
     // _SC_XXX primary naming
-    #define _SC_ARG_MAX				_SC_ARG_MAX_
-    #define _SC_CHILD_MAX			_SC_CHILD_MAX_
-    #define _SC_HOST_NAME_MAX		_SC_HOST_NAME_MAX_
-    #define _SC_LOGIN_NAME_MAX	 	_SC_LOGIN_NAME_MAX_
-    #define _SC_CLK_TCK				_SC_CLK_TCK_
-    #define _SC_OPEN_MAX			_SC_OPEN_MAX_
-    #define _SC_PAGESIZE 			_SC_PAGESIZE_
-    #define _SC_RE_DUP_MAX			_SC_RE_DUP_MAX_
-    #define _SC_STREAM_MAX			_SC_STREAM_MAX_
-    #define _SC_SYMLOOP_MAX 		_SC_SYMLOOP_MAX_
-    #define _SC_TTY_NAME_MAX		_SC_TTY_NAME_MAX_
-    #define _SC_TZNAME_MAX			_SC_TZNAME_MAX_
-    #define _SC_VERSION				_SC_VERSION_
+    #define _SC_ARG_MAX         _SC_ARG_MAX_
+    #define _SC_CHILD_MAX       _SC_CHILD_MAX_
+    #define _SC_HOST_NAME_MAX   _SC_HOST_NAME_MAX_
+    #define _SC_LOGIN_NAME_MAX  _SC_LOGIN_NAME_MAX_
+    #define _SC_CLK_TCK         _SC_CLK_TCK_
+    #define _SC_OPEN_MAX        _SC_OPEN_MAX_
+    #define _SC_PAGESIZE        _SC_PAGESIZE_
+    #define _SC_RE_DUP_MAX      _SC_RE_DUP_MAX_
+    #define _SC_STREAM_MAX      _SC_STREAM_MAX_
+    #define _SC_SYMLOOP_MAX     _SC_SYMLOOP_MAX_
+    #define _SC_TTY_NAME_MAX    _SC_TTY_NAME_MAX_
+    #define _SC_TZNAME_MAX      _SC_TZNAME_MAX_
+    #define _SC_VERSION         _SC_VERSION_
     
     // _SC_XXX alt naming
     #define _SC_PAGE_SIZE _SC_PAGESIZE

@@ -91,7 +91,7 @@ go_error_exit:
 
 
 wh_exception_s _jmp_last_exception(wh_exception_s* exp) {
-    i8 error = WH_EXCEPTION_UNKNOWN;
+    i64 error = WH_EXCEPTION_UNKNOWN;
 
     switch (_jmp_info->error) {
         case WH_EXCEPTION_NONE:
@@ -100,9 +100,10 @@ wh_exception_s _jmp_last_exception(wh_exception_s* exp) {
 
         default:
             exp->msg = _jmp_info->msg;
-            exp->error = error;
+            error = _jmp_info->error;
     }
 
+    exp->error = error;
     _jmp_info = _jmp_info->old_info;
 
     return *exp;
