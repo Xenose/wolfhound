@@ -9,7 +9,7 @@
     extern char* stpncpy(char* restrict dst, const char* restrict src, size_t length);
     extern char* stpcpy(char* restrict dst, const char* restrict src);
 
-    /* [MD_DOC]
+    /* [MD_DOC:memccpy]
      *
      * # Summary memccpy(void* restrict dst, const void* restrict src, int c, size_t n)
      *

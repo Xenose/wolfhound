@@ -4,7 +4,7 @@
 #include <wh-posix/stdint.h>
 #include <wh-posix/stdatomic.h>
 
-/* [MD_DOC]
+/* [MD_DOC:i8,i16,i32,i64.i128]
  * # Integer Types
  * 
  * | Name     | Type       | Comment                              |

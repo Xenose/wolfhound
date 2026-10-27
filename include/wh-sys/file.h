@@ -97,7 +97,7 @@ extern i64 _wh_file_type(const char* restrict filename, u8* restrict buffer, u64
 extern wh_file_s _wh_file_load(_wh_file_load_params params);
 extern i8 _wh_file_unload(_wh_file_unload_params params);
 
-/* [MD_DOC]
+/* [MD_DOC:wh_file_load]
  * # wh_file_load
  */
 #define wh_file_load(...) WH_EPF(_wh_file_load((_wh_file_load_params) { __VA_ARGS__ }))

@@ -11,7 +11,7 @@ extern wh_instance_s* _wh_init(_wh_init_params params);
 extern void _wh_loop(_wh_loop_params params);
 extern int64_t _wh_end(_wh_end_params params);
 
-/* [MD_DOC]
+/* [MD_DOC:wh_init]
  * # wh_init
  * ```c
  *	wh_instance_s* wh_init()
@@ -20,7 +20,7 @@ extern int64_t _wh_end(_wh_end_params params);
 #define wh_init(...) WH_EPF(_wh_init((_wh_init_params){ __VA_ARGS__ }))
 
 #ifndef __cplusplus
-/* [MD_DOC]
+/* [MD_DOC:wh_loop]
  */
 #define wh_loop(...) WH_EPF(_wh_loop((_wh_loop_params) { __VA_ARGS__ }))
 #define wh_end(...) WH_EPF(_wh_end((_wh_end_params) { __VA_ARGS__ }))

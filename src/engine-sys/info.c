@@ -19,7 +19,7 @@ pid_t wh_sys_gettid(void) {
 
 #if (WH_SYSTEM&WH_SYS_LINUX)
 
-/* [MD_DOC]
+/* [MD_DOC:wh_sys_program_path]
  * Gets the path to the current executable/binary
  */
 i64 wh_sys_program_path(char* buffer, u64 buffer_size) {

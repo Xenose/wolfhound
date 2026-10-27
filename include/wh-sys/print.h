@@ -19,7 +19,7 @@ extern void _wh_print_add_func(_wh_print_add_func_params params);
 
 #if !defined(__cplusplus) || !defined(WH_USE_C_MACRO_FUNC)
 
-/* [MD_DOC]
+/* [MD_DOC:wh_print]
  * # wh_print [ Thread Safe ] and wh_print_va [ Thread Safe ]
  * ```c
  * wh_print((const char* format, i64 fd : optional, char* buffer : optional, u64 buffer_length : optional, u64 offset : optional, u64 flags : optional), ...)
@@ -74,7 +74,7 @@ extern void _wh_print_add_func(_wh_print_add_func_params params);
 #define wh_print_va(x, args) WH_EPF(_wh_print_va((_wh_print_params){ WH_VA_ARGS x }, args))
 #define wh_print(x, ...) WH_EPF(_wh_print((_wh_print_params){ WH_VA_ARGS x } WH_VA_OPT(__VA_ARGS__)))
 
-/* [MD_DOC]
+/* [MD_DOC:wh_print_buffer_check]
  * # wh_print_buffer_check
  */
 #define wh_print_buffer_check(...) WH_EPF(_wh_print_buffer_check((_wh_print_buffer_check_params){ __VA_ARGS__ }))

@@ -34,7 +34,7 @@ extern i32 wh_mem_leak_count(void);
 
 #ifndef __cplusplu
 
-/* [MD_DOC]
+/* [MD_DOC:wh_heap_init]
  *
  * ## wh_heap_init
  *
@@ -59,18 +59,18 @@ extern i32 wh_mem_leak_count(void);
  */
 #define wh_heap_init(...)	WH_EPF(_wh_heap_init((_wh_heap_init_params) { __VA_ARGS__ }))
 
-/* [MD_DOC
+/* [MD_DOC:wh_memory_tracking]
  *
  */
 #define wh_memory_tracking(...) WH_EPF(_wh_memory_tracking((_wh_memory_tracking_params) { __VA_ARGS__ }))
 
-/* [MD_DOC]
+/* [MD_DOC:wh_heap_print]
  *
  * @d_param(wh_heap_s*)		heap : The heap that will be printed.
  */
 #define wh_heap_print(...) WH_EPF(_wh_heap_print((_wh_heap_print_params) { __VA_ARGS__ }))
 
-/* [MD_DOC]
+/* [MD_DOC:wh_mem_free]
  *
  * ## wh_mem_free(void* owner, void* ptr, wh_heap_header_s* heap : optional, u64* error : optional)
  */
@@ -80,7 +80,7 @@ extern i32 wh_mem_leak_count(void);
 #define wh_inherit(ptr, old, new) wh_own(wh_disown(old), new)
 
 
-/* [MD_DOC]
+/* [MD_DOC:wh_mem_alloc]
  *
  * ## wh_mem_alloc()
  */
@@ -88,11 +88,11 @@ extern i32 wh_mem_leak_count(void);
 
 #define wh_calloc(...) WH_EPF(_wh_calloc((_wh_calloc_params) { __VA_ARGS__, .line = __LINE__, .file = __FILENAME__ }))
 
-/* [MD_DOC]
+/* [MD_DOC:wh_realloc]
  */
 #define wh_realloc(...) WH_EPF(_wh_realloc((_wh_mem_realloc_params) { __VA_ARGS__ }))
 
-/* [MD_DOC]
+/* [MD_DOC:wh_mem]
  */
 //#define wh_mem(...) WH_EPF(_wh_mem((_wh_mem_params){ __VA_ARGS__ }))
 

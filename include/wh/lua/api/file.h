@@ -3,7 +3,7 @@
 
 #include <wh/headers/lua.h>
 
-/* [MD_DOC]
+/* [MD_DOC:wh_lua_file_read]
  * # wh_lua_file_load
  * This function is a wrapper for [wh_file_load](include/wh/file.h).
  */

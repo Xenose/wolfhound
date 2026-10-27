@@ -17,7 +17,7 @@ WH_C()
 #include<wh-posix/sys/types.h>
 
 
-/* [MD_DOC]
+/* [MD_DOC:wh_string_s]
  * ## wh_string_s
  * This is a safe string that doesn't really on nullptr termination
  * and instead uses length to keep track of its length.

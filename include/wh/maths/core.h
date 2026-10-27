@@ -34,7 +34,7 @@ extern i64 _wh_hash_simple(_wh_hash_simple_params params);
 #define WH_ABS_I64(x)  ((x) ^ ((x) >> 63)) - ((x) >> 63)
 #define WH_ABS_I128(x) ((x) ^ ((x) >> 127)) - ((x) >> 127)
 
-/* [MD_DOC]
+/* [MD_DOC:wh_abs]
  * # wh_abs
  * This function is a non branching abs functions for signed and
  * unsigned integers, for float and doubles the normal abs from
@@ -90,7 +90,7 @@ extern i64 _wh_hash_simple(_wh_hash_simple_params params);
             )
 #endif
 
-/* [MD_DOC]
+/* [MD_DOC:wh_hash_simple]
  * # wh_hash_simple
  * ```c
  *	int64_t wh_hash_simple(const char* str, u64 limit, u64 length : optional)

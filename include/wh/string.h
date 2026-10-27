@@ -12,7 +12,7 @@ extern wh_string_s _wh_string_create(int dummy, ...);
 extern const char* _wh_strstr(_wh_strstr_params params);
 
 #ifndef __cplusplus
-/* [MD_DOC]
+/* [MD_DOC:wh_strcat]
  *
  * # Summary wh_strcat
  * This function is a safer take on the classic but oh so dangerous strcat,

@@ -70,7 +70,7 @@ extern const char* _wh_filetype2str(_wh_filetype2str_params params);
 #define wh_str2int(...)         WH_EPF(_wh_str2int((_wh_str2int_params) { __VA_ARGS__ }))
 #define wh_str2int128(...)      WH_EPF(_wh_str2int128((_wh_str2int128_params) { __VA_ARGS__ }))
 
-/* [MD_DOC]
+/* [MD_DOC:wh_str_invert]
  */
 #define wh_str_invert(...)      WH_EPF(_wh_str_invert((_wh_str_invert_params) { __VA_ARGS__ }))
 #define wh_filetype2str(...)    WH_EPF(_wh_filetype2str((_wh_filetype2str_params) { __VA_ARGS__ }))

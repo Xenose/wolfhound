@@ -52,7 +52,7 @@ go_error_exit:
     return -1;
 }
 
-/* [MD_DOC]
+/* [MD_DOC:_wh_init]
  */
 wh_instance_s* _wh_init(_wh_init_params params) {
     // Critical functions that need to be loaded first
@@ -89,7 +89,7 @@ go_error_exit:
     return  nullptr;
 }
 
-/* [MD_DOC]
+/* [MD_DOC:_wh_loop]
  * The internal game engine loop.
  *
  */

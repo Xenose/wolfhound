@@ -65,7 +65,7 @@ extern i8 _wh_darray_resize(_wh_darray_resize_params params);
 extern void _wh_darray_for_each(_wh_darray_for_each_params params);
 
 #ifndef __cplusplus
-    /* [MD_DOC]
+    /* [MD_DOC:wh_darray_init]
      * Creates a dynamic array with the need memory and parameters set
      * depending on the inputted type.
      *
@@ -73,14 +73,14 @@ extern void _wh_darray_for_each(_wh_darray_for_each_params params);
      */
     #define wh_darray_init(...) _wh_darray_init((_wh_darray_init_params){ __VA_ARGS__ })
 
-    /* [MD_DOC]
+    /* [MD_DOC:wh_darray_get]
      * Gets the element of the index and will return nullptr
      * on error, for example trying to access memory outside
      * the index range.
      */
     #define wh_darray_get(...)  _wh_darray_get((_wh_darray_get_params){ __VA_ARGS__ })
 
-    /* [MD_DOC]
+    /* [MD_DOC:wh_darray_set]
      * Sets the value at the index of the array, if a error
      * happens nullptr is returned and on success the value
      * in the array is returned, example of error is when
@@ -88,14 +88,14 @@ extern void _wh_darray_for_each(_wh_darray_for_each_params params);
      */
     #define wh_darray_set(...) _wh_darray_set((_wh_darray_set_params){ __VA_ARGS__ })
 
-    /* [MD_DOC]
+    /* [MD_DOC:wh_darray_resize]
      * This function will resize the array by +N or -N given to
      * it, -1 is returned on error and will not be resized in this
      * case.
      */
     #define wh_darray_resize(...) _wh_darray_resize((_wh_darray_resize_params){ __VA_ARGS__ })
 
-    /* [MD_DOC]
+    /* [MD_DOC:wh_darray_for_each]
      */
     #define wh_darray_for_each(...) _wh_darray_for_each((_wh_darray_for_each_params){ __VA_ARGS__ })
 #endif

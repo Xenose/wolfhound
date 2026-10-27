@@ -11,7 +11,7 @@ extern i64 (*_wh_log[])(_wh_print_params print_params, _wh_log_params params, ..
 extern void _wh_log_init(_wh_log_init_params params);
 extern void wh_log_set_level(i64 level, u8 state);
 
-/* [MD_DOC]
+/* [MD_DOC:wh_log, wh_log_va]
  * # wh_log_* and wh_log_va_*
  * These functions are wolfhounds main logging functions, they
  * are wrappers around the wh_print and wh_print_va functions
@@ -42,7 +42,7 @@ extern void wh_log_set_level(i64 level, u8 state);
 #define wh_log_debug(x, ...)             WH_EPF(_wh_log[7]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[90mDEBUG\033[0m    ", __LINE__ } WH_VA_OPT(__VA_ARGS__)))
 
 
-/* [MD_DOC]
+/* [MD_DOC:wh_log_init]
  * # wh_log_init
  * ```c
  *	void wh_log_init(u64 mode)

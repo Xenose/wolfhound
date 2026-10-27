@@ -10,7 +10,7 @@ extern u32 _wh_hash_xx32(_wh_hash_xx32_params params);
 
 #if !defined(__cplusplus) || !defined(WH_USE_C_MACRO_FUNC)
 
-/* [MD_DOC]
+/* [MD_DOC:wh_hash_xx32]
  *
  * This is a custom implementation of the xxHash32 hashing function for
  * more details see (XXH32 Algorithm)[https://github.com/Cyan4973/xxHash/blob/release/doc/xxhash_spec.md].

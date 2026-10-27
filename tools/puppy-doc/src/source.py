@@ -18,15 +18,27 @@ class style_c:
                     js["links"].append(f"[{filename}]({link})\n")
                 return
 
+    def extract_keywords(self, js, file, text):
+        # kp : keyword pattern
+        kp = re.search(rf"\[.*?{self.name}.*?:.*?\]", text)
+
+        if None != kp:
+            # ckp : clean keyword pattern
+            ckp = re.sub(r"\[.*?:", "", kp.group())
+            ckp = re.sub(r"\]$", "", ckp)
+            js[file]["keywords"] = ckp.split(",")
+
     def parse(self, js, file, text):
         out = None
 
         if self.name is None:
             return out
 
-        tp = re.compile(rf"/\*\s*\[{self.name}\](.*?)\*/", re.DOTALL)
+        # tp : text pattern
+        tp = re.compile(rf"/\*\s*\[{self.name}:.*?\](.*?)\*/", re.DOTALL)
         blocks = tp.findall(text)
 
+        
         if 0 != len(blocks):
             out = blocks
 
@@ -40,6 +52,7 @@ class style_c:
                 js[file]["links"] = []
 
             self.extract_include(js[file], file, text)
+            self.extract_keywords(js, file, text)
 
         return out
 
@@ -58,6 +71,7 @@ class puppy_c:
     def __init__(self):
         self.styles = {}
         self.js = {}
+        self.output_folder = "./docs"
         self.skip = [
                 "./docs",
                 "./vendor",
@@ -98,6 +112,9 @@ class puppy_c:
                 if t is not None:
                     self.js[file]["text"].append(t)
 
+    def link(self):
+        pass
+
     def scan(self):
         for i in os.walk('.', followlinks=False, topdown=True):
             directory = i[0]
@@ -114,8 +131,34 @@ class puppy_c:
 
             for f in files:
                 self.parse(directory, f)
+            
+            for f in files:
+                self.link();
 
         print(self.js)
+
+    def insert_keywords(self, text):
+        for file in self.js:
+            for keyword in self.js[file]["keywords"]:
+                text = text.replace(f" {keyword}(", f" [{keyword}]({file})")
+                text = text.replace(f" {keyword} ", f" [{keyword}]({file})")
+        
+        return text
+
+    def output(self):
+        for file in self.js:
+            print(file)
+
+            for text_array in self.js[file]["text"]:
+                for text in text_array:
+                    text = self.insert_keywords(text)
+                    print(text)
+                
+                print("SEE ALSO")
+                for link in self.js[file]["links"]:
+                    print(link);
+
+
 
 
 def main():
@@ -132,7 +175,8 @@ def main():
     # Legacy support for the old style
     puppy.add_style("md_doc", md, c_family_files)
 
-    puppy.scan();
+    puppy.scan()
+    puppy.output()
 
 
 if "__main__" == __name__:
