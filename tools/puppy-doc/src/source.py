@@ -28,6 +28,21 @@ class style_c:
             ckp = re.sub(r"\]$", "", ckp)
             js[file]["keywords"] = ckp.split(",")
 
+    def clean_markers(self, blocks):
+        out = []
+
+        for b in blocks:
+            lines = b.splitlines()
+
+            for l in lines:
+                cl = re.sub(r'^\s*\* ?', '', l)
+                out.append(''.join(cl).strip())
+
+                # cleaned_lines = [re.sub(r'^\s*\* ?', '', line) for line in lines]
+                # cleaned_blocks.append('\n'.join(cleaned_lines).strip())
+
+        return out
+
     def parse(self, js, file, text):
         out = None
 
@@ -36,9 +51,8 @@ class style_c:
 
         # tp : text pattern
         tp = re.compile(rf"/\*\s*\[{self.name}:.*?\](.*?)\*/", re.DOTALL)
-        blocks = tp.findall(text)
+        blocks = self.clean_markers(tp.findall(text))
 
-        
         if 0 != len(blocks):
             out = blocks
 
