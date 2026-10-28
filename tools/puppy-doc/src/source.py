@@ -1,6 +1,9 @@
 import os
 import re
 
+# from includes
+from pathlib import Path
+
 
 class style_c:
     def __init__(self):
@@ -10,24 +13,26 @@ class style_c:
         # C/C++ files
         for s in [ "c", "cpp", "h", "hpp" ]:
             if file.endswith(f".{s}"):
-                results = re.findall(r'#include\<.*>', text)
+                results = re.findall(r'#include.*?\<.*>', text)
 
                 for res in results:
-                    link = res.replace("#include<", "")[:-1]
+                    link = re.sub(r"#include.*?<", "", res)[:-1]
                     _, _, filename = link.rpartition('/')
-                    js["links"].append(f"[{filename}]({link})\n")
+                    js["links"].append(f"[{filename}]({link}) ")
                 return
 
     def extract_keywords(self, js, file, text):
         # kp : keyword pattern
         kp = re.search(rf"\[.*?{self.name}.*?:.*?\]", text)
 
-        if None != kp:
+        if kp is not None:
             # ckp : clean keyword pattern
             ckp = re.sub(r"\[.*?:", "", kp.group())
             ckp = re.sub(r"\]$", "", ckp)
             js[file]["keywords"] = ckp.split(",")
 
+    # Clean up the markers for C comments,
+    # TODO other languages needs a switch.
     def clean_markers(self, blocks):
         out = []
 
@@ -38,35 +43,34 @@ class style_c:
                 cl = re.sub(r'^\s*\* ?', '', l)
                 out.append(''.join(cl).strip())
 
-                # cleaned_lines = [re.sub(r'^\s*\* ?', '', line) for line in lines]
-                # cleaned_blocks.append('\n'.join(cleaned_lines).strip())
-
         return out
 
-    def parse(self, js, file, text):
+    def parse(self, js, filepath, file, text):
         out = None
 
         if self.name is None:
             return out
 
         # tp : text pattern
-        tp = re.compile(rf"/\*\s*\[{self.name}:.*?\](.*?)\*/", re.DOTALL)
+        tp = re.compile(rf"/\*\s*\[{self.name}.*?\](.*?)\*/", re.DOTALL)
         blocks = self.clean_markers(tp.findall(text))
 
         if 0 != len(blocks):
             out = blocks
 
-            if file not in js:
-                js[file] = {}
+            if filepath not in js:
+                js[filepath] = {}
                 
             if "text" not in js:
-                js[file]["text"] = []
+                js[filepath]["text"] = []
 
             if "links" not in js:
-                js[file]["links"] = []
+                js[filepath]["links"] = []
 
-            self.extract_include(js[file], file, text)
-            self.extract_keywords(js, file, text)
+            self.extract_include(js[filepath], file, text)
+
+            # TODO prevent self including
+            self.extract_keywords(js, filepath, text)
 
         return out
 
@@ -117,14 +121,16 @@ class puppy_c:
             except UnicodeDecodeError:
                 return
 
+            filepath = Path(directory, file)
+
             for st in self.styles:
                 if not self.is_supported(file, self.styles[st]):
                     continue
 
-                t = self.styles[st]["style"].parse(self.js, file, text)
+                t = self.styles[st]["style"].parse(self.js, filepath, file, text)
 
                 if t is not None:
-                    self.js[file]["text"].append(t)
+                    self.js[filepath]["text"].append(t)
 
     def link(self):
         pass
@@ -149,28 +155,35 @@ class puppy_c:
             for f in files:
                 self.link();
 
-        print(self.js)
-
     def insert_keywords(self, text):
         for file in self.js:
             for keyword in self.js[file]["keywords"]:
-                text = text.replace(f" {keyword}(", f" [{keyword}]({file})")
-                text = text.replace(f" {keyword} ", f" [{keyword}]({file})")
+                text = text.replace(f" {keyword}(", f" [{keyword}]({file}) ")
+                text = text.replace(f" {keyword} ", f" [{keyword}]({file}) ")
         
         return text
 
     def output(self):
         for file in self.js:
-            print(file)
+            out = ""
+            f = Path(self.output_folder, f"{file}.md")
+            f.parent.mkdir(parents=True, exist_ok=True)
 
-            for text_array in self.js[file]["text"]:
-                for text in text_array:
-                    text = self.insert_keywords(text)
-                    print(text)
-                
-                print("SEE ALSO")
-                for link in self.js[file]["links"]:
-                    print(link);
+            with open(f, "w") as fd:
+                out = str(file)
+
+                for text_array in self.js[file]["text"]:
+                    for text in text_array:
+                        out += f"{self.insert_keywords(text)}\n"
+                    
+                    out += "SEE ALSO\n"
+
+                    for link in self.js[file]["links"]:
+                        out += link
+
+                # Dumping time...
+                print(out)
+                fd.write(out)
 
 
 
