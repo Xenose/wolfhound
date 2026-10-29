@@ -45,6 +45,19 @@ class style_c:
 
         return out
 
+    def clean(self, data):
+        out = []
+
+        if data is None:
+            return data
+
+        for d in data:
+            if '' == d:
+                continue
+
+            out.append(d)
+        return out
+
     def parse(self, js, filepath, file, text):
         out = None
 
@@ -72,6 +85,7 @@ class style_c:
             # TODO prevent self including
             self.extract_keywords(js, filepath, text)
 
+        out = self.clean(out)
         return out
 
 
@@ -83,6 +97,106 @@ class doc_md_c(style_c):
     def __init__(self):
         super().__init__()
         self.name = "MD_DOC"
+
+    # def create_table(self, data):
+    #     tp = re.findall(r'@d_param[^\n]*', text)
+    #     to = re.findall(r'@d_opt[^\n]*', text)
+
+    #     if not tp and not to:
+    #         return text, None
+    #     # end if
+
+    #     table = []
+    #     table.append("| Parameter | Type | Designation | Optional | Description |")
+    #     table.append("| --------- | ---- | ----------- | -------- | ----------- |")
+
+    #     for t in tp:
+    #         t = t.replace('\t', ' ')
+    #         m = t[t.find(':') + 1:].strip()
+    #         v = t[:t.find(':')][t.find('(') + 1:t.find(')')].strip()
+    #         n = t[t.find(')') + 1: t.find(':') - 1].strip().replace(' ', '')
+    #         table.append(f"| {n} | {v} | .{n} | NO | {m} |")
+    #     # end for
+
+    #     for t in to:
+    #         t = t.replace('\t', ' ')
+    #         m = t[t.find(':') + 1:].strip()
+    #         v = t[:t.find(':')][t.find('(') + 1:t.find(')')].strip()
+    #         n = t[t.find(')') + 1: t.find(':') - 1].strip().replace(' ', '')
+    #         table.append(f"| {n} | {v} | .{n} | YES | {m} |")
+    #     # end for
+
+    #     # Remove all lines with @d_param and @d_opt
+    #     cleaned_text = re.sub(
+    #         r'^.*@d_(param|opt)[^\n]*\n?', '', text, flags=re.MULTILINE)
+    #     # Insert table at first matching position or end
+    #     insertion_point = re.search(r'@d_(param|opt)', text)
+
+    #     if insertion_point:
+    #         idx = insertion_point.start()
+    #         cleaned_text = text[:idx] + '\n'.join(table) + '\n' + cleaned_text[idx:]
+    #     else:
+    #         cleaned_text = '\n'.join(table) + '\n' + cleaned_text
+    #     # end if
+
+    #     return cleaned_text, table
+
+    def create_table(self, data):
+        new_table = True
+        length = range(len(data))
+
+        for i in length:
+            line = None
+
+            # tp : table parameter
+            # to : table optional
+            tp = re.findall(r'@d_param[^\n]*', data[i])
+            to = re.findall(r'@d_opt[^\n]*', data[i])
+
+            if tp:
+                line = tp
+            elif to:
+                line = to
+
+            if line is None:
+                if '' != data[i]:
+                    new_table = True
+                continue
+            
+            # We don't want a table section for every parameter.
+            if new_table:
+                new_table = False
+
+                data.insert(i, "\n| Parameter | Type | Designation | Optional | Description |\n| --------- | ---- | ----------- | -------- | ----------- |")
+                length = range(len(data))
+                i += 1
+
+                # we neeed to continue on the next loop otherwise the
+                # regex will be redone on the next iteration.
+                continue
+
+            for l in line:
+                l = l.replace('\t', ' ')
+
+                m = l[l.find(':') + 1:].strip()
+                v = l[:l.find(':')][l.find('(') + 1: l.find(')')].strip()
+                n = l[l.find(')') + 1: l.find(':') - 1].strip().replace(' ', '')
+
+                row = f"| {n} | {v} | .{n} | NO | {m} |".strip("\n")
+                row = re.sub(r'^.*@d_(param|opt)[^\n]*\n?', '', row, flags=re.MULTILINE)
+
+                data[i] = row
+                print(f"index: {i} row: {row}")
+        return data
+
+    def parse(self, js, filepath, file, text):
+        out = super().parse(js, filepath, file, text)
+
+
+        if out is not None:
+            out = self.create_table(out)
+
+        return out
 
 
 class puppy_c:
@@ -182,7 +296,6 @@ class puppy_c:
                         out += link
 
                 # Dumping time...
-                print(out)
                 fd.write(out)
 
 
