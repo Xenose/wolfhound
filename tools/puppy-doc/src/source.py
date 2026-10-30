@@ -303,12 +303,19 @@ class puppy_c:
 
 def main():
     puppy = puppy_c()
+    puppy_path = Path(__file__).resolve().parent
+    style_path = Path(puppy_path, "style")
 
     kernel = doc_kernel_c();
     md = doc_md_c()
 
     c_family_files = [ "c", "cpp", "h", "hpp" ]
 
+    print(style_path)
+    for i in os.walk(style_path, followlinks=False, topdown=True):
+        print(i)
+
+    return # Testing for style loading
     puppy.add_style("kernel_doc", kernel, c_family_files)
     puppy.add_style("puppy", md, c_family_files)
 
