@@ -1,6 +1,6 @@
 #include<wh-sys/data/hashmap.h>
 
-#include"_hashmap/lazy_simple_sys.c"
+#include"_hashmap/lazy_simple_sys2.c"
 
 typedef struct {
     void* (*reallocate)(wh_hashmap_s* map);
@@ -13,7 +13,7 @@ typedef struct {
 static _map_func _funcs[] = {
     {},
     {
-        .reallocate     = _reallocate_lazy_simple_sys,
+        .reallocate     = _realloc_lazy_simple_sys,
         .delete         = _delete_lazy_simple_sys,
         .insert         = _insert_lazy_simple_sys,
         .get            = _get_lazy_simple_sys,
@@ -31,7 +31,7 @@ static _map_func _funcs[] = {
 
     {},
     {
-        .reallocate     = _reallocate_lazy_simple_sys,
+        .reallocate     = _realloc_lazy_simple_sys,
         .delete	        = _delete_lazy_simple_sys,
         .insert         = _insert_lazy_simple_sys,
         .get            = _get_lazy_simple_sys,

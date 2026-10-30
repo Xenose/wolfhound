@@ -83,6 +83,20 @@ static void* _set_key(i64 type, void* dst, void* src) {
     return nullptr;
 }
 
+static void* _get_value(wh_hashmap_s* map, u64 index) {
+    void* out = nullptr;
+
+    switch (map->stype) {
+        case WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_SYS:
+        case WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_STD:
+        case WH_STRUCT_TYPE_HASHMAP_LAZY_PTR_SYS:
+            out = wh_ptr_offset(map->slots, 
+                    _struct_size(map->stype) * map->type_size * index);
+    }
+
+    return out;
+}
+
 static void* _set_value(i64 type, void* dst, void* src) {
     switch (type) {
         // TODO need to store the value after the metadata
@@ -168,10 +182,10 @@ go_error_exit:
 
 static void* _alloc_lazy_simple_sys(wh_hashmap_s* const map, u64* bytes, u64* slots) {
     void* out = nullptr;
-    u64 b = wh_ualign(*bytes, (u64)sysconf(_SC_PAGESIZE));
+    u64 b = (u64)wh_align((i64)*bytes, sysconf(_SC_PAGESIZE));
 
     if (nullptr == (out = wh_sys_memreq(b))) {
-        wh_critical(("Failed to allocated memory from the system!"));
+        wh_critical(("[ %i ] Failed to allocated memory from the system!"), b);
         goto go_error_exit;
     }
 
@@ -185,10 +199,14 @@ go_error_exit:
     return nullptr;
 }
 
-static void* _realloc_lazy_simple_sys(wh_hashmap_s* const map) {
+static void* _realloc_lazy_simple_sys(wh_hashmap_s* map) {
     u64 slots = 0;
     u64 bytes = map->resize_size;
     void* out = nullptr;
+
+    if (0 >= map->resize_size) {
+        bytes = map->resize_size = 8192;
+    }
 
     for (u64 i = 0; 3 >= i; i++) {
         bytes *= 2;
@@ -228,9 +246,34 @@ static i8 _insert_lazy_simple_sys(_wh_hashmap_insert_params* params) {
     index = (u64)_hash_simple(map->stype, params->key, (i64)map->slot_count);
 
     if (_slot_set(map, index, params->key, params->value)) {
+        // TODO : check return value
     }
 
     return 0;
 go_error_exit:
     return -1;
+}
+
+static i8 _delete_lazy_simple_sys(wh_hashmap_s* map, void* key) {
+    return 0;
+}
+
+static void* _get_lazy_simple_sys(wh_hashmap_s* map, void* key) {
+    u64 hash = (u64)_hash_simple(map->stype, key, (i64)map->slot_count);
+    return _get_value(map, hash);
+}
+
+static i8 _wh_lazy_simple_foreach(wh_hashmap_s* map, void (*func)(void* value)) {
+    void* value = nullptr;
+
+    for (u64 i = 0; i < map->slot_count; i++) {
+        // TODO : implement function bellow i is index
+        // value = _get_value(map, i);
+
+        if (nullptr != value) {
+            func(value);
+        }
+    }
+
+    return 0;
 }
