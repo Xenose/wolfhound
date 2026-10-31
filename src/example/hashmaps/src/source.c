@@ -55,8 +55,6 @@ int main(int arc, char* const* arv) {
 
     wh_print(("\nTime -> %is %ins\n", 2), bench.delta.time.tv_sec, bench.delta.time.tv_nsec);
     _wh_hashmap_foreach(&l, &hash_foreach);
-
-    wh_info(("Ptr --------\n"));
     _wh_hashmap_foreach(&p, &hash_foreach);
     return 0;
 }

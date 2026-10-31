@@ -2,9 +2,10 @@
 #include<wh-posix/unistd.h>
 #include<wh-sys/memreq.h>
 #include<wh-sys/data/hashmap.h>
-#include<wh-sys/debug/logger.h>
 #include<wh/maths/core.h>
 #include<wh/maths/memory.h>
+
+#include<wh-core/debug/logger.h>
 
 static u64 _struct_size(i64 type) {
     switch (type) {
@@ -20,6 +21,7 @@ static u64 _struct_size(i64 type) {
 static i64 _hash_simple(i64 type, void* key, i64 slot_count) {
     switch (type) {
         case WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_SYS:
+        case WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_STD:
             return wh_hash_simple(key, slot_count);
         case WH_STRUCT_TYPE_HASHMAP_LAZY_PTR_SYS:
             return wh_hash_simple((void*)&key, slot_count, sizeof(void*));
@@ -29,7 +31,7 @@ static i64 _hash_simple(i64 type, void* key, i64 slot_count) {
 }
 
 static i8 _keycomp(void* key1, void* key2, i64 type) {
-    wh_log_info(("src_key :: %u, dst_key :: %u"), key1, key2);
+    wh_info(("src_key :: %u, dst_key :: %u"), key1, key2);
 
     if (nullptr != key1 || nullptr != key1) {
         goto go_exit;
@@ -42,7 +44,7 @@ static i8 _keycomp(void* key1, void* key2, i64 type) {
         case WH_STRUCT_TYPE_HASHMAP_LAZY_PTR_SYS:
             return key1 == key2;
         default:
-            wh_log_error(("Failed to get key type!!!"));
+            wh_error(("Failed to get key type!!!"));
     }
 
 go_exit:
@@ -59,7 +61,7 @@ static void* _get_key(i64 type, void* ptr) {
             return ((wh_hashmap_slot_ptr_s*)ptr)->key;
     }
 
-    wh_log_error(("Failed to get key type!!!"));
+    wh_error(("Failed to get key type!!!"));
     return nullptr;
 }
 
@@ -79,7 +81,7 @@ static void* _set_key(i64 type, void* dst, void* src) {
             return memcpy(dst, src, sizeof(void*));
     }
 
-    wh_log_error(("Failed to get key type!!!"));
+    wh_error(("Failed to get key type!!!"));
     return nullptr;
 }
 
@@ -116,20 +118,19 @@ static void* _set_value(i64 type, void* dst, void* src) {
             return memcpy(dst, src, sizeof(void*));
     }
 
-    wh_log_error(("Failed to get key type!!!"));
+    wh_error(("Failed to get key type!!!"));
     return nullptr;
 }
 
 static i8 _slot_set(wh_hashmap_s* map, u64 index, void* key, void* value) {
     void* dst = nullptr;
 
-    dst = wh_ptr_offset(dst, index * (map->type_size + _struct_size(map->stype)));
+    dst = wh_ptr_offset(map->slots, index * (map->type_size + _struct_size(map->stype)));
 
     _set_key(map->stype, dst, key);
     _set_value(map->stype, dst, value);
 
     return 0;
-
 }
 
 static i8 _slot_copy(wh_hashmap_s* map, void* src, void* dst, u64 index, u64 count) {
@@ -189,7 +190,7 @@ static void* _alloc_lazy_simple_sys(wh_hashmap_s* const map, u64* bytes, u64* sl
         goto go_error_exit;
     }
 
-    if (nullptr == slots) {
+    if (nullptr != slots) {
         *slots = b / (map->type_size + _struct_size(map->stype));
     }
 
