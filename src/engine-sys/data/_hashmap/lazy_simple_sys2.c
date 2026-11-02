@@ -117,10 +117,12 @@ static i8 _slot_copy(wh_hashmap_s* map, void* src, void* dst, u64 index, u64 cou
     void* dkey = nullptr;
     u64 d_index = 0;
 
-    src = wh_ptr_offset(src, index * (map->type_size + _struct_size(map->stype)));
-    wh_info(("Hello!"));
-    skey = _get_key(map->stype, src); // issue here <----
+    if (nullptr == src) {
+        goto go_exit;
+    }
 
+    src = wh_ptr_offset(src, index * (map->type_size + _struct_size(map->stype)));
+    skey = _get_key(map->stype, src);
 
     if (nullptr == skey) {
         goto go_exit;
