@@ -53,7 +53,19 @@ go_error_exit:
 
 i64 report(wh_unit_results_s* results) {
     wh_for(i64, i, results->count) {
-        printf("Reporting result!\n");
+        wh_unit_test_s* r = &results->ptr[i];
+
+        printf(
+            "\nREPORT [ %s ]\n"
+            "\tPassed tested    : %li of %li"
+            "\nERRORS\n"
+            "\tExit status      : %s\n"
+            "\tLast line called : %lu\n",
+            r->name,
+            r->passed, r->passed + r->failed,
+            r->error.msg,
+            r->error.last_line
+        );
     }
 
     return 0;
@@ -106,8 +118,7 @@ int main(int arc, char* const* arv) {
             i64 (*test)(wh_unit_test_s* info) = dlsym(handle, "init");
             test(ptr);
         } wh_catch(wh_exception_s, ex) {
-
-            printf("\t[ \033[31m%s\033[0m ] Test failed! %p -> %lu\n", ex.msg, ex.msg, ptr->last_line);
+            ptr->error.msg = ex.msg;
         }
         
         wh_try {
@@ -120,7 +131,6 @@ int main(int arc, char* const* arv) {
             }
 
         } wh_catch(wh_exception_s, ex) {
-            printf("\t[ \033[31m%s\033[0m ] Destructor failed! %p\n", ex.msg, ex.msg);
         }
 
 go_dlclose:

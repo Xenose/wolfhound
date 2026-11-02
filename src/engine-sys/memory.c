@@ -317,11 +317,7 @@ wh_heap_header_s* _wh_heap_init(_wh_heap_init_params params) {
         wh_info(("Heap created!"));
     }
 
-    // TODO 2026-10-25 causes crash on TinyCC
-    // Likely cause is data issue related to the heap data.
-#if (!WH_SYSTEM&WH_SYS_TCC)
     wh_heap_insert(params.name, heap);
-#endif
 
     wh_spinlock_v3(&heap->locked) {
         wh_heap_node_s* next = nullptr;

@@ -12,13 +12,18 @@ typedef struct {
 } wh_unit_test_params;
 
 typedef struct {
+    const char* msg;
+    volatile uint64_t last_line;
+} wh_unit_test_error_s;
+
+typedef struct {
     char* name;
     char* file;
-    volatile uint64_t last_line;
     uint64_t line;
     uint64_t passed;
     uint64_t failed;
     wh_unit_test_params params;
+    wh_unit_test_error_s error;
 } wh_unit_test_s;
 
 typedef struct {
@@ -55,7 +60,7 @@ go_error_exit:
         */
 
 #define _WH_TEST_CMP(_name_, _cmp_, _print_failure_, _print_success_) \
-        (_name_)->last_line = __LINE__; \
+        (_name_)->error.last_line = __LINE__; \
         if _cmp_ { \
             /* _print_success_ */ \
             ++(_name_)->passed; \

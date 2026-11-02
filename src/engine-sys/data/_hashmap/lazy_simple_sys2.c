@@ -101,12 +101,9 @@ static void* _get_value(wh_hashmap_s* map, u64 index) {
 }
 
 static i8 _slot_set(wh_hashmap_s* map, u64 index, void* key, void* value) {
-    void* dst = nullptr;
-
-    dst = wh_ptr_offset(map->slots, index * (map->type_size + _struct_size(map->stype)));
+    void* dst = wh_ptr_offset(map->slots, index * (map->type_size + _struct_size(map->stype)));
 
     _set_key(map->stype, dst, key);
-    //_set_value(map->stype, dst, value);
     memcpy(dst, value, map->type_size);
 
     return 0;

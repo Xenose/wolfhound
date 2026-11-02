@@ -41,6 +41,7 @@ static void _wh_print_format(wh_print_data_s* data, va_list list);
 // =======================================================================================================
 
 void _wh_print_add_func(_wh_print_add_func_params params) {
+    wh_core_info(("%s"), params.key);
     wh_hashmap_insert(&_map, (void*)params.key, (void*)&params.func);
 }
 
@@ -49,14 +50,16 @@ void _wh_print_add_func(_wh_print_add_func_params params) {
 // =======================================================================================================
 static void _wh_print_call_func(wh_print_data_s* data, void* ptr, char* key_start, char* key_end) {
     i64 (*func)(wh_print_data_s* data, void* ptr) = nullptr;
+    char tmp[256] = { 0 }; // TODO remove this buffer
 
     if (nullptr == key_end) {
         ++data->format;
         return;
     }
 
-    func = (i64(*)(wh_print_data_s*, void*))wh_hashmap_get(&_map, key_start);
-    wh_info(("Function pointer is [ %p ]"), func);
+    memcpy(tmp, key_start + 1, (size_t)(key_end - key_start - 1));
+    func = (i64(*)(wh_print_data_s*, void*))wh_hashmap_get(&_map, tmp);
+    wh_core_info(("Function pointer is [ %p ] %s"), func, tmp);
 
     if (nullptr != func) {
         func(data, ptr);
@@ -348,7 +351,7 @@ go_dollar_switch:
                 _WH_PRINT_FORMAT_COMMON_CASE(go_dollar_switch, '$', data);
 
                 case '[': // custom function from user using hash maps
-                    _wh_print_call_func(data, va_arg(list, void*), data->format + 1, strstr(data->format, "]"));
+                    _wh_print_call_func(data, va_arg(list, void*), data->format, strstr(data->format, "]"));
                     break;
                 case 'f':
                     _wh_print_format_sub(data, list);
