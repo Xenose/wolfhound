@@ -98,7 +98,7 @@ extern i8 _wh_hashmap_foreach(wh_hashmap_s* map, void (*func)(void* value));
 
 #define wh_hashmap_foreach()
 
-#define wh_hashmap_init_mmap_lazy(...) WH_EPF(_wh_hashmap_init((_wh_hashmap_init_params ) { WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_SYS, __VA_ARGS__ }))
-#define wh_hashmap_init_mmap_lazy_ptr(...) WH_EPF(_wh_hashmap_init((_wh_hashmap_init_params ) { WH_STRUCT_TYPE_HASHMAP_LAZY_PTR_SYS, __VA_ARGS__ }))
+#define wh_hashmap_init_mmap_lazy(...)      WH_EPF(_wh_hashmap_init((_wh_hashmap_init_params ) { WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_SYS, __VA_ARGS__ }))
+#define wh_hashmap_init_mmap_lazy_ptr(...)  WH_EPF(_wh_hashmap_init((_wh_hashmap_init_params ) { WH_STRUCT_TYPE_HASHMAP_LAZY_PTR_SYS, __VA_ARGS__ }))
 
 #endif /* _wh_header_data_hashmap_ */

@@ -10,6 +10,7 @@
 static u64 _struct_size(i64 type) {
     switch (type) {
         case WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_SYS:
+        case WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_STD:
             return sizeof(wh_hashmap_slot_string_s);
         case WH_STRUCT_TYPE_HASHMAP_LAZY_PTR_SYS:
             return sizeof(wh_hashmap_slot_ptr_s);
@@ -33,7 +34,7 @@ static i64 _hash_simple(i64 type, void* key, i64 slot_count) {
 static i8 _keycomp(void* key1, void* key2, i64 type) {
     wh_info(("src_key :: %u, dst_key :: %u"), key1, key2);
 
-    if (nullptr != key1 || nullptr != key1) {
+    if (nullptr == key1 || nullptr == key2) {
         goto go_exit;
     }
 
@@ -93,33 +94,10 @@ static void* _get_value(wh_hashmap_s* map, u64 index) {
         case WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_STD:
         case WH_STRUCT_TYPE_HASHMAP_LAZY_PTR_SYS:
             out = wh_ptr_offset(map->slots, 
-                    _struct_size(map->stype) * map->type_size * index);
+                    (_struct_size(map->stype) + map->type_size) * index);
     }
 
     return out;
-}
-
-static void* _set_value(i64 type, void* dst, void* src) {
-    switch (type) {
-        // TODO need to store the value after the metadata
-        // and offset the pointer, do we need a dedicated pointer
-        // why not do size of the struct + pointer would save data.
-        case WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_SYS:
-        case WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_STD:
-            dst = &((wh_hashmap_slot_string_s*)dst)->key;
-            src = &((wh_hashmap_slot_string_s*)src)->key;
-
-            return memcpy(dst, src, sizeof(char*));
-            
-        case WH_STRUCT_TYPE_HASHMAP_LAZY_PTR_SYS:
-            dst = &((wh_hashmap_slot_ptr_s*)dst)->key;
-            src = &((wh_hashmap_slot_ptr_s*)src)->key;
-
-            return memcpy(dst, src, sizeof(void*));
-    }
-
-    wh_error(("Failed to get key type!!!"));
-    return nullptr;
 }
 
 static i8 _slot_set(wh_hashmap_s* map, u64 index, void* key, void* value) {
@@ -128,7 +106,8 @@ static i8 _slot_set(wh_hashmap_s* map, u64 index, void* key, void* value) {
     dst = wh_ptr_offset(map->slots, index * (map->type_size + _struct_size(map->stype)));
 
     _set_key(map->stype, dst, key);
-    _set_value(map->stype, dst, value);
+    //_set_value(map->stype, dst, value);
+    memcpy(dst, value, map->type_size);
 
     return 0;
 }
@@ -139,7 +118,9 @@ static i8 _slot_copy(wh_hashmap_s* map, void* src, void* dst, u64 index, u64 cou
     u64 d_index = 0;
 
     src = wh_ptr_offset(src, index * (map->type_size + _struct_size(map->stype)));
-    skey = _get_key(map->stype, src);
+    wh_info(("Hello!"));
+    skey = _get_key(map->stype, src); // issue here <----
+
 
     if (nullptr == skey) {
         goto go_exit;
@@ -167,12 +148,14 @@ go_error_exit:
 
 static i8 _map_copy(wh_hashmap_s* map, void* new_slots, u64 new_count) {
     wh_for(u64, i, map->slot_count) {
+        wh_info(("map size is -> type : %lu"), i);
+
         if (0 > _slot_copy(map, map->slots, new_slots, i, new_count)) {
             goto go_error_exit;
         }
     }
 
-    wh_sys_memrel(map->slots, map->resize_size);
+    //wh_sys_memrel(map->slots, map->resize_size);
     map->slots = new_slots;
     map->slot_count = new_count;
 
@@ -205,7 +188,9 @@ static void* _realloc_lazy_simple_sys(wh_hashmap_s* map) {
     u64 bytes = map->resize_size;
     void* out = nullptr;
 
-    if (0 >= map->resize_size) {
+    wh_info(("map size is -> %lu, type : %lu"), bytes, map->type_size);
+
+    if ((map->type_size + _struct_size(map->stype)) >= map->resize_size) {
         bytes = map->resize_size = 8192;
     }
 
@@ -221,10 +206,11 @@ static void* _realloc_lazy_simple_sys(wh_hashmap_s* map) {
         memset(out, 0, bytes);
 
         // _map_copy will release the memory if successful.
-        if (0 != _map_copy(map, out, slots)) {
-            wh_sys_memrel(out, bytes);
-            continue;
+        if (0 == _map_copy(map, out, slots)) {
+            break;
         }
+        
+        //wh_sys_memrel(out, bytes);
     }
 
     map->slots = out;

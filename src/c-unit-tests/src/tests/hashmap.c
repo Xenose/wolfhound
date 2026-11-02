@@ -18,11 +18,13 @@ i64 test_order(wh_unit_test_s* info, wh_hashmap_s* hs) {
     WH_TEST_INT64EQ(info, 9L, (i64)WH_STRUCT_TYPE_HASHMAP_LAZY_PTR_WOLF - WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_WOLF);
     WH_TEST_INT64EQ(info, 10L, (i64)WH_STRUCT_TYPE_HASHMAP_LAZY_PTR_SYS - WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_WOLF);
     WH_TEST_INT64EQ(info, 11L, (i64)WH_STRUCT_TYPE_HASHMAP_LAZY_PTR_STD - WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_WOLF);
+
     return 0;
 }
 
 i64 test_insert(wh_unit_test_s* info, wh_hashmap_s* hs) {
     wh_hashmap_insert(hs, "hello", WH_INT(64));
+
     WH_TEST_INT64EQ(info, 64L, (long)*(int*)wh_hashmap_get(hs, "hello"));
     
     wh_hashmap_insert(hs, "hello2", WH_INT(63));
@@ -92,14 +94,14 @@ i64 test_insert(wh_unit_test_s* info, wh_hashmap_s* hs) {
 
 i64 init(wh_unit_test_s* info) {
     // Log levels are noisy for unit testing.
-    wh_log_set_level(WH_LOG_LEVEL_EMERGENCY,    0);
-    wh_log_set_level(WH_LOG_LEVEL_ALERT,        0);
-    wh_log_set_level(WH_LOG_LEVEL_CRITICAL,     0);
-    wh_log_set_level(WH_LOG_LEVEL_ERROR,        0);
-    wh_log_set_level(WH_LOG_LEVEL_WARNING,      0);
-    wh_log_set_level(WH_LOG_LEVEL_NOTICE,       0);
-    wh_log_set_level(WH_LOG_LEVEL_INFO,         0);
-    wh_log_set_level(WH_LOG_LEVEL_DEBUG,        0);
+    wh_log_set_level(WH_LOG_LEVEL_EMERGENCY,    1);
+    wh_log_set_level(WH_LOG_LEVEL_ALERT,        1);
+    wh_log_set_level(WH_LOG_LEVEL_CRITICAL,     1);
+    wh_log_set_level(WH_LOG_LEVEL_ERROR,        1);
+    wh_log_set_level(WH_LOG_LEVEL_WARNING,      1);
+    wh_log_set_level(WH_LOG_LEVEL_NOTICE,       1);
+    wh_log_set_level(WH_LOG_LEVEL_INFO,         1);
+    wh_log_set_level(WH_LOG_LEVEL_DEBUG,        1);
 
     wh_hashmap_s hs = wh_hashmap_init_mmap_lazy(sizeof(int), 1);
 

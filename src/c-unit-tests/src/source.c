@@ -87,7 +87,7 @@ int main(int arc, char* const* arv) {
     printf("\n\n");
 
     for (struct dirent* entry = readdir(dir); nullptr != entry; entry = readdir(dir)) {
-        void* ptr = nullptr;
+        wh_unit_test_s* ptr = nullptr;
 
         if ('_' == entry->d_name[0] || 0 == strcmp(entry->d_name, ".") || 0 == strcmp(entry->d_name, "..")) {
             continue;
@@ -96,7 +96,7 @@ int main(int arc, char* const* arv) {
         str_append(path, path_length, entry->d_name);
         printf("\nExecuting test [ %s ]\n", path);
 
-        void* handle = add_test(&results, &ptr, entry->d_name, path);
+        void* handle = add_test(&results, (void*)&ptr, entry->d_name, path);
         
         if (nullptr == handle) {
             goto go_memset;
@@ -107,7 +107,7 @@ int main(int arc, char* const* arv) {
             test(ptr);
         } wh_catch(wh_exception_s, ex) {
 
-            printf("\t[ \033[31m%s\033[0m ] Test failed! %p\n", ex.msg, ex.msg);
+            printf("\t[ \033[31m%s\033[0m ] Test failed! %p -> %lu\n", ex.msg, ex.msg, ptr->last_line);
         }
         
         wh_try {

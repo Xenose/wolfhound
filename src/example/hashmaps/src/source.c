@@ -22,6 +22,8 @@ int main(int arc, char* const* arv) {
         // TODO fix items with the same id
         // wh_hashmap_insert(&l, "test", WH_INT(10));
         wh_hashmap_insert(&l, "test2", WH_INT(15));
+        wh_debug(("1 : %i\n\n"), *(int*)wh_hashmap_get(&l, "test"));
+
         wh_hashmap_insert(&l, "test3", WH_INT(30));
         wh_hashmap_insert(&l, "test4", WH_INT(35));
         wh_hashmap_insert(&l, "test5", WH_INT(15));
@@ -41,13 +43,26 @@ int main(int arc, char* const* arv) {
         wh_hashmap_insert(&l, "test19", WH_INT(35));
         wh_hashmap_insert(&l, "test20", WH_INT(35));
 
-        wh_debug(("%i"), *(int*)wh_hashmap_get(&l, "test"));
-        wh_debug(("%i"), *(int*)wh_hashmap_get(&l, "test2"));
-        wh_debug(("%i"), *(int*)wh_hashmap_get(&l, "test3"));
-        wh_debug(("%i"), *(int*)wh_hashmap_get(&l, "test4"));
-        wh_debug(("%i"), *(int*)wh_hashmap_get(&l, "test5"));
-        wh_debug(("%i"), *(int*)wh_hashmap_get(&l, "test6"));
-        wh_debug(("%i\n"), *(int*)wh_hashmap_get(&l, "test7"));
+        wh_debug(("1 : %i"), *(int*)wh_hashmap_get(&l, "test"));
+        wh_debug(("2 : %i"), *(int*)wh_hashmap_get(&l, "test2"));
+        wh_debug(("3 : %i"), *(int*)wh_hashmap_get(&l, "test3"));
+        wh_debug(("4 : %i"), *(int*)wh_hashmap_get(&l, "test4"));
+        wh_debug(("5 : %i"), *(int*)wh_hashmap_get(&l, "test5"));
+        wh_debug(("6 : %i"), *(int*)wh_hashmap_get(&l, "test6"));
+        wh_debug(("7 : %i"), *(int*)wh_hashmap_get(&l, "test7"));
+        wh_debug(("8 : %i"), *(int*)wh_hashmap_get(&l, "test8"));
+        wh_debug(("9 : %i"), *(int*)wh_hashmap_get(&l, "test9"));
+        wh_debug(("10: %i"), *(int*)wh_hashmap_get(&l, "test10"));
+        wh_debug(("11: %i"), *(int*)wh_hashmap_get(&l, "test11"));
+        wh_debug(("12: %i"), *(int*)wh_hashmap_get(&l, "test12"));
+        wh_debug(("13: %i"), *(int*)wh_hashmap_get(&l, "test13"));
+        wh_debug(("14: %i"), *(int*)wh_hashmap_get(&l, "test14"));
+        wh_debug(("15: %i"), *(int*)wh_hashmap_get(&l, "test15"));
+        wh_debug(("16: %i"), *(int*)wh_hashmap_get(&l, "test16"));
+        wh_debug(("17: %i"), *(int*)wh_hashmap_get(&l, "test17"));
+        wh_debug(("18: %i"), *(int*)wh_hashmap_get(&l, "test18"));
+        wh_debug(("19: %i"), *(int*)wh_hashmap_get(&l, "test19"));
+        wh_debug(("20: %i"), *(int*)wh_hashmap_get(&l, "test20"));
     }
 
     wh_hashmap_insert(&p, WH_INT(100), WH_INT(10));
