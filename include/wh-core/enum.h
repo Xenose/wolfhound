@@ -107,7 +107,10 @@ enum {
     WH_LOG_LEVEL_WARNING,
     WH_LOG_LEVEL_NOTICE,
     WH_LOG_LEVEL_INFO,
-    WH_LOG_LEVEL_DEBUG
+    WH_LOG_LEVEL_DEBUG,
+
+    // Log level operators
+    WH_LOG_LEVEL_ALL,
 };
 
 #ifndef _WIN32

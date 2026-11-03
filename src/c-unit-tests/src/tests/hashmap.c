@@ -94,14 +94,7 @@ i64 test_insert(wh_unit_test_s* info, wh_hashmap_s* hs) {
 
 i64 init(wh_unit_test_s* info) {
     // Log levels are noisy for unit testing.
-    wh_log_set_level(WH_LOG_LEVEL_EMERGENCY,    1);
-    wh_log_set_level(WH_LOG_LEVEL_ALERT,        1);
-    wh_log_set_level(WH_LOG_LEVEL_CRITICAL,     1);
-    wh_log_set_level(WH_LOG_LEVEL_ERROR,        1);
-    wh_log_set_level(WH_LOG_LEVEL_WARNING,      1);
-    wh_log_set_level(WH_LOG_LEVEL_NOTICE,       1);
-    wh_log_set_level(WH_LOG_LEVEL_INFO,         1);
-    wh_log_set_level(WH_LOG_LEVEL_DEBUG,        1);
+    wh_log_set_level(WH_LOG_LEVEL_ALL, 0);
 
     wh_hashmap_s hs = wh_hashmap_init_mmap_lazy(sizeof(int), 1);
 

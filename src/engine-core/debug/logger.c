@@ -56,7 +56,7 @@ i64 _wh_core_log_real_va(_wh_print_params print_params, _wh_log_params params, v
 
     offset = snprintf(
         buffer,
-        length,
+        (size_t)length,
         "[ %s ] core :: \033[90m%s::%ld::%s -->\033[0m ",
         // Log arguments
         params.level,
@@ -67,7 +67,7 @@ i64 _wh_core_log_real_va(_wh_print_params print_params, _wh_log_params params, v
 
     offset += vsnprintf(
         &buffer[offset],
-        length - (size_t)offset,
+        (size_t)(length - offset),
         print_params.format,
         args
     );
@@ -76,6 +76,7 @@ i64 _wh_core_log_real_va(_wh_print_params print_params, _wh_log_params params, v
     write(1, buffer, (size_t)offset);
     return 0;
 }
+
 WH_IGNORE_UNUSED_PARAMS()
 i64 _wh_core_log_dummy(_wh_print_params print_params, _wh_log_params params, ...) WH_IGNORE_END() {
     return 0;
@@ -90,4 +91,25 @@ static i64 _wh_core_log_real(_wh_print_params print_params, _wh_log_params param
     va_end(args);
 
     return out;
+}
+
+// if updated remember to update the wh-sys/debug/logger also.
+void wh_core_log_set_level(i64 from_level, u8 state) {
+    i64 to_level = from_level;
+
+    if (WH_LOG_LEVEL_ALL == from_level) {
+        to_level = WH_LOG_LEVEL_DEBUG;
+        from_level = WH_LOG_LEVEL_EMERGENCY;
+    }
+
+    for (i64 i = from_level; i <= to_level; i++) {
+        if (0 == state) {
+            _wh_core_log[i] = &_wh_core_log_dummy;
+            _wh_core_log_va[i] = &_wh_core_log_dummy_va;
+        } else {
+            _wh_core_log[i] = &_wh_core_log_real;
+            _wh_core_log_va[i] = &_wh_core_log_real_va;
+        }
+    }
+    
 }

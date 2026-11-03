@@ -1,5 +1,6 @@
 #include<wh-testing/unit.h>
 #include<wh-sys/data/list.h>
+#include<wh-sys/debug/logger.h>
 
 
 i64 simple_dll(wh_unit_test_s* info) {
@@ -24,6 +25,8 @@ i64 simple_dll(wh_unit_test_s* info) {
 }
 
 i64 init(wh_unit_test_s* info) {
+    wh_log_set_level(WH_LOG_LEVEL_ALL, 0);
+
     simple_dll(info);
     return 0;
 }

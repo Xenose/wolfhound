@@ -5,6 +5,7 @@
 
 #include<wh-core/common.h>
 #include<wh-core/print.h>
+#include<wh-core/debug/logger.h>
 
 static i64 _wh_log_real_va(_wh_print_params print_params, _wh_log_params params, va_list args);
 
@@ -81,12 +82,25 @@ static i64 _wh_log_real(_wh_print_params print_params, _wh_log_params params, ..
 void _wh_log_init(_wh_log_init_params params) {
 }
 
-void wh_log_set_level(i64 level, u8 state) {
-    if (0 == state) {
-        _wh_log[level] = &_wh_log_dummy;
-        _wh_log_va[level] = &_wh_log_dummy_va;
-    } else {
-        _wh_log[level] = &_wh_log_real;
-        _wh_log_va[level] = &_wh_log_real_va;
+// if updated remember to update the wh-core/debug/logger also.
+void wh_log_set_level(i64 from_level, u8 state) {
+    i64 to_level = from_level;
+    
+    wh_core_log_set_level(from_level, state);
+
+    if (WH_LOG_LEVEL_ALL == from_level) {
+        to_level = WH_LOG_LEVEL_DEBUG;
+        from_level = WH_LOG_LEVEL_EMERGENCY;
     }
+
+    for (i64 i = from_level; i <= to_level; i++) {
+        if (0 == state) {
+            _wh_log[i] = &_wh_log_dummy;
+            _wh_log_va[i] = &_wh_log_dummy_va;
+        } else {
+            _wh_log[i] = &_wh_log_real;
+            _wh_log_va[i] = &_wh_log_real_va;
+        }
+    }
+    
 }

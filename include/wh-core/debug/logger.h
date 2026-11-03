@@ -6,6 +6,8 @@
 extern i64 (*_wh_core_log_va[])(_wh_print_params print_params, _wh_log_params params, va_list args);
 extern i64 (*_wh_core_log[])(_wh_print_params print_params, _wh_log_params params, ...);
 
+extern void wh_core_log_set_level(i64 from_level, u8 state);
+
 #define wh_core_va_emergency(x, _args_) WH_EPF(_wh_core_log_va[0]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[35mEMERGENCY\033[0m", __LINE__ }, _args_))
 #define wh_core_va_alert(x, _args_)     WH_EPF(_wh_core_log_va[1]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[95mALERT\033[0m    ", __LINE__ }, _args_))
 #define wh_core_va_critical(x, _args_)  WH_EPF(_wh_core_log_va[2]((_wh_print_params) { WH_VA_ARGS x }, (_wh_log_params) {  __FILENAME__, __func__, "\033[31mCRITICAL\033[0m ", __LINE__ }, _args_))
