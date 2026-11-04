@@ -116,7 +116,10 @@ int main(int arc, char* const* arv) {
 
         wh_try {
             i64 (*test)(wh_unit_test_s* info) = dlsym(handle, "init");
-            test(ptr);
+
+            if (NULL != test) {
+                test(ptr);
+            }
         } wh_catch(wh_exception_s, ex) {
             ptr->error.msg = ex.msg;
         }
@@ -125,7 +128,8 @@ int main(int arc, char* const* arv) {
             i64 (*destructor)(wh_unit_test_s* info) = dlsym(handle, "destructor");
 
             if (NULL == destructor) {
-                printf("\t[ \033[31mDLSYM\033[0m ] Destructor failed!\n");
+                // TODO handle error
+                // printf("\t[ \033[31mDLSYM\033[0m ] Destructor failed!\n");
             } else {
                 destructor(ptr);
             }

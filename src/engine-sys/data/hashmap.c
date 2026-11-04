@@ -7,6 +7,7 @@ typedef struct {
     i8 (*delete)(wh_hashmap_s* map, void* value);
     i8 (*insert)(_wh_hashmap_insert_params* params);
     void* (*get)(wh_hashmap_s* map, void* key);
+    void* (*get_key)(wh_hashmap_s* map, void* key);
     i8 (*foreach)(wh_hashmap_s* map, void (*func)(void* value));
 } _map_func;
 
@@ -17,6 +18,7 @@ static _map_func _funcs[] = {
         .delete         = _delete_lazy_simple_sys,
         .insert         = _insert_lazy_simple_sys,
         .get            = _get_lazy_simple_sys,
+        .get_key        = _get_key_lazy_simple_sys,
         .foreach        = _wh_lazy_simple_foreach,
     }, // extern str ptr
     {},
@@ -35,6 +37,7 @@ static _map_func _funcs[] = {
         .delete	        = _delete_lazy_simple_sys,
         .insert         = _insert_lazy_simple_sys,
         .get            = _get_lazy_simple_sys,
+        .get_key        = _get_key_lazy_simple_sys,
         .foreach        = _wh_lazy_simple_foreach,
     }, // ptr lazy
     {},
@@ -53,6 +56,11 @@ i8 _wh_hashmap_insert(_wh_hashmap_insert_params params) {
 void* _wh_hashmap_get(_wh_hashmap_get_params params) {
     i64 func_index = params.map->stype - WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_WOLF;
     return _funcs[func_index].get(params.map, (void*)params.key);
+}
+
+void* _wh_hashmap_get_key(_wh_hashmap_get_params params) {
+    i64 func_index = params.map->stype - WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_WOLF;
+    return _funcs[func_index].get_key(params.map, (void*)params.key);
 }
 
 i8 _wh_hashmap_delete(_wh_hashmap_delete_params params) {

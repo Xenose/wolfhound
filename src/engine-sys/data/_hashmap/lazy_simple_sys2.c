@@ -86,6 +86,10 @@ static void* _set_key(i64 type, void* dst, void* src) {
     return nullptr;
 }
 
+static void* _at_offset(wh_hashmap_s* map, u64 index, u64 offset) {
+    return wh_ptr_offset(map->slots, (index * (map->type_size + _struct_size(map->stype))) + offset);
+}
+
 static void* _get_value(wh_hashmap_s* map, u64 index) {
     void* out = nullptr;
 
@@ -93,17 +97,22 @@ static void* _get_value(wh_hashmap_s* map, u64 index) {
         case WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_SYS:
         case WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_STD:
         case WH_STRUCT_TYPE_HASHMAP_LAZY_PTR_SYS:
-            out = wh_ptr_offset(map->slots, 
-                    (_struct_size(map->stype) + map->type_size) * index);
+            out = _at_offset(map, index, _struct_size(map->stype));
+            // wh_ptr_offset(map->slots, (_struct_size(map->stype) + map->type_size) * index);
     }
 
     return out;
 }
 
 static i8 _slot_set(wh_hashmap_s* map, u64 index, void* key, void* value) {
-    void* dst = wh_ptr_offset(map->slots, index * (map->type_size + _struct_size(map->stype)));
+    void* dst = nullptr;
 
+    // Setting the pointer to the struct
+    dst = _at_offset(map, index, 0);
     _set_key(map->stype, dst, key);
+
+    // Setting the memory to after the struct
+    dst = wh_ptr_offset(dst, _struct_size(map->stype));
     memcpy(dst, value, map->type_size);
 
     return 0;
@@ -118,18 +127,19 @@ static i8 _slot_copy(wh_hashmap_s* map, void* src, void* dst, u64 index, u64 cou
         goto go_exit;
     }
 
-    src = wh_ptr_offset(src, index * (map->type_size + _struct_size(map->stype)));
+    src = _at_offset(src, index, 0); // wh_ptr_offset(src, index * (map->type_size + _struct_size(map->stype)));
     skey = _get_key(map->stype, src);
 
     if (nullptr == skey) {
         goto go_exit;
     }
 
-    d_index = (u64)_hash_simple(map->stype, _get_key(map->stype, src), (i64)count);
-    dst = wh_ptr_offset(dst, d_index * (map->type_size + _struct_size(map->stype)));
+    d_index = (u64)_hash_simple(map->stype, skey, (i64)count);
+    dst = _at_offset(dst, d_index, 0); // wh_ptr_offset(dst, d_index * (map->type_size + _struct_size(map->stype)));
     dkey = _get_key(map->stype, src);
 
     if (nullptr != dkey) {
+        wh_info(("Slot has a value!"));
         goto go_error_exit;
     }
 
@@ -192,6 +202,8 @@ static void* _realloc_lazy_simple_sys(wh_hashmap_s* map) {
     if ((map->type_size + _struct_size(map->stype)) >= map->resize_size) {
         bytes = map->resize_size = 8192;
     }
+    
+    wh_info(("map size is -> %lu, type : %lu"), bytes, map->type_size);
 
     for (u64 i = 0; 3 >= i; i++) {
         bytes *= 2;
@@ -247,6 +259,11 @@ static i8 _delete_lazy_simple_sys(wh_hashmap_s* map, void* key) {
 static void* _get_lazy_simple_sys(wh_hashmap_s* map, void* key) {
     u64 hash = (u64)_hash_simple(map->stype, key, (i64)map->slot_count);
     return _get_value(map, hash);
+}
+
+static void* _get_key_lazy_simple_sys(wh_hashmap_s* map, void* key) {
+    u64 hash = (u64)_hash_simple(map->stype, key, (i64)map->slot_count);
+    return _get_key(map->stype, _at_offset(map, hash, 0));
 }
 
 static i8 _wh_lazy_simple_foreach(wh_hashmap_s* map, void (*func)(void* value)) {

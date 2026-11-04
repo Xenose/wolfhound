@@ -92,14 +92,26 @@ i64 test_insert(wh_unit_test_s* info, wh_hashmap_s* hs) {
     return 0;
 }
 
+i64 test_keys(wh_unit_test_s* info, wh_hashmap_s* hs) {
+    char* tmp = nullptr;
+
+    tmp = wh_hashmap_get_key(hs, "hello39");
+
+    printf("tmp: %p -> str: %p", tmp, "hello39");
+    WH_TEST_STREQ(info, tmp, "hello39");
+
+    return 0;
+}
+
 i64 init(wh_unit_test_s* info) {
     // Log levels are noisy for unit testing.
-    wh_log_set_level(WH_LOG_LEVEL_ALL, 0);
+    wh_log_set_level(WH_LOG_LEVEL_ALL, 1);
 
     wh_hashmap_s hs = wh_hashmap_init_mmap_lazy(sizeof(int), 1);
 
     test_order(info, &hs);
     test_insert(info, &hs);
+    test_keys(info, &hs);
 
     return 0; 
 }
