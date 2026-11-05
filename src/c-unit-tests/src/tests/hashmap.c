@@ -105,7 +105,8 @@ i64 test_keys(wh_unit_test_s* info, wh_hashmap_s* hs) {
 
 i64 init(wh_unit_test_s* info) {
     // Log levels are noisy for unit testing.
-    wh_log_set_level(WH_LOG_LEVEL_ALL, 1);
+    // DEBUGGING: set to 1 and normally should be 0.
+    wh_log_set_level(WH_LOG_LEVEL_ALL, 0);
 
     wh_hashmap_s hs = wh_hashmap_init_mmap_lazy(sizeof(int), 1);
 

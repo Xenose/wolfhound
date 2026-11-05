@@ -37,15 +37,16 @@ void functions(wh_unit_test_s* info) {
    
     // Registering test functions.
     wh_print_add_func("cpp", &some_cpp_func);
-    wh_info(("function is %p"), &some_cpp_func);
 
     // Testing ideal case.
-    wh_print(("Some cpp -->$[cpp]"), nullptr);
+    wh_print(("Some cpp -->$[cpp]", .buffer = wh_buffer, .buffer_length = 1024, .flags = WH_PRINT_NO_FLUSH), nullptr);
     WH_TEST_STREQ(info, wh_buffer, "Some cpp -->");
+    memset(wh_buffer, 0, 1024);
 
     // Open brace test
-    wh_print(("Some cpp -->$[cpp"), nullptr);
+    wh_print(("Some cpp -->$[cpp", .buffer = wh_buffer, .buffer_length = 1024, .flags = WH_PRINT_NO_FLUSH), nullptr);
     WH_TEST_STREQ(info, wh_buffer, "Some cpp -->cpp");
+    memset(wh_buffer, 0, 1024);
 }
 
 i64 init(wh_unit_test_s* info) {

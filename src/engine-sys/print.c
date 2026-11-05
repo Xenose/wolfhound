@@ -58,8 +58,7 @@ static void _wh_print_call_func(wh_print_data_s* data, void* ptr, char* key_star
     }
 
     memcpy(tmp, key_start + 1, (size_t)(key_end - key_start - 1));
-    func = (i64(*)(wh_print_data_s*, void*))wh_hashmap_get(&_map, tmp);
-    wh_core_info(("Function pointer is [ %p ] %s"), func, tmp);
+    func = *(i64(**)(wh_print_data_s*, void*))wh_hashmap_get(&_map, tmp);
 
     if (nullptr != func) {
         func(data, ptr);
