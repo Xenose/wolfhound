@@ -70,16 +70,10 @@ static void* _set_key(i64 type, void* dst, void* src) {
     switch (type) {
         case WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_SYS:
         case WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_STD:
-            dst = &((wh_hashmap_slot_string_s*)dst)->key;
-            src = &((wh_hashmap_slot_string_s*)src)->key;
-
-            return memcpy(dst, src, sizeof(char*));
+            return ((wh_hashmap_slot_string_s*)dst)->key = src;
             
         case WH_STRUCT_TYPE_HASHMAP_LAZY_PTR_SYS:
-            dst = &((wh_hashmap_slot_ptr_s*)dst)->key;
-            src = &((wh_hashmap_slot_ptr_s*)src)->key;
-
-            return memcpy(dst, src, sizeof(void*));
+            return((wh_hashmap_slot_ptr_s*)dst)->key = src;
     }
 
     wh_error(("Failed to get key type!!!"));
@@ -136,7 +130,7 @@ static i8 _slot_copy(wh_hashmap_s* map, void* src, void* dst, u64 index, u64 cou
 
     d_index = (u64)_hash_simple(map->stype, skey, (i64)count);
     dst = _at_offset(dst, d_index, 0); // wh_ptr_offset(dst, d_index * (map->type_size + _struct_size(map->stype)));
-    dkey = _get_key(map->stype, src);
+    dkey = _get_key(map->stype, dst);
 
     if (nullptr != dkey) {
         wh_info(("Slot has a value!"));
