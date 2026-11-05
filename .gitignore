@@ -87,6 +87,7 @@ perf.data.old
 *.temp
 *.log
 *.orig
+**/.commit_message.txt
 
 # Generated binaries or external DLLs
 **/*.dll
