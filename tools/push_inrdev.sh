@@ -3,8 +3,11 @@
 
 set -e
 
-prompt="Generate a Git commit message for the changes below. Format the output with a short conventional commit title line (e.g., chore(gitignore): ...), followed by a blank line, followed by a concise bulleted list of changes. Output ONLY the commit message text. Do not include any explanations, summaries, headers, or conversational text:"
+prompt="Write a short commit summary for the changes below. No prefixes like chore/feat, no echoing instructions, strictly the summary:"
 branch=$(git symbolic-ref --short HEAD)
+
+model_path="$HOME/.cache/models/qwen2.5-coder-1.5b-instruct.gguf"
+model_url="https://huggingface.co/Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF/resolve/main/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf"
 
 if [ "inrdev" = "${branch}" ]; then
     echo "On 'inrdev' branch. Pulling latest changes and committing..."
@@ -20,25 +23,27 @@ if [ "inrdev" = "${branch}" ]; then
     if ! git diff --cached --quiet; then
         mkdir -pv ~/.cache/models
 
-        # TODO make this configurable.
-        if [[ ! -f ~/.cache/models/qwen2.5-0.5b-instruct.gguf ]]; then
+        if [[ ! -f "${model_path}" ]]; then
             echo "Downloading AI model for commit messages..."
 
-            curl -L -o ~/.cache/models/qwen2.5-0.5b-instruct.gguf \
-                https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/qwen2.5-0.5b-instruct-q4_k_m.gguf
+            curl -L -o "${model_path}" "${model_url}" 
         fi
 
         tmp_file="/tmp/.commit_message_$$.txt"
         tmp_prompt="/tmp/prompt_$$.txt"
 
         {
+            echo "### Instruction:"
             echo "${prompt}"
             echo ""
-            git diff --cached -- . ':!tools/push_inrdev.sh'
+            echo "### Diff:"
+            git diff --cached
+            echo ""
+            echo "### Response:"
         } > "${tmp_prompt}"
 
         llama-cli \
-            -m ~/.cache/models/qwen2.5-0.5b-instruct.gguf \
+            -m "${model_path}" \
             -f "${tmp_prompt}" \
             -n 8096 \
             -st \
@@ -47,6 +52,11 @@ if [ "inrdev" = "${branch}" ]; then
             -o "${tmp_file}"
 
         MSG="$(awk '/^Assistant:/{flag=1; next} flag {print}' "${tmp_file}" | sed -e '/^[[:space:]]*$/N;/^\n$/D')"
+        # Strip any stray conventional prefixes
+        MSG="$(echo "${MSG}" | sed -E 's/^[a-zA-Z0-9_-]+(\([a-zA-Z0-9_-]+\))?: *//')"
+        # Strip surrounding markdown backticks if the model adds them
+        MSG="$(echo "${MSG}" | sed 's/^[[:space:]]*`//;s/`[[:space:]]*$//')"
+
         rm -f "${tmp_file}" "${tmp_prompt}"
 
         # Fallback if the model didn't output quotes
@@ -61,6 +71,14 @@ if [ "inrdev" = "${branch}" ]; then
             echo "${MSG}"
             echo "--------------------------------"
         else
+            read -p "Do you want to proceed with this commit and push? (y/N) " -n 1 -r
+            echo
+
+            if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+                echo "Commit and push aborted by user."
+                exit 0
+            fi
+
             git commit -m "${MSG}"
             git push origin "${branch}"
         fi
