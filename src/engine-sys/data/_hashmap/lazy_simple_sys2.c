@@ -32,8 +32,6 @@ static i64 _hash_simple(i64 type, void* key, i64 slot_count) {
 }
 
 static i8 _keycomp(void* key1, void* key2, i64 type) {
-    wh_info(("src_key :: %u, dst_key :: %u"), key1, key2);
-
     if (nullptr == key1 || nullptr == key2) {
         goto go_exit;
     }
@@ -41,7 +39,7 @@ static i8 _keycomp(void* key1, void* key2, i64 type) {
     switch (type) {
         case WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_SYS:
         case WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_STD:
-            return !strcmp(key1, key2);
+            return !!strcmp(key1, key2);
         case WH_STRUCT_TYPE_HASHMAP_LAZY_PTR_SYS:
             return key1 == key2;
         default:
@@ -227,6 +225,7 @@ go_error_exit:
 
 static i8 _insert_lazy_simple_sys(_wh_hashmap_insert_params* params) {
     u64 index = 0;
+    void* d_key = nullptr;
     wh_hashmap_s* const map = params->map;
 
     if (nullptr == map->slots) {
@@ -236,6 +235,12 @@ static i8 _insert_lazy_simple_sys(_wh_hashmap_insert_params* params) {
     }
 
     index = (u64)_hash_simple(map->stype, params->key, (i64)map->slot_count);
+    d_key = _get_key(map->stype, _at_offset(map, index, 0));
+
+    if (_keycomp(params->key, d_key, map->stype)) {
+        // TODO free memory
+        goto go_error_exit;
+    }
 
     if (_slot_set(map, index, params->key, params->value)) {
         // TODO : check return value
@@ -246,6 +251,12 @@ go_error_exit:
     return -1;
 }
 
+// Destroy frees all the memory
+static i8 _destroy_lazy_simple_sys() {
+    return 0;
+}
+
+// Delete removes a item
 static i8 _delete_lazy_simple_sys(wh_hashmap_s* map, void* key) {
     return 0;
 }

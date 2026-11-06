@@ -47,7 +47,7 @@ i64 test_xx32(wh_unit_test_s* info) {
 }
 
 i64 init(wh_unit_test_s* info) {
-    test_simple(info);
-    test_xx32(info);
+    WH_TEST(info, test_simple(info));
+    WH_TEST(info, test_xx32(info));
     return 0;
 }

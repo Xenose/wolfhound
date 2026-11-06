@@ -52,8 +52,8 @@ void functions(wh_unit_test_s* info) {
 i64 init(wh_unit_test_s* info) {
     wh_core_log_set_level(WH_LOG_LEVEL_ALL, 0);
 
-    simple(info);
-    functions(info);
+    WH_TEST(info, simple(info));
+    WH_TEST(info, functions(info));
 
     return 0;
 }

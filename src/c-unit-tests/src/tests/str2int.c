@@ -19,6 +19,6 @@ i64 test_numbers(wh_unit_test_s* info) {
 }
 
 i64 init(wh_unit_test_s* info) {
-    test_numbers(info);
+    WH_TEST(info, test_numbers(info));
     return 0;
 }

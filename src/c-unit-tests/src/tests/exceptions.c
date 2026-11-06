@@ -146,9 +146,9 @@ i64 test_exceptions_propagation(wh_unit_test_s* info) {
 }
 
 i64 init(wh_unit_test_s* info) {
-    test_exceptions_happy(info);
-    test_exceptions_throw(info);
-    test_exceptions_segfault(info);
-    test_exceptions_propagation(info);
+    WH_TEST(info, test_exceptions_happy(info));
+    WH_TEST(info, test_exceptions_throw(info));
+    WH_TEST(info, test_exceptions_segfault(info));
+    WH_TEST(info, test_exceptions_propagation(info));
     return 0;
 }

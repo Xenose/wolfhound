@@ -58,6 +58,14 @@ static void _wh_print_call_func(wh_print_data_s* data, void* ptr, char* key_star
     }
 
     memcpy(tmp, key_start + 1, (size_t)(key_end - key_start - 1));
+
+    /* TODO :: Check for invalid slots
+     *
+     * if (!!strcmp(tmp, wh_hashmap_get_key(&_map, tmp))) {
+     *  ++data->format;
+     *  return;
+    }*/
+
     func = *(i64(**)(wh_print_data_s*, void*))wh_hashmap_get(&_map, tmp);
 
     if (nullptr != func) {

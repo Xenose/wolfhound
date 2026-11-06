@@ -43,7 +43,7 @@ i64 test_strcat(wh_unit_test_s* info) {
 }
 
 i64 init(wh_unit_test_s* info) {
-    test_strcat(info);
+    WH_TEST(info, test_strcat(info));
     return 0;
 }
 

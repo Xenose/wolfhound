@@ -11,6 +11,6 @@ i64 test_intpos(wh_unit_test_s* info) {
 }
 
 i64 init(wh_unit_test_s* info) {
-    test_intpos(info);
+    WH_TEST(info, test_intpos(info));
     return 0;
 }

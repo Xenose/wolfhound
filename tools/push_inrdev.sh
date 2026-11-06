@@ -48,7 +48,7 @@ if [ "inrdev" = "${branch}" ]; then
             -n 8096 \
             -st \
             -t $(nproc) \
-            --temp 0.5 \
+            --temp 0.2 \
             -o "${tmp_file}"
 
         MSG="$(awk '/^Assistant:/{flag=1; next} flag {print}' "${tmp_file}" | sed -e '/^[[:space:]]*$/N;/^\n$/D')"

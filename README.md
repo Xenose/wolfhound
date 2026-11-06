@@ -4,7 +4,7 @@ for short, meaning that the code will change a lot and that
 after first release the commit history will be squashed.**
 
 Wolfhound is personal experiment for how far we can push the
-the C programming language without extensions, the goal is to
+C programming language without extensions, the goal is to
 have a stable engine around 2 to 3 year mark.
 
 
@@ -48,8 +48,14 @@ cmake \
 
 cmake --build "build/some_path"
 ```
-
 [Legacy Build System](markdown/legacy_build.md)
+
+### Testing
+For testing we use the [c-unit-tests](src/c-unit-tests.md) tests it uses the minimal
+amount of engine code to test the code, it uses so/dll files to load the test and isolate
+them more or less using [wh_try/wh_catch](src/engine/debug/exceptions.c).
+
+**Note: TinyCC currently doesn't work with the tests, this is a known limitation.**
 
 ### Status of platforms
 | Platform        | Kernel  | Tested | Supported     | Description                             |
@@ -144,19 +150,19 @@ In AES system :: action(logic) -> Entity -> Data
 
 |  Language       | File Count | Lines of Code | Percentage |
 | --------------- | ---------- | ------------- | ---------- |
-| C               | 333        | 11152         | 79.10%     |
-| Python          | 37         | 1249          | 8.86%      |
-| CMake           | 26         | 583           | 4.14%      |
-| C++             | 20         | 495           | 3.51%      |
+| C               | 333        | 11216         | 79.20%     |
+| Python          | 37         | 1249          | 8.82%      |
+| CMake           | 26         | 583           | 4.12%      |
+| C++             | 20         | 495           | 3.50%      |
 | Markdown        | 6          | 243           | 1.72%      |
 | Lua             | 13         | 171           | 1.21%      |
-| Bourne Shell    | 6          | 111           | 0.79%      |
+| Bourne Shell    | 6          | 111           | 0.78%      |
 | Dockerfile      | 4          | 64            | 0.45%      |
 | GLSL            | 1          | 13            | 0.09%      |
 | Assembly        | 2          | 11            | 0.08%      |
 | INI             | 1          | 3             | 0.02%      |
 | Rust            | 1          | 3             | 0.02%      |
-| Summary         | 450        | 14098         | 100.00%    |
+| Summary         | 450        | 14162         | 100.00%    |
 
 <!--python-stats-end-->
 

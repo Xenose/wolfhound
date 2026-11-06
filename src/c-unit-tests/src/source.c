@@ -60,10 +60,12 @@ i64 report(wh_unit_results_s* results) {
             "\tPassed tested    : %li of %li"
             "\nERRORS\n"
             "\tExit status      : %s\n"
+            "\tLast function    : %s\n"
             "\tLast line called : %lu\n",
             r->name,
             r->passed, r->passed + r->failed,
             r->error.msg,
+            r->error.last_function,
             r->error.last_line
         );
     }

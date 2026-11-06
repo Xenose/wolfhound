@@ -89,6 +89,67 @@ i64 test_insert(wh_unit_test_s* info, wh_hashmap_s* hs) {
     WH_TEST_INT64EQ(info, 58L, (long)*(int*)wh_hashmap_get(hs, "hello38"));
     WH_TEST_INT64EQ(info, 57L, (long)*(int*)wh_hashmap_get(hs, "hello39"));
 
+    // Adding random stuff
+    wh_hashmap_insert(hs, "AAhello24", WH_INT(2));
+    wh_hashmap_insert(hs, "AAhello25", WH_INT(1));
+    wh_hashmap_insert(hs, "AAhello26", WH_INT(0));
+    wh_hashmap_insert(hs, "AAhello27", WH_INT(9));
+    wh_hashmap_insert(hs, "AAhello28", WH_INT(8));
+    wh_hashmap_insert(hs, "AAhello29", WH_INT(7));
+    wh_hashmap_insert(hs, "AAhello34", WH_INT(2));
+    wh_hashmap_insert(hs, "AAhello35", WH_INT(1));
+    wh_hashmap_insert(hs, "AAhello36", WH_INT(0));
+    wh_hashmap_insert(hs, "AAhello37", WH_INT(9));
+    wh_hashmap_insert(hs, "AAhello38", WH_INT(8));
+    wh_hashmap_insert(hs, "AAhello39", WH_INT(7));
+    wh_hashmap_insert(hs, "bAhello24", WH_INT(2));
+    wh_hashmap_insert(hs, "bAhello25", WH_INT(1));
+    wh_hashmap_insert(hs, "bAhello26", WH_INT(0));
+    wh_hashmap_insert(hs, "bAhello27", WH_INT(9));
+    wh_hashmap_insert(hs, "bAhello28", WH_INT(8));
+    wh_hashmap_insert(hs, "bAhello29", WH_INT(7));
+    wh_hashmap_insert(hs, "bAhello34", WH_INT(2));
+    wh_hashmap_insert(hs, "bAhello35", WH_INT(1));
+    wh_hashmap_insert(hs, "bAhello36", WH_INT(0));
+    wh_hashmap_insert(hs, "bAhello37", WH_INT(9));
+    wh_hashmap_insert(hs, "bAhello38", WH_INT(8));
+    wh_hashmap_insert(hs, "bAhello39", WH_INT(7));
+    wh_hashmap_insert(hs, "AAhdddaosdksokello24", WH_INT(2));
+    wh_hashmap_insert(hs, "AAhdddaosdksokello25", WH_INT(1));
+    wh_hashmap_insert(hs, "AAhdddaosdksokello26", WH_INT(0));
+    wh_hashmap_insert(hs, "AAhdddaosdksokello27", WH_INT(9));
+    wh_hashmap_insert(hs, "AAhdddaosdksokello28", WH_INT(8));
+    wh_hashmap_insert(hs, "AAhdddaosdksokello29", WH_INT(7));
+    wh_hashmap_insert(hs, "AAhdddaosdksokello34", WH_INT(2));
+    wh_hashmap_insert(hs, "AAhdddaosdksokello35", WH_INT(1));
+    wh_hashmap_insert(hs, "AAhdddaosdksokello36", WH_INT(0));
+    wh_hashmap_insert(hs, "AAhdddaosdksokello37", WH_INT(9));
+    wh_hashmap_insert(hs, "AAhdddaosdksokello38", WH_INT(8));
+    wh_hashmap_insert(hs, "AAhdddaosdksokello39", WH_INT(7));
+    wh_hashmap_insert(hs, "bAhdddaosdksokello24", WH_INT(2));
+    wh_hashmap_insert(hs, "bAhdddaosdksokello25", WH_INT(1));
+    wh_hashmap_insert(hs, "bAhdddaosdksokello26", WH_INT(0));
+    wh_hashmap_insert(hs, "bAhdddaosdksokello27", WH_INT(9));
+    wh_hashmap_insert(hs, "bAhdddaosdksokello28", WH_INT(8));
+    wh_hashmap_insert(hs, "bAhdddaosdksokello29", WH_INT(7));
+    wh_hashmap_insert(hs, "bAhdddaosdksokello34", WH_INT(2));
+    wh_hashmap_insert(hs, "bAhdddaosdksokello35", WH_INT(1));
+    wh_hashmap_insert(hs, "bAhdddaosdksokello36", WH_INT(0));
+    wh_hashmap_insert(hs, "bAhdddaosdksokello37", WH_INT(9));
+    wh_hashmap_insert(hs, "bAhdddaosdksokello38", WH_INT(8));
+    wh_hashmap_insert(hs, "bAhdddaosdksokello39", WH_INT(7));
+
+    // Testing older entries
+    WH_TEST_INT64EQ(info, 63L, (long)*(int*)wh_hashmap_get(hs, "hello2"));
+    WH_TEST_INT64EQ(info, 62L, (long)*(int*)wh_hashmap_get(hs, "hello3"));
+    WH_TEST_INT64EQ(info, 62L, (long)*(int*)wh_hashmap_get(hs, "hello4"));
+    WH_TEST_INT64EQ(info, 61L, (long)*(int*)wh_hashmap_get(hs, "hello5"));
+    WH_TEST_INT64EQ(info, 60L, (long)*(int*)wh_hashmap_get(hs, "hello6"));
+    WH_TEST_INT64EQ(info, 59L, (long)*(int*)wh_hashmap_get(hs, "hello7"));
+    WH_TEST_INT64EQ(info, 58L, (long)*(int*)wh_hashmap_get(hs, "hello8"));
+    WH_TEST_INT64EQ(info, 57L, (long)*(int*)wh_hashmap_get(hs, "hello9"));
+    WH_TEST_INT64EQ(info, 2L,  (long)*(int*)wh_hashmap_get(hs, "AAhello24"));
+
     return 0;
 }
 
@@ -110,9 +171,9 @@ i64 init(wh_unit_test_s* info) {
 
     wh_hashmap_s hs = wh_hashmap_init_mmap_lazy(sizeof(int), 1);
 
-    test_order(info, &hs);
-    test_insert(info, &hs);
-    test_keys(info, &hs);
+    WH_TEST(info, test_order(info, &hs));
+    WH_TEST(info, test_insert(info, &hs));
+    WH_TEST(info, test_keys(info, &hs));
 
     return 0; 
 }

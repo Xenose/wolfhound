@@ -18,6 +18,6 @@ static i64 test_simple(wh_unit_test_s* info) {
 }
 
 i64 init(wh_unit_test_s* info) {
-    test_simple(info);
+    WH_TEST(info, test_simple(info));
     return 0;
 }

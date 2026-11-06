@@ -13,6 +13,7 @@ typedef struct {
 
 typedef struct {
     const char* msg;
+    volatile char* last_function;
     volatile uint64_t last_line;
 } wh_unit_test_error_s;
 
@@ -58,6 +59,12 @@ go_error_exit:
         }); nullptr != _name_##_test && -1 < _name_##_test->params.count; \
         0 == printf("\n\tTEST REPORT [ failed : %lu, passed : %lu ]\n", _name_##_test->failed, _name_##_test->passed) ? _name_##_test->params.count-- : _name_##_test->params.count--)
         */
+
+extern i8 _wh_test_func(wh_unit_test_s* info, const char* name);
+
+
+#define WH_TEST(_info_, func) \
+    0 == _wh_test_func(_info_, #func) ? func : func
 
 #define _WH_TEST_CMP(_name_, _cmp_, _print_failure_, _print_success_) \
         (_name_)->error.last_line = __LINE__; \

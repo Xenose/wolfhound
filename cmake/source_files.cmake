@@ -68,6 +68,8 @@ SET(C_SOURCES
     "src/engine/string.c"
     "src/engine/window.c"
     "src/engine/wolfhound.c"
+
+    "src/engine-testing/unit.c"
 )
 
 IF(WIN32)
