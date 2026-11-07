@@ -1,15 +1,16 @@
-import os
-import subprocess
-import shutil
-import platform
 import argparse
-import requests
 import json
+import os
+import platform
+import requests
+import shutil
+import subprocess
 
 from common.utils import find_executable
 
 from enum import Enum
 from dataclasses import dataclass, field, asdict
+from pathlib import Path
 from typing import Any
 
 class arch_e(Enum):
@@ -51,11 +52,12 @@ class platform_e(Enum):
 class mode_e(Enum):
     LOCAL   = 0
     REMOTE  = 1
+    NODE    = 2
 
 @dataclass
 class arch_c:
-    current : arch_e = arch_e.NONE
-    target  : arch_e = arch_e.NONE
+    current : arch_e = arch_e.X64
+    target  : arch_e = arch_e.X64
 
 @dataclass
 class platform_c:
@@ -85,6 +87,63 @@ class builder_settings_c:
     flags :         build_flags_c   = field(default_factory = build_flags_c)
 
 
+def parse_args_build(args):
+        parser = argparse.ArgumentParser(
+            prog='build',
+            description='What the program does',
+            epilog='Text at the bottom of help'
+        )
+
+        parser.add_argument(
+            "--no-sdl3",
+            action="store_true",
+            help="Set the architecture"
+        )
+
+        parser.add_argument(
+            "--no-sdl2",
+            action="store_true",
+            help="Set the architecture"
+        )
+
+        parser.add_argument(
+            "--no-glfw3",
+            action="store_true",
+            help="Set the architecture"
+        )
+
+        parser.add_argument(
+            "--no-vulkan",
+            action="store_true",
+            help="Set the architecture"
+        )
+
+        parser.add_argument(
+            "--no-glew",
+            action="store_true",
+            help="Set the architecture"
+        )
+
+        return parser.parse_args(args)
+
+
+def get_name_build_system(bs):
+    match bs:
+        case build_system_e.NINJA:
+            return "Ninja"
+        case build_system_e.NMAKE:
+            return "NMake Makefiles"
+        case build_system_e.UNIX_MAKE:
+            return "Unix Makefiles"
+        case build_system_e.VS17_2022:
+            return "Visual Studio 17 2022"
+
+# architecture
+def get_name_arch(arch):
+    match arch:
+        case arch_e.X64:
+            return "x64"
+
 class builder_c:
     '''
         This class handles the state of the build-shell's
@@ -104,11 +163,8 @@ class builder_c:
         self.settings = builder_settings_c() # <-- new settings system
 
         self.home = home
-        self.arch = platform.machine()
-        self.compiler = None
         self.platform = platform.system()
 
-        self.arch_target = None
         self.platform_target = None
 
         if not os.path.exists("build"):
@@ -197,55 +253,6 @@ class builder_c:
 
         return parser.parse_args(args)
 
-    def parse_args_build(self, args):
-        parser = argparse.ArgumentParser(
-            prog='build',
-            description='What the program does',
-            epilog='Text at the bottom of help'
-        )
-
-        parser.add_argument(
-            "--no-sdl3",
-            action="store_true",
-            help="Set the architecture"
-        )
-
-        parser.add_argument(
-            "--no-sdl2",
-            action="store_true",
-            help="Set the architecture"
-        )
-
-        parser.add_argument(
-            "--no-glfw3",
-            action="store_true",
-            help="Set the architecture"
-        )
-
-        parser.add_argument(
-            "--no-vulkan",
-            action="store_true",
-            help="Set the architecture"
-        )
-
-        parser.add_argument(
-            "--no-glew",
-            action="store_true",
-            help="Set the architecture"
-        )
-
-        return parser.parse_args(args)
-
-    def get_name_build_system(self, bs):
-        match bs:
-            case build_system_e.NINJA:
-                return "Ninja"
-            case build_system_e.NMAKE:
-                return "NMake Makefiles"
-            case build_system_e.UNIX_MAKE:
-                return "Unix Makefiles"
-            case build_system_e.VS17_2022:
-                return "Visual Studio 17 2022"
 
     def set_build_system(self, args:Any =None, dbs="ninja"):
         bs = args.build_system
@@ -300,15 +307,13 @@ class builder_c:
             case _ :
                 self.settings.compiler = compiler_e.NONE
 
-        self.compiler = name
         self.cxx = None
         self.cc = shutil.which(cc)
 
         if cxx is not None:
             self.cxx = shutil.which(cxx)
 
-        print("compiler set to [ {} ] build system [ {} ]".format(
-            self.cc, self.get_name_build_system(self.settings.build_system)))
+        print(f"compiler set to [ {self.cc} ] build system [ {get_name_build_system(self.settings.build_system)} ]")
 
     def compilers(self):
         out = []
@@ -327,21 +332,18 @@ class builder_c:
 
     def display_string(self):
         p = self.platform
-        a = self.arch
+        a = get_name_arch(self.settings.arch.target)
 
-        if self.arch_target is not None:
-            if self.arch_target != self.arch:
-                a = self.arch_target
-                # config_opt.extend(["-A", self.arch_target])
+        if a != self.settings.arch.current:
+            pass
+            # a = self.settigns.arch_target.name
+            # config_opt.extend(["-A", self.arch_target])
 
-        if self.platform_target is not None:
-            if self.platform_target != self.platform:
-                # Todo add cross compiling
-                pass
+        if self.platform_target != self.platform:
+            # Todo add cross compiling
+            pass
 
-        target = "{}-{}-{}-{}".format(
-            self.compiler, self.get_name_build_system(self.settings.build_system), p, a
-        ).lower().replace(" ", "-")
+        target = f"{self.settings.compiler}-{get_name_build_system(self.settings.build_system)}-{p}-{a}".lower().replace(" ", "-")
 
         return target
 
@@ -350,10 +352,8 @@ class builder_c:
 
     def is_ready(self):
         return None not in [
-            self.arch,
             self.settings.build_system,
             self.cc,
-            self.compiler,
             self.platform
         ]
 
@@ -361,86 +361,88 @@ class builder_c:
         config = [
             "cmake",
             "-S", f"{self.home}",
-            "-B", path,
-            "-G", self.get_name_build_system(self.settings.build_system),
+            "-B", str(path),
+            "-G", get_name_build_system(self.settings.build_system),
             "-DGENERATE_REPORT=ON",
             f"-DNO_SDL3={args.no_sdl3}",
             f"-DNO_SDL2={args.no_sdl2}",
         ]
 
-        config.extend(self.compilers())
-        config.extend(config_opt)
 
+        config.extend(self.compilers())
+
+        if config_opt is not None:
+            config.extend(config_opt)
+
+        print(f"\n\n---> {config}\n\n")
         subprocess.run(config, check=True)
 
 
     def build_local(self, args):
         config_opt = []
-        pa = self.parse_args_build(args)
+        pa = parse_args_build(args)
 
         if not self.is_ready():
             return
 
         print("\n\nbuilder_c is not in a ready state!{}\n\n".format(
-            f"\n\tName:         {self.compiler}"
+            f"\n\tName:         {self.settings.compiler}"
             f"\n\tCC:           {self.cc}"
             f"\n\tCXX:          {self.cxx}"
-            f"\n\tArch:         {self.arch}"
-            f"\n\tBuild system: {self.get_name_build_system(self.settings.build_system)}"
+            f"\n\tArch:         {self.settings.arch}"
+            f"\n\tBuild system: {get_name_build_system(self.settings.build_system)}"
             f"\n\tPlatform:     {self.platform}"
         ))
 
         p = self.platform
-        a = self.arch
+        a = get_name_arch(self.settings.arch.target)
 
-        if self.arch_target is not None:
-            if self.arch_target != self.arch:
-                a = self.arch_target
-                config_opt.extend(["-A", self.arch_target])
+        if self.settings.arch.target != self.settings.arch.current:
+            config_opt.extend(["-A", a])
 
-        if self.platform_target is not None:
-            if self.platform_target != self.platform:
-                # Todo add cross compiling
-                pass
+        if self.platform_target != self.platform:
+            # Todo add cross compiling
+            pass
 
-        target = "{}-{}-{}-{}".format(
-            self.compiler, self.get_name_build_system(self.settings.build_system), p, a
-        ).lower().replace(" ", "-")
+        target = f"{self.settings.compiler}-{get_name_build_system(self.settings.build_system)}-{p}-{a}".lower().replace(" ", "-")
 
-        path = f"{self.home}/build/{target}"
+        # p for Path
+        p = Path(self.home, "build", target)
 
         print("Setting up temporary enviroment...")
-        os.makedirs(path, exist_ok=True)
+        os.makedirs(p, exist_ok=True)
 
         print("Configuring cmake...")
-        self.configure(path, pa, config_opt)
+        self.configure(p, pa, config_opt)
 
         print("CMake building...")
         subprocess.run([
                 "cmake",
-                "--build", f"{path}"
+                "--build", f"{p}"
             ],
             check=True
         )
 
-        for e in find_executable(f"{self.home}/build/{target}", ["CMakeFiles"]):
-            full_path = e
-            link_name = os.path.basename(e)
-            link_name = link_name.replace(".EXE", "")
-            link_name = f"build/bin/{link_name}-{p}-{self.compiler}-{a}-{self.get_name_build_system(self.settings.build_system)}"
-            link_name = link_name.lower().replace(" ", "_")
+        # TODO fix linking code...
+       #  for e in find_executable(Path(self.home, "build", target), ["CMakeFiles"]):
+       #      full_path = str(e)
 
-            if "nt" != os.name:
-                try:
-                    os.symlink(full_path, link_name)
-                    print(f"Link created: {full_path} --> {link_name}")
-                except FileExistsError:
-                    print(f"Link exists : {full_path} --> {link_name}")
+       #      link_name = os.path.basename(full_path)
+       #      link_name = link_name.replace(".EXE", "")
+       #      link_name = f"build/bin/{link_name}-{p}-{self.compiler}-{a}-{get_name_build_system(self.settings.build_system)}"
+       #      link_name = link_name.lower().replace(" ", "_")
 
-                try:
-                    os.remove(f"{self.home}/compile_commands.json")
-                except OSError:
-                    pass
+       #      if "nt" != os.name:
+       #          try:
+       #              os.symlink(full_path, link_name)
+       #              print(f"Link created: {full_path} --> {link_name}")
+       #          except FileExistsError:
+       #              print(f"Link exists : {full_path} --> {link_name}")
+
+       #          try:
+       #              os.remove(f"{self.home}/compile_commands.json")
+       #          except OSError:
+       #              pass
 
     def build_remote_payload(self):
         out = {}
