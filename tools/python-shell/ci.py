@@ -1,10 +1,15 @@
+from builder2 import builder_c
 from fastapi import FastAPI
+
 
 app = FastAPI()
 
+
 @app.get("/test")
 def get_root(payload: dict):
-    print(payload)
+    # Session Builder
+    sb = builder_c(".")
+    sb.build_remote_recive(payload)
     return "Hello, world!"
 
 

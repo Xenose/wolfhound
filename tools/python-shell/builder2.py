@@ -178,8 +178,11 @@ class builder_c:
             Keywords Arguments:
                 args -- A argument list.
         '''
-        a = self.parse_args_compiler(args)
+        a = None
 
+        if args is not None:
+            a = self.parse_args_compiler(args)
+        
         self.set_build_system(a)
         self.set_compilers("clang", "clang", "clang++")
 
@@ -254,10 +257,13 @@ class builder_c:
         return parser.parse_args(args)
 
 
-    def set_build_system(self, args:Any =None, dbs="ninja"):
-        bs = args.build_system
+    def set_build_system(self, args:Any=None, dbs="ninja"):
+        if args is not None:
+            bs = args.build_system
 
-        if bs is None:
+            if bs is None:
+                bs = dbs
+        else:
             bs = dbs
 
         match bs.lower():
@@ -364,9 +370,11 @@ class builder_c:
             "-B", str(path),
             "-G", get_name_build_system(self.settings.build_system),
             "-DGENERATE_REPORT=ON",
-            f"-DNO_SDL3={args.no_sdl3}",
-            f"-DNO_SDL2={args.no_sdl2}",
         ]
+
+        if args is not None:
+            config.extend(f"-DNO_SDL3={args.no_sdl3}")
+            config.extend(f"-DNO_SDL2={args.no_sdl2}")
 
 
         config.extend(self.compilers())
@@ -378,9 +386,12 @@ class builder_c:
         subprocess.run(config, check=True)
 
 
-    def build_local(self, args):
+    def build_local(self, args = None):
         config_opt = []
-        pa = parse_args_build(args)
+        pa = None
+
+        if args is not None:
+            pa = parse_args_build(args)
 
         if not self.is_ready():
             return
@@ -443,6 +454,16 @@ class builder_c:
        #              os.remove(f"{self.home}/compile_commands.json")
        #          except OSError:
        #              pass
+
+    def build_remote_recive(self, data):
+        print(data)
+
+        match data["compiler"].lower():
+            case "clang":
+                self.clang(None)
+
+        self.build_local()
+
 
     def build_remote_payload(self):
         out = {}
