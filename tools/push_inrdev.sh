@@ -10,13 +10,7 @@ model_path="$HOME/.cache/models/qwen2.5-coder-1.5b-instruct.gguf"
 model_url="https://huggingface.co/Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF/resolve/main/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf"
 
 if [ "inrdev" = "${branch}" ]; then
-    echo "On 'inrdev' branch. Pulling latest changes and committing..."
-
-    # Stash any local uncommitted changes so git pull doesn't fail
-    git stash
-    git pull --rebase
-    git stash pop || true
-
+    echo "On 'inrdev' branch."
     git add -A
 
     # Check if there are any changes (staged or unpushed)
