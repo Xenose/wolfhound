@@ -11,7 +11,7 @@ from prompt_toolkit.completion import Completer, Completion
 from pathlib import Path
 
 from common.params import params_c
-from builder import builder_c
+from builder2 import builder_c
 
 
 class file_completer_c(Completer):
@@ -123,7 +123,8 @@ class shell_c:
         current_dir = "/".join(os.getcwd().split(os.sep)[-3:]) or "/"
 
         return ANSI(
-            "\n{}@{} --- [ mode : \033[34m{}\033[0m ]\n\033[32mwh-shell>\033[0m ".format(
+            "\n{}\n{}@{} --- [ mode : \033[34m{}\033[0m ]\n\033[32mwh-shell>\033[0m ".format(
+                self.builder.get_settings(),
                 self.user,
                 current_dir,
                 self.builder.display_string(),

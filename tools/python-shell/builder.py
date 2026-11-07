@@ -6,6 +6,72 @@ import argparse
 
 from common.utils import find_executable
 
+from enum import Enum
+from dataclasses import dataclass, field
+
+class arch_e(Enum):
+    NONE    = 0
+    X64     = 1
+    ARM64   = 2
+    RISCV   = 3
+
+class build_system_e(Enum):
+    NONE        = 0
+    NMAKE       = 1
+    UNIX_MAKE   = 2
+    NINJA       = 3
+
+class compiler_e(Enum):
+    NONE    = 0
+    GCC     = 1
+    CLANG   = 2
+    TCC     = 3 # TinyCC
+    KEFIR   = 4
+    IFX     = 5 # Intel's compiler LLVM based
+    ZIG     = 6
+    MSVC    = 7
+
+class platform_e(Enum):
+    NONE    = 0
+    LINUX   = 1
+    BSD     = 2
+    SOLARIS = 3
+    BEOS    = 4
+    WINDOWS = 5
+    MACOS   = 6
+    AROS    = 7
+
+@dataclass
+class arch_c:
+    current : arch_e = arch_e.NONE
+    target  : arch_e = arch_e.NONE
+
+@dataclass
+class platform_c:
+    current     : platform_e = platform_e.NONE
+    target      : platform_e = platform_e.NONE
+
+@dataclass
+class build_flags_c:
+    no_asm      : bool = False
+    no_cpp      : bool = False
+    no_glew     : bool = False
+    no_glfw3    : bool = False
+    no_opengl   : bool = False
+    no_sdl2     : bool = False
+    no_sdl3     : bool = False
+    no_vulkan   : bool = False
+
+
+@dataclass
+class builder_settings_c:
+    build_system :  build_system_e  = build_system_e.NONE
+    compiler :      compiler_e      = compiler_e.NONE
+
+    arch :          arch_c          = field(default_factory = arch_c)
+    platform :      platform_c      = field(default_factory = platform_c)
+    flags :         build_flags_c   = field(default_factory = build_flags_c)
+
 
 class builder_c:
     '''
@@ -23,6 +89,8 @@ class builder_c:
             Keywords Arguments:
                 home -- The home directory for the project.
         '''
+        self.settings = builder_settings_c() # <-- new settings system
+
         self.home = home
         self.arch = platform.machine()
         self.build_system = None
@@ -165,11 +233,14 @@ class builder_c:
 
         match bs.lower():
             case "ninja":
+                self.settings.build_system = build_system_e.NINJA
                 self.build_system = "Ninja"
             case "make":
                 if "nt" == os.name:
+                    self.settings.build_system = build_system_e.NMAKE
                     self.build_system = "NMake Makefiles"
                 else:
+                    self.settings.build_system = build_system_e.UNIX_MAKE
                     self.build_system = "Unix Makefiles"
             case "visual":
                 if "nt" != os.name:
@@ -177,12 +248,31 @@ class builder_c:
                     return
                 self.build_system = "Visual Studio 17 2022"
             case _:
+                self.settings.build_system = build_system_e.NINJA
                 self.build_system = "Ninja"
 
     def set_compilers(self, name: str, cc: str, cxx: str = None):
         if shutil.which(cc) is None:
             print(f"Compiler [ {name} ] not installed")
             return
+
+        match name.lower():
+            case "gcc":
+                self.settings.compiler = compiler_e.GCC
+            case "clang":
+                self.settings.compiler = compiler_e.CLANG
+            case "tcc":
+                self.settings.compiler = compiler_e.TCC
+            case "kefir":
+                self.settings.compiler = compiler_e.KEFIR
+            case "zig":
+                self.settings.compiler = compiler_e.ZIG
+            case "ifx":
+                self.settings.compiler = compiler_e.IFX
+            case "msvc":
+                self.settings.compiler = compiler_e.MSVC
+            case _ :
+                self.settings.compiler = compiler_e.NONE
 
         self.compiler = name
         self.cxx = None
@@ -228,6 +318,9 @@ class builder_c:
         ).lower().replace(" ", "-")
 
         return target
+
+    def get_settings(self):
+        return self.settings
 
     def is_ready(self):
         return None not in [

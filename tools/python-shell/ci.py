@@ -2,8 +2,9 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
-@app.get("/")
-def get_root():
+@app.get("/test")
+def get_root(payload: dict):
+    print(payload)
     return "Hello, world!"
 
 
@@ -21,4 +22,4 @@ def put_compiler():
 
 @app.put("/build/system")
 def put_build_system():
-    return "build system is ...")
+    return "build system is ..."
