@@ -1,5 +1,6 @@
-from builder2 import builder_c
+import os
 from fastapi import FastAPI
+from builder2 import builder_c
 
 
 app = FastAPI()
@@ -8,7 +9,7 @@ app = FastAPI()
 @app.get("/test")
 def get_root(payload: dict):
     # Session Builder
-    sb = builder_c(".")
+    sb = builder_c(os.getcwd())
     sb.build_remote_recive(payload)
     return "Hello, world!"
 

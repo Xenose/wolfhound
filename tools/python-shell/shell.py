@@ -122,14 +122,7 @@ class shell_c:
     def line(self):
         current_dir = "/".join(os.getcwd().split(os.sep)[-3:]) or "/"
 
-        return ANSI(
-            "\n{}\n{}@{} --- [ mode : \033[34m{}\033[0m ]\n\033[32mwh-shell>\033[0m ".format(
-                self.builder.get_settings(),
-                self.user,
-                current_dir,
-                self.builder.display_string(),
-            )
-        )
+        return ANSI(f"\n{self.builder.get_settings()}\n{self.user}@{current_dir} --- [ mode : \033[34m{self.builder.display_string()}\033[0m ]\n\033[32mwh-shell>\033[0m ")
 
     def start(self):
         while not self.session["exit"]:

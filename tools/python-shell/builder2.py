@@ -1,17 +1,15 @@
 import argparse
-import json
 import os
 import platform
 import requests
 import shutil
 import subprocess
 
-from common.utils import find_executable
-
 from enum import Enum
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
+
 
 class arch_e(Enum):
     NONE    = 0
@@ -373,9 +371,10 @@ class builder_c:
         ]
 
         if args is not None:
-            config.extend(f"-DNO_SDL3={args.no_sdl3}")
-            config.extend(f"-DNO_SDL2={args.no_sdl2}")
-
+            config.extend([
+                f"-DNO_SDL3={args.no_sdl3}",
+                f"-DNO_SDL2={args.no_sdl2}"
+            ])
 
         config.extend(self.compilers())
 
