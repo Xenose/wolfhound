@@ -14,4 +14,4 @@ def execute(params: params_c):
 
     a = parser.parse_args(params.args)
 
-    params.sh.builder.set_mode("remote", a.lislistenn, a.port)
+    params.sh.builder.set_mode("remote", a.listen.split(','), a.port.split(","))

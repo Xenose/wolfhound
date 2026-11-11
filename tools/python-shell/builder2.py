@@ -284,11 +284,18 @@ class builder_c:
             case _:
                 self.settings.build_system = build_system_e.NINJA
 
-    def set_mode(self, mode: str, ip = "127.0.0.1", port = "8000" ):
+    def set_mode(self, mode: str, ip = None, port = None):
+
+
         match mode:
             case "local":
                 self.settings.mode = mode_e.LOCAL
             case "remote":
+                if ip is None:
+                    ip = ["127.0.0.1"]
+                if port is None:
+                    port = ["8000"] 
+
                 self.settings.mode = mode_e.REMOTE
 
                 self.ip = ip
@@ -482,8 +489,12 @@ class builder_c:
 
     def build_remote(self, args):
         payload = self.build_remote_payload()
-        r = requests.get(f'http://{self.ip}:{self.port}/test', json=payload)
-        print(r.status_code)
+
+        print(f"Sending requests to [ {self.ip } ]")
+
+        for i in range(len(self.ip)):
+            r = requests.get(f'http://{self.ip[i]}:{self.port[i]}/test', json=payload)
+            print(r.status_code)
 
     def build(self, args):
         match self.settings.mode:
