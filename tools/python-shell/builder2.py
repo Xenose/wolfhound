@@ -160,6 +160,9 @@ class builder_c:
         '''
         self.settings = builder_settings_c() # <-- new settings system
 
+        self.ip = "127.0.0.1"
+        self.port = "8000"
+
         self.home = home
         self.platform = platform.system()
 
@@ -281,12 +284,15 @@ class builder_c:
             case _:
                 self.settings.build_system = build_system_e.NINJA
 
-    def set_mode(self, mode: str):
+    def set_mode(self, mode: str, ip = "127.0.0.1", port = "8000" ):
         match mode:
             case "local":
                 self.settings.mode = mode_e.LOCAL
             case "remote":
                 self.settings.mode = mode_e.REMOTE
+
+                self.ip = ip
+                self.port = port
 
     def set_compilers(self, name: str, cc: str, cxx: Any = None):
         if shutil.which(cc) is None:
@@ -476,7 +482,7 @@ class builder_c:
 
     def build_remote(self, args):
         payload = self.build_remote_payload()
-        r = requests.get('http://127.0.0.1:8000/test', json=payload)
+        r = requests.get(f'http://{self.ip}:{self.port}/test', json=payload)
         print(r.status_code)
 
     def build(self, args):
