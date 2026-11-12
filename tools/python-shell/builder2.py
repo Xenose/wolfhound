@@ -294,6 +294,8 @@ class builder_c:
             case "remote":
                 if servers is None:
                     self.servers = [ server_c() ]
+                else:
+                    self.servers = servers
                 self.settings.mode = mode_e.REMOTE
 
     def set_compilers(self, name: str, cc: str, cxx: Any = None):
