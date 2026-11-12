@@ -33,8 +33,8 @@ class compiler_e(Enum):
     GCC     = 1
     CLANG   = 2
     TCC     = 3 # TinyCC
-    KEFIR   = 4
-    IFX     = 5 # Intel's compiler LLVM based
+    KEFIR   = 4 # Kefir a former open source compiler.
+    IFX     = 5 # Intel's compiler LLVM based.
     ZIG     = 6
     MSVC    = 7
     MINGW   = 8
@@ -358,7 +358,8 @@ class builder_c:
             # Todo add cross compiling
             pass
 
-        target = f"{self.settings.compiler}-{get_name_build_system(self.settings.build_system)}-{p}-{a}".lower().replace(" ", "-")
+        target = f"{self.settings.compiler.name}-{get_name_build_system(self.settings.build_system)}-{p}-{a}".lower().replace(" ", "-")
+        target = f"{target} : {self.settings.mode.name}"
 
         return target
 
@@ -383,8 +384,11 @@ class builder_c:
 
         if args is not None:
             config.extend([
-                f"-DNO_SDL3={args.no_sdl3}",
+                f"-DNO_GLFW={args.no_glfw3}",
+                f"-DNO_OPENGL={args.no_opengl}",
                 f"-DNO_SDL2={args.no_sdl2}"
+                f"-DNO_SDL3={args.no_sdl3}",
+                f"-DNO_VULKAN={args.no_vulkan}",
             ])
 
         config.extend(self.compilers())

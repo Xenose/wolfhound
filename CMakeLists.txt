@@ -13,8 +13,11 @@ OPTION(LINUX_MINGW_WIN "Cross compiles the code for Windows" False)
 OPTION(BUILD_EXAMPLES "Builds the example projects" True)
 OPTION(BUILD_LIBC_TESTS "Build the libc-test suite for POSIX validation" OFF)
 
-OPTION(NO_SDL3 "Disable SDL3" False)
-OPTION(NO_SDL2 "Disable SDL2" False)
+OPTION(DNO_GLFW3    "Disable GLFW3"     False)
+OPTION(DNO_OPENGL   "Disable OPENGL"    False)
+OPTION(NO_SDL2      "Disable SDL2"      False)
+OPTION(NO_SDL3      "Disable SDL3"      False)
+OPTION(NO_VULKAN    "Disable VULKAN"    False)
 
 OPTION(COMPILER_KEFIR "Kefir doesn't have a CMAKE ID, so this is a work around." False)
 
@@ -50,7 +53,11 @@ ENDFOREACH()
 # ------------------------------------------------------------------------------------
 INCLUDE(cmake/libs/find_lua.cmake)
 INCLUDE(cmake/libs/find_glew.cmake)
-INCLUDE(cmake/libs/find_glfw3.cmake)
+
+
+IF(NOT NO_GLFW3)
+    INCLUDE(cmake/libs/find_glfw3.cmake)
+ENDIF()
 
 IF(NOT NO_SDL3)
     INCLUDE(cmake/libs/find_sdl3.cmake)
@@ -58,14 +65,19 @@ ENDIF()
 
 INCLUDE(cmake/libs/find_unwind.cmake)
 
-IF (NOT ANDROID OR NOT CMAKE_SYSTEM_NAME STREQUAL "Android")
-    INCLUDE(cmake/libs/find_vulkan.cmake)
+IF(NOT NO_VULKAN)
+    IF (NOT ANDROID OR NOT CMAKE_SYSTEM_NAME STREQUAL "Android")
+        INCLUDE(cmake/libs/find_vulkan.cmake)
+    ENDIF()
 ENDIF()
 
 # Fallback if SDL3 is not found.
-IF (NOT "WH_SDL3_FOUND" IN_LIST WH_DEFS) 
-    MESSAGE("Modern SDL3 not found using SDL2.")
-    INCLUDE(cmake/libs/find_sdl2.cmake)
+
+IF(NOT NO_SDL2)
+    IF (NOT "WH_SDL3_FOUND" IN_LIST WH_DEFS) 
+        MESSAGE("Modern SDL3 not found using SDL2.")
+        INCLUDE(cmake/libs/find_sdl2.cmake)
+    ENDIF()
 ENDIF()
 
 # old way
