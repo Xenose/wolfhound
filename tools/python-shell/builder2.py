@@ -86,7 +86,6 @@ class builder_settings_c:
     platform :      platform_c      = field(default_factory = platform_c)
     flags :         build_flags_c   = field(default_factory = build_flags_c)
 
-
 def parse_args_build(args):
         parser = argparse.ArgumentParser(
             prog='build',
@@ -97,31 +96,36 @@ def parse_args_build(args):
         parser.add_argument(
             "--no-sdl3",
             action="store_true",
-            help="Set the architecture"
+            help="Turns off sdl3.",
+            default = False
         )
 
         parser.add_argument(
             "--no-sdl2",
             action="store_true",
-            help="Set the architecture"
+            help="Turns off sdl2.",
+            default = False
         )
 
         parser.add_argument(
             "--no-glfw3",
             action="store_true",
-            help="Set the architecture"
+            help="Turns off glfw3.",
+            default = False
         )
 
         parser.add_argument(
             "--no-vulkan",
             action="store_true",
-            help="Set the architecture"
+            help="Turns off vulkan.",
+            default = False
         )
 
         parser.add_argument(
-            "--no-glew",
+            "--no-opengl",
             action="store_true",
-            help="Set the architecture"
+            help="Turns off opengl.",
+            default = False
         )
 
         return parser.parse_args(args)
