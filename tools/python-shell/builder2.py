@@ -428,7 +428,11 @@ class builder_c:
         target = f"{self.settings.compiler}-{get_name_build_system(self.settings.build_system)}-{p}-{a}".lower().replace(" ", "-")
 
         # p for Path
-        p = Path(self.home, "build", target)
+        if  mode_e.NODE == self.settings.mode:
+            print("Setting path to /tmp")
+            p = Path("/tmp/wolfhound", "build", target)
+        else:
+            p = Path(self.home, "build", target)
 
         print("Setting up temporary enviroment...")
         os.makedirs(p, exist_ok=True)
@@ -480,6 +484,7 @@ class builder_c:
             case "kefir":
                 self.kefir(None)
 
+        self.settings.mode = mode_e.NODE
         self.build_local()
 
 
@@ -498,7 +503,7 @@ class builder_c:
         for server in self.servers:
             print(f"Sending requests to [ {server} ]")
 
-            r = requests.get(f'http://{server.ip}:{server.port}/test', json=payload)
+            r = requests.get(f'http://{server.ip}:{server.port}/v1/build', json=payload)
             print(f"\n{server.name} --> {r.status_code}")
 
     def build(self, args):

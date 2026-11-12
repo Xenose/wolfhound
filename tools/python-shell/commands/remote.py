@@ -17,20 +17,21 @@ def execute(params: params_c):
     servers = []
 
     for server in a.servers.split(","):
-        for item in server.split(":"):
-            ip = "127.0.0.1"
-            port = "6666"
-            name = "default"
+        item = server.split(":")
+        ip = "127.0.0.1"
+        port = "6666"
+        name = "default"
 
-            if item[0] is not None:
-                ip = item[0]
+        if item[0] is not None:
+            ip = item[0]
 
-            if item[1] is not None:
-                port = item[1]
+        if item[1] is not None:
+            port = item[1]
 
-            if item[2] is not None:
-                name = item[2]
+        if item[2] is not None:
+            name = item[2]
 
-            servers.append(server_c(ip, port, name))
+        servers.append(server_c(ip, port, name))
 
+    print(servers)
     params.sh.builder.set_mode("remote", servers)

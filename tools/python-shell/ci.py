@@ -6,7 +6,7 @@ from builder2 import builder_c
 app = FastAPI()
 
 
-@app.get("/build")
+@app.get("/v1/build")
 def get_root(payload: dict):
     # Session Builder
     sb = builder_c(os.getcwd())
