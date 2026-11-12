@@ -485,11 +485,12 @@ class builder_c:
     def build_remote(self, args):
         payload = self.build_remote_payload()
 
-        print(f"Sending requests to [ {self.ip } ]")
 
         for server in self.servers:
+            print(f"Sending requests to [ {server} ]")
+
             r = requests.get(f'http://{server.ip}:{server.port}/test', json=payload)
-            print(f"{server.name} --> {r.status_code}")
+            print(f"\n{server.name} --> {r.status_code}")
 
     def build(self, args):
         match self.settings.mode:
