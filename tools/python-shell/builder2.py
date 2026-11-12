@@ -5,6 +5,8 @@ import requests
 import shutil
 import subprocess
 
+from common.server import server_c
+
 from enum import Enum
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -160,8 +162,9 @@ class builder_c:
         '''
         self.settings = builder_settings_c() # <-- new settings system
 
-        self.ip = "127.0.0.1"
-        self.port = "8000"
+        self.servers = [
+            server_c("127.0.0.1")
+        ]
 
         self.home = home
         self.platform = platform.system()
@@ -284,22 +287,14 @@ class builder_c:
             case _:
                 self.settings.build_system = build_system_e.NINJA
 
-    def set_mode(self, mode: str, ip = None, port = None):
-
-
+    def set_mode(self, mode: str, servers = None):
         match mode:
             case "local":
                 self.settings.mode = mode_e.LOCAL
             case "remote":
-                if ip is None:
-                    ip = ["127.0.0.1"]
-                if port is None:
-                    port = ["8000"] 
-
+                if servers is None:
+                    self.servers = [ server_c() ]
                 self.settings.mode = mode_e.REMOTE
-
-                self.ip = ip
-                self.port = port
 
     def set_compilers(self, name: str, cc: str, cxx: Any = None):
         if shutil.which(cc) is None:
@@ -492,9 +487,9 @@ class builder_c:
 
         print(f"Sending requests to [ {self.ip } ]")
 
-        for i in range(len(self.ip)):
-            r = requests.get(f'http://{self.ip[i]}:{self.port[i]}/test', json=payload)
-            print(r.status_code)
+        for server in self.servers:
+            r = requests.get(f'http://{server.ip}:{server.port}/test', json=payload)
+            print(f"{server.name} --> {r.status_code}")
 
     def build(self, args):
         match self.settings.mode:
