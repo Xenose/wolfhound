@@ -462,6 +462,7 @@ class builder_c:
                 full_path = str(e)
                 name = Path(e).name.replace(".EXE", "")
                 link_name = Path(self.home, "build", "bin", name)
+                compile_link = Path(self.home, "build", target, "compile_commands.json")
 
                 if name.endswith(".so") or name.endswith(".dll"):
                     continue
@@ -482,6 +483,9 @@ class builder_c:
                         os.remove(f"{self.home}/compile_commands.json")
                     except OSError:
                         pass
+
+                    print(compile_link)
+                    os.symlink(compile_link, f"{self.home}/compile_commands.json")
 
     # TODO : Extend the parameters and test cross
     # machine execution.
