@@ -429,7 +429,7 @@ class builder_c:
 
         # p for Path
         if  mode_e.NODE == self.settings.mode:
-            print("Setting path to /tmp")
+            # TODO : update to work on windows also...
             p = Path("/tmp/wolfhound", "build", target)
         else:
             p = Path(self.home, "build", target)
