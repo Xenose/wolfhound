@@ -293,9 +293,10 @@ class builder_c:
                 self.settings.mode = mode_e.LOCAL
             case "remote":
                 if servers is None:
-                    self.servers = [ server_c() ]
+                    self.servers = [ server_c("127.0.0.1") ]
                 else:
                     self.servers = servers
+
                 self.settings.mode = mode_e.REMOTE
 
     def set_compilers(self, name: str, cc: str, cxx: Any = None):
@@ -472,6 +473,12 @@ class builder_c:
         match data["compiler"].lower():
             case "clang":
                 self.clang(None)
+            case "gcc":
+                self.clang(None)
+            case "tcc":
+                self.tcc(None)
+            case "kefir":
+                self.kefir(None)
 
         self.build_local()
 

@@ -6,17 +6,13 @@ from builder2 import builder_c
 app = FastAPI()
 
 
-@app.get("/test")
+@app.get("/build")
 def get_root(payload: dict):
     # Session Builder
     sb = builder_c(os.getcwd())
+
     sb.build_remote_recive(payload)
     return "Hello, world!"
-
-
-@app.put("/build")
-def put_build():
-    return "Building!"
 
 @app.put("/sync")
 def put_sync():
