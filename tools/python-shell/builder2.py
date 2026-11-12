@@ -6,6 +6,7 @@ import shutil
 import subprocess
 
 from common.server import server_c
+from common.utils import find_executable
 
 from enum import Enum
 from dataclasses import dataclass, field
@@ -433,7 +434,7 @@ class builder_c:
             # Todo add cross compiling
             pass
 
-        target = f"{self.settings.compiler}-{get_name_build_system(self.settings.build_system)}-{p}-{a}".lower().replace(" ", "-")
+        target = f"{self.settings.compiler.name}-{get_name_build_system(self.settings.build_system)}-{p}-{a}".lower().replace(" ", "-")
 
         # p for Path
         if  mode_e.NODE == self.settings.mode:
@@ -456,26 +457,31 @@ class builder_c:
             check=True
         )
 
-        # TODO fix linking code...
-       #  for e in find_executable(Path(self.home, "build", target), ["CMakeFiles"]):
-       #      full_path = str(e)
+        if  mode_e.LOCAL == self.settings.mode:
+            for e in find_executable(Path(self.home, "build", target), ["CMakeFiles"]):
+                full_path = str(e)
+                name = Path(e).name.replace(".EXE", "")
+                link_name = Path(self.home, "build", "bin", name)
 
-       #      link_name = os.path.basename(full_path)
-       #      link_name = link_name.replace(".EXE", "")
-       #      link_name = f"build/bin/{link_name}-{p}-{self.compiler}-{a}-{get_name_build_system(self.settings.build_system)}"
-       #      link_name = link_name.lower().replace(" ", "_")
+                if name.endswith(".so") or name.endswith(".dll"):
+                    continue
 
-       #      if "nt" != os.name:
-       #          try:
-       #              os.symlink(full_path, link_name)
-       #              print(f"Link created: {full_path} --> {link_name}")
-       #          except FileExistsError:
-       #              print(f"Link exists : {full_path} --> {link_name}")
+                # Making sure the path exists before creating the link.
+                link_name.parent.mkdir(parents=True, exist_ok=True)
 
-       #          try:
-       #              os.remove(f"{self.home}/compile_commands.json")
-       #          except OSError:
-       #              pass
+                if "nt" != os.name:
+                    try:
+                        os.symlink(full_path, link_name)
+                        print(f"Link created: {full_path} --> {link_name}")
+                    except FileExistsError:
+                        os.remove(link_name)
+                        os.symlink(full_path, link_name)
+                        print(f"Link exists : {full_path} --> {link_name}")
+
+                    try:
+                        os.remove(f"{self.home}/compile_commands.json")
+                    except OSError:
+                        pass
 
     # TODO : Extend the parameters and test cross
     # machine execution.
@@ -506,7 +512,6 @@ class builder_c:
 
     def build_remote(self, args):
         payload = self.build_remote_payload()
-
 
         for server in self.servers:
             print(f"Sending requests to [ {server} ]")

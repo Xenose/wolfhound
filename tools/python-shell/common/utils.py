@@ -1,9 +1,11 @@
 
 import os
+
+from typing import Any
 from pathlib import Path
 
 
-def find_executable(dir: Path, exclude: [] = []):
+def find_executable(dir: Path, exclude:Any = []):
     out = []
 
     for f in os.scandir(dir):
