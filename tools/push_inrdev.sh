@@ -6,8 +6,8 @@ set -e
 prompt="Write a short commit summary for the changes below. No prefixes like chore/feat, no echoing instructions, strictly the summary:"
 branch=$(git symbolic-ref --short HEAD)
 
-model_path="$HOME/.cache/models/qwen2.5-coder-1.5b-instruct.gguf"
-model_url="https://huggingface.co/Qwen/Qwen2.5-Coder-1.5B-Instruct-GGUF/resolve/main/qwen2.5-coder-1.5b-instruct-q4_k_m.gguf"
+model_path="${HOME}/.cache/models/qwen2.5-coder-7b-instruct-q4_k_m.gguf"
+model_url="https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct-GGUF/resolve/main/qwen2.5-coder-7b-instruct-q4_k_m.gguf"
 
 if [ "inrdev" = "${branch}" ]; then
     echo "On 'inrdev' branch."
