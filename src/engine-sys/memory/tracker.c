@@ -144,7 +144,7 @@ void _wh_tracker_remove(void* owner, void* ptr) {
 
         if (0 == entry->owner_count) {
             wh_log_info(("Owner count reached zero!"));
-            //wh_list_delete(&_list, index);
+            wh_hashmap_delete(&_map, ptr);
         }
     }
 }
@@ -163,7 +163,12 @@ void _wh_mem_scan_for_each(wh_hashmap_foreach_s* node) {
                 clean_up = true;
             }
         } wh_catch(wh_exception_s, ex) {
-            //wh_log_critical(("SEGFAULT :: Owner change! ptr [ %u ] != owner [ %u ] in file:line [ %s:%u ]"), current->owners[i].owner, current->ptr, current->owners[i].file, current->owners[i].line);
+           /* wh_critical(("SEGFAULT :: Owner change! ptr [ %u ] != owner [ %u ] in file:line [ %s:%u ]"), 
+                    current->owners[i].owner,
+                    current->ptr, 
+                    current->owners[i].file, 
+                    current->owners[i].line
+            ); */
             clean_up = true;
         }
 
