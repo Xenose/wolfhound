@@ -52,19 +52,22 @@ go_error_exit:
 }
 
 i64 report(wh_unit_results_s* results) {
+    printf("report count is [ %li ]\n", results->count); 
+
     wh_for(i64, i, results->count) {
         wh_unit_test_s* r = &results->ptr[i];
 
         printf(
-            "\nREPORT [ %s ]\n"
+            "\nREPORT [ %s : TEST %li of %li ]\n"
             "\tPassed tested    : %li of %li"
             "\nERRORS\n"
             "\tExit status      : %s\n"
             "\tLast function    : %s\n"
-            "\tLast line called : %lu\n",
-            r->name,
+            "\tLast line called : %lu\n"
+            "\n",
+            r->name, i + 1, results->count,
             r->passed, r->passed + r->failed,
-            r->error.msg,
+            r->error.msg, // Can cause issues needs more testing
             r->error.last_function,
             r->error.last_line
         );
@@ -122,6 +125,8 @@ int main(int arc, char* const* arv) {
             if (NULL != test) {
                 test(ptr);
             }
+            
+            ptr->error.msg = nullptr;
         } wh_catch(wh_exception_s, ex) {
             ptr->error.msg = ex.msg;
         }

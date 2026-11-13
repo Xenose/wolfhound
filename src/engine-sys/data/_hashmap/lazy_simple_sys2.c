@@ -256,10 +256,6 @@ static i8 _destroy_lazy_simple_sys() {
     return 0;
 }
 
-// Delete removes a item
-static i8 _delete_lazy_simple_sys(wh_hashmap_s* map, void* key) {
-    return 0;
-}
 
 static void* _get_lazy_simple_sys(wh_hashmap_s* map, void* key) {
     u64 hash = (u64)_hash_simple(map->stype, key, (i64)map->slot_count);
@@ -269,6 +265,24 @@ static void* _get_lazy_simple_sys(wh_hashmap_s* map, void* key) {
 static void* _get_key_lazy_simple_sys(wh_hashmap_s* map, void* key) {
     u64 hash = (u64)_hash_simple(map->stype, key, (i64)map->slot_count);
     return _get_key(map->stype, _at_offset(map, hash, 0));
+}
+
+// Delete removes a item
+static i8 _delete_lazy_simple_sys(wh_hashmap_s* map, void* key) {
+    u64 index = (u64)_hash_simple(map->stype, key, (i64)map->slot_count);
+    void* slot = _get_key_lazy_simple_sys(map, key);
+
+    wh_hashmap_destructor_s entry = {
+        .data = wh_ptr_offset(slot, sizeof(wh_hashmap_slot_string_s)),
+    };
+
+    if (nullptr != map->destructor) {
+        map->destructor(&entry);
+    }
+
+    _set_key(map->stype, slot, nullptr);
+    memset(entry.data, 0, map->type_size);
+    return 0;
 }
 
 static i8 _wh_lazy_simple_foreach(wh_hashmap_s* map, void (*func)(void* value)) {

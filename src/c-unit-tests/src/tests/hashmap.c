@@ -164,16 +164,25 @@ i64 test_keys(wh_unit_test_s* info, wh_hashmap_s* hs) {
     return 0;
 }
 
+i64 test_delete(wh_unit_test_s* info, wh_hashmap_s* hs) {
+    wh_hashmap_delete(hs, "bAhdddaosdksokello39");
+    
+    WH_TEST_INT64EQ(info, 2L,  (long)*(int*)wh_hashmap_get(hs, "bAhdddaosdksokello39"));
+
+    return 0;
+}
+
 i64 init(wh_unit_test_s* info) {
     // Log levels are noisy for unit testing.
     // DEBUGGING: set to 1 and normally should be 0.
-    wh_log_set_level(WH_LOG_LEVEL_ALL, 0);
+    wh_log_set_level(WH_LOG_LEVEL_ALL, 1);
 
     wh_hashmap_s hs = wh_hashmap_init_mmap_lazy(sizeof(int), 1);
 
     WH_TEST(info, test_order(info, &hs));
     WH_TEST(info, test_insert(info, &hs));
     WH_TEST(info, test_keys(info, &hs));
+    WH_TEST(info, test_delete(info, &hs));
 
     return 0; 
 }
