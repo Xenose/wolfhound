@@ -1,5 +1,8 @@
 #include<wh-testing/unit.h>
 #include<wh-sys/data/hashmap.h>
+
+#define WH_USE_CORE_LOGGER 1
+#include<wh-core/debug/logger.h>
 #include<wh-sys/debug/logger.h>
 
 i64 test_order(wh_unit_test_s* info, wh_hashmap_s* hs) {
@@ -167,17 +170,25 @@ i64 test_keys(wh_unit_test_s* info, wh_hashmap_s* hs) {
 i64 test_delete(wh_unit_test_s* info, wh_hashmap_s* hs) {
     wh_hashmap_delete(hs, "bAhdddaosdksokello39");
     
-    WH_TEST_INT64EQ(info, 2L,  (long)*(int*)wh_hashmap_get(hs, "bAhdddaosdksokello39"));
+    WH_TEST_INT64EQ(info, 0L,  (long)*(int*)wh_hashmap_get(hs, "bAhdddaosdksokello39"));
 
     return 0;
+}
+
+void* _destructor(wh_hashmap_destructor_s* data) {
+    int* value = data->data;
+    wh_info(("Destructor called! Value is [ %i ]"), *value);
+    return nullptr;
 }
 
 i64 init(wh_unit_test_s* info) {
     // Log levels are noisy for unit testing.
     // DEBUGGING: set to 1 and normally should be 0.
-    wh_log_set_level(WH_LOG_LEVEL_ALL, 1);
+    wh_log_set_level(WH_LOG_LEVEL_ALL, 0);
 
     wh_hashmap_s hs = wh_hashmap_init_mmap_lazy(sizeof(int), 1);
+
+    hs.destructor = _destructor;
 
     WH_TEST(info, test_order(info, &hs));
     WH_TEST(info, test_insert(info, &hs));

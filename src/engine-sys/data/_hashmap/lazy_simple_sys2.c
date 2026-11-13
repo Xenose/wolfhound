@@ -270,7 +270,7 @@ static void* _get_key_lazy_simple_sys(wh_hashmap_s* map, void* key) {
 // Delete removes a item
 static i8 _delete_lazy_simple_sys(wh_hashmap_s* map, void* key) {
     u64 index = (u64)_hash_simple(map->stype, key, (i64)map->slot_count);
-    void* slot = _get_key_lazy_simple_sys(map, key);
+    void* slot = _at_offset(map, index, 0);
 
     wh_hashmap_destructor_s entry = {
         .data = wh_ptr_offset(slot, sizeof(wh_hashmap_slot_string_s)),
