@@ -69,6 +69,8 @@ extern void wh_log_set_level(i64 level, u8 state);
     #define wh_notice(x, ...)           wh_log_notic(x, __VA_ARGS__)
     #define wh_info(x, ...)             wh_log_info(x, __VA_ARGS__)
     #define wh_debug(x, ...)            wh_log_debug(x, __VA_ARGS__)
+#else
+    #include<wh-core/debug/logger.h>
 #endif
 
 #endif /* _wh_header_sys_debug_logger_ */

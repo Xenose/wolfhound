@@ -2,7 +2,6 @@
 #include<wh-sys/data/hashmap.h>
 
 #define WH_USE_CORE_LOGGER 1
-#include<wh-core/debug/logger.h>
 #include<wh-sys/debug/logger.h>
 
 i64 test_order(wh_unit_test_s* info, wh_hashmap_s* hs) {
