@@ -149,9 +149,9 @@ void _wh_tracker_remove(void* owner, void* ptr) {
     }
 }
 
-void _wh_mem_scan_for_each(void* node) {
+void _wh_mem_scan_for_each(wh_hashmap_foreach_s* node) {
     bool clean_up = false;
-    _wh_heap_ptr_pair_s* entry = node;
+    _wh_heap_ptr_pair_s* entry = node->ptr;
 
     wh_for(u64, i, entry->owner_count) {
         wh_log_info(("Checking owner [ %p ]"), entry->owners[i]);

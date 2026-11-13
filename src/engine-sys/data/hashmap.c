@@ -8,7 +8,7 @@ typedef struct {
     i8 (*insert)(_wh_hashmap_insert_params* params);
     void* (*get)(wh_hashmap_s* map, void* key);
     void* (*get_key)(wh_hashmap_s* map, void* key);
-    i8 (*foreach)(wh_hashmap_s* map, void (*func)(void* value));
+    i8 (*foreach)(wh_hashmap_s* map, void (*func)(wh_hashmap_foreach_s* value));
 } _map_func;
 
 static _map_func _funcs[] = {
@@ -68,7 +68,7 @@ i8 _wh_hashmap_delete(_wh_hashmap_delete_params params) {
     return _funcs[func_index].delete(params.map, (void*)params.key);
 }
 
-i8 _wh_hashmap_foreach(wh_hashmap_s* map, void (*func)(void* value)) {
+i8 _wh_hashmap_foreach(wh_hashmap_s* map, void (*func)(wh_hashmap_foreach_s* value)) {
     i64 func_index = map->stype - WH_STRUCT_TYPE_HASHMAP_LAZY_STRING_WOLF;
     return _funcs[func_index].foreach(map, func);
 }

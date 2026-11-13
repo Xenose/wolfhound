@@ -247,8 +247,8 @@ int32_t wh_mem_leak_count(void) {
     return 0;//atomic_load(&_heap_main->ptr_count);
 }
 
-void _wh_heap_print_table_for_each(void* data) {
-    _wh_heap_entry_s* i = data;
+void _wh_heap_print_table_for_each(wh_hashmap_foreach_s * data) {
+    _wh_heap_entry_s* i = data->ptr;
     wh_print(("Table entry [ name : %9s ] [ pointer : %u ]\n"), i->name, i->header);
 }
 

@@ -46,6 +46,10 @@ typedef struct {
     void* data;
 } wh_hashmap_destructor_s;
 
+typedef struct {
+    void* ptr;
+} wh_hashmap_foreach_s;
+
 // Data container struct
 typedef struct {
     struct_type stype;
@@ -86,7 +90,7 @@ extern i8 _wh_hashmap_delete(_wh_hashmap_delete_params params);
 extern i8 _wh_hashmap_insert(_wh_hashmap_insert_params params);
 extern void* _wh_hashmap_get(_wh_hashmap_get_params params);
 extern void* _wh_hashmap_get_key(_wh_hashmap_get_params params); // get_key is more for unit testing then prod code.
-extern i8 _wh_hashmap_foreach(wh_hashmap_s* map, void (*func)(void* value));
+extern i8 _wh_hashmap_foreach(wh_hashmap_s* map, void (*func)(wh_hashmap_foreach_s* value));
 
 #define wh_hashmap_init()
 #define wh_hashmap_clear()

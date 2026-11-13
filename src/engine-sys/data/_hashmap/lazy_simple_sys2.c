@@ -285,15 +285,21 @@ static i8 _delete_lazy_simple_sys(wh_hashmap_s* map, void* key) {
     return 0;
 }
 
-static i8 _wh_lazy_simple_foreach(wh_hashmap_s* map, void (*func)(void* value)) {
+static i8 _wh_lazy_simple_foreach(wh_hashmap_s* map, void (*func)(wh_hashmap_foreach_s* value)) {
     void* value = nullptr;
 
     for (u64 i = 0; i < map->slot_count; i++) {
         // TODO : implement function bellow i is index
         // value = _get_value(map, i);
+        void* slot = _at_offset(map, i, 0);
+        void* key = _get_key(map->stype, slot);
 
-        if (nullptr != value) {
-            func(value);
+        wh_hashmap_foreach_s entry = {
+            .ptr = wh_ptr_offset(slot, sizeof(wh_hashmap_slot_string_s)),
+        };
+
+        if (nullptr != key) {
+            func(&entry);
         }
     }
 

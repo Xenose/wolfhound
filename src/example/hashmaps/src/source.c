@@ -3,8 +3,8 @@
 #include<wh/debug/signalar.h>
 #include<wh/debug/benchmark.h>
 
-void hash_foreach(void* value) {
-    wh_debug(("--> %i"), *((int*)value));
+void hash_foreach(wh_hashmap_foreach_s* value) {
+    wh_debug(("--> %i"), *((int*)value->ptr));
 }
 
 int main(int arc, char* const* arv) {
