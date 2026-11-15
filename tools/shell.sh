@@ -40,5 +40,5 @@ fi
 # Using posix source over source for alpine and termux
 . .venv/bin/activate
 
-pip3 install prompt-toolkit requests
+pip3 install prompt-toolkit requests GitPython
 python3 "$WP/tools/python-shell/main.py"
