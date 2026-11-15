@@ -16,7 +16,21 @@ from common.params import params_c
 prompt = "Write a short detailed commit summary for the changes below. No prefixes like chore/feat, no echoing instructions, strictly the summary:"
 model_path = os.path.expanduser("~/.cache/models/qwen2.5-coder-3b-instruct-q4_k_m.gguf")
 
+
+def confirm(text="Are you sure?"):
+    while True:
+        # i for input
+        i = input(f"{text} [yes/no]: ").strip().lower()
+
+        if "yes" == i:
+            return True
+        elif "no" == i:
+            return False
+
+
 def execute(params: params_c):
+    summary = ""
+
     if not _IMPORTED_GIT:
         print("Failed to pull in python git!")
         return
@@ -50,9 +64,13 @@ def execute(params: params_c):
         if os.path.exists(tmp_out_path):
             with open(tmp_out_path, "r", encoding="utf-8") as f:
                 summary = f.read().strip()
-                summary = summary[summary.find("Assistant:") + 11:]
+                summary = summary[summary.rfind("Assistant:") + 11:]
 
-            print(summary)
     finally:
         if os.path.exists(tmp_out_path):
             os.remove(tmp_out_path)
+
+    print(f"\n-----\n{summary}\n-----\n")
+
+    if confirm("Use message for commit?"):
+        pass
