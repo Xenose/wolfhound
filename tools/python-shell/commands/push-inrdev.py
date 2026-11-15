@@ -1,3 +1,7 @@
+import os
+import shutil
+import subprocess
+import tempfile
 
 try:
     import git
@@ -9,25 +13,46 @@ except ImportError:
 from common.params import params_c
 
 
+prompt = "Write a short detailed commit summary for the changes below. No prefixes like chore/feat, no echoing instructions, strictly the summary:"
+model_path = os.path.expanduser("~/.cache/models/qwen2.5-coder-3b-instruct-q4_k_m.gguf")
 
 def execute(params: params_c):
     if not _IMPORTED_GIT:
         print("Failed to pull in python git!")
         return
 
-    print("Hello!")
-    #repo = git.Repo(params.sh.session["home"])
-    #branch = repo.active_branch
+    if not shutil.which("llama-cli"):
+        print("llama-cli not installed!")
+        return
 
-    #print(f"\n {branch}")
+    repo = git.Repo(params.sh.session["home"])
 
-    # if "inrdev" == branch.name:
-    #     print("On 'inrdev' branch. Pulling latest changes and committing...")
-    #     # print(repo.git.pull())
-    #     # print(repo.git.add(all=True))
+    # The prompt to feed the LLM
+    git_diff = repo.git.diff("HEAD~1", "HEAD", unified=10)
+    full_promt = f"{prompt}\n\n{git_diff}"
 
-    #     # Inrdev comment as IN Rapid DEVelopment branch
-    #     repo.index.commit("inrdev")
-    #     print(repo.git.push())
-    # else:
-    #     print(f"Sorry [ {branch} ] is not the 'inrdev' branch, aborting...")
+    with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt") as tmp_out:
+        tmp_out_path = tmp_out.name
+
+    try:
+        subprocess.run([
+            "llama-cli",
+            "-m", model_path,
+            "-p", full_promt,
+            "-o", tmp_out_path,
+            "-c", str(8096),
+            "-n", str(8096),
+            "-st", 
+            "-t", str(20),
+            "--temp", str(0.2),
+        ], check=True, text=True)
+
+        if os.path.exists(tmp_out_path):
+            with open(tmp_out_path, "r", encoding="utf-8") as f:
+                summary = f.read().strip()
+                summary = summary[summary.find("Assistant:") + 11:]
+
+            print(summary)
+    finally:
+        if os.path.exists(tmp_out_path):
+            os.remove(tmp_out_path)
