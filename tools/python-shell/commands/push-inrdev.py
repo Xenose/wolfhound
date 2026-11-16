@@ -3,6 +3,8 @@ import shutil
 import subprocess
 import tempfile
 
+from pathlib import Path
+
 try:
     import git
 
@@ -13,8 +15,8 @@ except ImportError:
 from common.params import params_c
 
 
-prompt = "Write a short detailed commit summary for the changes below. No prefixes like chore/feat, no echoing instructions, strictly the summary:"
-model_path = os.path.expanduser("~/.cache/models/qwen2.5-coder-3b-instruct-q4_k_m.gguf")
+PROMPT = "Write a short detailed commit summary for the changes below. No prefixes like chore/feat, no echoing instructions, strictly the summary:"
+MODEL_PATH = os.path.expanduser("~/.cache/models/qwen2.5-coder-3b-instruct-q4_k_m.gguf")
 
 
 def confirm(text="Are you sure?"):
@@ -30,10 +32,16 @@ def confirm(text="Are you sure?"):
 
 def execute(params: params_c):
     summary = ""
+    model_path = Path(MODEL_PATH)
 
     if not _IMPORTED_GIT:
         print("Failed to pull in python git!")
         return
+
+    if not model_path.is_file():
+        print("Model not installed!")
+        return
+
 
     if not shutil.which("llama-cli"):
         print("llama-cli not installed!")
@@ -43,7 +51,7 @@ def execute(params: params_c):
 
     # The prompt to feed the LLM
     git_diff = repo.git.diff("HEAD~1", "HEAD", unified=10)
-    full_promt = f"{prompt}\n\n{git_diff}"
+    full_promt = f"{PROMPT}\n\n{git_diff}"
 
     with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".txt") as tmp_out:
         tmp_out_path = tmp_out.name
