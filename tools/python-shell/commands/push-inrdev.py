@@ -6,8 +6,7 @@ import tempfile
 from pathlib import Path
 
 try:
-    import git
-
+    import git # type: ignore[import-untyped]
     _IMPORTED_GIT=True
 except ImportError:
     _IMPORTED_GIT=False
@@ -42,12 +41,11 @@ def execute(params: params_c):
         print("Model not installed!")
         return
 
-
     if not shutil.which("llama-cli"):
         print("llama-cli not installed!")
         return
 
-    repo = git.Repo(params.sh.session["home"])
+    repo = git.Repo(params.sh.session["home"]) # type: ignore[import-untyped]
 
     # The prompt to feed the LLM
     git_diff = repo.git.diff("HEAD~1", "HEAD", unified=10)
