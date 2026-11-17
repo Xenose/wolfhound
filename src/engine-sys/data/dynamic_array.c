@@ -1,3 +1,4 @@
+#define WH_USE_CORE_LOGGER 1
 #include<wh-sys/data/dynamic_array.h>
 
 #include"_dynamic_array/dynamic_array_wolf.c"
@@ -36,6 +37,7 @@ void _wh_darray_init(_wh_darray_init_params params) {
 
     params.array->stype = params.stype;
     fi = ((u64)params.stype) - WH_STRUCT_TYPE_DYNAMIC_ARRAY_WOLF;
+
     _funcs[fi].init(&params);
 }
 

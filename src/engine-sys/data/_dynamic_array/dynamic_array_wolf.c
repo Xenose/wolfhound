@@ -8,6 +8,7 @@
 
 void _wh_darray_init_wolf(_wh_darray_init_params* params) {
     void* mem = wh_calloc(params->heap, params->count, params->type_size);
+    
     _wh_darray_init_common(params, mem);
 }
 

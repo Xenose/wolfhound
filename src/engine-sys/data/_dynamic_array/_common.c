@@ -5,13 +5,15 @@
 #include<wh-posix/stdlib.h>
 #include<wh-posix/string.h>
 #include<wh-sys/memory.h>
+
+#define WH_USE_CORE_LOGGER 1
 #include<wh-sys/debug/logger.h>
 
 void _wh_darray_init_common(_wh_darray_init_params* params, void* mem) {
-    wh_log_info(("Creating array size of %i and type size of %i"), params->count, params->type_size);
+    wh_info(("Creating array size of %i and type size of %i"), params->count, params->type_size);
 
     if (nullptr == mem) {
-        wh_log_error(("Failed to allocate array [ ptr : %p ]"), mem);
+        wh_error(("Failed to allocate array [ ptr : %p ]"), mem);
         return;
     }
 
@@ -25,7 +27,7 @@ void _wh_darray_init_common(_wh_darray_init_params* params, void* mem) {
         .heap       = params->heap,
     };
 
-    wh_log_debug(("Memory: %p, Count: %u, Type-Size: %u"),
+    wh_debug(("Memory: %p, Count: %u, Type-Size: %u"),
             params->array->memory, params->array->node_count, params->array->type_size);
 }
 
