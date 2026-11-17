@@ -4,6 +4,7 @@
 #include<wh-posix/errno.h>
 #include<wh-posix/dirent.h>
 #include<wh-posix/dlfcn.h>
+#include<wh-posix/getopt.h>
 
 #include<wh-testing/unit.h>
 #include<wh-sys/info.h>
@@ -52,8 +53,6 @@ go_error_exit:
 }
 
 i64 report(wh_unit_results_s* results) {
-    printf("report count is [ %li ]\n", results->count); 
-
     wh_for(i64, i, results->count) {
         wh_unit_test_s* r = &results->ptr[i];
 
@@ -82,6 +81,7 @@ int main(int arc, char* const* arv) {
     char path[PATH_LENGTH] = { 0 };
     int path_length = PATH_LENGTH - 1;
     int path_end = 0;
+    int opt = 0;
 
     DIR* dir = nullptr;
 
@@ -96,12 +96,19 @@ int main(int arc, char* const* arv) {
 
     printf("Path is [ %s ]\n", path);
 
+    while (-1 == (opt = getopt(arc, arv, "t:"))) {
+        switch(opt) {
+            case 't':
+                printf("--> %s\n", optarg);
+                break;
+        }
+    }
+    return 0;
+
     if (nullptr == (dir = opendir(path))) {
         printf("Failed to open path!\n");
         goto go_error_exit;
     }
-
-    printf("\n\n");
 
     for (struct dirent* entry = readdir(dir); nullptr != entry; entry = readdir(dir)) {
         wh_unit_test_s* ptr = nullptr;
@@ -111,7 +118,7 @@ int main(int arc, char* const* arv) {
         }
 
         str_append(path, path_length, entry->d_name);
-        printf("\nExecuting test [ %s ]\n", path);
+        printf("Executing test [ %s ]\n", path);
 
         void* handle = add_test(&results, (void*)&ptr, entry->d_name, path);
         

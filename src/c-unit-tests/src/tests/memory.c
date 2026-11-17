@@ -38,10 +38,9 @@ i64 test_memory_large_allocation(wh_unit_test_s* info, wh_heap_header_s* heap) {
     return 0;
 }
 
-
 i64 init(wh_unit_test_s* info) {
     // Log levels are noisy for unit testing.
-    wh_log_set_level(WH_LOG_LEVEL_ALL,    0);
+    wh_log_set_level(WH_LOG_LEVEL_ALL, 0);
 
     // Need a heap to test on.
     heap = wh_heap_init("main", HEAP_SIZE);

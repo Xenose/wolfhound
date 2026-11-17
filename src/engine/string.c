@@ -60,6 +60,21 @@ go_exit:
     return params.buffer;
 }
 
+// TODO test and improve 2026-11-17
+const char* _wh_string_split(size_t* out_length, i64* index, const char* str, const char* splitter) {
+    for (; '\0' != str[*index]; (*index)++) {
+        for (const char* s = splitter; '\0' != *s; s++) {
+            if (str[*index] == *s) {
+                *out_length = (size_t)(&str[*index] - str);
+                return &str[*index];
+            }
+        }
+    }
+
+    *out_length = strlen(str);
+    return nullptr;
+}
+
 /*wh_string_s _wh_string_append(_wh_string_append_params, ...) {
   return (wh_string_s) { 0 };
   }*/
