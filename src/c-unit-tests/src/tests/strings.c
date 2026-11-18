@@ -49,9 +49,10 @@ i64 test_string_split(wh_unit_test_s* info) {
     const char* string = "test,test,test";
     const char* tmp = nullptr;
 
-    while (nullptr != (tmp = wh_string_split(&length, &index, string, ","))) {
+    while (nullptr != (tmp = wh_string_split(&length, &index, &string[length], ","))) {
         printf(" - %.*s\n", (int)length, tmp);
         length += 1;
+        index += length;
     }
 
     return 0;

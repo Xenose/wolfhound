@@ -96,14 +96,13 @@ int main(int arc, char* const* arv) {
 
     printf("Path is [ %s ]\n", path);
 
-    while (-1 == (opt = getopt(arc, arv, "t:"))) {
+    /*while (-1 == (opt = getopt(arc, arv, "t:"))) {
         switch(opt) {
             case 't':
                 printf("--> %s\n", optarg);
                 break;
         }
-    }
-    return 0;
+    }*/
 
     if (nullptr == (dir = opendir(path))) {
         printf("Failed to open path!\n");
@@ -152,7 +151,8 @@ int main(int arc, char* const* arv) {
         }
 
 go_dlclose:
-        dlclose(handle);
+        // Check for valid handle...
+        //dlclose(handle);
 go_memset:
         // Resetting the path so we can reuse it for the next test.
         memset(&path[path_end], 0, path_length - path_end);
