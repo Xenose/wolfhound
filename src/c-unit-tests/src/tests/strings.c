@@ -42,8 +42,24 @@ i64 test_strcat(wh_unit_test_s* info) {
     return 0;
 }
 
+i64 test_string_split(wh_unit_test_s* info) {
+    i64 index = 0;
+    size_t length = 0;
+
+    const char* string = "test,test,test";
+    const char* tmp = nullptr;
+
+    while (nullptr != (tmp = wh_string_split(&length, &index, string, ","))) {
+        printf(" - %.*s\n", (int)length, tmp);
+        length += 1;
+    }
+
+    return 0;
+}
+
 i64 init(wh_unit_test_s* info) {
     WH_TEST(info, test_strcat(info));
+    WH_TEST(info, test_string_split(info));
     return 0;
 }
 
