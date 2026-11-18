@@ -9,6 +9,7 @@ WH_C()
 extern char* _wh_strcat(_wh_strcat_params params, ...);
 //extern wh_string_s _wh_string_append(_wh_string_append_params, ...);
 extern wh_string_s _wh_string_create(int dummy, ...);
+extern const char* _wh_string_split(size_t* out_length, i64* index, const char* str, const char* splitter);
 extern const char* _wh_strstr(_wh_strstr_params params);
 
 #ifndef __cplusplus
