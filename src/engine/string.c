@@ -62,17 +62,31 @@ go_exit:
 
 // TODO test and improve 2026-11-17
 const char* _wh_string_split(size_t* length, i64* index, const char* str, const char* splitter) {
-    for (; '\0' != str[*index]; (*index)++) {
+    const char* start = nullptr;
+    const char* end = nullptr;
+    const char* out = nullptr;
+
+    *index += (i64)(*length);
+
+    start = &str[*index];
+    end = &str[*index];
+    out = nullptr;
+
+    //printf("Called! index [ %li ]\n", *index);
+
+    for (; '\0' != *end; end++) {
         for (const char* s = splitter; '\0' != *s; s++) {
-            if (str[*index] == *s) {
-                *length = (size_t)(&str[*index] - str);
-                return &str[*index];
+            if (*end == *s) {
+                out = start;
+                ++*index;
+                goto go_exit;
             }
         }
     }
 
-    *length = strlen(str);
-    return nullptr;
+go_exit:
+    *length = (size_t)(end - start);
+    return out;
 }
 
 /*wh_string_s _wh_string_append(_wh_string_append_params, ...) {

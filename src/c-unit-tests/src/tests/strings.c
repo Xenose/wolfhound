@@ -45,15 +45,21 @@ i64 test_strcat(wh_unit_test_s* info) {
 i64 test_string_split(wh_unit_test_s* info) {
     i64 index = 0;
     size_t length = 0;
+    char tmp[256];
 
-    const char* string = "test,test,test";
-    const char* tmp = nullptr;
+    const char* string = "test,test,test,hello";
 
-    while (nullptr != (tmp = wh_string_split(&length, &index, &string[length], ","))) {
-        printf(" - %.*s\n", (int)length, tmp);
-        length += 1;
-        index += length;
+    // Testing items before the final item.
+    while (nullptr != wh_string_split(&length, &index, string, ",")) {
+        memcpy(tmp, &string[index - 1], length);
+        WH_TEST_STREQ(info, "test", tmp);
+        memset(tmp, 0, length);
     }
+
+    // Final item in the split
+    memcpy(tmp, &string[index], length);
+    WH_TEST_STREQ(info, "hello", tmp);
+    memset(tmp, 0, length);
 
     return 0;
 }
