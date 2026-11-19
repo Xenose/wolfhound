@@ -60,7 +60,6 @@ go_exit:
     return params.buffer;
 }
 
-// TODO test and improve 2026-11-17
 const char* _wh_string_split(size_t* length, i64* index, const char* str, const char* splitter) {
     const char* start = nullptr;
     const char* end = nullptr;
@@ -69,7 +68,7 @@ const char* _wh_string_split(size_t* length, i64* index, const char* str, const 
     *index += (i64)(*length);
 
     start = &str[*index];
-    end = &str[*index];
+    end = start;
     out = nullptr;
 
     //printf("Called! index [ %li ]\n", *index);
