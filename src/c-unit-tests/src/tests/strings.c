@@ -45,7 +45,7 @@ i64 test_strcat(wh_unit_test_s* info) {
 i64 test_string_split(wh_unit_test_s* info) {
     i64 index = 0;
     size_t length = 0;
-    char tmp[256];
+    char tmp[256] = { 0 };
 
     const char* string = "test,test,test,hello";
 
