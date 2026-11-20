@@ -13,6 +13,19 @@
 
 #define PATH_LENGTH 1024
 
+typedef struct {
+    struct {
+        size_t count;
+        char** names;
+    } filter;
+
+    struct {
+        int end;                    // same as length but should change for allowing path resets.
+        int length;
+        char array[PATH_LENGTH];
+    } path;
+} test_settings_s;
+
 void str_append(char* buffer, int buffer_size, char* str) {
     int len = strlen(buffer);
 
@@ -75,40 +88,59 @@ i64 report(wh_unit_results_s* results) {
     return 0;
 }
 
-int main(int arc, char* const* arv) {
-    wh_unit_results_s results = { 0 };
+char** args_filter_tests(size_t* count, const char* string) {
+    char** out = nullptr;
 
-    char path[PATH_LENGTH] = { 0 };
-    int path_length = PATH_LENGTH - 1;
-    int path_end = 0;
-    int opt = 0;
+    i64 index = 0;
+    ssize_t length = 0;
+    char tmp[256] = { 0 };
 
-    DIR* dir = nullptr;
+    printf("Hello! %s\n", string);
 
-    // Adding the signalar backtrace.
-    wh_signalar_init(arv[0]);
+    // Testing items before the final item.
+    for (*count = 0; -1 != wh_string_split(&length, &index, string, ","); (*count)++) {
+        char** p = realloc(out, *count * sizeof(char*));
 
-    // Constructing the test path and getting the
-    // end of the path.
-    wh_sys_program_path(path, path_length);
-    str_append(path, path_length, "tests/");
-    path_end = strlen(path);
-
-    printf("Path is [ %s ]\n", path);
-
-    /*while (-1 == (opt = getopt(arc, arv, "t:"))) {
-        switch(opt) {
-            case 't':
-                printf("--> %s\n", optarg);
-                break;
+        if (nullptr == p) {
+            break;
         }
-    }*/
 
-    if (nullptr == (dir = opendir(path))) {
-        printf("Failed to open path!\n");
-        goto go_error_exit;
+        out = p;
+        memcpy(tmp, &string[index], length);
+
+        printf("Filtered file is: %s\n", tmp);
+        out[*count] = strndup(tmp, length);
+        memset(tmp, 0, length);
     }
 
+    return out;
+}
+
+void parse_options(int arc, char* const* arv, test_settings_s* settings) {
+    int opt = 0;
+
+    while (-1 != (opt = getopt(arc, arv, "t:"))) {
+        switch(opt) {
+            case 't':
+                settings->filter.names = args_filter_tests(&settings->filter.count, optarg);
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+void setup_basepath(test_settings_s* settings) {
+    // Constructing the test path and getting the
+    // end of the path.
+    wh_sys_program_path(settings->path.array, settings->path.length);
+    str_append(settings->path.array, settings->path.length, "tests/");
+    settings->path.end = strlen(settings->path.array);
+
+    printf("Path is [ %s ]\n", settings->path.array);
+}
+
+void run_tests(DIR* dir, wh_unit_results_s* results, test_settings_s* settings) {
     for (struct dirent* entry = readdir(dir); nullptr != entry; entry = readdir(dir)) {
         wh_unit_test_s* ptr = nullptr;
 
@@ -116,11 +148,25 @@ int main(int arc, char* const* arv) {
             continue;
         }
 
-        str_append(path, path_length, entry->d_name);
-        printf("Executing test [ %s ]\n", path);
+        // We don't need to check null as count will be zero
+        // if names is nullptr.
+        if (0 != settings->filter.count) {
+            for (int i = 0; i < settings->filter.count; i++) {
+                if (!strcmp(settings->filter.names[i], entry->d_name)) {
+                    goto go_found_match;
+                }
+            }
 
-        void* handle = add_test(&results, (void*)&ptr, entry->d_name, path);
-        
+            // didn't find a match skipping entry.
+            continue;
+        }
+
+go_found_match:
+        str_append(settings->path.array, settings->path.length, entry->d_name);
+        printf("Executing test [ %s ]\n", settings->path.array);
+
+        void* handle = add_test(results, (void*)&ptr, entry->d_name, settings->path.array);
+
         if (nullptr == handle) {
             goto go_memset;
         }
@@ -131,12 +177,12 @@ int main(int arc, char* const* arv) {
             if (NULL != test) {
                 test(ptr);
             }
-            
+
             ptr->error.msg = nullptr;
         } wh_catch(wh_exception_s, ex) {
             ptr->error.msg = ex.msg;
         }
-        
+
         wh_try {
             i64 (*destructor)(wh_unit_test_s* info) = dlsym(handle, "destructor");
 
@@ -155,9 +201,31 @@ go_dlclose:
         //dlclose(handle);
 go_memset:
         // Resetting the path so we can reuse it for the next test.
-        memset(&path[path_end], 0, path_length - path_end);
+        memset(&settings->path.array[settings->path.end], 0, settings->path.length - settings->path.end);
+    }
+}
+
+int main(int arc, char* const* arv) {
+    wh_unit_results_s results = { 0 };
+    DIR* dir = nullptr;
+
+    test_settings_s settings = {
+        .path = {
+            .length = PATH_LENGTH - 1,
+        },
+    };
+
+    // Adding the signalar backtrace.
+    wh_signalar_init(arv[0]);
+    setup_basepath(&settings);
+    parse_options(arc, arv, &settings);
+
+    if (nullptr == (dir = opendir(settings.path.array))) {
+        printf("Failed to open path!\n");
+        goto go_error_exit;
     }
 
+    run_tests(dir, &results, &settings);
     closedir(dir);
     //test_strings(&results);
     return report(&results);
