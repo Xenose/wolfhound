@@ -47,19 +47,15 @@ i64 test_string_split(wh_unit_test_s* info) {
     size_t length = 0;
     char tmp[256] = { 0 };
 
-    const char* string = "test,test,test,hello";
+    const char* string = "test,,test,test,hello";
+    const char* results[] = { "test", "", "test", "test", "hello" };
 
     // Testing items before the final item.
-    while (nullptr != wh_string_split(&length, &index, string, ",")) {
-        memcpy(tmp, &string[index - 1], length);
+    for (int i = 0; 0 < wh_string_split(&length, &index, string, ","); i++) {
+        memcpy(tmp, &string[index], length);
         WH_TEST_STREQ(info, "test", tmp);
         memset(tmp, 0, length);
     }
-
-    // Final item in the split
-    memcpy(tmp, &string[index], length);
-    WH_TEST_STREQ(info, "hello", tmp);
-    memset(tmp, 0, length);
 
     return 0;
 }

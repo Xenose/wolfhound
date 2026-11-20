@@ -60,24 +60,17 @@ go_exit:
     return params.buffer;
 }
 
-const char* _wh_string_split(size_t* length, i64* index, const char* str, const char* splitter) {
+size_t _wh_string_split(size_t* length, i64* index, const char* str, const char* splitter) {
     const char* start = nullptr;
     const char* end = nullptr;
-    const char* out = nullptr;
 
     *index += (i64)(*length);
-
     start = &str[*index];
     end = start;
-    out = nullptr;
-
-    //printf("Called! index [ %li ]\n", *index);
 
     for (; '\0' != *end; end++) {
         for (const char* s = splitter; '\0' != *s; s++) {
             if (*end == *s) {
-                out = start;
-                ++*index;
                 goto go_exit;
             }
         }
@@ -85,7 +78,7 @@ const char* _wh_string_split(size_t* length, i64* index, const char* str, const 
 
 go_exit:
     *length = (size_t)(end - start);
-    return out;
+    return *length;
 }
 
 /*wh_string_s _wh_string_append(_wh_string_append_params, ...) {
