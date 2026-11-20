@@ -14,6 +14,12 @@
     #endif
 #endif
 
+#if !defined(__cplusplus)
+    #if !defined(__STDC_VERSION__) && (__STDC_VERSION__ < 199901L)
+        #define restrict
+    #endif
+#endif
+
 /*
  * C23 support the new keyword __VA_OPT__ but some
  * compilers will need to fallback to the older GNU

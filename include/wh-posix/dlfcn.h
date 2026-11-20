@@ -45,11 +45,12 @@
         void*       dli_saddr;
     } Dl_info;
 
-    extern void* dlopen(const char*, int flags);
+    extern void* dlopen(const char* path, int flags);
     extern void* dlsym(void* handle, const char* symbol);
     extern int dlinfo(void* handle, int request, void* info);
     extern int dladdr(const void* addr, Dl_info* info);
     extern int dlclose(void* handle);
+    extern char* dlerror(void);
 #endif
 
 #endif /* _wh_header_posix_dlfcn_ */

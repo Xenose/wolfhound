@@ -4,6 +4,8 @@
 #include <wh-core/common.h>
 #include <wh-types/wolfhound.h>
 
+WH_C()
+
 typedef struct {
     wh_instance_s* ins;
     u64 count;
@@ -20,5 +22,7 @@ extern u64 _wh_entity_create(_wh_entity_create_params params);
 
 #define wh_entity_init(...) _wh_entity_init((_wh_entities_init_params) { __VA_ARGS__ })
 #define wh_entity_create(...) _wh_entity_create((_wh_entity_create_params) { __VA_ARGS__ })
+
+WH_C_END()
 
 #endif /* _wh_header_game_entity_ */

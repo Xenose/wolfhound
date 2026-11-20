@@ -63,4 +63,5 @@ extern const char* _wh_strstr(_wh_strstr_params params);
 #endif /* __cplusplus */
 
 WH_C_END()
+
 #endif /* _wh_header_string_ */

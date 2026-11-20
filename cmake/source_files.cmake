@@ -31,6 +31,8 @@ SET(C_SOURCES
     # "src/engine-sys/memory/freelist.c"
 
     "src/engine-posix/dirent.c"
+    "src/engine-posix/dlfcn.c"
+    "src/engine-posix/getopt.c"
     "src/engine-posix/libproc.c"
     "src/engine-posix/netdb.c"
     "src/engine-posix/setjmp.c"

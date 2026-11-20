@@ -1,7 +1,10 @@
 #ifndef _wh_header_posix_windows_
 #define _wh_header_posix_windows_
 
-#include <wh-core/os.h>
+#include<wh-core/os.h>
+#include<wh-core/prefix.h>
+
+WH_C()
 
 #if (WH_SYSTEM&WH_SYS_WINDOWS)
     #ifdef _MSC_VER
@@ -67,5 +70,7 @@
         #pragma warning(pop)
     #endif
 #endif // end windows
+
+WH_C_END()
 
 #endif

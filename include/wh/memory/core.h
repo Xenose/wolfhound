@@ -3,6 +3,8 @@
 
 #include <wh-core/common.h>
 
+WH_C()
+
 typedef struct {
     const void* c0;
     const void* c1; 
@@ -13,5 +15,7 @@ typedef struct {
 extern i64 _wh_memcmp_mask(_wh_memcmp_mask_params params);
 
 #define wh_memcmp_mask(...) WH_EPF(_wh_memcmp_mask((_wh_memcmp_mask_params) { __VA_ARGS__ }))
+
+WH_C_END()
 
 #endif /* _wh_header_memory_copy_ */

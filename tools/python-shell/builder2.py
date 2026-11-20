@@ -95,6 +95,13 @@ def parse_args_build(args):
         )
 
         parser.add_argument(
+            "--no-cpp",
+            action="store_true",
+            help="Turns off cpp.",
+            default = False
+        )
+
+        parser.add_argument(
             "--no-sdl3",
             action="store_true",
             help="Turns off sdl3.",
@@ -389,6 +396,7 @@ class builder_c:
 
         if args is not None:
             config.extend([
+                f"-DNO_CXX_COMPILER={args.no_cpp}",
                 f"-DNO_GLFW={args.no_glfw3}",
                 f"-DNO_OPENGL={args.no_opengl}",
                 f"-DNO_SDL2={args.no_sdl2}"

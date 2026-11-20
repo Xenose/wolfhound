@@ -3,6 +3,8 @@
 
 #include <wh-posix/stdint.h>
 
+WH_C()
+
 #define WH_CORD_UNIT 10 // 10 means 10 bits giving us 1024 per 1mm
 
 #define WH_32_MM_TO_CORD(x) (((int32_t)(x)) << WH_CORD_UNIT)
@@ -13,5 +15,7 @@
 
 typedef int32_t cord32_t;
 typedef int64_t cord64_t;
+
+WH_C_END()
 
 #endif /* __wh_maths_cord__ */

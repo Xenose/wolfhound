@@ -6,6 +6,8 @@
 #include<wh-core/common.h>
 #include<wh-posix/signal.h>
 
+WH_C()
+
 enum {
     WH_EXCEPTION_SIGSEGV = -2,
     WH_EXCEPTION_UNKNOWN = -1,
@@ -38,8 +40,11 @@ extern wh_exception_s _jmp_last_exception(wh_exception_s* exp);
         0 == _jmp_init(&_info_##__LINE__); ++_info_##__LINE__.count) \
         if (0 == sigsetjmp(_info_##__LINE__.buffer, 1))
 
-#define wh_catch(type, name) else for (type name = (type)_jmp_last_exception((wh_exception_s*)&name); WH_EXCEPTION_NONE != name.error; name.error = WH_EXCEPTION_NONE)
+// Windows complain about the cast for the type, might need to reconsider how to do this cross compiler support.
+#define wh_catch(type, name) else for (type name = _jmp_last_exception((wh_exception_s*)&name); WH_EXCEPTION_NONE != name.error; name.error = WH_EXCEPTION_NONE)
 
 #define wh_throw(_error_) _jmp_throw(_error_)
+
+WH_C_END()
 
 #endif /* _wh_header_debug_exceptions_ */

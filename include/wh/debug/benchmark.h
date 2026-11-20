@@ -4,6 +4,8 @@
 #include <wh-core/common.h>
 #include <wh-posix/time.h>
 
+WH_C()
+
 typedef struct {
     struct timespec time;
 } wh_benchmark_stat_s;
@@ -23,5 +25,7 @@ typedef struct {
 extern wh_benchmark_s wh_benchmark_start(i64 count);
 extern void wh_benchmark_print(wh_benchmark_s* bench);
 extern void wh_benchmark_cycle(wh_benchmark_s* bench, i64 total_count);
+
+WH_C_END()
 
 #endif /* _wh_header_debug_benchmark_ */

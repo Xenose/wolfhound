@@ -1,10 +1,8 @@
-#include<wh-cpp/wolfhound.hpp>
 
-#include<cstring>
-
-extern "C" {
+#include<wh-posix/string.h>
 #include<wh/wolfhound.h>
-}
+
+#include<wh-cpp/wolfhound.hpp>
 
 using namespace wh;
 

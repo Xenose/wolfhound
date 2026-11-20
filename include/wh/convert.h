@@ -4,6 +4,8 @@
 
 #include<wh-core/common.h>
 
+WH_C()
+
 typedef struct {
     u64 value;
     char* buffer;
@@ -81,5 +83,7 @@ extern const char* _wh_filetype2str(_wh_filetype2str_params params);
     #define str2int wh_str2int
     #define str_invert wh_str_invert
 #endif
+
+WH_C_END()
 
 #endif /* _wh_header_convert_ */

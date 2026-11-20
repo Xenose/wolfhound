@@ -28,3 +28,24 @@ void* memccpy(void* restrict dst, const void* restrict src, int c, size_t n) {
 
 	return nullptr;
 }
+
+char* strndup(const char* s, size_t n) {
+	char* out = nullptr;
+	size_t length = strnlen(s, n);
+
+	out = malloc(length + 1);
+
+	if (nullptr == out) {
+		errno = ENOMEM;
+		goto go_error_exit;
+	}
+
+	memcpy(out, s, length);
+	out[length] = '\0';
+go_error_exit:
+	return out;
+}
+
+char* strdup(const char* s) {
+	return strndup(s, SIZE_MAX);
+}

@@ -1,9 +1,12 @@
 #ifndef _wh_header_wrap_unistd_
 #define _wh_header_wrap_unistd_
 
-#include<wh-core/common.h>
+#include<wh-core/os.h>
+#include<wh-core/prefix.h>
 #include<wh-posix/sys/types.h>
 #include<wh-posix/stdio.h>
+
+WH_C()
 
 #if (WH_SYSTEM&WH_SYS_POSIX)
     #include<unistd.h>
@@ -98,5 +101,7 @@
 #ifndef _GNU_SOURCE
     extern pid_t gettid(void);
 #endif
+
+WH_C_END()
 
 #endif /* _wh_header_wrap_unistd_ */

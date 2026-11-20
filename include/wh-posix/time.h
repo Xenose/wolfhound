@@ -1,10 +1,11 @@
 #ifndef _wh_header_wrap_time_
 #define _wh_header_wrap_time_
 
-#include<time.h>
 #include<wh-core/common.h>
 
 WH_C()
+
+#include<time.h>
 
 #if (WH_SYSTEM&WH_SYS_POSIX)
     #if (WH_SYSTEM&(WH_SYS_SOLARIS|WH_SYS_BEOS))
@@ -29,4 +30,5 @@ WH_C()
 #endif
 
 WH_C_END()
+
 #endif /* _wh_header_wrap_time_ */

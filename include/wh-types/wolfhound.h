@@ -1,12 +1,14 @@
 #ifndef _wh_header_types_wolfhound_
 #define _wh_header_types_wolfhound_
 
-#include <wh-core/common.h>
-#include <wh-sys/memory.h>
+#include<wh-core/common.h>
+#include<wh-sys/memory.h>
 
-#include <wh-types/config.h>
-#include <wh-types/foreman.h>
-#include <wh-types/gameinfo.h>
+#include<wh-types/config.h>
+#include<wh-types/foreman.h>
+#include<wh-types/gameinfo.h>
+
+WH_C()
 
 #if (defined WH_SDL3_FOUND) && (defined WH_SDL2_FOUND)
     #error SDL3 and SDL2 included at the same time.
@@ -120,5 +122,6 @@ typedef struct _wh_instance_s {
     wh_game_s game;
 } wh_instance_s;
 
-#endif /* _wh_header_types_wolfhound_ */
+WH_C_END()
 
+#endif /* _wh_header_types_wolfhound_ */

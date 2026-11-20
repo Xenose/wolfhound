@@ -3,6 +3,8 @@
 
 #include<wh-core/common.h>
 
+WH_C()
+
 enum {
     WH_DATA_HEADER_START,
     WH_DATA_HEADER_MODEL,
@@ -77,5 +79,6 @@ typedef struct _wh_action_s {
     wh_entity_s* entities;
 } wh_action_s;
 
+WH_C_END()
 
 #endif /* _wh_header_types_gameinfo_ */

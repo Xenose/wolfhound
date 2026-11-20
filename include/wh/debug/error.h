@@ -3,6 +3,8 @@
 
 #include<wh-core/common.h>
 
+WH_C()
+
 typedef struct {
     i64 number;
 } _wh_errno_str_params;
@@ -23,5 +25,7 @@ extern const char* _wh_vk_status_str(_wh_vk_status_params params);
  *  ## wh_vk_status_str
  */
 #define wh_vk_status_str(...) _wh_vk_status_str((_wh_vk_status_params) { __VA_ARGS__ })
+
+WH_C_END()
 
 #endif /* _wh_header_error_ */

@@ -1,11 +1,12 @@
 #ifndef _wh_posix_stdatomic_
 #define _wh_posix_stdatomic_
 
+
+#include<wh-core/os.h>
+#include<wh-core/prefix.h>
 #include<wh-posix/stdint.h>
 
-#include<wh-core/c23-comp.h>
-#include<wh-core/macros.h>
-#include<wh-core/os.h>
+WH_C()
 
 //#define __STDC_NO_ATOMICS__ // for compiler highlight remove later
 
@@ -92,4 +93,7 @@
     typedef std::atomic_flag atomic_flag;
     typedef std::atomic_bool atomic_bool;
 #endif /* __cplusplus */
+
+WH_C_END()
+
 #endif /* _wh_posix_stdatomic_ */

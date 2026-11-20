@@ -4,6 +4,7 @@
 #include<wh-core/os.h>
 #include<wh-posix/signal.h>
 #include<wh-posix/sys/types.h>
+#include<wh-posix/time.h>
 
 // Note : The name and semantics shift a bit from solaris,
 // so to reflect this change we named it proc_xxx in the

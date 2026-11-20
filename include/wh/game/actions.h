@@ -4,6 +4,8 @@
 #include <wh-core/common.h>
 #include <wh-types/wolfhound.h>
 
+WH_C()
+
 typedef struct {
     wh_instance_s* ins;
     u64 count;
@@ -28,5 +30,7 @@ extern i8 _wh_action_subscribe(_wh_action_subscribe_params params);
 #define wh_action_init(...) _wh_action_init((_wh_action_init_params) { __VA_ARGS__ })
 #define wh_action_register(...) _wh_action_register((_wh_action_register_params) { __VA_ARGS__ })
 #define wh_action_subscribe(...) _wh_action_subscribe((_wh_action_subscribe_params) { __VA_ARGS__ })
+
+WH_C_END()
 
 #endif /* _wh_header_game_actions_ */

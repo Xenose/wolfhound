@@ -3,6 +3,9 @@
 
 #include<wh-posix/stddef.h>
 #include<wh-core/common.h>
+
+WH_C()
+
 #include<string.h>
 
 #if (WH_SYSTEM&WH_SYS_WINDOWS)
@@ -27,6 +30,9 @@
      * Posix doesn't say what happens if src or dst is nullptr's...
      */
     extern void* memccpy(void* restrict dst, const void* restrict src, int c, size_t n);
+
+    extern char* strndup(const char* s, size_t n);
+    extern char* strdup(const char* s);
 #else
 
     #define _TRUNCATE (size_t)(-1)
@@ -38,5 +44,7 @@
 #else
     #warning YOU ARE ABOUT TO SHOT YOURSELF!
 #endif /* WH_SHOTGUN_FOOT_OH_YEA */
+
+WH_C_END()
 
 #endif /* _wh_header_wrap_string_ */

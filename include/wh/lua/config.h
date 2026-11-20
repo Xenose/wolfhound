@@ -4,6 +4,8 @@
 #include <wh-types/config.h>
 #include <wh/headers/lua.h>
 
+WH_C()
+
 typedef struct {
     lua_State* ls;
     const char* table;
@@ -80,5 +82,6 @@ extern i8 _wh_config_lua_expose(_wh_config_lua_expose_params params);
 
 #define wh_config_lua_expose(...) WH_EPF(_wh_config_lua_expose((_wh_config_lua_expose_params) { __VA_ARGS__ }))
 
+WH_C_END()
 
 #endif /* _wh_header_lua_config_ */

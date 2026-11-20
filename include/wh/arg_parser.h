@@ -5,6 +5,8 @@
 #include<wh-types/config.h>
 #include<wh/headers/lua.h>
 
+WH_C()
+
 typedef struct {
     lua_State* ls;
     int arc;
@@ -32,5 +34,7 @@ extern i64 _wh_args_parser_init(void);
 #define args_parse wh_args_parse
 #define args_parse_init wh_args_parse_init
 #endif
+
+WH_C_END()
 
 #endif /* _wh_header_arg_parser_ */

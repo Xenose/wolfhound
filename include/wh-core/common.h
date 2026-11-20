@@ -9,13 +9,13 @@
 #include<wh-core/enum.h>
 #include<wh-core/macros.h>
 
-WH_C()
 
 #include<wh-posix/stdint.h>
 #include<wh-posix/stddef.h>
 #include<wh-posix/stdbool.h>
 #include<wh-posix/sys/types.h>
 
+WH_C()
 
 /* [MD_DOC:wh_string_s]
  * ## wh_string_s

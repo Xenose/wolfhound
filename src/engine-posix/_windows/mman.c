@@ -1,3 +1,4 @@
+#include<wh-core/c23-comp.h>
 #include<wh-posix/sys/mman.h>
 #include<wh-posix/_windows/fd_table.h>
 
