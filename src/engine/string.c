@@ -60,25 +60,41 @@ go_exit:
     return params.buffer;
 }
 
-size_t _wh_string_split(size_t* length, i64* index, const char* str, const char* splitter) {
+ssize_t _wh_string_split(ssize_t* length, i64* index, const char* str, const char* splitter) {
+    ssize_t out = -1;
     const char* start = nullptr;
     const char* end = nullptr;
 
-    *index += (i64)(*length);
+    if (nullptr == str) {
+        *length = 0;
+        *index = 0;
+        goto go_error_nullptr;
+    }
+
+    *index += *length;
+
+    if (str != &str[*index]) {
+        ++*index;
+    }
+
     start = &str[*index];
     end = start;
 
     for (; '\0' != *end; end++) {
         for (const char* s = splitter; '\0' != *s; s++) {
             if (*end == *s) {
+                *length = end - start;
+                out = *length;
                 goto go_exit;
             }
         }
     }
-
+  
+    *length = end - start;
+    out = -1;
 go_exit:
-    *length = (size_t)(end - start);
-    return *length;
+go_error_nullptr:
+    return out;
 }
 
 /*wh_string_s _wh_string_append(_wh_string_append_params, ...) {

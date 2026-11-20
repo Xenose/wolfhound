@@ -43,19 +43,23 @@ i64 test_strcat(wh_unit_test_s* info) {
 }
 
 i64 test_string_split(wh_unit_test_s* info) {
+    int i = 0;
     i64 index = 0;
-    size_t length = 0;
+    ssize_t length = 0;
     char tmp[256] = { 0 };
 
-    const char* string = "test,,test,test,hello";
-    const char* results[] = { "test", "", "test", "test", "hello" };
+    const char* string = "test,test,test,hello";
+    const char* results[] = { "test", "test", "test", "hello" };
 
     // Testing items before the final item.
-    for (int i = 0; 0 < wh_string_split(&length, &index, string, ","); i++) {
+    for (i = 0; -1 != wh_string_split(&length, &index, string, ","); i++) {
+        wh_info(("Length is [ %i ]"), length);
         memcpy(tmp, &string[index], length);
         WH_TEST_STREQ(info, "test", tmp);
         memset(tmp, 0, length);
     }
+    
+    WH_TEST_INT64EQ(info, sizeof(results) / sizeof(results[0]), (i64)i);
 
     return 0;
 }
