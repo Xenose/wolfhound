@@ -6,7 +6,6 @@
 #include<wh-core/prefix.h>
 #include<wh-posix/stdint.h>
 
-WH_C()
 
 //#define __STDC_NO_ATOMICS__ // for compiler highlight remove later
 
@@ -94,6 +93,5 @@ WH_C()
     typedef std::atomic_bool atomic_bool;
 #endif /* __cplusplus */
 
-WH_C_END()
 
 #endif /* _wh_posix_stdatomic_ */
