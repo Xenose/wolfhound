@@ -40,3 +40,7 @@ pid_t getppid() {
 go_error_exit:*/
     return out;
 }
+
+
+pid_t getpgid() {
+}

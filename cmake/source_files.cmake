@@ -44,6 +44,7 @@ SET(C_SOURCES
     "src/engine-posix/sys/stat.c"
     "src/engine-posix/time.c"
     "src/engine-posix/unistd.c"
+    "src/engine-posix/execinfo.c"
 
     "src/engine/arg_parser.c"
     "src/engine/config.c"

@@ -86,6 +86,7 @@ typedef struct {
 
 
 extern int sigaction(int sig, const struct sigaction* restrict act, struct sigaction* restrict oact);
+extern int sigemptyset(sigset_t* set);
 
 #endif
 

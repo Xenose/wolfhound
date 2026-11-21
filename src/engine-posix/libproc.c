@@ -3,4 +3,6 @@
 
 #if (WH_SYSTEM&WH_SYS_LINUX)
     #include"_common/libproc.c"
+#else
+    #include"_common/libproc.c"
 #endif

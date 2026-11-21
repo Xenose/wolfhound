@@ -51,3 +51,6 @@ int singal(int sig, void (*handler)(int)) {
 
    return sigaction(sig, &act, nullptr);
 }
+
+int sigemptyset(sigset_t* set) {
+}
