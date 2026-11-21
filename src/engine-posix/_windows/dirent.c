@@ -1,3 +1,4 @@
+#include<wh-posix/_windows/windows.h>
 #include<wh-posix/dirent.h>
 
 int alphasort(const struct dirent** src, const struct dirent** dst) {
@@ -9,6 +10,12 @@ int closedir(DIR* dir) {
 }
 
 int dirfd(DIR* dir) {
+   if (nullptr == dir) {
+        errno = EBADF;
+        return -1;
+    }
+
+    return dir->fd;
 }
 
 DIR* fdopendir(int fd) {

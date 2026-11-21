@@ -5,6 +5,8 @@
  *
  * Note later optimize by using a u64 for 64 entires check
  * in one go, where a bit is a used block.
+ * 
+ * also resuse open slots once freed and end of the.
  */
 
 i64 _wnt_fd_get(_wnt_s* wnt, va_list args) {

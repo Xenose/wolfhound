@@ -9,6 +9,7 @@ typedef enum {
    _WNT_FD_TYPE_MEMORY,
    _WNT_FD_TYPE_SOCKET,
    _WNT_FD_TYPE_STD,
+   _WNT_FD_TYPE_DIR_HANDLE,
 } _wnt_fd_type;
 
 typedef enum {

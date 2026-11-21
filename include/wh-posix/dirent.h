@@ -2,6 +2,7 @@
 #define _wh_header_posix_dirent_
 
 #include<wh-core/os.h>
+#include<wh-core/c23-comp.h>
 
 #include<wh-posix/limits.h>
 #include<wh-posix/sys/types.h>
@@ -18,6 +19,7 @@
         void* handle;
         struct dirent entry;
         int valid;
+        int fd;
     } DIR;
 
     extern int alphasort(const struct dirent**, const struct dirent**);

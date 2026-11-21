@@ -43,4 +43,5 @@ go_error_exit:*/
 
 
 pid_t getpgid() {
+    return WNT_INVALID_PID;
 }
