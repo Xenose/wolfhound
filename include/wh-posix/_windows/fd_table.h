@@ -19,12 +19,14 @@ typedef enum {
    _WNT_FDOP_SEARCH,
 } _wnt_fdop;
 
+
 typedef struct {
    _wnt_fd_type type;
 
    union {
       HANDLE      handle;
       void*       ptr;
+      _wnt_folder_handle folder;
    } data;
 } _wnt_fd_entry;
 

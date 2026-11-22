@@ -38,6 +38,11 @@ enum {
 };
 
 typedef struct {
+   WIN32_FIND_DATA find_data;
+   HANDLE handle;
+} _wnt_dir_handle;
+
+typedef struct {
    u64 type;
    union {
       // Windows types
@@ -45,6 +50,7 @@ typedef struct {
       SOCKET sock;
       // Generic memory address
       void* memory;
+      _wnt_dir_handle dir;
    };
 } _wnt_entry_s;
 

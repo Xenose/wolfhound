@@ -31,7 +31,7 @@ int close(int fd) {
             break;
         case _WNT_ENTRY_SOCKET:
             if (SOCKET_ERROR == closesocket(entry.sock)) {
-_wnt_call(_WNT_CALL_ERROR_2_ERRNO, _WNT_ERROR_TYPE_NORMAL, WSAGetLastError(), &errno);
+                _wnt_call(_WNT_CALL_ERROR_2_ERRNO, _WNT_ERROR_TYPE_NORMAL, WSAGetLastError(), &errno);
             }
             break;
         default:

@@ -6,7 +6,7 @@
 
 int wnt_socket(int domain, int type, int protocol) {
    int fd = -1;
-   _wnt_entry_s entry;
+   _wnt_entry_s entry = { 0 };
    SOCKET sock = { 0 };
 
    if (-1 == _wnt_call(_WNT_CALL_INIT_SOCKET_BACK)) {
