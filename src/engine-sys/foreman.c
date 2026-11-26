@@ -60,7 +60,6 @@ void wh_foreman_destroy(wh_instance_s*, wh_foreman_s* foreman) {
 }
 
 void worker_loop(u64 index, void* data) {
-    wh_log_debug(("Sending work to worker [ %i ]"), index);
 }
 
 // Idea foreman assigns work to the worker queue,
@@ -68,5 +67,4 @@ void worker_loop(u64 index, void* data) {
 // worker was done with the work.
 void wh_foreman_execute(wh_foreman_s* foreman) {
     wh_darray_for_each(&foreman->workers, worker_loop);
-    usleep(150000);
 }

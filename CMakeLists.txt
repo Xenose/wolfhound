@@ -19,6 +19,7 @@ OPTION(NO_SDL2      "Disable SDL2"      False)
 OPTION(NO_SDL3      "Disable SDL3"      False)
 OPTION(NO_VULKAN    "Disable VULKAN"    False)
 
+OPTION(GENERATE_REPORT "Generates a coverage report." ON)
 OPTION(COMPILER_KEFIR "Kefir doesn't have a CMAKE ID, so this is a work around." False)
 
 # We want to use Fortran 95 so we select it
@@ -162,10 +163,10 @@ TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE
 )
 
 # Allows us to do line coverage testing
-IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang" AND GENERATE_REPORT AND NOT ${IS_ANDROID})
+IF(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang") # AND GENERATE_REPORT AND NOT ${IS_ANDROID})
     MESSAGE(STATUS "Enabling coverage flags for GCC/Clang")
     TARGET_COMPILE_OPTIONS(${APP_NAME} PRIVATE --coverage -g)
-    TARGET_LINK_OPTIONS(${APP_NAME} PRIVATE --coverage)
+    TARGET_LINK_OPTIONS(${APP_NAME} PUBLIC --coverage)
 ENDIF()
 
 # -----------------------------------------------------------------------------
@@ -201,7 +202,7 @@ IF(BUILD_LIBC_TESTS)
     ENDIF()
 ENDIF()
 
-# Tests
+# Tests :: Note C++ should be readded later for the C++ bindings.
 # IF (CXX_ENABLED)
 #     # For now GTEST is not supported on windows.
 #     IF (CMAKE_SYSTEM_NAME STREQUAL "Linux")
