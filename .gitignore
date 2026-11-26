@@ -1,6 +1,7 @@
 # Ignore all build directories recursively
 build/
 docs/
+**/coverage/
 **/build/
 **/build-*/
 **/CMakeFiles/

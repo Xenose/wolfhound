@@ -57,6 +57,14 @@ them more or less using [wh_try/wh_catch](src/engine/debug/exceptions.c).
 
 **Note: TinyCC currently doesn't work with the tests, this is a known limitation.**
 
+#### Coverage Report
+```bash
+    # Run this from the root directory.
+    mkdir coverage
+    # For clang use the following command.
+    gcovr -r . --html-details -o coverage/index.html --gcov-executable "llvm-cov gcov" 
+```
+
 ### Status of platforms
 | Platform        | Kernel  | Tested | Supported     | Description                             |
 | --------------- | ------- | ------ | ------------- | --------------------------------------- |
