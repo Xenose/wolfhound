@@ -2,6 +2,7 @@
 #define _wh_header_types_wolfhound_
 
 #include<wh-core/common.h>
+
 #include<wh-sys/memory.h>
 
 #include<wh-types/config.h>

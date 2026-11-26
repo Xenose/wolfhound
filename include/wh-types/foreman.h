@@ -4,7 +4,14 @@
 #include<wh-core/common.h>
 #include<wh-sys/atomic_lock.h>
 #include<wh-types/gameinfo.h>
+#include<wh-types/stack.h>
 #include<wh-sys/data/dynamic_array.h>
+
+enum {
+    WH_WORKER_RUN = 0,
+    WH_WORKER_PAUSE,
+    WH_WORKER_HALT,
+};
 
 typedef struct {
     struct_type stype;
@@ -14,6 +21,10 @@ typedef struct {
 
 typedef struct {
     struct_type stype;
+    i64 state;
+    pid_t tid;
+    wh_raw_stack_s stack;
+    wh_atomic_lock_s lock;
 
     struct {
         u64 count;

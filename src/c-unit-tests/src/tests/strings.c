@@ -44,6 +44,7 @@ i64 test_strcat(wh_unit_test_s* info) {
 
 i64 test_string_split(wh_unit_test_s* info) {
     int i = 0;
+    int status = 0;
     i64 index = 0;
     ssize_t length = 0;
     char tmp[256] = { 0 };
@@ -52,12 +53,16 @@ i64 test_string_split(wh_unit_test_s* info) {
     const char* results[] = { "test", "test", "test", "hello" };
 
     // Testing items before the final item.
-    for (i = 0; -1 != wh_string_split(&length, &index, string, ","); i++) {
-        wh_info(("Length is [ %i ]"), length);
+    do {
+        status = wh_string_split(&length, &index, string, ",");
+
         memcpy(tmp, &string[index], length);
-        WH_TEST_STREQ(info, "test", tmp);
+        WH_TEST_STREQ(info, results[i], tmp);
         memset(tmp, 0, length);
-    }
+
+        // moving the test index
+        ++i;
+    } while(-1 != status);
     
     WH_TEST_INT64EQ(info, sizeof(results) / sizeof(results[0]), (i64)i);
 

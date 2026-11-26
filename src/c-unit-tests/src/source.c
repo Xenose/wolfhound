@@ -92,26 +92,32 @@ char** args_filter_tests(size_t* count, const char* string) {
     char** out = nullptr;
 
     i64 index = 0;
+    int status = 0;
     ssize_t length = 0;
-    char tmp[256] = { 0 };
 
-    printf("Hello! %s\n", string);
+    (*count) = 0;
 
     // Testing items before the final item.
-    for (*count = 0; -1 != wh_string_split(&length, &index, string, ","); (*count)++) {
-        char** p = realloc(out, *count * sizeof(char*));
+    do {
+        char** p = nullptr;
+        status = wh_string_split(&length, &index, string, ",");
+
+        if (0 == length) {
+            break;
+        }
+        
+        p = realloc(out, (*count + 1) * sizeof(char*));
 
         if (nullptr == p) {
             break;
         }
-
+        
         out = p;
-        memcpy(tmp, &string[index], length);
 
-        printf("Filtered file is: %s\n", tmp);
-        out[*count] = strndup(tmp, length);
-        memset(tmp, 0, length);
-    }
+        // Copying the new string to the memory location.
+        out[*count] = strndup(&string[index], length);
+        ++(*count);
+    } while(-1 != status);
 
     return out;
 }

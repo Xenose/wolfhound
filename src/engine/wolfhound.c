@@ -138,7 +138,9 @@ go_skip_event_pull:
             break;
         default:
             goto go_loop;
-    }
+    } // after this the engine exits...
+    
+    wh_foreman_destroy(ins, &ins->foreman);
 }
 
 int64_t _wh_end(_wh_end_params params) {

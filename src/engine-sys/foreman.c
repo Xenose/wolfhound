@@ -1,10 +1,46 @@
+#include<wh-posix/sched.h>
 #include<wh-sys/foreman.h>
 #include<wh-sys/debug/logger.h>
 
+#include<wh-sys/atomic_lock.h>
 #include<wh-posix/unistd.h>
-#include<wh-posix/sched.h>
 
-void wh_worker() {
+// The actual worker loop
+int wh_worker(void* ptr) {
+    i64 state = 0;
+    wh_worker_s* worker = ptr;
+
+    do {
+        wh_spinlock_v3(&worker->lock) {
+            wh_debug(("[ %i ] Worker saying hello!"), gettid());
+            state = worker->state;
+            usleep(150000);
+        }
+    } while(WH_WORKER_HALT != state);
+
+    return 0;
+}
+
+static void _worker_create(u64, void* ptr) {
+    wh_worker_s* worker = ptr;
+    int flags = CLONE_SIGHAND | CLONE_VM;
+
+    worker->stack.size = 1024 * 1024;
+    worker->stack.ptr = wh_alloc(nullptr, worker->stack.size, &worker->stack.ptr);
+
+    if (nullptr == worker->stack.ptr) {
+        wh_emergency(("Failed to allocate memory"));
+    }
+
+    worker->tid = clone(&wh_worker, &worker->stack.bytes[worker->stack.size], flags, worker);
+}
+
+static void _worker_destroy(u64, void* ptr) {
+    wh_worker_s* worker = ptr;
+
+    wh_spinlock_v3(&worker->lock) {
+        worker->state = WH_WORKER_HALT;
+    }
 }
 
 void wh_foreman_init(wh_instance_s* ins, wh_foreman_s* foreman) {
@@ -22,6 +58,12 @@ void wh_foreman_init(wh_instance_s* ins, wh_foreman_s* foreman) {
 
     _wh_darray_init(d_params);
     wh_log_debug(("Foreman reporting for duty! Worker count [ %i ]"), d_params.count);
+    wh_darray_for_each(&foreman->workers, _worker_create);
+}
+
+void wh_foreman_destroy(wh_instance_s*, wh_foreman_s* foreman) {
+    wh_darray_for_each(&foreman->workers, _worker_destroy);
+    sleep(1);
 }
 
 void worker_loop(u64 index, void* data) {
@@ -33,5 +75,5 @@ void worker_loop(u64 index, void* data) {
 // worker was done with the work.
 void wh_foreman_execute(wh_foreman_s* foreman) {
     wh_darray_for_each(&foreman->workers, worker_loop);
-    usleep(50000);
+    usleep(150000);
 }

@@ -61,7 +61,7 @@ extern void wh_log_set_level(i64 level, u8 state);
     #undef wh_info
     #undef wh_debug
     
-    #define wh_emergency(x, ...)        wh_log_emergancy(x, __VA_ARGS__)
+    #define wh_emergency(x, ...)        wh_log_emergency(x, __VA_ARGS__)
     #define wh_alert(x, ...)            wh_log_alert(x, __VA_ARGS__)
     #define wh_critical(x, ...)         wh_log_critical(x, __VA_ARGS__)
     #define wh_error(x, ...)            wh_log_error(x, __VA_ARGS__)
