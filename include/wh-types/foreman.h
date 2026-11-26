@@ -21,10 +21,9 @@ typedef struct {
 
 typedef struct {
     struct_type stype;
-    i64 state;
+    ai64 state;
     pid_t tid;
     wh_raw_stack_s stack;
-    wh_atomic_lock_s lock;
 
     struct {
         u64 count;

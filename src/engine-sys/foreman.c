@@ -7,16 +7,12 @@
 
 // The actual worker loop
 int wh_worker(void* ptr) {
-    i64 state = 0;
     wh_worker_s* worker = ptr;
 
     do {
-        wh_spinlock_v3(&worker->lock) {
-            wh_debug(("[ %i ] Worker saying hello!"), gettid());
-            state = worker->state;
-            usleep(150000);
-        }
-    } while(WH_WORKER_HALT != state);
+        wh_debug(("[ %i ] Worker saying hello!"), gettid());
+        usleep(150000);
+    } while(WH_WORKER_HALT != atomic_load(&worker->state));
 
     return 0;
 }
@@ -37,10 +33,7 @@ static void _worker_create(u64, void* ptr) {
 
 static void _worker_destroy(u64, void* ptr) {
     wh_worker_s* worker = ptr;
-
-    wh_spinlock_v3(&worker->lock) {
-        worker->state = WH_WORKER_HALT;
-    }
+    atomic_store(&worker->state, WH_WORKER_HALT);
 }
 
 void wh_foreman_init(wh_instance_s* ins, wh_foreman_s* foreman) {
