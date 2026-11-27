@@ -504,7 +504,7 @@ class builder_c:
             case "clang":
                 self.clang(None)
             case "gcc":
-                self.clang(None)
+                self.gcc(None)
             case "tcc":
                 self.tcc(None)
             case "kefir":

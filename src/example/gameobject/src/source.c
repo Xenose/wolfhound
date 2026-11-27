@@ -34,7 +34,7 @@ i8 action_health_gen(wh_instance_s* ins, wh_action_s* action) {
 }
 
 void key_escape(wh_event_s* e) {
-    wh_log_info(("Hello!"));
+    wh_info(("Hello!"));
 }
 
 void* test_tracker() {
@@ -97,6 +97,5 @@ int main(int arc, char* const* arv) {
 
     // Needs a better public api or background thread.
     _wh_mem_scan();
-    wh_core_debug(("--> Hello world!"));
     return 0;
 }
