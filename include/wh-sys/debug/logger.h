@@ -52,6 +52,8 @@ extern void wh_log_set_level(i64 level, u8 state);
 
 
 #ifndef WH_USE_CORE_LOGGER
+    #include<wh-core/debug/logger.h>
+
     #undef wh_emergency
     #undef wh_alert
     #undef wh_critical
@@ -66,7 +68,7 @@ extern void wh_log_set_level(i64 level, u8 state);
     #define wh_critical(x, ...)         wh_log_critical(x, __VA_ARGS__)
     #define wh_error(x, ...)            wh_log_error(x, __VA_ARGS__)
     #define wh_warning(x, ...)          wh_log_warning(x, __VA_ARGS__)
-    #define wh_notice(x, ...)           wh_log_notic(x, __VA_ARGS__)
+    #define wh_notice(x, ...)           wh_log_notice(x, __VA_ARGS__)
     #define wh_info(x, ...)             wh_log_info(x, __VA_ARGS__)
     #define wh_debug(x, ...)            wh_log_debug(x, __VA_ARGS__)
 #else
